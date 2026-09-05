@@ -180,7 +180,7 @@ a{color:var(--accent)}
     </div>
     <div class="status">
       <div class="st-cell"><span class="st-k">Repositories</span><span class="st-v accent">6</span></div>
-      <div class="st-cell"><span class="st-k">OSHA filings analysed</span><span class="st-v">1.18M</span></div>
+      <div class="st-cell"><span class="st-k">OSHA filings analysed</span><span class="st-v">2.80M</span></div>
       <div class="st-cell"><span class="st-k">Benchmark items</span><span class="st-v">40+</span></div>
       <div class="st-cell"><span class="st-k">Stage</span><span class="st-v">Draft</span></div>
     </div>
@@ -192,22 +192,22 @@ a{color:var(--accent)}
     <div class="rail-head"><span class="rail-num">01</span><h2 class="display">Findings</h2></div>
     <div class="findings">
       <div class="finding">
-        <div class="f-num">7.58<span class="f-unit">&times;</span></div>
-        <div class="f-title">Benchmarks built on raw OSHA data are wrong by this factor</div>
-        <p class="f-body">2.24% of establishment filings fail a basic plausibility test, yet those filings carry 86.9% of every hour reported. Aggregate TRIR reads 0.45 as published and 3.41 once implausible records are excluded. The error flatters every organisation that uses it.</p>
-        <div class="f-src">Source &middot; OSHA ITA, CY2023&ndash;CY2025</div>
+        <div class="f-num">249<span class="f-unit">&times;</span></div>
+        <div class="f-title">The published aggregate is unstable, not just wrong</div>
+        <p class="f-body">Aggregate TRIR computed on unscreened filings differs from the screened figure by 1.39x in 2018 and 249x in 2019. The correction is not a constant and is not portable between years, so no single multiplier can repair a benchmark built on raw data.</p>
+        <div class="f-src">Source - OSHA ITA, CY2016-CY2024, 2,801,064 filings</div>
       </div>
       <div class="finding">
-        <div class="f-num">38<span class="f-unit">%</span></div>
-        <div class="f-title">Zero is not excellence</div>
-        <p class="f-body">In chemical manufacturing (NAICS 325), 38% of establishments report no recordable case at all while the 90th percentile sits at 5.54. Injury-rate distributions spike at zero rather than forming a bell curve, so reporting a mean against them is meaningless.</p>
-        <div class="f-src">Source &middot; OSHA ITA, NAICS 325</div>
+        <div class="f-num">96.7<span class="f-unit">%</span></div>
+        <div class="f-title">A fraction of filings carries almost all the hours</div>
+        <p class="f-body">Pooled across nine years, 2.07% of filings fail a hours-per-employee plausibility screen, yet those filings account for 96.7% of every hour reported. Aggregate TRIR reads 0.13 unscreened and 3.98 screened.</p>
+        <div class="f-src">Source - outputs/summary.json, screen 120-4500 h/employee</div>
       </div>
       <div class="finding">
-        <div class="f-num">47.8<span class="f-unit">%</span></div>
-        <div class="f-title">Injuries cluster early in the shift</div>
-        <p class="f-body">Across 546,590 cases recording both shift start and incident time, injuries peak in hour 2 and 47.8% occur within the first four hours - not at the fatigued end of the day, where fatigue-management programmes usually aim.</p>
-        <div class="f-src">Source &middot; OSHA case-level data</div>
+        <div class="f-num">3.1<span class="f-unit">-4.6</span></div>
+        <div class="f-title">Screening produces a stable series</div>
+        <p class="f-body">Screened aggregate TRIR stays within 3.1 to 4.6 across all nine years while the unscreened figure swings between 0.016 and 2.92. The screen is not cosmetic: it is what separates a usable time series from noise.</p>
+        <div class="f-src">Source - outputs/figures/fig01_aggregate_trir_by_year.svg</div>
       </div>
       <div class="finding">
         <div class="f-num">1<span class="f-unit">&nbsp;substitution</span></div>
@@ -315,7 +315,8 @@ a{color:var(--accent)}
       <ul>
         <li>The benchmark contributes apparatus and a question corpus. A full grounded-versus-ungrounded experimental run is future work.</li>
         <li>Reference verification is incomplete. Sources confirmed so far are canonical to their fields; the remainder are unverified and are being checked before submission.</li>
-        <li>No external peer review has been conducted.</li>
+        <li>An internal adversarial review has been run. Four of five reviewers would reject the current manuscript, principally for bundling separable contributions and for presenting a benchmark with no baseline results. Those findings are being acted on.</li>
+        <li>Figures here supersede earlier ones published in <span class="mono">ehs-benchmarks</span>, which covered a narrower panel. Where the two differ, these are current.</li>
         <li>Empirical findings above come from real public OSHA data. Where synthetic data is used in the repositories it is confined to simulation studies, kept in a <span class="mono">synthetic/</span> directory with its generator, and never reported as a finding about the world.</li>
       </ul>
     </div>
