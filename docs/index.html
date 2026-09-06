@@ -268,6 +268,14 @@ table.params tr:last-child th,table.params tr:last-child td{border-bottom:0}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .pb-cta:hover{transform:none}
 }
+
+.switcher{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border:2px solid var(--rule);background:var(--surface);margin-top:26px;max-width:940px}
+.switcher a{padding:12px 14px;text-decoration:none;color:var(--ink);border-left:2px solid var(--rule-soft);display:flex;flex-direction:column;gap:3px;transition:background .15s}
+.switcher a:first-child{border-left:0}.switcher a:hover{background:var(--accent-wash)}
+.sw-t{font-family:var(--font-mono);font-size:.72rem;font-weight:700;letter-spacing:.04em}.sw-s{font-size:.72rem;color:var(--muted)}
+@media(max-width:760px){.switcher a{border-left:0;border-top:2px solid var(--rule-soft)}.switcher a:first-child{border-top:0}}
+.pn{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--rule);background:var(--surface);max-width:var(--maxw);margin:0 auto}.pn a{padding:22px 26px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:6px}.pn a:hover{background:var(--accent-wash)}.pn a+a{border-left:2px solid var(--rule-soft);text-align:right;align-items:flex-end}.pn .label{color:var(--accent)}.pn-t{font-family:var(--font-mono);font-weight:700;font-size:.95rem}.pn-wrap{padding:0 30px 48px}
+@media(max-width:640px){.pn{grid-template-columns:1fr}.pn a+a{border-left:0;border-top:2px solid var(--rule-soft);text-align:left;align-items:flex-start}}
 </style>
 </head>
 <body>
@@ -310,6 +318,7 @@ table.params tr:last-child th,table.params tr:last-child td{border-bottom:0}
       <a class="btn" href="#work">Six repositories</a>
       <a class="btn" href="https://github.com/priyatham9">GitHub</a>
     </div>
+    <nav class="switcher" aria-label="Projects"><a href="https://priyatham9.github.io/ehs-osha-analysis/"><span class="sw-t">OSHA data quality</span><span class="sw-s">2.8M real filings</span></a><a href="https://priyatham9.github.io/ehs-ai-grounding-eval/"><span class="sw-t">Grounding benchmark</span><span class="sw-s">apparatus, no results yet</span></a><a href="https://priyatham9.github.io/ehs-human-factors-ontology/"><span class="sw-t">Human factors ontology</span><span class="sw-s">derivation traces</span></a><a href="https://priyatham9.github.io/ehs-risk-sem/"><span class="sw-t">SEM for safety risk</span><span class="sw-s">simulation studies</span></a><a href="https://priyatham9.github.io/ehs-capitals-calculator/"><span class="sw-t">Cost-benefit calculator</span><span class="sw-s">interactive tool</span></a><a href="./paper.html"><span class="sw-t">The paper</span><span class="sw-s">197 verified references</span></a></nav>
   </div>
 </section>
 
@@ -733,7 +742,7 @@ table.params tr:last-child th,table.params tr:last-child td{border-bottom:0}
 
 </main>
 
-<footer class="footer">
+<div class="pn-wrap"><nav class="pn" aria-label="Programme navigation"><a href="https://priyatham9.github.io/"><span class="label">Author</span><span class="pn-t">&larr; Priyatham Chimmani</span></a><a href="https://priyatham9.github.io/ehs-osha-analysis/"><span class="label">Start here</span><span class="pn-t">OSHA data quality &rarr;</span></a></nav></div><footer class="footer">
   <div class="wrap">
     <div class="foot-grid">
       <div>
