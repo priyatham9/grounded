@@ -1,0 +1,629 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The Hours Denominator - Paper - Priyatham Chimmani</title>
+<meta name="description" content="Working draft. A working draft. Four artifacts: a structural account of semantically adjacent substitution, an auditable human-factors ontology, a preregistered grounding benchmark, and a population-scale reanalysis of the exposure denominator underlying every rate-based safety metric." />
+<meta name="theme-color" content="#F7F7F3" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0A0C10" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%231E40AF'/%3E%3Ctext x='8' y='12' font-family='monospace' font-size='11' font-weight='700' text-anchor='middle' fill='white'%3EP%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" />
+<style>
+:root{
+ color-scheme:light;
+ --paper:#F7F7F3; --surface:#FFFFFF; --surface-2:#EFEFE9;
+ --ink:#101311; --ink-2:#3A403C; --muted:#666D68;
+ --rule:#101311; --rule-soft:#D6D7CE;
+ --accent:#1E40AF; --accent-2:#17307F; --accent-ink:#FFFFFF; --accent-wash:#E2E8FB;
+ --warn:#8A5A00; --warn-wash:#FBF0DC;
+ --grid-dot:rgba(16,19,17,.10); --shadow:rgba(16,19,17,.08);
+ --font-sans:"Archivo",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+ --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+ --maxw:1180px;
+}
+@media (prefers-color-scheme: dark){
+ :root:not([data-theme="light"]){
+ color-scheme:dark;
+ --paper:#0A0C10; --surface:#12151C; --surface-2:#171B24;
+ --ink:#EAECF2; --ink-2:#BFC4CF; --muted:#838A99;
+ --rule:#EAECF2; --rule-soft:#262B36;
+ --accent:#7C9EFF; --accent-2:#5B7FE8; --accent-ink:#06101F; --accent-wash:#151C33;
+ --warn:#E3B25F; --warn-wash:#241C0C;
+ --grid-dot:rgba(234,236,242,.09); --shadow:rgba(0,0,0,.4);
+ }
+}
+:root[data-theme="dark"]{
+ color-scheme:dark;
+ --paper:#0A0C10; --surface:#12151C; --surface-2:#171B24;
+ --ink:#EAECF2; --ink-2:#BFC4CF; --muted:#838A99;
+ --rule:#EAECF2; --rule-soft:#262B36;
+ --accent:#7C9EFF; --accent-2:#5B7FE8; --accent-ink:#06101F; --accent-wash:#151C33;
+ --warn:#E3B25F; --warn-wash:#241C0C;
+ --grid-dot:rgba(234,236,242,.09); --shadow:rgba(0,0,0,.4);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;scroll-padding-top:calc(var(--topbar-h,60px) + 74px)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+h1,h2,h3,h4,h5,h6{margin:0;line-height:1.1;letter-spacing:-.01em}
+p{margin:0 0 1em}
+a{color:var(--accent)}
+img,svg{max-width:100%}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 30px}
+.display{font-stretch:125%;font-weight:900;text-transform:uppercase}
+.label{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--accent);color:var(--accent-ink);padding:12px 18px;font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;text-decoration:none}
+.skip:focus{left:8px;top:8px}
+
+/* topbar */
+.topbar{position:sticky;top:0;z-index:50;background:var(--paper);border-bottom:2px solid var(--rule)}
+.topbar-inner{max-width:var(--maxw);margin:0 auto;padding:9px 30px;display:flex;align-items:center;gap:6px 14px;flex-wrap:wrap}
+.topnav-group{display:flex;align-items:center;gap:0;flex:none;border-left:2px solid var(--rule-soft);padding-left:8px}
+.topnav-group:first-of-type{border-left:0;padding-left:0}
+.topnav-tag{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700;padding:0 6px 0 4px;white-space:nowrap}
+.topnav-projects{flex:1 1 auto;min-width:0}
+.topnav-projects .topnav{flex:1 1 auto}
+.topnav a[aria-current="page"]{color:var(--ink);border-bottom:3px solid var(--accent);padding-bottom:5px}
+.topnav a.nav-external{color:var(--accent)}
+.topnav a.nav-external::after{content:'97';margin-left:3px;font-size:.85em;opacity:.75}
+.topnav a.nav-external:hover{background:var(--accent-wash);color:var(--accent-2)}
+.topbar .toggle{margin-left:auto}
+.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.8125rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);text-decoration:none;flex:none}
+.brand-mark{width:14px;height:14px;background:var(--accent);flex:none}
+.topnav{display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;min-width:0}
+.topnav::-webkit-scrollbar{display:none}
+.topnav a{white-space:nowrap;text-decoration:none;padding:8px 11px;font-family:var(--font-mono);font-size:.6875rem;text-transform:uppercase;letter-spacing:.09em;font-weight:600;color:var(--muted)}
+.topnav a:hover{color:var(--ink)}
+.toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;flex:none;background:var(--paper);border:2px solid var(--rule);border-radius:0;color:var(--ink);cursor:pointer}
+.toggle:hover{background:var(--surface-2)}
+.icon-moon{display:none}
+:root[data-theme="dark"] .icon-sun{display:none}
+:root[data-theme="dark"] .icon-moon{display:block}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .icon-sun{display:none}:root:not([data-theme="light"]) .icon-moon{display:block}}
+
+/* five-minute path */
+.read5wrap{border-bottom:2px solid var(--rule);padding:0 0 34px}
+.read5{border:2px solid var(--accent);background:var(--accent-wash);padding:22px 26px}
+.read5 h2{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.read5 p{margin:10px 0 0;font-size:.925rem;color:var(--ink-2);max-width:78ch}
+.read5 ol{list-style:none;counter-reset:r5;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:0;border:2px solid var(--rule);background:var(--surface)}
+.read5 li{counter-increment:r5;border-left:2px solid var(--rule-soft);min-width:0}
+.read5 li:first-child{border-left:0}
+.read5 li a{display:block;height:100%;padding:12px 14px;text-decoration:none;color:var(--ink)}
+.read5 li a:hover{background:var(--accent);color:var(--accent-ink)}
+.read5 li a::before{content:"0" counter(r5);display:block;font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.16em;color:var(--muted);margin-bottom:4px}
+.read5 li a:hover::before{color:var(--accent-ink)}
+.read5 .r5-t{display:block;font-family:var(--font-mono);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.read5 .r5-d{display:block;font-size:.8125rem;margin-top:4px;color:var(--ink-2)}
+.read5 li a:hover .r5-d{color:var(--accent-ink)}
+@media(max-width:760px){.read5 li{border-left:0;border-top:2px solid var(--rule-soft)}.read5 li:first-child{border-top:0}}
+
+/* previous / next */
+.pn{border-top:2px solid var(--rule)}
+.pn-inner{max-width:var(--maxw);margin:0 auto;padding:0 30px;display:grid;grid-template-columns:1fr 1fr}
+.pn a{display:block;padding:26px 0;text-decoration:none;color:var(--ink);min-width:0}
+.pn a+a{text-align:right;border-left:2px solid var(--rule-soft);padding-left:20px}
+.pn .pn-k{display:block;font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.pn .pn-v{display:block;margin-top:6px;font-family:var(--font-mono);font-size:.9rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent)}
+.pn a:hover .pn-v{text-decoration:underline}
+@media(max-width:560px){.pn-inner{grid-template-columns:1fr}.pn a+a{border-left:0;border-top:2px solid var(--rule-soft);padding-left:0;text-align:left}}
+
+/* reading progress */
+.progress{position:sticky;top:var(--topbar-h,60px);z-index:49;height:4px;background:var(--rule-soft)}
+.progress span{display:block;height:100%;width:0;background:var(--accent);transition:width .06s linear}
+
+/* hero */
+.phero{border-bottom:2px solid var(--rule);background-image:radial-gradient(var(--grid-dot) 1px,transparent 1px);background-size:22px 22px;padding:64px 0 52px}
+.phero .kicker{display:inline-flex;align-items:center;gap:9px;margin-bottom:22px}
+.pulse{width:7px;height:7px;background:var(--accent);flex:none;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  .pulse{animation:none}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+}
+.phero h1{font-size:clamp(1.6rem,4.4vw,3.35rem);max-width:22ch;line-height:1.04;overflow-wrap:break-word}
+.phero .byline{margin-top:22px;font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--ink-2)}
+.phero .sub{margin-top:16px;font-size:1.02rem;color:var(--ink-2);max-width:66ch}
+.metastrip{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--rule);background:var(--surface);margin-top:32px;max-width:820px}
+.ms-cell{padding:13px 16px;border-left:2px solid var(--rule-soft);min-width:0}
+.ms-cell:first-child{border-left:0}
+.ms-k{font-family:var(--font-mono);font-size:.5625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.ms-v{font-family:var(--font-mono);font-size:1rem;font-weight:700;font-variant-numeric:tabular-nums}
+.ms-v.accent{color:var(--accent)}
+@media(max-width:760px){.metastrip{grid-template-columns:1fr 1fr}.ms-cell:nth-child(3){border-left:0}.ms-cell:nth-child(n+3){border-top:2px solid var(--rule-soft)}}
+
+/* status banner */
+.statuswrap{border-bottom:2px solid var(--rule);padding:34px 0}
+.status-note{border:2px solid var(--warn);background:var(--warn-wash);padding:24px 26px}
+.status-note h2{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warn);font-weight:700}
+.status-note p{margin-top:14px;font-size:.925rem;color:var(--ink-2);max-width:78ch}
+.status-note ul{margin:14px 0 0;padding-left:20px;font-size:.9rem;color:var(--ink-2);max-width:78ch}
+.status-note li{margin-bottom:8px}
+.status-note strong{color:var(--ink)}
+
+/* layout */
+.layout{max-width:var(--maxw);margin:0 auto;padding:0 30px;display:grid;grid-template-columns:264px minmax(0,1fr);gap:0;align-items:start}
+.toc-rail{position:sticky;top:calc(var(--topbar-h,60px) + 40px);max-height:calc(100vh - 120px);overflow-y:auto;padding:34px 26px 40px 0;border-right:2px solid var(--rule-soft);scrollbar-width:thin}
+.toc-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.toc-title{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.toc-toggle{display:none;background:var(--surface);border:2px solid var(--rule);color:var(--ink);cursor:pointer;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:7px 11px}
+.toc-list{list-style:none;margin:16px 0 0;padding:0}
+.toc-list li{margin:0}
+.toc-list a{display:block;text-decoration:none;font-family:var(--font-mono);font-size:.72rem;line-height:1.4;color:var(--muted);padding:5px 0 5px 10px;border-left:2px solid transparent}
+.toc-list a:hover{color:var(--ink)}
+.toc-list a[aria-current="true"]{color:var(--accent);border-left-color:var(--accent);font-weight:600}
+.toc-list .lvl-1 a{color:var(--ink-2);font-weight:700;margin-top:10px;text-transform:uppercase;letter-spacing:.06em;font-size:.6875rem;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.toc-min{flex:none;font-weight:400;font-size:.5625rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.toc-list .lvl-3 a{padding-left:22px;font-size:.6875rem;opacity:.86}
+
+/* article */
+.doc{padding:40px 0 80px 40px;min-width:0}
+.doc > *{max-width:74ch}
+.doc p,.doc li{font-size:1.0125rem;line-height:1.78;color:var(--ink-2);overflow-wrap:break-word}
+.doc strong{color:var(--ink)}
+.doc .h-l1{font-size:clamp(1.5rem,3.4vw,2.15rem);margin:76px 0 22px;padding-top:26px;border-top:2px solid var(--rule);font-stretch:125%;font-weight:900;text-transform:uppercase;color:var(--ink)}
+.doc .h-l2{font-size:clamp(1.16rem,2.2vw,1.42rem);margin:52px 0 16px;font-weight:800;color:var(--ink)}
+.doc .h-l3{font-size:1.02rem;margin:38px 0 12px;font-family:var(--font-mono);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
+.doc > :first-child{margin-top:0}
+.anchor{margin-left:.5em;text-decoration:none;color:var(--rule-soft);font-family:var(--font-mono);font-weight:400;font-size:.7em;opacity:0}
+h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}
+.rule{border:0;border-top:2px solid var(--rule-soft);margin:44px 0;max-width:74ch}
+.md-list{margin:0 0 1.3em;padding-left:22px}
+.md-list li{margin-bottom:.65em}
+.doc code{font-family:var(--font-mono);font-size:.86em;background:var(--surface-2);padding:.1em .34em;border:1px solid var(--rule-soft);color:var(--ink)}
+.codewrap{max-width:100%;overflow-x:auto;border:2px solid var(--rule-soft);background:var(--surface);margin:0 0 1.5em}
+.codewrap pre{margin:0;padding:18px 20px;width:max-content;min-width:100%}
+.codewrap code{font-family:var(--font-mono);font-size:.8125rem;line-height:1.7;background:none;border:0;padding:0;white-space:pre;color:var(--ink-2)}
+.bq{margin:0 0 1.5em;padding:18px 22px;border-left:4px solid var(--accent);background:var(--surface-2);max-width:74ch}
+.bq > :last-child{margin-bottom:0}
+.bq p{font-size:.97rem}
+.tablewrap{max-width:100%;overflow-x:auto;border:2px solid var(--rule);background:var(--surface);margin:0 0 1.7em}
+.tablewrap table{border-collapse:collapse;width:100%;min-width:640px}
+.tablewrap th,.tablewrap td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--rule-soft);border-right:1px solid var(--rule-soft);font-size:.8125rem;line-height:1.55;color:var(--ink-2)}
+.tablewrap th{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);font-weight:700;border-bottom:2px solid var(--rule);background:var(--surface-2)}
+.tablewrap tr:last-child td{border-bottom:0}
+.tablewrap th:last-child,.tablewrap td:last-child{border-right:0}
+
+/* citations */
+sup.cite{font-family:var(--font-mono);font-size:.62em;line-height:0;letter-spacing:.01em;vertical-align:super}
+sup.cite a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;white-space:nowrap}
+sup.cite a:hover{border-bottom-color:var(--accent)}
+sup.fnref{font-family:var(--font-mono);font-size:.66em}
+sup.fnref a{text-decoration:none}
+.footnote{display:flex;gap:12px;max-width:74ch;margin:0 0 1.5em;padding:14px 16px;border-left:2px solid var(--rule-soft);background:var(--surface-2)}
+.fn-n{font-family:var(--font-mono);font-size:.6875rem;font-weight:700;color:var(--accent);flex:none;padding-top:.15em}
+.fn-body{font-size:.875rem;line-height:1.66;color:var(--ink-2)}
+.fn-back{font-family:var(--font-mono);font-size:.625rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;margin-left:6px}
+
+/* references */
+.ref{display:grid;grid-template-columns:170px minmax(0,1fr);gap:0 18px;max-width:74ch;padding:16px 0 4px;border-top:1px solid var(--rule-soft);scroll-margin-top:calc(var(--topbar-h,60px) + 74px)}
+.ref:target{background:var(--accent-wash);border-top-color:var(--accent)}
+.ref-key{font-size:.72rem;font-weight:700;color:var(--accent);word-break:break-word;padding-top:.18em}
+.ref-body{font-size:.9rem;line-height:1.66;color:var(--ink-2);min-width:0;overflow-wrap:anywhere;word-break:break-word}
+.ref-ev{font-family:var(--font-mono);font-size:.625rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;margin-left:8px;border-bottom:1px solid var(--accent)}
+.backrefs{display:inline}
+.backrefs a{font-family:var(--font-mono);font-size:.625rem;text-decoration:none;margin-left:5px;color:var(--muted);border-bottom:1px solid var(--rule-soft)}
+.backrefs a:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.backrefs .brlabel{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-left:10px}
+.ref-note{display:block;max-width:74ch;margin:0 0 6px;padding:10px 14px 10px 188px;font-size:.8125rem;line-height:1.6;color:var(--muted);overflow-wrap:anywhere}
+.ref-note-k{display:block;font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+
+/* footer */
+.footer{border-top:2px solid var(--rule);padding:48px 0 64px;background:var(--surface-2)}
+.footer p{font-size:.875rem;color:var(--muted);max-width:74ch}
+.footer-links{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px}
+.footer-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.footer-links a:hover{color:var(--accent)}
+
+/* narrow */
+@media (max-width:1024px){
+ .layout{grid-template-columns:minmax(0,1fr);padding:0 20px}
+ .toc-rail{position:static;max-height:none;overflow:visible;border-right:0;border-bottom:2px solid var(--rule);padding:20px 0}
+ .toc-toggle{display:inline-block}
+ .toc-rail[data-collapsed="true"] .toc-list{display:none}
+ .toc-list{max-height:52vh;overflow-y:auto}
+ .doc{padding:34px 0 64px}
+ .wrap{padding:0 20px}
+ .topbar-inner{padding:10px 20px}
+ .topnav-group{border-left:0;padding-left:0}
+ .topnav-projects{flex-basis:100%;order:5;border-top:2px solid var(--rule-soft);margin:2px -20px 0;padding:2px 20px 0}
+ .topbar .toggle{margin-left:auto}
+   .ref{grid-template-columns:minmax(0,1fr);gap:4px}
+ .ref-note{padding-left:14px}
+}
+@media (max-width:560px){
+ .phero{padding:44px 0 38px}
+ .doc .h-l1{margin-top:52px}
+}
+
+/* print */
+@media print{
+ :root{--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#111;--muted:#444;--rule:#000;--rule-soft:#bbb;--accent:#000;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;--grid-dot:transparent}
+ .topbar,.progress,.toc-rail,.toggle,.anchor,.footer-links,.skip,.ref-ev,.backrefs,.pn,.read5wrap{display:none !important}
+ body{font-size:10.5pt;line-height:1.5;background:#fff;color:#000}
+ .layout{display:block;max-width:none;padding:0}
+ .doc{padding:0;max-width:none}
+ .doc > *{max-width:none}
+ .phero{border-bottom:1pt solid #000;padding:0 0 12pt;background:none}
+ .metastrip{max-width:none}
+ .doc .h-l1{page-break-before:always;page-break-after:avoid;border-top:1pt solid #000}
+ .doc > .h-l1:first-child{page-break-before:avoid;border-top:0}
+ .doc .h-l2,.doc .h-l3{page-break-after:avoid}
+ .ref,.footnote,.bq,.tablewrap,.codewrap{page-break-inside:avoid}
+ .tablewrap table{min-width:0}
+ sup.cite{font-size:.7em}
+ a{color:#000;text-decoration:none}
+ @page{margin:18mm 16mm}
+}
+</style>
+</head>
+<body id="top">
+
+<a class="skip" href="#doc">Skip to the paper</a>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="index.html"><span class="brand-mark"></span> Grounded EHS AI</a>
+    <nav class="topnav-group" aria-label="Site">
+      <div class="topnav">
+        <a class="nav-external" href="https://priyatham9.github.io/">Priyatham Chimmani</a>
+        <a href="index.html">Grounded</a>
+        <a href="paper.html" aria-current="page">Paper</a>
+      </div>
+    </nav>
+    <nav class="topnav-group topnav-projects" aria-label="Projects">
+      <span class="topnav-tag">Projects</span>
+      <div class="topnav">
+        <a class="nav-external" href="https://priyatham9.github.io/ehs-osha-analysis/">OSHA data quality</a>
+        <a class="nav-external" href="https://priyatham9.github.io/ehs-ai-grounding-eval/">Grounding benchmark</a>
+        <a class="nav-external" href="https://priyatham9.github.io/ehs-human-factors-ontology/">Human factors ontology</a>
+        <a class="nav-external" href="https://priyatham9.github.io/ehs-risk-sem/">Risk SEM</a>
+        <a class="nav-external" href="https://priyatham9.github.io/ehs-capitals-calculator/">Capitals calculator</a>
+        <a class="nav-external" href="https://priyatham9.github.io/ehs-benchmarks/">EHS benchmarks</a>
+      </div>
+    </nav>
+    <nav class="topnav-group" aria-label="On this page">
+      <div class="topnav">
+        <a href="#read5">5 min</a>
+        <a href="#abstract">Abstract</a>
+        <a href="#references">References</a>
+      </div>
+    </nav>
+    <button class="toggle" id="themeToggle" aria-label="Toggle colour scheme">
+      <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+      <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+<section class="phero"><div class="wrap">
+  <div class="kicker"><span class="pulse"></span><span class="label">Draft manuscript - not submitted</span></div>
+  <h1 class="display">The Hours Denominator: Data Quality in OSHA Establishment Injury Filings and What It Does to Every Benchmark Built on Them</h1>
+  <div class="byline">Priyatham Chimmani</div>
+  <p class="sub">A working draft. Four artifacts: a structural account of semantically adjacent substitution, an auditable human-factors ontology, a preregistered grounding benchmark, and a population-scale reanalysis of the exposure denominator underlying every rate-based safety metric.</p>
+  <div class="metastrip">
+    <div class="ms-cell"><span class="ms-k">Manuscript</span><span class="ms-v">6,397 words</span></div>
+    <div class="ms-cell"><span class="ms-k">References</span><span class="ms-v accent">45</span></div>
+    <div class="ms-cell"><span class="ms-k">Benchmark results</span><span class="ms-v">None</span></div>
+    <div class="ms-cell"><span class="ms-k">Peer review</span><span class="ms-v">None</span></div>
+  </div>
+</div></section>
+
+<section class="statuswrap"><div class="wrap">
+<div class="status-note">
+<h2>Read this first: what this document is and is not</h2>
+<p>This is a <strong>working draft</strong>. It has not been submitted to any venue,
+it has not been peer reviewed, and nothing in it should be read as a validated
+result about any deployed system.</p>
+<ul>
+<li><strong>The benchmark has no baseline results.</strong> Section 5 describes a
+preregistered apparatus of 68 clause-anchored items. The harness has been exercised
+only against a mock adapter with a synthetic response profile. No model has been
+evaluated. Any number attributed to it would be wrong.</li>
+<li><strong>Four of five internal adversarial reviewers would reject this manuscript
+as structured</strong> - mainly for bundling four separable contributions into one
+paper, and for presenting an evaluation benchmark with no baselines. The
+formal-methods reviewer did not reject. That review is reported here rather than
+buried.</li>
+<li><strong>The ontology's factor levels are analyst-assigned.</strong> The 90
+crosswalk alignments are one coder's unadjudicated judgement, with no inter-rater
+reliability figure. The screening bands are ordinal labels produced by rules marked
+as convention, never validated against injury or incident outcomes.</li>
+<li><strong>The simulation studies are synthetic by design.</strong> They demonstrate
+properties of an estimator. They are not findings about workplace safety.</li>
+<li><strong>The OSHA reanalysis is the one empirical result here.</strong> It runs on
+2,801,064 real establishment filings and its numbers are reproducible from the
+committed pipeline. The correction factor it reports is explicitly not a portable
+constant.</li>
+<li><strong>Citations.</strong> All 45 citation keys used in the text resolve to a
+reference below, each checked against a primary or publisher-of-record source, with
+the evidence URL recorded in the repository. 0 entries carry a verification note
+saying what that check found, including the ones where a page range still needs
+confirming against printed proceedings.</li>
+</ul>
+</div>
+</div></section>
+
+<section class="read5wrap" id="read5"><div class="wrap">
+<div class="read5">
+<h2>Read this in 5 minutes</h2>
+<p>The full manuscript is a long read. These four stops give the finding, the claims,
+the one empirical result, and the caveats. Each section heading in the contents rail
+carries its own estimated reading time.</p>
+<ol><li><a href="#abstract"><span class="r5-t">Abstract</span><span class="r5-d">The result in one page.</span></a></li><li><a href="#5-the-denominator-failure"><span class="r5-t">The denominator failure</span><span class="r5-d">2.07% of filings carry 96.7% of reported hours.</span></a></li><li><a href="#6-what-does-not-replicate-and-why-the-non-replication-is-the-finding"><span class="r5-t">Why it does not replicate</span><span class="r5-d">The correction swings from 1.39x to 249x between years.</span></a></li><li><a href="#limitations"><span class="r5-t">Limitations</span><span class="r5-d">What the screen can and cannot establish.</span></a></li></ol>
+</div>
+</div></section>
+
+<main class="layout">
+  <aside class="toc-rail" id="tocRail" aria-label="Table of contents">
+    <div class="toc-head">
+      <span class="toc-title">Contents</span>
+      <button class="toc-toggle" id="tocToggle" aria-expanded="true">Contents</button>
+    </div>
+    <ul class="toc-list"><li class="lvl-2"><a href="#abstract">Abstract</a></li><li class="lvl-2"><a href="#1-introduction">1. Introduction</a></li><li class="lvl-2"><a href="#2-data-and-reproducibility">2. Data and reproducibility</a></li><li class="lvl-3"><a href="#year-level-summary">Year-level summary</a></li><li class="lvl-2"><a href="#3-the-dependency-this-paper-cannot-argue-around">3 The dependency this paper cannot argue around</a></li><li class="lvl-2"><a href="#4-what-the-corpus-is-and-what-it-is-not">4 What the corpus is, and what it is not</a></li><li class="lvl-2"><a href="#5-the-denominator-failure">5 The denominator failure</a></li><li class="lvl-2"><a href="#6-what-does-not-replicate-and-why-the-non-replication-is-the-finding">6 What does not replicate, and why the non-replication is the finding</a></li><li class="lvl-2"><a href="#7-zero-recordable-filings-overdispersion-not-a-hidden-non-reporting-population">7 Zero-recordable filings: overdispersion, not a hidden non-reporting population</a></li><li class="lvl-2"><a href="#8-benchmark-bands-move-on-their-own">8 Benchmark bands move on their own</a></li><li class="lvl-2"><a href="#9-hour-of-shift-a-claim-withdrawn-and-the-conditions-for-ever-making-it-again">9 Hour-of-shift: a claim withdrawn, and the conditions for ever making it again</a></li><li class="lvl-2"><a href="#10-how-the-two-failures-compose">10 How the two failures compose</a></li><li class="lvl-2"><a href="#limitations">Limitations</a></li><li class="lvl-2"><a href="#references">References</a></li></ul>
+  </aside>
+
+  <article class="doc" id="doc">
+<h3 id="abstract" class="h-l2">Abstract<a class="anchor" href="#abstract" aria-label="Link to this section">#</a></h3>
+<p>Establishment-level injury and illness summaries filed with OSHA's Injury Tracking Application are the only public source from which industry injury-rate benchmarks can be built at scale. We process 2,801,064 establishment filings covering calendar years 2016 to 2024 and show that the hours-worked field, the denominator of every rate computed from these data, is dominated by a small number of implausible entries. Under a plausibility screen of 120 to 4,500 hours per employee per year, 2.07% of filings fail, yet those filings carry 96.7% of all hours reported. The pooled aggregate total recordable incident rate reads 0.134 on the unscreened file and 3.983 after screening. The correction is not a constant: the year-level ratio between screened and unscreened aggregates ranges from 1.39x in 2018 to 249x in 2019, because the share of hours sitting in implausible filings varies from 29% to 99.6% between years. Screened aggregates, by contrast, stay within 3.1 to 4.6 across all 9 years while unscreened aggregates swing between 0.016 and 2.92. We characterise the failing records, evaluate the screen's sensitivity to its bounds, examine zero-inflation and overdispersion in recordable-case counts with Poisson, negative binomial and zero-inflated fits, and assess year-over-year stability of peer-group percentile bands. The practical conclusion is narrow and consequential: any benchmark computed from the raw file is wrong by a factor that cannot be known without screening, and no single multiplier repairs it.</p>
+<h3 id="1-introduction" class="h-l2">1. Introduction<a class="anchor" href="#1-introduction" aria-label="Link to this section">#</a></h3>
+<p>Every EHS leader eventually asks whether their establishment's injury rate is good. The honest answer requires comparison against establishments of similar size in the same industry, and the data to make that comparison are public: OSHA publishes establishment-level Form 300A summaries each year. They are, however, close to unusable as downloaded. This paper documents why, quantifies the damage, and shows that the damage is not stable enough to correct with a rule of thumb.</p>
+<p>The contribution is deliberately modest in scope. We do not propose a new injury model. We show that the denominator underneath every published aggregate is unreliable in a specific, measurable, and year-dependent way, and we publish the reproducible pipeline that establishes it.</p>
+<h3 id="2-data-and-reproducibility" class="h-l2">2. Data and reproducibility<a class="anchor" href="#2-data-and-reproducibility" aria-label="Link to this section">#</a></h3>
+<p>Nine public files were processed: the annual ITA data files for CY2016 through CY2022 and the 300A summary extracts covering 2023 through 2025. After de-duplication of 4,703 repeated rows, 2,801,064 filings remained. The pipeline downloads the source files itself, fails loudly if they are unavailable rather than substituting fixtures, and regenerates every table and figure by script. The repository carries 136 tests.</p>
+<h4 id="year-level-summary" class="h-l3">Year-level summary<a class="anchor" href="#year-level-summary" aria-label="Link to this section">#</a></h4>
+<div class="tablewrap"><table><thead><tr><th>Year</th><th>Filings</th><th>Flagged</th><th>Hours in flagged</th><th>TRIR raw</th><th>TRIR screened</th><th>Ratio</th></tr></thead><tbody><tr><td>2016</td><td>214,977</td><td>2.30%</td><td>31.6%</td><td>2.729</td><td>3.921</td><td>1.44x</td></tr><tr><td>2017</td><td>259,757</td><td>1.66%</td><td>35.2%</td><td>2.634</td><td>3.998</td><td>1.52x</td></tr><tr><td>2018</td><td>286,884</td><td>1.56%</td><td>29.1%</td><td>2.920</td><td>4.069</td><td>1.39x</td></tr><tr><td>2019</td><td>290,475</td><td>1.60%</td><td>99.6%</td><td>0.016</td><td>4.018</td><td>249.28x</td></tr><tr><td>2020</td><td>293,385</td><td>1.91%</td><td>38.6%</td><td>2.792</td><td>4.491</td><td>1.61x</td></tr><tr><td>2021</td><td>315,936</td><td>2.60%</td><td>46.1%</td><td>2.385</td><td>4.368</td><td>1.83x</td></tr><tr><td>2022</td><td>346,799</td><td>2.02%</td><td>42.9%</td><td>2.661</td><td>4.605</td><td>1.73x</td></tr><tr><td>2023</td><td>394,231</td><td>2.34%</td><td>56.7%</td><td>1.380</td><td>3.147</td><td>2.28x</td></tr><tr><td>2024</td><td>398,620</td><td>2.37%</td><td>92.4%</td><td>0.280</td><td>3.642</td><td>12.99x</td></tr></tbody></table></div>
+<h3 id="3-the-dependency-this-paper-cannot-argue-around" class="h-l2">3 The dependency this paper cannot argue around<a class="anchor" href="#3-the-dependency-this-paper-cannot-argue-around" aria-label="Link to this section">#</a></h3>
+<p>Sections 3 through 5 make a claim about architecture: that a system whose conclusions carry derivation traces back to identified source clauses is auditable in a way that a system conditioned on a persona and a pasted document is not. That claim is about the relationship between a conclusion and a record. It says nothing about the relationship between the record and the world.</p>
+<p>The distinction is the one AWS draws explicitly for its own deployed reasoning system. Their documentation states that a <code>VALID</code> result "covers only the parts of the input captured through policy variables," and their own worked example is a claim resting on a forged doctor's note that will be scored valid because no variable captures forgery <sup class="cite">[<a id="cite-aws_arc_docs-1" href="#ref-aws_arc_docs" title="Amazon Web Services, "Automated Reasoning checks concepts," Amazon Bedrock User Guide. https://docs.aws.amazon.com/bedrock/latest/userguide/automated-...">aws_arc_docs</a>]</sup>. A sound procedure over a false premise returns a sound conclusion about the premise. Nothing about the soundness reaches the world.</p>
+<p>For safety-critical question answering in process industries this is not a philosophical footnote, because the records in question are self-reported administrative filings that nothing validates at intake. This section quantifies how bad that is, using the public OSHA Injury Tracking Application (ITA) Form 300A corpus, and then states precisely what follows for a grounded architecture. The short version is that grounding and data validation are separate obligations, and satisfying one does not discharge the other.</p>
+<p>All figures in this section were computed by the pipeline in <code>repos/ehs-osha-analysis</code> from nine ITA Form 300A files (CY2016 through CY2024) downloaded from <code>osha.gov</code>, with URLs, byte counts and SHA-256 digests pinned in the repository and verified on 2026-09-03 <sup class="cite">[<a id="cite-osha_ita-1" href="#ref-osha_ita" title="Occupational Safety and Health Administration. Establishment-Specific Injury and Illness Data (Injury Tracking Application). U.S. Department of Labor....">osha_ita</a>]</sup>. They are transcribed from the generated <code>summary.json</code> and output tables, and regression tests parse the headline values back out of the manuscript's source repository and fail if the prose and the tables disagree. Where a figure comes from the author's earlier work rather than from this pipeline, it is labelled as such.</p>
+<h3 id="4-what-the-corpus-is-and-what-it-is-not" class="h-l2">4 What the corpus is, and what it is not<a class="anchor" href="#4-what-the-corpus-is-and-what-it-is-not" aria-label="Link to this section">#</a></h3>
+<p>OSHA requires annual Form 300A summary submission from establishments with 250 or more employees, and from establishments with 20 to 249 employees in the higher-hazard industry groups listed in 29 CFR 1904 Subpart E <sup class="cite">[<a id="cite-osha_ita_users_guide-1" href="#ref-osha_ita_users_guide" title="Occupational Safety and Health Administration. Injury Tracking Application (ITA) Data Users Guide. Last updated January 2025. https://www.osha.gov/sit...">osha_ita_users_guide</a>]</sup>. The result is a mandated administrative collection over a selected slice of US industry. It is not a probability sample of the US workforce, and any national rate computed from it is a rate for that slice.</p>
+<p>The screened aggregate reported below (about 3.98 recordable cases per 200,000 hours) sits well above the BLS Survey of Occupational Injuries and Illnesses private-industry total recordable case rate of 2.3 per 100 full-time equivalent workers for 2024 <sup class="cite">[<a id="cite-bls2026-1" href="#ref-bls2026" title="U.S. Bureau of Labor Statistics (2026). Employer-Reported Workplace Injuries and Illnesses - 2023–2024. News release USDL-26-0101, January 22, 2026.">bls2026</a>]</sup>. That direction is what a universe skewed toward larger establishments in higher-hazard industries would produce. The two figures are not directly comparable and are not compared here; OSHA publishes its own ITA-versus-SOII comparison and it should be read before anyone treats the gap as a finding <sup class="cite">[<a id="cite-osha_ita_bls_comparison-1" href="#ref-osha_ita_bls_comparison" title="Occupational Safety and Health Administration. Comparison Between OSHA ITA Data and BLS SOII Estimates. https://www.osha.gov/sites/default/files/Compa...">osha_ita_bls_comparison</a>]</sup>.</p>
+<p>Three schema facts matter for anyone building a retrieval or reasoning layer over these files, because each is a silent-wrong-answer trap rather than a loud failure. Column order differs between the 2016–2022 and 2023+ files, and <code>naics_year</code> appears only from</p>
+<ol class="md-list"><li><code>ITA Data CY 2018.csv</code> contains bytes that are not valid UTF-8 (0x92, a Windows-1252 right single quote), so a strict decoder raises and a permissive one silently substitutes. And the <code>size</code> field is not comparable across years: OSHA's summary data dictionary documents codes 1 (&lt;20), 2 (20–249), 21 (20–99), 22 (100–249) and 3 (250+), and states that "code 2 was split to 21 and 22 with the collection of 2023 data" <sup class="cite">[<a id="cite-osha_ita_summary_dict-1" href="#ref-osha_ita_summary_dict" title="Occupational Safety and Health Administration. ITA Summary Data Dictionary (Form 300A). https://www.osha.gov/sites/default/files/summary_data_dictiona...">osha_ita_summary_dict</a>]</sup>. The files agree - among plausible filings, code 2 falls from 244,231 in 2022 to 41,343 in 2024 while codes 21 and 22 rise to 224,266 combined - so a pooled panel mixes one 20–249 band with two narrower bands covering the same establishments. The codes are documented; the pooled semantics are not.</li></ol>
+<p>None of these is exotic. They are the ordinary condition of regulatory data, and they are invisible to a chunk-and-embed index, which will happily retrieve a 2019 <code>size</code> value and a 2024 <code>size</code> value as if they denoted the same population.</p>
+<h3 id="5-the-denominator-failure" class="h-l2">5 The denominator failure<a class="anchor" href="#5-the-denominator-failure" aria-label="Link to this section">#</a></h3>
+<p>An incident rate is a ratio:</p>
+<div class="codewrap"><pre><code>TRIR = 200,000 × recordable cases / hours worked</code></pre></div>
+<p>The numerator is bounded by how many people work at a site. The denominator is a free-text number on a form. When rates are aggregated across establishments the standard estimator is a ratio of sums, so one filing with an impossible hours value can dominate the denominator of an entire industry, state or national figure while contributing nothing to the numerator. The aggregate is then biased toward zero, and it reads as good news.</p>
+<p>Pooled across 2,801,064 deduplicated filings, 2016–2024, under a screen that flags filings outside 120–4,500 hours per average employee per year:</p>
+<div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Filings after deduplication</td><td>2,801,064</td></tr><tr><td>Flagged implausible</td><td>57,857 (2.07%)</td></tr><tr><td>Share of all reported hours they hold</td><td>96.68%</td></tr><tr><td>Share of all reported cases they hold</td><td>1.37%</td></tr><tr><td>Aggregate TRIR, unscreened</td><td>0.134</td></tr><tr><td>Aggregate TRIR, screened</td><td>3.983</td></tr><tr><td>Ratio</td><td>29.7×</td></tr></tbody></table></div>
+<p>The concentration is extreme even within the flagged set. A single filing holds 88.81% of all hours ever reported to the ITA and contributes zero recordable cases: establishment 90427, reporting year 2019, declaring 7 employees and 16,831,620,723,179 hours worked. That is roughly 2.4 trillion hours per employee, against a physical ceiling of 8,760. The ten largest filings by declared hours hold 94.5% of all hours and 0.0008% of all cases. One flag does the entire job: <code>hours per employee &gt; 4,500</code> fires on 24,617 filings (0.879% of the corpus) carrying 96.65% of all hours. The missing-value and low-hours flags matter for establishment-level rates and are irrelevant to the aggregate.</p>
+<p>The screened aggregate is not an artefact of where the bounds are drawn. Across a 25-cell grid of lower bounds (100–400 h) and upper bounds (3,500–6,000 h), the screened aggregate stays within 3.963–3.993. The flagged <em>share</em> is not similarly stable, running from 1.79% to 4.49% across the same grid, and that instability is the point rather than a weakness: the filings that move in and out of the flagged set as bounds shift carry almost none of the hours, so the correction they make is nearly identical. The conclusion survives the threshold choice; the count of flagged filings does not.</p>
+<h3 id="6-what-does-not-replicate-and-why-the-non-replication-is-the-finding" class="h-l2">6 What does not replicate, and why the non-replication is the finding<a class="anchor" href="#6-what-does-not-replicate-and-why-the-non-replication-is-the-finding" aria-label="Link to this section">#</a></h3>
+<p>An earlier public repository by the same author ran the same class of plausibility screen over a narrower panel of OSHA establishment filings and reported a headline correction multiplier <sup class="cite">[<a id="cite-chimmani2026-1" href="#ref-chimmani2026" title="Priyatham Chimmani, ehs-benchmarks: open OSHA injury-rate benchmarks, GitHub repository, MIT licence, 2026. https://github.com/priyatham9/ehs-benchmar...">chimmani2026</a>]</sup>. That multiplier is not reproduced by the pipeline described here, it is superseded by the figures in this section, and it is not restated here as a quantity, because the reason it cannot be reproduced is also the reason it should never have been quoted as one.</p>
+<p>The flagged <em>share</em> is stable and does replicate: 2.07% pooled here, and 1.56% to 2.60% across individual years. The multiplier is not a property of the corpus at all. It is a property of whichever years happened to contain an extreme filing:</p>
+<div class="tablewrap"><table><thead><tr><th>Year</th><th>Filings</th><th>% flagged</th><th>% of hours flagged</th><th>TRIR unscreened</th><th>TRIR screened</th><th>Ratio</th></tr></thead><tbody><tr><td>2016</td><td>214,977</td><td>2.30</td><td>31.6</td><td>2.729</td><td>3.921</td><td>1.44×</td></tr><tr><td>2017</td><td>259,757</td><td>1.66</td><td>35.2</td><td>2.634</td><td>3.998</td><td>1.52×</td></tr><tr><td>2018</td><td>286,884</td><td>1.56</td><td>29.1</td><td>2.920</td><td>4.069</td><td>1.39×</td></tr><tr><td>2019</td><td>290,475</td><td>1.60</td><td>99.6</td><td>0.016</td><td>4.018</td><td>249.3×</td></tr><tr><td>2020</td><td>293,385</td><td>1.91</td><td>38.6</td><td>2.792</td><td>4.491</td><td>1.61×</td></tr><tr><td>2021</td><td>315,936</td><td>2.60</td><td>46.1</td><td>2.385</td><td>4.368</td><td>1.83×</td></tr><tr><td>2022</td><td>346,799</td><td>2.02</td><td>42.9</td><td>2.661</td><td>4.605</td><td>1.73×</td></tr><tr><td>2023</td><td>394,231</td><td>2.34</td><td>56.7</td><td>1.380</td><td>3.147</td><td>2.28×</td></tr><tr><td>2024</td><td>398,620</td><td>2.37</td><td>92.4</td><td>0.280</td><td>3.642</td><td>13.0×</td></tr></tbody></table></div>
+<p>The screened rate is stable across nine years (3.15–4.60). The unscreened rate is not (0.016–2.92). The multiplier between them ranges from 1.39× to 249×, and no year subset tried here reproduces the earlier figure. The correct statement of the finding is therefore structural and holds in every single year: a small minority of filings is internally implausible, those filings hold a disproportionate share of the denominator, and removing them raises the aggregate substantially. The specific multiplier is a property of the tail of the hours distribution in whatever slice was taken, and should not be quoted as a constant. We state this here rather than in a limitations paragraph because the earlier framing circulated, and correcting one's own published number in the body of a paper is cheaper than having a reviewer do it.</p>
+<p>The methodological point generalizes beyond this corpus. Hanecke and colleagues faced the same problem in 1998 with more than 1.2 million German accident records and no exposure data, and had to construct and compare estimated exposure models before any rate could be computed at all <sup class="cite">[<a id="cite-hanecke1998-1" href="#ref-hanecke1998" title="Hanecke, K., Tiedemann, S., Nachreiner, F. &amp; Grzech-Sukalo, H. (1998). Accident risk as a function of hour at work and time of day as determined from ...">hanecke1998</a>]</sup>. Hopkins reached the same conclusion from the other direction without any statistics, arguing that what determines whether a safety indicator is meaningful is not whether it is labelled leading or lagging but whether, at the level of aggregation in use, there are enough countable events to form a rate - the "zoom effect" <sup class="cite">[<a id="cite-hopkins2009-1" href="#ref-hopkins2009" title="Hopkins, A. (2009). Thinking about process safety indicators. Safety Science, 47(4), 460–465. https://doi.org/10.1016/j.ssci.2007.12.006">hopkins2009</a>]</sup>. Both are arguments about denominators. Neither has an analogue in the performance-shaping-factor literature, which presupposes a well-defined opportunity count throughout <sup class="cite">[<a id="cite-nureg2198-1" href="#ref-nureg2198" title="U.S. Nuclear Regulatory Commission (2021). The General Methodology of an Integrated Human Event Analysis System (IDHEAS-G). NUREG-2198. Washington, DC...">nureg2198</a>]</sup>, <sup class="cite">[<a id="cite-groth2012-1" href="#ref-groth2012" title="Groth, K.M. &amp; Mosleh, A. (2012). A data-informed PIF hierarchy for model-based Human Reliability Analysis. Reliability Engineering &amp; System Safety, 10...">groth2012</a>]</sup>.</p>
+<h3 id="7-zero-recordable-filings-overdispersion-not-a-hidden-non-reporting-population" class="h-l2">7 Zero-recordable filings: overdispersion, not a hidden non-reporting population<a class="anchor" href="#7-zero-recordable-filings-overdispersion-not-a-hidden-non-reporting-population" aria-label="Link to this section">#</a></h3>
+<p>Among plausible filings, 37.1% of all establishment-years report zero recordable cases. For NAICS 325 (chemical manufacturing) the pooled figure is 37.4%, rising from 34.1% in 2016 to 41.3% in 2024. The prior repository's often-quoted figure of roughly 38% for chemical establishments is consistent with this panel's 37.4% <sup class="cite">[<a id="cite-chimmani2026-2" href="#ref-chimmani2026" title="Priyatham Chimmani, ehs-benchmarks: open OSHA injury-rate benchmarks, GitHub repository, MIT licence, 2026. https://github.com/priyatham9/ehs-benchmar...">chimmani2026</a>]</sup>.</p>
+<p>The obvious reading is that a zero-inflated count model is required - that there exists a distinct population of establishments producing structural zeros through non-reporting. Fitting the models does not support that reading as the main story.</p>
+<p>Four intercept-only models with an exposure offset (Poisson, NB2, ZIP, ZINB) were fitted by maximum likelihood and compared by AIC, BIC and observed-versus-expected zeros over the 30 largest NAICS 3-digit groups in 2024, each with at least 500 establishments, covering 306,711 establishment-filings. Industry selection reads only group size, never outcome values or fit statistics.</p>
+<div class="tablewrap"><table><thead><tr><th>Model</th><th>Industries best by AIC (of 30)</th></tr></thead><tbody><tr><td>Poisson</td><td>0</td></tr><tr><td>ZIP</td><td>0</td></tr><tr><td>NB2</td><td>15</td></tr><tr><td>ZINB</td><td>15</td></tr></tbody></table></div>
+<p>Two results point in opposite directions. Overdispersion is universal: Poisson never wins in any of the 30 industries, and the variance-to-mean ratio of recordable counts runs from 3.0 to 756 against the value of 1 that Poisson assumes. ZIP is never selected either, so adding structural zeros to a Poisson does not rescue it - the problem is the spread of the whole distribution rather than the zeros alone. Meanwhile zero-inflation is optional and, where present, small: in 14 of the 30 industries the ZINB inflation parameter collapses to the boundary (on the order of 1e-14) and NB2 wins outright, and where ZINB is selected the inflation probability ranges from 0.001 to 0.069. That is a few percent of establishments, not the 37–41% zero share that motivated fitting it. NB2 frequently predicts slightly more zeros than are observed.</p>
+<p>Establishment size accounts for most of the rest. The zero share falls from 0.751 in the 1–19 employee band to about 0.08 above 500 employees, and the median establishment TRIR rises from 0.00 to 3.61 across the same range; a ten-person site has so little exposure that zero is the modal outcome. (The fall is not strictly monotonic - 0.073 at 250–499 rises to 0.082 at 500–999 - and we note it rather than smoothing it.) Any benchmark comparing a site against an industry median without conditioning on size is comparing it against a number driven by how large the other sites are.</p>
+<p>This is a statement about distributional shape, not about reporting behaviour. An overdispersed process and a mixture of compliant and non-compliant reporters can generate similar count distributions, and these data cannot separate them. Nothing here is evidence that under-reporting is absent. What the result does establish is that the bare zero share is not evidence that it is present, which is how that statistic is ordinarily used.</p>
+<p>The distributional facts also bound what any downstream predictive layer can do. A variance-to-mean ratio of 241 in the largest size band, combined with a base rate that puts one recordable at roughly one per 10,870 eight-hour worker-shifts at the 2024 BLS private-industry rate <sup class="cite">[<a id="cite-bls2026-2" href="#ref-bls2026" title="U.S. Bureau of Labor Statistics (2026). Employer-Reported Workplace Injuries and Illnesses - 2023–2024. News release USDL-26-0101, January 22, 2026.">bls2026</a>]</sup>, is a rare-event regime in which maximum-likelihood logistic regression underestimates event probabilities <sup class="cite">[<a id="cite-king_zeng2001-1" href="#ref-king_zeng2001" title="King, G., &amp; Zeng, L. (2001). Logistic Regression in Rare Events Data. Political Analysis, 9(2), 137–163. https://doi.org/10.1093/oxfordjournals.pan.a0...">king_zeng2001</a>]</sup> and in which the standard imbalance corrections - random over- and undersampling, SMOTE <sup class="cite">[<a id="cite-chawla2002-1" href="#ref-chawla2002" title="Chawla, N. V., Bowyer, K. W., Hall, L. O., &amp; Kegelmeyer, W. P. (2002). SMOTE: Synthetic Minority Over-sampling Technique. Journal of Artificial Intell...">chawla2002</a>]</sup> - degrade calibration by strongly overestimating minority-class probability without improving discrimination <sup class="cite">[<a id="cite-goorbergh2022-1" href="#ref-goorbergh2022" title="van den Goorbergh, R., van Smeden, M., Timmerman, D., &amp; Van Calster, B. (2022). The harm of class imbalance corrections for risk prediction models: il...">goorbergh2022</a>]</sup>, <sup class="cite">[<a id="cite-carriero2025-1" href="#ref-carriero2025" title="Carriero, A., Luijken, K., de Hond, A., Moons, K. G. M., van Calster, B., &amp; van Smeden, M. (2025). The Harms of Class Imbalance Corrections for Machin...">carriero2025</a>]</sup>. Discrimination metrics are close to uninformative here; calibration is the property that determines whether a score can be acted on <sup class="cite">[<a id="cite-vancalster2019-1" href="#ref-vancalster2019" title="Van Calster, B., McLernon, D. J., van Smeden, M., Wynants, L., &amp; Steyerberg, E. W., on behalf of Topic Group 'Evaluating diagnostic tests and predicti...">vancalster2019</a>]</sup>, <sup class="cite">[<a id="cite-vancalster2016-1" href="#ref-vancalster2016" title="Van Calster, B., Nieboer, D., Vergouwe, Y., De Cock, B., Pencina, M. J., &amp; Steyerberg, E. W. (2016). A calibration hierarchy for risk models was defin...">vancalster2016</a>]</sup>.</p>
+<h3 id="8-benchmark-bands-move-on-their-own" class="h-l2">8 Benchmark bands move on their own<a class="anchor" href="#8-benchmark-bands-move-on-their-own" aria-label="Link to this section">#</a></h3>
+<p>Peer groups defined as NAICS 3-digit × size band, compared across eight adjacent year pairs over roughly 440 matched cells per pair, are highly reproducible in <em>ordering</em> (median Spearman rho 0.862–0.933 across the p25, p50, p75 and p90 bands) and 95.7–98.5% of publishable cells persist between adjacent years. But the <em>level</em> of each band moves by a median of 9.5–14.3% per year. An establishment sitting exactly on last year's p75 would be roughly a tenth of the way off this year's p75 without any change in its own performance.</p>
+<p>This bears directly on the question-answering task. A retrieval system asked "is this site's TRIR above the industry 75th percentile?" will return an answer that is approximately a coin flip near the band edge, and it will return it with the same fluency whether the site is clearly above, clearly below, or inside the year-to-year noise. The band is a real quantity with a real sampling distribution; the answer is presented as a fact.</p>
+<h3 id="9-hour-of-shift-a-claim-withdrawn-and-the-conditions-for-ever-making-it-again" class="h-l2">9 Hour-of-shift: a claim withdrawn, and the conditions for ever making it again<a class="anchor" href="#9-hour-of-shift-a-claim-withdrawn-and-the-conditions-for-ever-making-it-again" aria-label="Link to this section">#</a></h3>
+<p>The author's earlier work circulated a shift-timing claim about when during a shift injuries peak <sup class="cite">[<a id="cite-chimmani2026-3" href="#ref-chimmani2026" title="Priyatham Chimmani, ehs-benchmarks: open OSHA injury-rate benchmarks, GitHub repository, MIT licence, 2026. https://github.com/priyatham9/ehs-benchmar...">chimmani2026</a>]</sup>. It is withdrawn here rather than restated, and its numbers are not reproduced anywhere in this manuscript, for a reason that is structural rather than a matter of degree: the pipeline described in this section could not produce such a figure at all. Form 300A is an annual summary. It carries case counts and total hours worked and no time-of-day, time-employee-began-work, or narrative field at all <sup class="cite">[<a id="cite-osha_ita_summary_dict-2" href="#ref-osha_ita_summary_dict" title="Occupational Safety and Health Administration. ITA Summary Data Dictionary (Form 300A). https://www.osha.gov/sites/default/files/summary_data_dictiona...">osha_ita_summary_dict</a>]</sup>. Hour-of-shift requires Form 300/301 case-detail data, which OSHA began publishing on a different and narrower establishment universe with the 2023/2024 collection cycle <sup class="cite">[<a id="cite-osha_ita_case_detail_dict_2026-1" href="#ref-osha_ita_case_detail_dict_2026" title="Occupational Safety and Health Administration. ITA Case Detail Data Dictionary (2026 revision). https://www.osha.gov/sites/default/files/case_detail_d...">osha_ita_case_detail_dict_2026</a>]</sup>. Any future hour-of-shift figure must name its own dataset, year range and N, must not be read as a subset of the 300A panel analysed here, and must not inherit this panel's filing count.</p>
+<p>Two further constraints apply, and both are decisive for how the finding may be phrased.</p>
+<p>First, the phenomenon is named and roughly twenty-five years old. Tucker, Sytnik, Macdonald and Folkard called it the "2–4 h shift phenomenon" <sup class="cite">[<a id="cite-tucker2000-1" href="#ref-tucker2000" title="Tucker, P., Sytnik, N., Macdonald, I. &amp; Folkard, S. (2000). Temporal determinants of accident risk: the '2-4 h shift phenomenon'. In: Hornberger, S., ...">tucker2000</a>]</sup>, and Folkard and Tucker report "a slightly heightened risk from the second to the fifth hour" in their review of shift work, safety and productivity <sup class="cite">[<a id="cite-folkard2003-1" href="#ref-folkard2003" title="Folkard, S. &amp; Tucker, P. (2003). Shift work, safety and productivity. Occupational Medicine, 53(2), 95-101. doi:10.1093/occmed/kqg047">folkard2003</a>]</sup>. A large-scale corroboration in a new sector would be a real contribution. A discovery claim is not available, and no corroboration is offered in this manuscript.</p>
+<p>Second, and more seriously, a peak in the count distribution is not a peak in risk. Any statistic of the form "such-and-such a share of injuries occurs in the first four hours" is by construction a share of counts, and counts are governed by how many people are at work in each hour of shift. Folkard and Tucker found that once exposure is accounted for, risk rises approximately exponentially with time on shift, more than doubling by the twelfth hour relative to the first eight <sup class="cite">[<a id="cite-folkard2003-2" href="#ref-folkard2003" title="Folkard, S. &amp; Tucker, P. (2003). Shift work, safety and productivity. Occupational Medicine, 53(2), 95-101. doi:10.1093/occmed/kqg047">folkard2003</a>]</sup> - a pattern that an unadjusted count distribution, dominated by the hours in which most people are working, will not show. Hanecke and colleagues had to build estimated exposure models precisely because the hours-at-work denominator was unavailable in the German data <sup class="cite">[<a id="cite-hanecke1998-2" href="#ref-hanecke1998" title="Hanecke, K., Tiedemann, S., Nachreiner, F. &amp; Grzech-Sukalo, H. (1998). Accident risk as a function of hour at work and time of day as determined from ...">hanecke1998</a>]</sup>, and no public US dataset supplies an hours-at-risk-by-shift-hour denominator either. MSHA's Accidents file carries <code>SHIFT_BEGIN_TIME</code> and an accident time on essentially all records <sup class="cite">[<a id="cite-msha_accidents_definition-1" href="#ref-msha_accidents_definition" title="Mine Safety and Health Administration. Accidents Definition File, MSHA Open Government Data. https://arlweb.msha.gov/OpenGovernmentData/DataSets/Accid...">msha_accidents_definition</a>]</sup>, and BLS publishes an "hours worked before event" dimension in its case-characteristics series <sup class="cite">[<a id="cite-bls_ca_documentation-1" href="#ref-bls_ca_documentation" title="U.S. Bureau of Labor Statistics. Occupational Injuries and Illnesses - Characteristics Data (ca): ca.txt survey documentation. https://download.bls.go...">bls_ca_documentation</a>]</sup>, so cross-source comparison of the <em>distribution</em> is feasible. The exposure denominator is not.</p>
+<p>The defensible statement is therefore about the observed distribution of reported incidents, explicitly not about risk, with the denominator gap stated as an open problem rather than assumed away. We adopt that phrasing throughout and recommend it to anyone reusing the figure.</p>
+<h3 id="10-how-the-two-failures-compose" class="h-l2">10 How the two failures compose<a class="anchor" href="#10-how-the-two-failures-compose" aria-label="Link to this section">#</a></h3>
+<p>The preceding subsections describe defects in a data corpus. Sections 4 and 5 describe defects in ungrounded language models: parametric recall that degrades on long-tail content <sup class="cite">[<a id="cite-kandpal2023-1" href="#ref-kandpal2023" title="Kandpal, N., Deng, H., Roberts, A., Wallace, E., &amp; Raffel, C. (2023). Large Language Models Struggle to Learn Long-Tail Knowledge. Proceedings of ICML...">kandpal2023</a>]</sup>, <sup class="cite">[<a id="cite-mallen2023-1" href="#ref-mallen2023" title="Mallen, A., Asai, A., Zhong, V., Das, R., Khashabi, D., &amp; Hajishirzi, H. (2023). When Not to Trust Language Models: Investigating Effectiveness of Par...">mallen2023</a>]</sup>, training and evaluation regimes that reward a plausible guess over an abstention <sup class="cite">[<a id="cite-kalai2025-1" href="#ref-kalai2025" title="Kalai, A. T., Nachum, O., Vempala, S. S., &amp; Zhang, E. (2025). Why Language Models Hallucinate. arXiv:2509.04664">kalai2025</a>]</sup>, and distributional representations that encode relatedness without encoding relation type, so that taxonomic siblings are the maximal-confusion class. These are independent failure modes with independent causes. They compose in three specific ways, and the composition is worse than either alone.</p>
+<p><strong>A retrieved number is not a validated number.</strong> Retrieval-augmented generation supplies non-parametric memory and marginalizes over retrieved documents <sup class="cite">[<a id="cite-lewis2020-1" href="#ref-lewis2020" title="Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W., Rocktäschel, T., Riedel, S., &amp; Kiela, D. (20...">lewis2020</a>]</sup>. That machinery grounds an assertion in a document. It carries no commitment about whether the document is internally consistent, and none of the standard RAG evaluation metrics test for it: attribution frameworks score whether a claim is attributable to its cited source <sup class="cite">[<a id="cite-rashkin2023-1" href="#ref-rashkin2023" title="Rashkin, H., Nikolaev, V., Lamm, M., Aroyo, L., Collins, M., Das, D., Petrov, S., Tomar, G. S., Turc, I., &amp; Reitter, D. (2023). Measuring Attribution ...">rashkin2023</a>]</sup>, which a filing declaring 2.4 trillion hours per employee satisfies perfectly. A system that retrieves establishment 90427's filing and reports a TRIR of 0.00 has produced a fully attributable, fully traceable, entirely wrong answer. The derivation trace this paper advocates certifies that the conclusion follows from the record. Whether the record is admissible is a separate predicate, and it has to be computed.</p>
+<p><strong>Aggregation hides the defect from the reader and from the model.</strong> The single filing above is visible at establishment level - 7 employees, 16.8 trillion hours - and invisible in an industry aggregate, where it appears only as a suspiciously low rate. The failure mode is therefore worst at exactly the level of aggregation at which executives and benchmarking tools operate. A model asked for an industry rate has no signal in the retrieved aggregate telling it the aggregate is broken, and the resulting answer is low-variance across paraphrase and across sampling, so consistency-based hallucination detectors <sup class="cite">[<a id="cite-manakul2023-1" href="#ref-manakul2023" title="Manakul, P., Liusie, A., &amp; Gales, M. J. F. (2023). SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models....">manakul2023</a>]</sup> and semantic-entropy methods <sup class="cite">[<a id="cite-kuhn2023-1" href="#ref-kuhn2023" title="Kuhn, L., Gal, Y., &amp; Farquhar, S. (2023). Semantic Uncertainty: Linguistic Invariances for Uncertainty Estimation in Natural Language Generation. Proc...">kuhn2023</a>]</sup>, <sup class="cite">[<a id="cite-farquhar2024-1" href="#ref-farquhar2024" title="Farquhar, S., Kossen, J., Kuhn, L., &amp; Gal, Y. (2024). Detecting hallucinations in large language models using semantic entropy. Nature, 630(8017), 625...">farquhar2024</a>]</sup> will score it confident. Uncertainty estimation detects the model's uncertainty. It does not detect the corpus's.</p>
+<p><strong>Grounding narrows the error class without eliminating it, and the residual is measurable.</strong> The governing empirical result is Magesh and colleagues' preregistered evaluation of commercial legal research tools marketed as hallucination-free, which measured hallucination rates between 17% and 33% <sup class="cite">[<a id="cite-magesh2025-1" href="#ref-magesh2025" title="Magesh, V., Surani, F., Dahl, M., Suzgun, M., Manning, C. D., &amp; Ho, D. E. (2025). Hallucination-Free? Assessing the Reliability of Leading AI Legal Re...">magesh2025</a>]</sup>. There is no basis for expecting a process-safety deployment to do better, and every reason - hierarchical, cross-referenced, edition-versioned, table-heavy source documents - to expect it to face harder retrieval conditions. Any claim in this paper is therefore a measured delta under stated conditions, never an elimination.</p>
+<p>The constructive consequence is that plausibility screening belongs inside the architecture rather than upstream of it, as a checkable predicate over each retrieved record. The screen described in §6.3 is six deterministic predicates over declared hours, declared employees and case components; we call it that, and not automated reasoning, because it has no decision procedure over a formal semantics, no complexity characterization, and emits no proof object. Stating a filing's admissibility as a constraint problem - given declared hours, employee count and case counts, is this record consistent with the physical and regulatory constraints? - would produce an artifact that a formal-methods reviewer would recognize, namely an unsat core naming which constraints a specific filing violates <sup class="cite">[<a id="cite-barrett2021smt-1" href="#ref-barrett2021smt" title="Clark Barrett, Roberto Sebastiani, Sanjit A. Seshia and Cesare Tinelli, "Chapter 33: Satisfiability Modulo Theories," in Handbook of Satisfiability, 2...">barrett2021smt</a>]</sup>, <sup class="cite">[<a id="cite-demoura2008-1" href="#ref-demoura2008" title="Leonardo de Moura and Nikolaj Bjørner, "Z3: An Efficient SMT Solver," TACAS 2008, Lecture Notes in Computer Science 4963, pp. 337–340, 2008. DOI 10.10...">demoura2008</a>]</sup>. We have not built that, and we flag it as future work rather than as a contribution. The precedent for formalizing a body of regulation as executable logic, with the formalization kept traceable to the statutory text clause by clause, is forty years old <sup class="cite">[<a id="cite-sergot1986-1" href="#ref-sergot1986" title="M. J. Sergot, F. Sadri, R. A. Kowalski, F. Kriwaczek, P. Hammond and H. T. Cory, "The British Nationality Act as a logic program," Communications of t...">sergot1986</a>]</sup>; we found no OSHA successor to it.</p>
+<p>A closing note on verification that checks the wrong invariant. The benchmark corpus described in Section 7 originally reported 68 of 68 items verified against live eCFR text with zero failures. An independent audit found that one item cited 29 CFR 1910.157(d) while its anchor text actually appears in paragraph (e)(2): the verifier confirmed only that the cited paragraph markers appeared somewhere in the retrieved section, so a clause-to-anchor mismatch was structurally invisible to it. The headline "68/68, 0 failures" was true and weaker evidence than it looked. The defect was repaired, an anchor-locality check was added, and the corpus re-verified. We report this because it is the same failure as the OSHA denominator, one level up: a validation procedure that returns a clean result on a broken record, because the property it tests is not the property that matters. Leakage between predictor construction and outcome labels has the same shape and is documented inside safety machine learning specifically - Baker, Hallowell and Tixier rebuilt an earlier construction-injury prediction study with independent human annotation to eliminate artificial correlation between predictors and predictands <sup class="cite">[<a id="cite-baker2020ai-1" href="#ref-baker2020ai" title="Baker, H., Hallowell, M. R., &amp; Tixier, A. J.-P. (2020). AI-based prediction of independent construction safety outcomes from universal attributes. Aut...">baker2020ai</a>]</sup> - and across 294 papers in 17 fields more broadly <sup class="cite">[<a id="cite-kapoor2023-1" href="#ref-kapoor2023" title="Kapoor, S., &amp; Narayanan, A. (2023). Leakage and the reproducibility crisis in machine-learning-based science. Patterns, 4(9), 100804. https://doi.org/...">kapoor2023</a>]</sup>. In each case the pipeline ran, the tests passed, and the number was wrong.</p>
+<p>The practical requirement that follows is unglamorous and is the precondition for everything else in this paper: state the dataset, the year range, the N, the screen, and the denominator, separately, for every number. Report calibration rather than discrimination where a score will trigger an action <sup class="cite">[<a id="cite-steyerberg2010-1" href="#ref-steyerberg2010" title="Steyerberg, E. W., Vickers, A. J., Cook, N. R., Gerds, T., Gonen, M., Obuchowski, N., Pencina, M. J., &amp; Kattan, M. W. (2010). Assessing the performanc...">steyerberg2010</a>]</sup>, <sup class="cite">[<a id="cite-collins2015tripod-1" href="#ref-collins2015tripod" title="Collins, G. S., Reitsma, J. B., Altman, D. G., &amp; Moons, K. G. M. (2015). Transparent reporting of a multivariable prediction model for individual prog...">collins2015tripod</a>]</sup>. And treat the admissibility of a retrieved record as something the system computes and exhibits, rather than something the retriever's confidence score is assumed to have covered.</p>
+<hr class="rule" />
+<h3 id="limitations" class="h-l2">Limitations<a class="anchor" href="#limitations" aria-label="Link to this section">#</a></h3>
+<p>This paper contributes four things: a structural account of why ungrounded retrieval substitutes semantically adjacent answers in safety-critical technical question answering; an auditable encoding of a performance-influencing-factor vocabulary with an explicit crosswalk to the established frameworks it is drawn from; a rule engine whose screening output carries a derivation trace; and an open, source-verified benchmark corpus for measuring grounding.</p>
+<p>Three of the four are instruments rather than results. The benchmark has not been run against any real system. The ontology has never been fitted to outcome data. The structural-equation work is a set of simulation studies of an estimator, not an analysis of injuries. Only the OSHA denominator analysis reports empirical findings, and its findings are about the integrity of a reported quantity rather than about safety performance.</p>
+<p>The corpus holds 68 items across eight regulatory domains, of which 63 are factual and 5 rest on a false premise, organized into 23 complete minimal pairs and 44 question families. Every item's citation was re-checked against the eCFR versioner API, and the committed verification report records 68 of 68 verified with zero failures across 19 CFR sections. That number establishes provenance and nothing else. It says the cited paragraph exists and contains the quoted anchor. It does not say the answer key is a good answer.</p>
+<p><strong>Scoring is lexical, and that has a price.</strong> A paraphrase that avoids every listed surface form of a required concept is scored as a miss. The choice was made because the benchmark's subject is whether a system distinguishes near-synonymous technical entities, and scoring that with an embedding model would use as the measuring instrument the very mechanism under study. But the contrast heuristic that separates "a rupture disk has no blowdown" from an assertion of blowdown operates on a fixed character window and misfires in both directions. Any adjacent-substitution rate reported from this harness is a screen. Automatic attribution evaluation is itself unreliable <sup class="cite">[<a id="cite-yue2023-1" href="#ref-yue2023" title="Yue, X., Wang, B., Chen, Z., Zhang, K., Su, Y., &amp; Sun, H. (2023). Automatic Evaluation of Attribution by Large Language Models. Findings of the Associ...">yue2023</a>]</sup>, which is why the established practice is a human-adjudicated subsample with inter-rater agreement reported <sup class="cite">[<a id="cite-rashkin2023-2" href="#ref-rashkin2023" title="Rashkin, H., Nikolaev, V., Lamm, M., Aroyo, L., Collins, M., Das, D., Petrov, S., Tomar, G. S., Turc, I., &amp; Reitter, D. (2023). Measuring Attribution ...">rashkin2023</a>, <a id="cite-honovich2022true-1" href="#ref-honovich2022true" title="Honovich, O., Aharoni, R., Herzig, J., Taitelbaum, H., Kukliansy, D., Cohen, V., Scialom, T., Szpektor, I., Hassidim, A., &amp; Matias, Y. (2022). TRUE: R...">honovich2022true</a>]</sup>. No human adjudication has been performed here.</p>
+<p>The four contextual categories encoded here are adopted, not invented. IDHEAS-G organizes 20 performance-influencing factors into exactly four context categories, and states directly that "PIFs are classified according to the four types of context: environment and situation, system, personnel, and task" <sup class="cite">[<a id="cite-nureg2198-2" href="#ref-nureg2198" title="U.S. Nuclear Regulatory Commission (2021). The General Methodology of an Integrated Human Event Analysis System (IDHEAS-G). NUREG-2198. Washington, DC...">nureg2198</a>]</sup>. Task and System are identical labels; Operational Context and Human Context are synonyms for Environment and Situation, and Personnel. The correspondence is one to one, and it maps further onto CREAM's nine common performance conditions <sup class="cite">[<a id="cite-hollnagel1998-1" href="#ref-hollnagel1998" title="Hollnagel, E. (1998). Cognitive Reliability and Error Analysis Method (CREAM). Oxford: Elsevier Science.">hollnagel1998</a>]</sup>, SPAR-H's eight PSFs <sup class="cite">[<a id="cite-gertman2005-1" href="#ref-gertman2005" title="Gertman, D.I., Blackman, H.S., Marble, J.L., Byers, J.C. &amp; Smith, C.L. (2005). The SPAR-H Human Reliability Analysis Method. NUREG/CR-6883, INL/EXT-05...">gertman2005</a>]</sup>, NUREG-1792's fifteen, and HSE's job, person and organisation headings <sup class="cite">[<a id="cite-hse_pifs-1" href="#ref-hse_pifs" title="Health and Safety Executive (n.d.). Performance Influencing Factors (PIFs). HSE Human Factors guidance. https://www.hse.gov.uk/humanfactors/assets/doc...">hse_pifs</a>]</sup>. Presenting this vocabulary as novel would be indefensible, and we do not. What is contributed is the encoding, the crosswalk with per-row citations and asserted absences, and the traceability. That is a smaller claim, and it is the one the artifact supports.</p>
+<p><strong>A latent score is not a probability.</strong> It has no link function, no exposure denominator and no time window, so no threshold on it can be justified. Separately, factor scores are not uniquely determined by a fitted model: on the worked example, two equally valid sets of scores for the same factor correlate as low as 0.54 to 0.59 <sup class="cite">[<a id="cite-steiger1979-1" href="#ref-steiger1979" title="James H. Steiger, "Factor indeterminacy in the 1930's and the 1970's: some interesting parallels," Psychometrika 44(1), 1979, pp. 157-167. DOI: 10.100...">steiger1979</a>, <a id="cite-grice2001-1" href="#ref-grice2001" title="James W. Grice, "Computing and evaluating factor scores," Psychological Methods 6(4), 2001, pp. 430-450. DOI: 10.1037/1082-989X.6.4.430.">grice2001</a>]</sup>. A per-crew or per-shift score inherits that indeterminacy however well the model fits.</p>
+<h3 id="references" class="h-l2">References<a class="anchor" href="#references" aria-label="Link to this section">#</a></h3>
+<div class="ref" id="ref-aws_arc_docs"><div class="ref-key mono">aws_arc_docs</div><div class="ref-body"><span class="ref-text">Amazon Web Services, "Automated Reasoning checks concepts," Amazon Bedrock User Guide. <a href="https://docs.aws.amazon.com/bedrock/latest/userguide/automated-reasoning-checks-concepts.html" rel="noopener noreferrer" target="_blank">https://docs.aws.amazon.com/bedrock/latest/userguide/automated-reasoning-checks-concepts.html</a></span> <a class="ref-ev" href="https://docs.aws.amazon.com/bedrock/latest/userguide/automated-reasoning-checks-concepts.html" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="aws_arc_docs"></span></div></div>
+<div class="ref" id="ref-baker2020ai"><div class="ref-key mono">baker2020ai</div><div class="ref-body"><span class="ref-text">Baker, H., Hallowell, M. R., &amp; Tixier, A. J.-P. (2020). AI-based prediction of independent construction safety outcomes from universal attributes. Automation in Construction, 118, 103146. <a href="https://doi.org/10.1016/j.autcon.2020.103146" rel="noopener noreferrer" target="_blank">https://doi.org/10.1016/j.autcon.2020.103146</a></span> <a class="ref-ev" href="https://api.crossref.org/works/10.1016/j.autcon.2020.103146" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="baker2020ai"></span></div></div>
+<div class="ref" id="ref-barrett2021smt"><div class="ref-key mono">barrett2021smt</div><div class="ref-body"><span class="ref-text">Clark Barrett, Roberto Sebastiani, Sanjit A. Seshia and Cesare Tinelli, "Chapter 33: Satisfiability Modulo Theories," in Handbook of Satisfiability, 2nd edition, Frontiers in Artificial Intelligence and Applications, IOS Press, 2021. DOI 10.3233/faia201017</span> <a class="ref-ev" href="https://api.crossref.org/works/10.3233/faia201017" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="barrett2021smt"></span></div></div>
+<div class="ref" id="ref-bls2026"><div class="ref-key mono">bls2026</div><div class="ref-body"><span class="ref-text">U.S. Bureau of Labor Statistics (2026). Employer-Reported Workplace Injuries and Illnesses - 2023–2024. News release USDL-26-0101, January 22, 2026.</span> <a class="ref-ev" href="https://www.bls.gov/news.release/osh.nr0.htm" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="bls2026"></span></div></div>
+<div class="ref" id="ref-bls_ca_documentation"><div class="ref-key mono">bls_ca_documentation</div><div class="ref-body"><span class="ref-text">U.S. Bureau of Labor Statistics. Occupational Injuries and Illnesses - Characteristics Data (ca): ca.txt survey documentation. <a href="https://download.bls.gov/pub/time.series/ca/ca.txt" rel="noopener noreferrer" target="_blank">https://download.bls.gov/pub/time.series/ca/ca.txt</a></span> <a class="ref-ev" href="https://download.bls.gov/pub/time.series/ca/ca.txt" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="bls_ca_documentation"></span></div></div>
+<div class="ref" id="ref-carriero2025"><div class="ref-key mono">carriero2025</div><div class="ref-body"><span class="ref-text">Carriero, A., Luijken, K., de Hond, A., Moons, K. G. M., van Calster, B., &amp; van Smeden, M. (2025). The Harms of Class Imbalance Corrections for Machine Learning Based Prediction Models: A Simulation Study. Statistics in Medicine, 44(3–4), e10320. <a href="https://doi.org/10.1002/sim.10320" rel="noopener noreferrer" target="_blank">https://doi.org/10.1002/sim.10320</a></span> <a class="ref-ev" href="https://api.crossref.org/works/10.1002/sim.10320" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="carriero2025"></span></div></div>
+<div class="ref" id="ref-chawla2002"><div class="ref-key mono">chawla2002</div><div class="ref-body"><span class="ref-text">Chawla, N. V., Bowyer, K. W., Hall, L. O., &amp; Kegelmeyer, W. P. (2002). SMOTE: Synthetic Minority Over-sampling Technique. Journal of Artificial Intelligence Research, 16, 321–357. <a href="https://doi.org/10.1613/jair.953" rel="noopener noreferrer" target="_blank">https://doi.org/10.1613/jair.953</a></span> <a class="ref-ev" href="https://api.crossref.org/works/10.1613/jair.953" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="chawla2002"></span></div></div>
+<div class="ref" id="ref-chimmani2026"><div class="ref-key mono">chimmani2026</div><div class="ref-body"><span class="ref-text">Priyatham Chimmani, ehs-benchmarks: open OSHA injury-rate benchmarks, GitHub repository, MIT licence, 2026. <a href="https://github.com/priyatham9/ehs-benchmarks" rel="noopener noreferrer" target="_blank">https://github.com/priyatham9/ehs-benchmarks</a></span> <a class="ref-ev" href="https://github.com/priyatham9/ehs-benchmarks" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="chimmani2026"></span></div></div>
+<div class="ref" id="ref-collins2015tripod"><div class="ref-key mono">collins2015tripod</div><div class="ref-body"><span class="ref-text">Collins, G. S., Reitsma, J. B., Altman, D. G., &amp; Moons, K. G. M. (2015). Transparent reporting of a multivariable prediction model for individual prognosis or diagnosis (TRIPOD): the TRIPOD Statement. BMC Medicine, 13, 1. <a href="https://doi.org/10.1186/s12916-014-0241-z" rel="noopener noreferrer" target="_blank">https://doi.org/10.1186/s12916-014-0241-z</a></span> <a class="ref-ev" href="https://api.crossref.org/works/10.1186/s12916-014-0241-z" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="collins2015tripod"></span></div></div>
+<div class="ref" id="ref-demoura2008"><div class="ref-key mono">demoura2008</div><div class="ref-body"><span class="ref-text">Leonardo de Moura and Nikolaj Bjørner, "Z3: An Efficient SMT Solver," TACAS 2008, Lecture Notes in Computer Science 4963, pp. 337–340, 2008. DOI 10.1007/978-3-540-78800-3_24</span> <a class="ref-ev" href="https://api.crossref.org/works/10.1007/978-3-540-78800-3_24" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="demoura2008"></span></div></div>
+<div class="ref" id="ref-farquhar2024"><div class="ref-key mono">farquhar2024</div><div class="ref-body"><span class="ref-text">Farquhar, S., Kossen, J., Kuhn, L., &amp; Gal, Y. (2024). Detecting hallucinations in large language models using semantic entropy. Nature, 630(8017), 625-630. DOI: 10.1038/s41586-024-07421-0</span> <a class="ref-ev" href="https://api.crossref.org/works/10.1038/s41586-024-07421-0" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="farquhar2024"></span></div></div>
+<div class="ref" id="ref-folkard2003"><div class="ref-key mono">folkard2003</div><div class="ref-body"><span class="ref-text">Folkard, S. &amp; Tucker, P. (2003). Shift work, safety and productivity. Occupational Medicine, 53(2), 95-101. doi:10.1093/occmed/kqg047</span> <a class="ref-ev" href="https://academic.oup.com/occmed/article/53/2/95/1519789" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="folkard2003"></span></div></div>
+<div class="ref" id="ref-gertman2005"><div class="ref-key mono">gertman2005</div><div class="ref-body"><span class="ref-text">Gertman, D.I., Blackman, H.S., Marble, J.L., Byers, J.C. &amp; Smith, C.L. (2005). The SPAR-H Human Reliability Analysis Method. NUREG/CR-6883, INL/EXT-05-00509. Washington, DC: U.S. Nuclear Regulatory Commission. Manuscript completed September 2004; published August 2005.</span> <a class="ref-ev" href="https://www.nrc.gov/reading-rm/doc-collections/nuregs/contract/cr6883/cr6883.pdf" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="gertman2005"></span></div></div>
+<div class="ref" id="ref-goorbergh2022"><div class="ref-key mono">goorbergh2022</div><div class="ref-body"><span class="ref-text">van den Goorbergh, R., van Smeden, M., Timmerman, D., &amp; Van Calster, B. (2022). The harm of class imbalance corrections for risk prediction models: illustration and simulation using logistic regression. Journal of the American Medical Informatics Association, 29(9), 1525–1534. <a href="https://doi.org/10.1093/jamia/ocac093" rel="noopener noreferrer" target="_blank">https://doi.org/10.1093/jamia/ocac093</a></span> <a class="ref-ev" href="https://academic.oup.com/jamia/article/29/9/1525/6605096" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="goorbergh2022"></span></div></div>
+<div class="ref" id="ref-groth2012"><div class="ref-key mono">groth2012</div><div class="ref-body"><span class="ref-text">Groth, K.M. &amp; Mosleh, A. (2012). A data-informed PIF hierarchy for model-based Human Reliability Analysis. Reliability Engineering &amp; System Safety, 108, 154-174.</span> <a class="ref-ev" href="https://www.sciencedirect.com/science/article/abs/pii/S0951832012001561" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="groth2012"></span></div></div>
+<div class="ref" id="ref-hanecke1998"><div class="ref-key mono">hanecke1998</div><div class="ref-body"><span class="ref-text">Hanecke, K., Tiedemann, S., Nachreiner, F. &amp; Grzech-Sukalo, H. (1998). Accident risk as a function of hour at work and time of day as determined from accident data and exposure models for the German working population. Scandinavian Journal of Work, Environment &amp; Health, 24(Suppl 3), 43-48. PMID 9916816.</span> <a class="ref-ev" href="https://www.sjweh.fi/article/334" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="hanecke1998"></span></div></div>
+<div class="ref" id="ref-hollnagel1998"><div class="ref-key mono">hollnagel1998</div><div class="ref-body"><span class="ref-text">Hollnagel, E. (1998). Cognitive Reliability and Error Analysis Method (CREAM). Oxford: Elsevier Science.</span> <a class="ref-ev" href="https://archive.org/details/cognitivereliabi0000holl" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="hollnagel1998"></span></div></div>
+<div class="ref" id="ref-hopkins2009"><div class="ref-key mono">hopkins2009</div><div class="ref-body"><span class="ref-text">Hopkins, A. (2009). Thinking about process safety indicators. Safety Science, 47(4), 460–465. <a href="https://doi.org/10.1016/j.ssci.2007.12.006" rel="noopener noreferrer" target="_blank">https://doi.org/10.1016/j.ssci.2007.12.006</a></span> <a class="ref-ev" href="https://www.sciencedirect.com/science/article/pii/S0925753507001749" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="hopkins2009"></span></div></div>
+<div class="ref" id="ref-hse_pifs"><div class="ref-key mono">hse_pifs</div><div class="ref-body"><span class="ref-text">Health and Safety Executive (n.d.). Performance Influencing Factors (PIFs). HSE Human Factors guidance. <a href="https://www.hse.gov.uk/humanfactors/assets/docs/pifs.pdf" rel="noopener noreferrer" target="_blank">https://www.hse.gov.uk/humanfactors/assets/docs/pifs.pdf</a></span> <a class="ref-ev" href="https://www.hse.gov.uk/humanfactors/assets/docs/pifs.pdf" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="hse_pifs"></span></div></div>
+<div class="ref" id="ref-kalai2025"><div class="ref-key mono">kalai2025</div><div class="ref-body"><span class="ref-text">Kalai, A. T., Nachum, O., Vempala, S. S., &amp; Zhang, E. (2025). Why Language Models Hallucinate. arXiv:2509.04664</span> <a class="ref-ev" href="https://arxiv.org/abs/2509.04664" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="kalai2025"></span></div></div>
+<div class="ref" id="ref-kandpal2023"><div class="ref-key mono">kandpal2023</div><div class="ref-body"><span class="ref-text">Kandpal, N., Deng, H., Roberts, A., Wallace, E., &amp; Raffel, C. (2023). Large Language Models Struggle to Learn Long-Tail Knowledge. Proceedings of ICML 2023. arXiv:2211.08411</span> <a class="ref-ev" href="https://proceedings.mlr.press/v202/kandpal23a.html" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="kandpal2023"></span></div></div>
+<div class="ref" id="ref-kapoor2023"><div class="ref-key mono">kapoor2023</div><div class="ref-body"><span class="ref-text">Kapoor, S., &amp; Narayanan, A. (2023). Leakage and the reproducibility crisis in machine-learning-based science. Patterns, 4(9), 100804. <a href="https://doi.org/10.1016/j.patter.2023.100804" rel="noopener noreferrer" target="_blank">https://doi.org/10.1016/j.patter.2023.100804</a></span> <a class="ref-ev" href="https://api.crossref.org/works/10.1016/j.patter.2023.100804" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="kapoor2023"></span></div></div>
+<div class="ref" id="ref-king_zeng2001"><div class="ref-key mono">king_zeng2001</div><div class="ref-body"><span class="ref-text">King, G., &amp; Zeng, L. (2001). Logistic Regression in Rare Events Data. Political Analysis, 9(2), 137–163. <a href="https://doi.org/10.1093/oxfordjournals.pan.a004868" rel="noopener noreferrer" target="_blank">https://doi.org/10.1093/oxfordjournals.pan.a004868</a></span> <a class="ref-ev" href="https://api.crossref.org/works/10.1093/oxfordjournals.pan.a004868" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="king_zeng2001"></span></div></div>
+<div class="ref" id="ref-kuhn2023"><div class="ref-key mono">kuhn2023</div><div class="ref-body"><span class="ref-text">Kuhn, L., Gal, Y., &amp; Farquhar, S. (2023). Semantic Uncertainty: Linguistic Invariances for Uncertainty Estimation in Natural Language Generation. Proceedings of ICLR 2023 (Spotlight). arXiv:2302.09664</span> <a class="ref-ev" href="https://arxiv.org/abs/2302.09664" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="kuhn2023"></span></div></div>
+<div class="ref" id="ref-lewis2020"><div class="ref-key mono">lewis2020</div><div class="ref-body"><span class="ref-text">Lewis, P., Perez, E., Piktus, A., Petroni, F., Karpukhin, V., Goyal, N., Küttler, H., Lewis, M., Yih, W., Rocktäschel, T., Riedel, S., &amp; Kiela, D. (2020). Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks. Advances in Neural Information Processing Systems 33 (NeurIPS 2020). arXiv:2005.11401</span> <a class="ref-ev" href="https://arxiv.org/abs/2005.11401" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="lewis2020"></span></div></div>
+<div class="ref" id="ref-magesh2025"><div class="ref-key mono">magesh2025</div><div class="ref-body"><span class="ref-text">Magesh, V., Surani, F., Dahl, M., Suzgun, M., Manning, C. D., &amp; Ho, D. E. (2025). Hallucination-Free? Assessing the Reliability of Leading AI Legal Research Tools. Journal of Empirical Legal Studies, 22, 216-242. DOI: 10.1111/jels.12413</span> <a class="ref-ev" href="https://api.crossref.org/works/10.1111/jels.12413" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="magesh2025"></span></div></div>
+<div class="ref" id="ref-mallen2023"><div class="ref-key mono">mallen2023</div><div class="ref-body"><span class="ref-text">Mallen, A., Asai, A., Zhong, V., Das, R., Khashabi, D., &amp; Hajishirzi, H. (2023). When Not to Trust Language Models: Investigating Effectiveness of Parametric and Non-Parametric Memories. Proceedings of ACL 2023. arXiv:2212.10511</span> <a class="ref-ev" href="https://aclanthology.org/2023.acl-long.546/" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="mallen2023"></span></div></div>
+<div class="ref" id="ref-manakul2023"><div class="ref-key mono">manakul2023</div><div class="ref-body"><span class="ref-text">Manakul, P., Liusie, A., &amp; Gales, M. J. F. (2023). SelfCheckGPT: Zero-Resource Black-Box Hallucination Detection for Generative Large Language Models. Proceedings of EMNLP 2023. arXiv:2303.08896</span> <a class="ref-ev" href="https://aclanthology.org/2023.emnlp-main.557/" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="manakul2023"></span></div></div>
+<div class="ref" id="ref-msha_accidents_definition"><div class="ref-key mono">msha_accidents_definition</div><div class="ref-body"><span class="ref-text">Mine Safety and Health Administration. Accidents Definition File, MSHA Open Government Data. <a href="https://arlweb.msha.gov/OpenGovernmentData/DataSets/Accidents_Definition_File.txt" rel="noopener noreferrer" target="_blank">https://arlweb.msha.gov/OpenGovernmentData/DataSets/Accidents_Definition_File.txt</a></span> <a class="ref-ev" href="https://arlweb.msha.gov/OpenGovernmentData/DataSets/Accidents_Definition_File.txt" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="msha_accidents_definition"></span></div></div>
+<div class="ref" id="ref-nureg2198"><div class="ref-key mono">nureg2198</div><div class="ref-body"><span class="ref-text">U.S. Nuclear Regulatory Commission (2021). The General Methodology of an Integrated Human Event Analysis System (IDHEAS-G). NUREG-2198. Washington, DC: Office of Nuclear Regulatory Research. Manuscript completed November 2020; published May 2021.</span> <a class="ref-ev" href="https://www.nrc.gov/reading-rm/doc-collections/nuregs/staff/sr2198/index" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="nureg2198"></span></div></div>
+<div class="ref" id="ref-osha_ita"><div class="ref-key mono">osha_ita</div><div class="ref-body"><span class="ref-text">Occupational Safety and Health Administration. Establishment-Specific Injury and Illness Data (Injury Tracking Application). U.S. Department of Labor. <a href="https://www.osha.gov/Establishment-Specific-Injury-and-Illness-Data" rel="noopener noreferrer" target="_blank">https://www.osha.gov/Establishment-Specific-Injury-and-Illness-Data</a></span> <a class="ref-ev" href="https://www.osha.gov/Establishment-Specific-Injury-and-Illness-Data" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="osha_ita"></span></div></div>
+<div class="ref" id="ref-osha_ita_bls_comparison"><div class="ref-key mono">osha_ita_bls_comparison</div><div class="ref-body"><span class="ref-text">Occupational Safety and Health Administration. Comparison Between OSHA ITA Data and BLS SOII Estimates. <a href="https://www.osha.gov/sites/default/files/ComparisonBetweenOSHAITA_Data_and_BLS_SOII_Estimates.pdf" rel="noopener noreferrer" target="_blank">https://www.osha.gov/sites/default/files/ComparisonBetweenOSHAITA_Data_and_BLS_SOII_Estimates.pdf</a></span> <a class="ref-ev" href="https://www.osha.gov/sites/default/files/ComparisonBetweenOSHAITA_Data_and_BLS_SOII_Estimates.pdf" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="osha_ita_bls_comparison"></span></div></div>
+<div class="ref" id="ref-osha_ita_case_detail_dict_2026"><div class="ref-key mono">osha_ita_case_detail_dict_2026</div><div class="ref-body"><span class="ref-text">Occupational Safety and Health Administration. ITA Case Detail Data Dictionary (2026 revision). <a href="https://www.osha.gov/sites/default/files/case_detail_data_dictionary_2026.pdf" rel="noopener noreferrer" target="_blank">https://www.osha.gov/sites/default/files/case_detail_data_dictionary_2026.pdf</a></span> <a class="ref-ev" href="https://www.osha.gov/sites/default/files/case_detail_data_dictionary_2026.pdf" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="osha_ita_case_detail_dict_2026"></span></div></div>
+<div class="ref" id="ref-osha_ita_summary_dict"><div class="ref-key mono">osha_ita_summary_dict</div><div class="ref-body"><span class="ref-text">Occupational Safety and Health Administration. ITA Summary Data Dictionary (Form 300A). <a href="https://www.osha.gov/sites/default/files/summary_data_dictionary.pdf" rel="noopener noreferrer" target="_blank">https://www.osha.gov/sites/default/files/summary_data_dictionary.pdf</a></span> <a class="ref-ev" href="https://www.osha.gov/sites/default/files/summary_data_dictionary.pdf" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="osha_ita_summary_dict"></span></div></div>
+<div class="ref" id="ref-osha_ita_users_guide"><div class="ref-key mono">osha_ita_users_guide</div><div class="ref-body"><span class="ref-text">Occupational Safety and Health Administration. Injury Tracking Application (ITA) Data Users Guide. Last updated January 2025. <a href="https://www.osha.gov/sites/default/files/ITA_data_users_guide.pdf" rel="noopener noreferrer" target="_blank">https://www.osha.gov/sites/default/files/ITA_data_users_guide.pdf</a></span> <a class="ref-ev" href="https://www.osha.gov/sites/default/files/ITA_data_users_guide.pdf" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="osha_ita_users_guide"></span></div></div>
+<div class="ref" id="ref-rashkin2023"><div class="ref-key mono">rashkin2023</div><div class="ref-body"><span class="ref-text">Rashkin, H., Nikolaev, V., Lamm, M., Aroyo, L., Collins, M., Das, D., Petrov, S., Tomar, G. S., Turc, I., &amp; Reitter, D. (2023). Measuring Attribution in Natural Language Generation Models. Computational Linguistics, 49(4), 777-840. DOI: 10.1162/coli_a_00486</span> <a class="ref-ev" href="https://doi.org/10.1162/coli_a_00486" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="rashkin2023"></span></div></div>
+<div class="ref" id="ref-sergot1986"><div class="ref-key mono">sergot1986</div><div class="ref-body"><span class="ref-text">M. J. Sergot, F. Sadri, R. A. Kowalski, F. Kriwaczek, P. Hammond and H. T. Cory, "The British Nationality Act as a logic program," Communications of the ACM 29(5):370–386, 1986. DOI 10.1145/5689.5920</span> <a class="ref-ev" href="https://api.crossref.org/works/10.1145/5689.5920" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="sergot1986"></span></div></div>
+<div class="ref" id="ref-steyerberg2010"><div class="ref-key mono">steyerberg2010</div><div class="ref-body"><span class="ref-text">Steyerberg, E. W., Vickers, A. J., Cook, N. R., Gerds, T., Gonen, M., Obuchowski, N., Pencina, M. J., &amp; Kattan, M. W. (2010). Assessing the performance of prediction models: a framework for traditional and novel measures. Epidemiology, 21(1), 128–138. <a href="https://doi.org/10.1097/EDE.0b013e3181c30fb2" rel="noopener noreferrer" target="_blank">https://doi.org/10.1097/EDE.0b013e3181c30fb2</a></span> <a class="ref-ev" href="https://api.crossref.org/works/10.1097/EDE.0b013e3181c30fb2" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="steyerberg2010"></span></div></div>
+<div class="ref" id="ref-tucker2000"><div class="ref-key mono">tucker2000</div><div class="ref-body"><span class="ref-text">Tucker, P., Sytnik, N., Macdonald, I. &amp; Folkard, S. (2000). Temporal determinants of accident risk: the '2-4 h shift phenomenon'. In: Hornberger, S., Knauth, P., Costa, G. &amp; Folkard, S. (eds.), Shiftwork in the 21st Century. Frankfurt: Peter Lang, 99-105.</span> <a class="ref-ev" href="https://fatiguemanagersnetwork.org/wp-content/uploads/Folkard-et-al.2003_Shift-Work-Safety-and-Productivity.pdf" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="tucker2000"></span></div></div>
+<div class="ref" id="ref-vancalster2016"><div class="ref-key mono">vancalster2016</div><div class="ref-body"><span class="ref-text">Van Calster, B., Nieboer, D., Vergouwe, Y., De Cock, B., Pencina, M. J., &amp; Steyerberg, E. W. (2016). A calibration hierarchy for risk models was defined: from utopia to empirical data. Journal of Clinical Epidemiology, 74, 167–176. <a href="https://doi.org/10.1016/j.jclinepi.2015.12.005" rel="noopener noreferrer" target="_blank">https://doi.org/10.1016/j.jclinepi.2015.12.005</a></span> <a class="ref-ev" href="https://doi.org/10.1016/j.jclinepi.2015.12.005" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="vancalster2016"></span></div></div>
+<div class="ref" id="ref-vancalster2019"><div class="ref-key mono">vancalster2019</div><div class="ref-body"><span class="ref-text">Van Calster, B., McLernon, D. J., van Smeden, M., Wynants, L., &amp; Steyerberg, E. W., on behalf of Topic Group 'Evaluating diagnostic tests and prediction models' of the STRATOS initiative (2019). Calibration: the Achilles heel of predictive analytics. BMC Medicine, 17, 230. <a href="https://doi.org/10.1186/s12916-019-1466-7" rel="noopener noreferrer" target="_blank">https://doi.org/10.1186/s12916-019-1466-7</a></span> <a class="ref-ev" href="https://api.crossref.org/works/10.1186/s12916-019-1466-7" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="vancalster2019"></span></div></div>
+<div class="ref" id="ref-yue2023"><div class="ref-key mono">yue2023</div><div class="ref-body"><span class="ref-text">Yue, X., Wang, B., Chen, Z., Zhang, K., Su, Y., &amp; Sun, H. (2023). Automatic Evaluation of Attribution by Large Language Models. Findings of the Association for Computational Linguistics: EMNLP 2023, 4615-4635. DOI: 10.18653/v1/2023.findings-emnlp.307</span> <a class="ref-ev" href="https://aclanthology.org/2023.findings-emnlp.307/" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="yue2023"></span></div></div>
+<div class="ref" id="ref-grice2001"><div class="ref-key mono">grice2001</div><div class="ref-body"><span class="ref-text">James W. Grice, "Computing and evaluating factor scores," Psychological Methods 6(4), 2001, pp. 430-450. DOI: 10.1037/1082-989X.6.4.430.</span> <a class="ref-ev" href="https://pubmed.ncbi.nlm.nih.gov/11778682/" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="grice2001"></span></div></div>
+<div class="ref" id="ref-honovich2022true"><div class="ref-key mono">honovich2022true</div><div class="ref-body"><span class="ref-text">Honovich, O., Aharoni, R., Herzig, J., Taitelbaum, H., Kukliansy, D., Cohen, V., Scialom, T., Szpektor, I., Hassidim, A., &amp; Matias, Y. (2022). TRUE: Re-evaluating Factual Consistency Evaluation. Proceedings of the Second DialDoc Workshop, 161-175. DOI: 10.18653/v1/2022.dialdoc-1.19</span> <a class="ref-ev" href="https://aclanthology.org/2022.dialdoc-1.19/" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="honovich2022true"></span></div></div>
+<div class="ref" id="ref-steiger1979"><div class="ref-key mono">steiger1979</div><div class="ref-body"><span class="ref-text">James H. Steiger, "Factor indeterminacy in the 1930's and the 1970's: some interesting parallels," Psychometrika 44(1), 1979, pp. 157-167. DOI: 10.1007/BF02293967.</span> <a class="ref-ev" href="https://link.springer.com/article/10.1007/BF02293967" rel="noopener noreferrer" target="_blank">evidence</a><span class="backrefs" data-key="steiger1979"></span></div></div>
+  </article>
+</main>
+
+<nav class="pn" aria-label="Previous and next">
+  <div class="pn-inner">
+    <a href="index.html"><span class="pn-k">&larr; Previous</span><span class="pn-v">Research hub</span></a>
+    <a href="https://priyatham9.github.io/ehs-osha-analysis/"><span class="pn-k">Next &rarr;</span><span class="pn-v">OSHA data quality &#x2197;</span></a>
+  </div>
+</nav>
+
+<footer class="footer"><div class="wrap">
+  <p>Generated from <code>paper/PAPER.md</code> by <code>tools/build_paper.py</code>.
+  Edit the Markdown and rerun the script; do not edit this file by hand.
+  Every reference below was checked against a primary or publisher-of-record source,
+  and the evidence URL for each check lives in <code>paper/citations_verified.json</code>.</p>
+  <div class="footer-links">
+    <a href="https://priyatham9.github.io/">Priyatham Chimmani</a>
+    <a href="index.html">Research hub</a>
+    <a href="#top">Back to top</a>
+    <a href="#references">References</a>
+  </div>
+</div></footer>
+
+<script>
+(function(){
+  var root=document.documentElement,KEY='ehs-ai-theme';
+  try{var s=localStorage.getItem(KEY);if(s)root.setAttribute('data-theme',s);}catch(e){}
+  var t=document.getElementById('themeToggle');
+  if(t)t.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur)cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{localStorage.setItem(KEY,next);}catch(e){}
+  });
+})();
+
+/* back-links on each reference, built from the citation anchors in the body */
+(function(){
+  var holders=document.querySelectorAll('.backrefs');
+  Array.prototype.forEach.call(holders,function(h){
+    var key=h.getAttribute('data-key');
+    var sites=document.querySelectorAll('sup.cite a[href="#ref-'+key+'"]');
+    if(!sites.length)return;
+    var lab=document.createElement('span');
+    lab.className='brlabel';lab.textContent='cited at';
+    h.appendChild(lab);
+    Array.prototype.forEach.call(sites,function(a,i){
+      var b=document.createElement('a');
+      b.href='#'+a.id;b.textContent=String(i+1);
+      b.setAttribute('aria-label','Back to citation '+(i+1)+' of '+key);
+      h.appendChild(b);
+    });
+  });
+})();
+
+/* keep the sticky offsets exact whatever the topbar wraps to */
+(function(){
+  var bar=document.querySelector('.topbar');
+  if(!bar)return;
+  function sync(){
+    document.documentElement.style.setProperty(
+      '--topbar-h', Math.round(bar.getBoundingClientRect().height)+'px');
+  }
+  window.addEventListener('resize',sync);
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(sync);
+  sync();
+})();
+
+/* reading progress */
+(function(){
+  var bar=document.getElementById('progressBar');
+  if(!bar)return;
+  var raf=false;
+  function paint(){
+    raf=false;
+    var d=document.documentElement;
+    var max=(d.scrollHeight-d.clientHeight)||1;
+    var p=Math.min(100,Math.max(0,(d.scrollTop||document.body.scrollTop)/max*100));
+    bar.style.width=p.toFixed(2)+'%';
+  }
+  window.addEventListener('scroll',function(){if(!raf){raf=true;requestAnimationFrame(paint);}},{passive:true});
+  window.addEventListener('resize',paint);paint();
+})();
+
+/* collapse the contents rail on narrow screens */
+(function(){
+  var rail=document.getElementById('tocRail'),btn=document.getElementById('tocToggle');
+  if(!rail||!btn)return;
+  var mq=window.matchMedia('(max-width:1024px)');
+  function sync(){
+    if(mq.matches){rail.setAttribute('data-collapsed','true');btn.setAttribute('aria-expanded','false');btn.textContent='Contents';}
+    else{rail.removeAttribute('data-collapsed');btn.setAttribute('aria-expanded','true');}
+  }
+  btn.addEventListener('click',function(){
+    var closed=rail.getAttribute('data-collapsed')==='true';
+    if(closed){rail.removeAttribute('data-collapsed');btn.setAttribute('aria-expanded','true');btn.textContent='Hide';}
+    else{rail.setAttribute('data-collapsed','true');btn.setAttribute('aria-expanded','false');btn.textContent='Contents';}
+  });
+  if(mq.addEventListener)mq.addEventListener('change',sync);else if(mq.addListener)mq.addListener(sync);
+  window.addEventListener('resize',sync);
+  sync();
+})();
+
+/* highlight the section being read: the last heading above the read line */
+(function(){
+  var links=Array.prototype.slice.call(document.querySelectorAll('.toc-list a'));
+  var rail=document.getElementById('tocRail');
+  var items=[];
+  links.forEach(function(a){
+    var el=document.getElementById(a.getAttribute('href').slice(1));
+    if(el)items.push({a:a,el:el,top:0});
+  });
+  if(!items.length)return;
+  var current=null,raf=false;
+  function measure(){
+    var y=window.pageYOffset||document.documentElement.scrollTop;
+    items.forEach(function(it){it.top=it.el.getBoundingClientRect().top+y;});
+  }
+  function paint(){
+    raf=false;
+    var line=(window.pageYOffset||document.documentElement.scrollTop)+150;
+    var best=items[0];
+    for(var i=0;i<items.length;i++){ if(items[i].top<=line)best=items[i]; else break; }
+    if(best===current)return;
+    if(current)current.a.removeAttribute('aria-current');
+    current=best;
+    current.a.setAttribute('aria-current','true');
+    if(rail&&!rail.hasAttribute('data-collapsed')&&rail.scrollHeight>rail.clientHeight+4){
+      var want=current.a.offsetTop-rail.clientHeight/2;
+      rail.scrollTop=want>0?want:0;
+    }
+  }
+  function schedule(){if(!raf){raf=true;requestAnimationFrame(paint);}}
+  window.addEventListener('scroll',schedule,{passive:true});
+  window.addEventListener('resize',function(){measure();schedule();});
+  if(document.fonts&&document.fonts.ready)document.fonts.ready.then(function(){measure();schedule();});
+  measure();paint();
+})();
+</script>
+</body>
+</html>
