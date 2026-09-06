@@ -1,11 +1,11 @@
 # INTEGRATION.md
 
-Wiring the research site (`ehs-ai-research`) to the personal site (`priyatham9.github.io`)
+Wiring the research site (`grounded`) to the personal site (`priyatham9.github.io`)
 so the two read as siblings without merging.
 
 Fetched and inspected: `https://priyatham9.github.io/` on 2026-09-06, raw markup and inline
 stylesheet, 63,165 bytes, single file, no external CSS. Everything quoted below is copied
-from that document or from `repos/ehs-ai-research/docs/index.html` as committed.
+from that document or from `repos/grounded/docs/index.html` as committed.
 
 ---
 
@@ -15,7 +15,7 @@ Verified against the GitHub API and by HTTP request on 2026-09-06:
 
 | Repository | Visibility | Pages enabled | `https://priyatham9.github.io/<repo>/` |
 |---|---|---|---|
-| `ehs-ai-research` | private | no | 404 |
+| `grounded` | private | no | 404 |
 | `ehs-osha-analysis` | private | no | 404 |
 | `ehs-ai-grounding-eval` | private | no | 404 |
 | `ehs-human-factors-ontology` | private | no | 404 |
@@ -218,7 +218,7 @@ Paste verbatim. No colour values, no new classes, no inline styles.
     </div>
     <div class="reports reveal">
 
-      <a class="report-row" href="/ehs-ai-research/">
+      <a class="report-row" href="/grounded/">
         <span class="report-code">RES-000</span>
         <span class="report-t">Grounded Reasoning for Safety-Critical AI</span>
         <span class="report-st">Hub</span>
@@ -349,7 +349,7 @@ alongside `.brand` and the theme `.toggle`, and the whole nav is `display: none`
 item would first crowd.
 
 An alternative worth considering: a link straight out to the research site in the nav,
-`<a href="/ehs-ai-research/">Research</a>` rather than the in-page anchor. It sends people
+`<a href="/grounded/">Research</a>` rather than the in-page anchor. It sends people
 to the real site in one click, but it breaks the pattern that every other nav item is an
 in-page anchor, and it skips the framing the section provides. The in-page anchor is the
 recommendation.
@@ -360,7 +360,7 @@ recommendation.
 
 ### 4.1 What already links back
 
-Exactly one link, in `repos/ehs-ai-research/docs/index.html`, in the footer:
+Exactly one link, in `repos/grounded/docs/index.html`, in the footer:
 
 ```html
     <div class="footer-links">
@@ -394,7 +394,7 @@ are proposals, not applied changes.
    `tools/build_sites.py`, ahead of the Repository link, then regenerate all five sites:
 
    ```html
-         <a href="https://priyatham9.github.io/ehs-ai-research/">Research hub</a>
+         <a href="https://priyatham9.github.io/grounded/">Research hub</a>
    ```
 
    Add `Personal site` on the same line if you want full symmetry with the hub footer.
@@ -490,8 +490,8 @@ record. Add the missing `robots` tag to `ehs-capitals-calculator` and decide exp
 to do about `ehs-benchmarks`, which is currently indexable.
 
 **Option B. Lift it on the hub only.** Remove `noindex, nofollow` from
-`ehs-ai-research/docs/index.html`, add
-`<link rel="canonical" href="https://priyatham9.github.io/ehs-ai-research/" />` to its head,
+`grounded/docs/index.html`, add
+`<link rel="canonical" href="https://priyatham9.github.io/grounded/" />` to its head,
 and leave the per-repo sites and the personal site as they are. One citable, stable entry
 point exists; the draft detail underneath stays out of the index. The hub's own status
 section already states the limits honestly, so the page that gets found is also the page
@@ -514,7 +514,7 @@ audiences, and nothing requires them to match.
 
 ### 5.4 Canonical mechanics, whichever way you go
 
-- Canonicalise on the trailing-slash form, `https://priyatham9.github.io/ehs-ai-research/`.
+- Canonicalise on the trailing-slash form, `https://priyatham9.github.io/grounded/`.
   GitHub Pages serves both with and without the slash; picking one and stating it prevents
   the pair being treated as two URLs.
 - Each page's canonical should point at itself, not at the hub. Pointing a per-repo site at
@@ -589,7 +589,7 @@ Run after applying sections 2 and 3 to the `priyatham9.github.io` working copy.
 - [ ] Every `href` in the section resolves. Run against the deployed site, not locally:
 
       ```bash
-      for p in ehs-ai-research ehs-osha-analysis ehs-ai-grounding-eval \
+      for p in grounded ehs-osha-analysis ehs-ai-grounding-eval \
                ehs-human-factors-ontology ehs-risk-sem ehs-capitals-calculator \
                ehs-benchmarks; do
         printf '%-30s %s\n' "$p" \

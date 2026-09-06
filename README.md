@@ -1,4 +1,4 @@
-# ehs-ai-research
+# grounded
 
 Landing site for a research programme on grounded reasoning for safety-critical AI
 in EHS and process industries.
