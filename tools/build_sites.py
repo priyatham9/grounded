@@ -504,6 +504,6 @@ if __name__ == "__main__":
         out.mkdir(parents=True, exist_ok=True)
         html = SHELL.format(css=CSS, extra=EXTRA_CSS, **spec)
         # no em dashes anywhere
-        html = html.replace(" &mdash; ", " - ").replace("&mdash;", " - ").replace("—", " - ")
+        html = html.replace(" - ", " - ").replace(" - ", " - ").replace(" - ", " - ")
         (out / "index.html").write_text(html, encoding="utf-8")
         print(f'{spec["repo"]:<32} {len(html):>7,} bytes -> docs/index.html')
