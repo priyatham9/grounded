@@ -182,6 +182,16 @@ h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}
 .bq{margin:0 0 1.5em;padding:18px 22px;border-left:4px solid var(--accent);background:var(--surface-2);max-width:74ch}
 .bq > :last-child{margin-bottom:0}
 .bq p{font-size:.97rem}
+.paperfig,.papertable{margin:0 0 2em;padding:0;max-width:100%}
+.figbody{border:2px solid var(--rule);background:#fff;padding:10px;overflow-x:auto}
+.figbody svg{display:block;width:100%;height:auto;max-width:820px;margin:0 auto}
+:root[data-theme="dark"] .figbody{background:#fff;filter:invert(1) hue-rotate(180deg)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .figbody{background:#fff;filter:invert(1) hue-rotate(180deg)}}
+.paperfig figcaption,.papertable figcaption{font-size:.9rem;line-height:1.55;color:var(--ink-2);margin:.7em 0 0;max-width:74ch}
+.papertable figcaption{margin:0 0 .7em}
+.figlabel{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--ink);margin-right:.5em}
+.figsrc{display:block;font-family:var(--font-mono);font-size:.7rem;color:var(--muted);margin-top:.3em;opacity:.8}
+.papertable .tablewrap{margin:0}
 .tablewrap{max-width:100%;overflow-x:auto;border:2px solid var(--rule);background:var(--surface);margin:0 0 1.7em}
 .tablewrap table{border-collapse:collapse;width:100%;min-width:640px}
 .tablewrap th,.tablewrap td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--rule-soft);border-right:1px solid var(--rule-soft);font-size:.8125rem;line-height:1.55;color:var(--ink-2)}
@@ -309,7 +319,7 @@ sup.fnref a{text-decoration:none}
   <div class="byline">Priyatham Chimmani</div>
   <p class="sub">A working draft. Four artifacts: a structural account of semantically adjacent substitution, an auditable human-factors ontology, a preregistered grounding benchmark, and a population-scale reanalysis of the exposure denominator underlying every rate-based safety metric.</p>
   <div class="metastrip">
-    <div class="ms-cell"><span class="ms-k">Manuscript</span><span class="ms-v">33,363 words</span></div>
+    <div class="ms-cell"><span class="ms-k">Manuscript</span><span class="ms-v">33,593 words</span></div>
     <div class="ms-cell"><span class="ms-k">References</span><span class="ms-v accent">197</span></div>
     <div class="ms-cell"><span class="ms-k">Benchmark results</span><span class="ms-v">None</span></div>
     <div class="ms-cell"><span class="ms-k">Peer review</span><span class="ms-v">None</span></div>
@@ -367,7 +377,7 @@ carries its own estimated reading time.</p>
       <span class="toc-title">Contents</span>
       <button class="toc-toggle" id="tocToggle" aria-expanded="true">Contents</button>
     </div>
-    <ul class="toc-list"><li class="lvl-1"><a href="#abstract">Abstract<span class="toc-min" aria-label="about 1 minutes">1 min</span></a></li><li class="lvl-1"><a href="#1-introduction">1. Introduction<span class="toc-min" aria-label="about 13 minutes">13 min</span></a></li><li class="lvl-2"><a href="#1-1-an-incident-that-was-not-bad-luck">1.1 An incident that was not bad luck</a></li><li class="lvl-2"><a href="#1-2-what-is-missing-and-what-is-not">1.2 What is missing, and what is not</a></li><li class="lvl-2"><a href="#1-3-contributions">1.3 Contributions</a></li><li class="lvl-2"><a href="#1-4-what-we-do-not-claim">1.4 What we do not claim</a></li><li class="lvl-2"><a href="#1-5-theoretical-position">1.5 Theoretical position</a></li><li class="lvl-2"><a href="#1-6-roadmap">1.6 Roadmap</a></li><li class="lvl-1"><a href="#2-related-work">2. Related Work<span class="toc-min" aria-label="about 22 minutes">22 min</span></a></li><li class="lvl-2"><a href="#2-1-human-reliability-analysis-and-performance-shaping-factors">2.1 Human reliability analysis and performance shaping factors</a></li><li class="lvl-3"><a href="#2-1-1-the-canon">2.1.1 The canon</a></li><li class="lvl-3"><a href="#2-1-2-the-four-contextual-dimensions-are-not-novel">2.1.2 The four contextual dimensions are not novel</a></li><li class="lvl-3"><a href="#2-1-3-the-field-s-own-assessment-of-its-factor-lists">2.1.3 The field's own assessment of its factor lists</a></li><li class="lvl-3"><a href="#2-1-4-the-gap-is-measurement-not-taxonomy">2.1.4 The gap is measurement, not taxonomy</a></li><li class="lvl-2"><a href="#2-2-automated-reasoning-neurosymbolic-architectures-and-terminology">2.2 Automated reasoning, neurosymbolic architectures, and terminology</a></li><li class="lvl-3"><a href="#2-2-1-what-the-term-means-to-the-field-that-owns-it">2.2.1 What the term means to the field that owns it</a></li><li class="lvl-3"><a href="#2-2-2-two-claims-we-do-not-make">2.2.2 Two claims we do not make</a></li><li class="lvl-3"><a href="#2-2-3-formal-knowledge-models-in-process-safety">2.2.3 Formal knowledge models in process safety</a></li><li class="lvl-3"><a href="#2-2-4-the-formalization-bottleneck">2.2.4 The formalization bottleneck</a></li><li class="lvl-2"><a href="#2-3-grounding-hallucination-and-retrieval-evaluation">2.3 Grounding, hallucination, and retrieval evaluation</a></li><li class="lvl-3"><a href="#2-3-1-grounding-has-a-technical-definition">2.3.1 Grounding has a technical definition</a></li><li class="lvl-3"><a href="#2-3-2-why-semantically-adjacent-substitution-is-expected">2.3.2 Why semantically adjacent substitution is expected</a></li><li class="lvl-3"><a href="#2-3-3-grounding-reduces-error-it-does-not-remove-it">2.3.3 Grounding reduces error, it does not remove it</a></li><li class="lvl-3"><a href="#2-3-4-how-grounding-is-measured">2.3.4 How grounding is measured</a></li><li class="lvl-3"><a href="#2-3-5-language-models-in-process-safety">2.3.5 Language models in process safety</a></li><li class="lvl-3"><a href="#2-3-6-protocols-standardize-access-not-authority">2.3.6 Protocols standardize access, not authority</a></li><li class="lvl-2"><a href="#2-4-what-remains-open">2.4 What remains open</a></li><li class="lvl-1"><a href="#3-problem-formalization">3. Problem Formalization<span class="toc-min" aria-label="about 24 minutes">24 min</span></a></li><li class="lvl-2"><a href="#3-1-notation-and-setting">3.1 Notation and setting</a></li><li class="lvl-2"><a href="#3-2-semantically-adjacent-substitution">3.2 Semantically-adjacent substitution</a></li><li class="lvl-2"><a href="#3-3-why-the-reported-statistic-must-be-paired">3.3 Why the reported statistic must be paired</a></li><li class="lvl-2"><a href="#3-4-the-grounding-property">3.4 The grounding property</a></li><li class="lvl-2"><a href="#3-5-auditable-derivation-traces">3.5 Auditable derivation traces</a></li><li class="lvl-2"><a href="#3-6-the-instrumentation-problem">3.6 The instrumentation problem</a></li><li class="lvl-2"><a href="#3-7-assumptions">3.7 Assumptions</a></li><li class="lvl-2"><a href="#3-8-what-is-deliberately-not-formalized">3.8 What is deliberately not formalized</a></li><li class="lvl-1"><a href="#4-an-auditable-architecture-for-contextual-human-error-screening">4. An auditable architecture for contextual human-error screening<span class="toc-min" aria-label="about 18 minutes">18 min</span></a></li><li class="lvl-2"><a href="#4-1-design-commitments">4.1 Design commitments</a></li><li class="lvl-2"><a href="#4-2-knowledge-representation">4.2 Knowledge representation</a></li><li class="lvl-2"><a href="#4-3-the-four-context-dimensions-and-the-psf-crosswalk">4.3 The four context dimensions and the PSF crosswalk</a></li><li class="lvl-2"><a href="#4-4-the-inference-layer">4.4 The inference layer</a></li><li class="lvl-2"><a href="#4-5-source-binding-and-where-the-guarantee-stops">4.5 Source binding, and where the guarantee stops</a></li><li class="lvl-2"><a href="#4-6-derivation-traces">4.6 Derivation traces</a></li><li class="lvl-2"><a href="#4-7-synthetic-corpus">4.7 Synthetic corpus</a></li><li class="lvl-2"><a href="#4-8-what-the-architecture-does-not-provide">4.8 What the architecture does not provide</a></li><li class="lvl-1"><a href="#5-evaluation-methodology">5. Evaluation Methodology<span class="toc-min" aria-label="about 19 minutes">19 min</span></a></li><li class="lvl-2"><a href="#5-1-what-is-contributed-here-and-what-is-not">5.1 What is contributed here, and what is not</a></li><li class="lvl-2"><a href="#5-2-the-measured-construct">5.2 The measured construct</a></li><li class="lvl-2"><a href="#5-3-corpus-construction">5.3 Corpus construction</a></li><li class="lvl-3"><a href="#minimal-pairs">Minimal pairs</a></li><li class="lvl-3"><a href="#category-error-items">Category-error items</a></li><li class="lvl-3"><a href="#structural-invariants">Structural invariants</a></li><li class="lvl-2"><a href="#5-4-source-verification-and-the-copyright-constraint">5.4 Source verification and the copyright constraint</a></li><li class="lvl-2"><a href="#5-5-scoring">5.5 Scoring</a></li><li class="lvl-3"><a href="#decision-procedure">Decision procedure</a></li><li class="lvl-3"><a href="#citation-grading">Citation grading</a></li><li class="lvl-3"><a href="#abstention-credit">Abstention credit</a></li><li class="lvl-2"><a href="#5-6-statistical-plan">5.6 Statistical plan</a></li><li class="lvl-2"><a href="#5-7-the-grounded-versus-ungrounded-protocol">5.7 The grounded-versus-ungrounded protocol</a></li><li class="lvl-3"><a href="#human-adjudication-is-primary-automatic-scoring-is-a-screen">Human adjudication is primary, automatic scoring is a screen</a></li><li class="lvl-3"><a href="#contamination-probe">Contamination probe</a></li><li class="lvl-2"><a href="#5-8-threats-to-validity">5.8 Threats to validity</a></li><li class="lvl-2"><a href="#5-9-what-will-not-be-claimed-from-this-apparatus">5.9 What will not be claimed from this apparatus</a></li><li class="lvl-1"><a href="#6-data-foundations">6. Data Foundations<span class="toc-min" aria-label="about 16 minutes">16 min</span></a></li><li class="lvl-2"><a href="#6-1-the-dependency-this-paper-cannot-argue-around">6.1 The dependency this paper cannot argue around</a></li><li class="lvl-2"><a href="#6-2-what-the-corpus-is-and-what-it-is-not">6.2 What the corpus is, and what it is not</a></li><li class="lvl-2"><a href="#6-3-the-denominator-failure">6.3 The denominator failure</a></li><li class="lvl-2"><a href="#6-4-what-does-not-replicate-and-why-the-non-replication-is-the-finding">6.4 What does not replicate, and why the non-replication is the finding</a></li><li class="lvl-2"><a href="#6-5-zero-recordable-filings-overdispersion-not-a-hidden-non-reporting-population">6.5 Zero-recordable filings: overdispersion, not a hidden non-reporting population</a></li><li class="lvl-2"><a href="#6-6-benchmark-bands-move-on-their-own">6.6 Benchmark bands move on their own</a></li><li class="lvl-2"><a href="#6-7-hour-of-shift-a-claim-withdrawn-and-the-conditions-for-ever-making-it-again">6.7 Hour-of-shift: a claim withdrawn, and the conditions for ever making it again</a></li><li class="lvl-2"><a href="#6-8-how-the-two-failures-compose">6.8 How the two failures compose</a></li><li class="lvl-1"><a href="#7-discussion-and-limitations">7. Discussion and Limitations<span class="toc-min" aria-label="about 20 minutes">20 min</span></a></li><li class="lvl-2"><a href="#7-1-what-the-artifacts-do-and-do-not-license">7.1 What the artifacts do and do not license</a></li><li class="lvl-2"><a href="#7-2-the-benchmark-measures-a-construct-not-a-population">7.2 The benchmark measures a construct, not a population</a></li><li class="lvl-2"><a href="#7-3-the-costs-of-the-ontology-approach">7.3 The costs of the ontology approach</a></li><li class="lvl-2"><a href="#7-4-statistical-and-causal-inference-limits">7.4 Statistical and causal-inference limits</a></li><li class="lvl-2"><a href="#7-5-limits-of-the-empirical-denominator-analysis">7.5 Limits of the empirical denominator analysis</a></li><li class="lvl-2"><a href="#7-6-the-gap-between-benchmark-performance-and-field-safety-outcomes">7.6 The gap between benchmark performance and field safety outcomes</a></li><li class="lvl-2"><a href="#7-7-generalizability">7.7 Generalizability</a></li><li class="lvl-2"><a href="#7-8-what-would-change-our-minds">7.8 What would change our minds</a></li><li class="lvl-1"><a href="#8-conclusion-and-future-work">8. Conclusion and Future Work<span class="toc-min" aria-label="about 9 minutes">9 min</span></a></li><li class="lvl-2"><a href="#8-1-what-this-paper-contributes">8.1 What this paper contributes</a></li><li class="lvl-2"><a href="#8-2-two-empirical-results-that-constrain-the-rest">8.2 Two empirical results that constrain the rest</a></li><li class="lvl-2"><a href="#8-3-what-comes-next">8.3 What comes next</a></li><li class="lvl-2"><a href="#8-4-a-standing-tension-we-do-not-resolve">8.4 A standing tension we do not resolve</a></li><li class="lvl-2"><a href="#8-5-status-of-the-artifacts">8.5 Status of the artifacts</a></li><li class="lvl-1"><a href="#references">References</a></li></ul>
+    <ul class="toc-list"><li class="lvl-1"><a href="#abstract">Abstract<span class="toc-min" aria-label="about 1 minutes">1 min</span></a></li><li class="lvl-1"><a href="#1-introduction">1. Introduction<span class="toc-min" aria-label="about 13 minutes">13 min</span></a></li><li class="lvl-2"><a href="#1-1-an-incident-that-was-not-bad-luck">1.1 An incident that was not bad luck</a></li><li class="lvl-2"><a href="#1-2-what-is-missing-and-what-is-not">1.2 What is missing, and what is not</a></li><li class="lvl-2"><a href="#1-3-contributions">1.3 Contributions</a></li><li class="lvl-2"><a href="#1-4-what-we-do-not-claim">1.4 What we do not claim</a></li><li class="lvl-2"><a href="#1-5-theoretical-position">1.5 Theoretical position</a></li><li class="lvl-2"><a href="#1-6-roadmap">1.6 Roadmap</a></li><li class="lvl-1"><a href="#2-related-work">2. Related Work<span class="toc-min" aria-label="about 22 minutes">22 min</span></a></li><li class="lvl-2"><a href="#2-1-human-reliability-analysis-and-performance-shaping-factors">2.1 Human reliability analysis and performance shaping factors</a></li><li class="lvl-3"><a href="#2-1-1-the-canon">2.1.1 The canon</a></li><li class="lvl-3"><a href="#2-1-2-the-four-contextual-dimensions-are-not-novel">2.1.2 The four contextual dimensions are not novel</a></li><li class="lvl-3"><a href="#2-1-3-the-field-s-own-assessment-of-its-factor-lists">2.1.3 The field's own assessment of its factor lists</a></li><li class="lvl-3"><a href="#2-1-4-the-gap-is-measurement-not-taxonomy">2.1.4 The gap is measurement, not taxonomy</a></li><li class="lvl-2"><a href="#2-2-automated-reasoning-neurosymbolic-architectures-and-terminology">2.2 Automated reasoning, neurosymbolic architectures, and terminology</a></li><li class="lvl-3"><a href="#2-2-1-what-the-term-means-to-the-field-that-owns-it">2.2.1 What the term means to the field that owns it</a></li><li class="lvl-3"><a href="#2-2-2-two-claims-we-do-not-make">2.2.2 Two claims we do not make</a></li><li class="lvl-3"><a href="#2-2-3-formal-knowledge-models-in-process-safety">2.2.3 Formal knowledge models in process safety</a></li><li class="lvl-3"><a href="#2-2-4-the-formalization-bottleneck">2.2.4 The formalization bottleneck</a></li><li class="lvl-2"><a href="#2-3-grounding-hallucination-and-retrieval-evaluation">2.3 Grounding, hallucination, and retrieval evaluation</a></li><li class="lvl-3"><a href="#2-3-1-grounding-has-a-technical-definition">2.3.1 Grounding has a technical definition</a></li><li class="lvl-3"><a href="#2-3-2-why-semantically-adjacent-substitution-is-expected">2.3.2 Why semantically adjacent substitution is expected</a></li><li class="lvl-3"><a href="#2-3-3-grounding-reduces-error-it-does-not-remove-it">2.3.3 Grounding reduces error, it does not remove it</a></li><li class="lvl-3"><a href="#2-3-4-how-grounding-is-measured">2.3.4 How grounding is measured</a></li><li class="lvl-3"><a href="#2-3-5-language-models-in-process-safety">2.3.5 Language models in process safety</a></li><li class="lvl-3"><a href="#2-3-6-protocols-standardize-access-not-authority">2.3.6 Protocols standardize access, not authority</a></li><li class="lvl-2"><a href="#2-4-what-remains-open">2.4 What remains open</a></li><li class="lvl-1"><a href="#3-problem-formalization">3. Problem Formalization<span class="toc-min" aria-label="about 24 minutes">24 min</span></a></li><li class="lvl-2"><a href="#3-1-notation-and-setting">3.1 Notation and setting</a></li><li class="lvl-2"><a href="#3-2-semantically-adjacent-substitution">3.2 Semantically-adjacent substitution</a></li><li class="lvl-2"><a href="#3-3-why-the-reported-statistic-must-be-paired">3.3 Why the reported statistic must be paired</a></li><li class="lvl-2"><a href="#3-4-the-grounding-property">3.4 The grounding property</a></li><li class="lvl-2"><a href="#3-5-auditable-derivation-traces">3.5 Auditable derivation traces</a></li><li class="lvl-2"><a href="#3-6-the-instrumentation-problem">3.6 The instrumentation problem</a></li><li class="lvl-2"><a href="#3-7-assumptions">3.7 Assumptions</a></li><li class="lvl-2"><a href="#3-8-what-is-deliberately-not-formalized">3.8 What is deliberately not formalized</a></li><li class="lvl-1"><a href="#4-an-auditable-architecture-for-contextual-human-error-screening">4. An auditable architecture for contextual human-error screening<span class="toc-min" aria-label="about 18 minutes">18 min</span></a></li><li class="lvl-2"><a href="#4-1-design-commitments">4.1 Design commitments</a></li><li class="lvl-2"><a href="#4-2-knowledge-representation">4.2 Knowledge representation</a></li><li class="lvl-2"><a href="#4-3-the-four-context-dimensions-and-the-psf-crosswalk">4.3 The four context dimensions and the PSF crosswalk</a></li><li class="lvl-2"><a href="#4-4-the-inference-layer">4.4 The inference layer</a></li><li class="lvl-2"><a href="#4-5-source-binding-and-where-the-guarantee-stops">4.5 Source binding, and where the guarantee stops</a></li><li class="lvl-2"><a href="#4-6-derivation-traces">4.6 Derivation traces</a></li><li class="lvl-2"><a href="#4-7-synthetic-corpus">4.7 Synthetic corpus</a></li><li class="lvl-2"><a href="#4-8-what-the-architecture-does-not-provide">4.8 What the architecture does not provide</a></li><li class="lvl-1"><a href="#5-evaluation-methodology">5. Evaluation Methodology<span class="toc-min" aria-label="about 19 minutes">19 min</span></a></li><li class="lvl-2"><a href="#5-1-what-is-contributed-here-and-what-is-not">5.1 What is contributed here, and what is not</a></li><li class="lvl-2"><a href="#5-2-the-measured-construct">5.2 The measured construct</a></li><li class="lvl-2"><a href="#5-3-corpus-construction">5.3 Corpus construction</a></li><li class="lvl-3"><a href="#minimal-pairs">Minimal pairs</a></li><li class="lvl-3"><a href="#category-error-items">Category-error items</a></li><li class="lvl-3"><a href="#structural-invariants">Structural invariants</a></li><li class="lvl-2"><a href="#5-4-source-verification-and-the-copyright-constraint">5.4 Source verification and the copyright constraint</a></li><li class="lvl-2"><a href="#5-5-scoring">5.5 Scoring</a></li><li class="lvl-3"><a href="#decision-procedure">Decision procedure</a></li><li class="lvl-3"><a href="#citation-grading">Citation grading</a></li><li class="lvl-3"><a href="#abstention-credit">Abstention credit</a></li><li class="lvl-2"><a href="#5-6-statistical-plan">5.6 Statistical plan</a></li><li class="lvl-2"><a href="#5-7-the-grounded-versus-ungrounded-protocol">5.7 The grounded-versus-ungrounded protocol</a></li><li class="lvl-3"><a href="#human-adjudication-is-primary-automatic-scoring-is-a-screen">Human adjudication is primary, automatic scoring is a screen</a></li><li class="lvl-3"><a href="#contamination-probe">Contamination probe</a></li><li class="lvl-2"><a href="#5-8-threats-to-validity">5.8 Threats to validity</a></li><li class="lvl-2"><a href="#5-9-what-will-not-be-claimed-from-this-apparatus">5.9 What will not be claimed from this apparatus</a></li><li class="lvl-1"><a href="#6-data-foundations">6. Data Foundations<span class="toc-min" aria-label="about 17 minutes">17 min</span></a></li><li class="lvl-2"><a href="#6-1-the-dependency-this-paper-cannot-argue-around">6.1 The dependency this paper cannot argue around</a></li><li class="lvl-2"><a href="#6-2-what-the-corpus-is-and-what-it-is-not">6.2 What the corpus is, and what it is not</a></li><li class="lvl-2"><a href="#6-3-the-denominator-failure">6.3 The denominator failure</a></li><li class="lvl-2"><a href="#6-4-what-does-not-replicate-and-why-the-non-replication-is-the-finding">6.4 What does not replicate, and why the non-replication is the finding</a></li><li class="lvl-2"><a href="#6-5-zero-recordable-filings-overdispersion-not-a-hidden-non-reporting-population">6.5 Zero-recordable filings: overdispersion, not a hidden non-reporting population</a></li><li class="lvl-2"><a href="#6-6-benchmark-bands-move-on-their-own">6.6 Benchmark bands move on their own</a></li><li class="lvl-2"><a href="#6-7-hour-of-shift-a-claim-withdrawn-and-the-conditions-for-ever-making-it-again">6.7 Hour-of-shift: a claim withdrawn, and the conditions for ever making it again</a></li><li class="lvl-2"><a href="#6-8-how-the-two-failures-compose">6.8 How the two failures compose</a></li><li class="lvl-1"><a href="#7-discussion-and-limitations">7. Discussion and Limitations<span class="toc-min" aria-label="about 20 minutes">20 min</span></a></li><li class="lvl-2"><a href="#7-1-what-the-artifacts-do-and-do-not-license">7.1 What the artifacts do and do not license</a></li><li class="lvl-2"><a href="#7-2-the-benchmark-measures-a-construct-not-a-population">7.2 The benchmark measures a construct, not a population</a></li><li class="lvl-2"><a href="#7-3-the-costs-of-the-ontology-approach">7.3 The costs of the ontology approach</a></li><li class="lvl-2"><a href="#7-4-statistical-and-causal-inference-limits">7.4 Statistical and causal-inference limits</a></li><li class="lvl-2"><a href="#7-5-limits-of-the-empirical-denominator-analysis">7.5 Limits of the empirical denominator analysis</a></li><li class="lvl-2"><a href="#7-6-the-gap-between-benchmark-performance-and-field-safety-outcomes">7.6 The gap between benchmark performance and field safety outcomes</a></li><li class="lvl-2"><a href="#7-7-generalizability">7.7 Generalizability</a></li><li class="lvl-2"><a href="#7-8-what-would-change-our-minds">7.8 What would change our minds</a></li><li class="lvl-1"><a href="#8-conclusion-and-future-work">8. Conclusion and Future Work<span class="toc-min" aria-label="about 9 minutes">9 min</span></a></li><li class="lvl-2"><a href="#8-1-what-this-paper-contributes">8.1 What this paper contributes</a></li><li class="lvl-2"><a href="#8-2-two-empirical-results-that-constrain-the-rest">8.2 Two empirical results that constrain the rest</a></li><li class="lvl-2"><a href="#8-3-what-comes-next">8.3 What comes next</a></li><li class="lvl-2"><a href="#8-4-a-standing-tension-we-do-not-resolve">8.4 A standing tension we do not resolve</a></li><li class="lvl-2"><a href="#8-5-status-of-the-artifacts">8.5 Status of the artifacts</a></li><li class="lvl-1"><a href="#references">References</a></li></ul>
   </aside>
 
   <article class="doc" id="doc">
@@ -747,25 +757,635 @@ paired accuracy        PA   = (1 /  n) · Σᵢ [ corr(aᵢ) ∧ corr(aᵢ') ]</
 <p>The numerator is bounded by how many people work at a site. The denominator is a free-text number on a form. When rates are aggregated across establishments the standard estimator is a ratio of sums, so one filing with an impossible hours value can dominate the denominator of an entire industry, state or national figure while contributing nothing to the numerator. The aggregate is then biased toward zero, and it reads as good news.</p>
 <p>Pooled across 2,801,064 deduplicated filings, 2016–2024, under a screen that flags filings outside 120–4,500 hours per average employee per year:</p>
 <div class="tablewrap"><table><thead><tr><th></th><th></th></tr></thead><tbody><tr><td>Filings after deduplication</td><td>2,801,064</td></tr><tr><td>Flagged implausible</td><td>57,857 (2.07%)</td></tr><tr><td>Share of all reported hours they hold</td><td>96.68%</td></tr><tr><td>Share of all reported cases they hold</td><td>1.37%</td></tr><tr><td>Aggregate TRIR, unscreened</td><td>0.134</td></tr><tr><td>Aggregate TRIR, screened</td><td>3.983</td></tr><tr><td>Ratio</td><td>29.7×</td></tr></tbody></table></div>
+<figure class="paperfig" id="fig-1"><div class="figbody"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img">
+<rect x="0" y="0" width="820" height="460" fill="#ffffff" />
+<line x1="78" y1="386.00" x2="796" y2="386.00" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="390.00" font-size="11" text-anchor="end" fill="#444">0</text>
+<line x1="78" y1="321.24" x2="796" y2="321.24" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="325.24" font-size="11" text-anchor="end" fill="#444">20</text>
+<line x1="78" y1="256.48" x2="796" y2="256.48" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="260.48" font-size="11" text-anchor="end" fill="#444">40</text>
+<line x1="78" y1="191.71" x2="796" y2="191.71" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="195.71" font-size="11" text-anchor="end" fill="#444">60</text>
+<line x1="78" y1="126.95" x2="796" y2="126.95" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="130.95" font-size="11" text-anchor="end" fill="#444">80</text>
+<line x1="78" y1="62.19" x2="796" y2="62.19" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="66.19" font-size="11" text-anchor="end" fill="#444">100</text>
+<line x1="78" y1="46" x2="78" y2="386" stroke="#333" stroke-width="1.2" />
+<line x1="78" y1="386" x2="796" y2="386" stroke="#333" stroke-width="1.2" />
+<rect x="85.98" y="378.55" width="31.91" height="7.45" fill="#0072B2" />
+<rect x="165.76" y="380.61" width="31.91" height="5.39" fill="#0072B2" />
+<rect x="245.53" y="380.96" width="31.91" height="5.04" fill="#0072B2" />
+<rect x="325.31" y="380.82" width="31.91" height="5.18" fill="#0072B2" />
+<rect x="405.09" y="379.83" width="31.91" height="6.17" fill="#0072B2" />
+<rect x="484.87" y="377.58" width="31.91" height="8.42" fill="#0072B2" />
+<rect x="564.64" y="379.47" width="31.91" height="6.53" fill="#0072B2" />
+<rect x="644.42" y="378.41" width="31.91" height="7.59" fill="#0072B2" />
+<rect x="724.20" y="378.34" width="31.91" height="7.66" fill="#0072B2" />
+<rect x="117.89" y="283.71" width="31.91" height="102.29" fill="#D55E00" />
+<rect x="197.67" y="272.16" width="31.91" height="113.84" fill="#D55E00" />
+<rect x="277.44" y="291.62" width="31.91" height="94.38" fill="#D55E00" />
+<rect x="357.22" y="63.47" width="31.91" height="322.53" fill="#D55E00" />
+<rect x="437.00" y="260.96" width="31.91" height="125.04" fill="#D55E00" />
+<rect x="516.78" y="236.83" width="31.91" height="149.17" fill="#D55E00" />
+<rect x="596.56" y="246.95" width="31.91" height="139.05" fill="#D55E00" />
+<rect x="676.33" y="202.27" width="31.91" height="183.73" fill="#D55E00" />
+<rect x="756.11" y="86.75" width="31.91" height="299.25" fill="#D55E00" />
+<text x="117.9" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 117.9 402.0)">2016</text>
+<text x="197.7" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 197.7 402.0)">2017</text>
+<text x="277.4" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 277.4 402.0)">2018</text>
+<text x="357.2" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 357.2 402.0)">2019</text>
+<text x="437.0" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 437.0 402.0)">2020</text>
+<text x="516.8" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 516.8 402.0)">2021</text>
+<text x="596.6" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 596.6 402.0)">2022</text>
+<text x="676.3" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 676.3 402.0)">2023</text>
+<text x="756.1" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 756.1 402.0)">2024</text>
+<text x="78" y="24" font-size="15" font-weight="600" fill="#111">A small share of filings carries most of the reported hours</text>
+<text x="78" y="40" font-size="11" fill="#666">OSHA ITA Form 300A, reporting years 2016-2024, n=2,801,064 filings after deduplication</text>
+<text x="437.0" y="448" font-size="12" text-anchor="middle" fill="#333">Reporting year</text>
+<text x="16" y="216.0" font-size="12" text-anchor="middle" fill="#333" transform="rotate(-90 16 216.0)">Percent</text>
+<rect x="78.0" y="30" width="10" height="10" fill="#0072B2" />
+<text x="92.0" y="39" font-size="11" fill="#333">% of filings flagged implausible</text>
+<rect x="304.8" y="30" width="10" height="10" fill="#D55E00" />
+<text x="318.8" y="39" font-size="11" fill="#333">% of all reported hours held by them</text>
+</svg></div><figcaption><span class="figlabel">Figure 1.</span> About 2% of filings hold about 97% of all reported hours. The denominator failure is concentrated, not diffuse, which is why a single plausibility bound on hours per employee removes almost all of it.<span class="figsrc">Source: ehs-osha-analysis/outputs/figures/fig02_hours_share_implausible.svg</span></figcaption></figure>
 <p>The concentration is extreme even within the flagged set. A single filing holds 88.81% of all hours ever reported to the ITA and contributes zero recordable cases: establishment 90427, reporting year 2019, declaring 7 employees and 16,831,620,723,179 hours worked. That is roughly 2.4 trillion hours per employee, against a physical ceiling of 8,760. The ten largest filings by declared hours hold 94.5% of all hours and 0.0008% of all cases. One flag does the entire job: <code>hours per employee &gt; 4,500</code> fires on 24,617 filings (0.879% of the corpus) carrying 96.65% of all hours. The missing-value and low-hours flags matter for establishment-level rates and are irrelevant to the aggregate.</p>
 <p>The screened aggregate is not an artefact of where the bounds are drawn. Across a 25-cell grid of lower bounds (100–400 h) and upper bounds (3,500–6,000 h), the screened aggregate stays within 3.963–3.993. The flagged <em>share</em> is not similarly stable, running from 1.79% to 4.49% across the same grid, and that instability is the point rather than a weakness: the filings that move in and out of the flagged set as bounds shift carry almost none of the hours, so the correction they make is nearly identical. The conclusion survives the threshold choice; the count of flagged filings does not.</p>
 <h3 id="6-4-what-does-not-replicate-and-why-the-non-replication-is-the-finding" class="h-l2">6.4 What does not replicate, and why the non-replication is the finding<a class="anchor" href="#6-4-what-does-not-replicate-and-why-the-non-replication-is-the-finding" aria-label="Link to this section">#</a></h3>
 <p>An earlier public repository by the same author ran the same class of plausibility screen over a narrower panel of OSHA establishment filings and reported a headline correction multiplier <sup class="cite">[<a id="cite-chimmani2026-5" href="#ref-chimmani2026" title="Priyatham Chimmani, ehs-benchmarks: open OSHA injury-rate benchmarks, GitHub repository, MIT licence, 2026. https://github.com/priyatham9/ehs-benchmar...">chimmani2026</a>]</sup>. That multiplier is not reproduced by the pipeline described here, it is superseded by the figures in this section, and it is not restated here as a quantity, because the reason it cannot be reproduced is also the reason it should never have been quoted as one.</p>
 <p>The flagged <em>share</em> is stable and does replicate: 2.07% pooled here, and 1.56% to 2.60% across individual years. The multiplier is not a property of the corpus at all. It is a property of whichever years happened to contain an extreme filing:</p>
-<div class="tablewrap"><table><thead><tr><th>Year</th><th>Filings</th><th>% flagged</th><th>% of hours flagged</th><th>TRIR unscreened</th><th>TRIR screened</th><th>Ratio</th></tr></thead><tbody><tr><td>2016</td><td>214,977</td><td>2.30</td><td>31.6</td><td>2.729</td><td>3.921</td><td>1.44×</td></tr><tr><td>2017</td><td>259,757</td><td>1.66</td><td>35.2</td><td>2.634</td><td>3.998</td><td>1.52×</td></tr><tr><td>2018</td><td>286,884</td><td>1.56</td><td>29.1</td><td>2.920</td><td>4.069</td><td>1.39×</td></tr><tr><td>2019</td><td>290,475</td><td>1.60</td><td>99.6</td><td>0.016</td><td>4.018</td><td>249.3×</td></tr><tr><td>2020</td><td>293,385</td><td>1.91</td><td>38.6</td><td>2.792</td><td>4.491</td><td>1.61×</td></tr><tr><td>2021</td><td>315,936</td><td>2.60</td><td>46.1</td><td>2.385</td><td>4.368</td><td>1.83×</td></tr><tr><td>2022</td><td>346,799</td><td>2.02</td><td>42.9</td><td>2.661</td><td>4.605</td><td>1.73×</td></tr><tr><td>2023</td><td>394,231</td><td>2.34</td><td>56.7</td><td>1.380</td><td>3.147</td><td>2.28×</td></tr><tr><td>2024</td><td>398,620</td><td>2.37</td><td>92.4</td><td>0.280</td><td>3.642</td><td>13.0×</td></tr></tbody></table></div>
+<figure class="papertable" id="tbl-1"><figcaption><span class="figlabel">Table 1.</span> Plausibility screen by reporting year. The flagged share of filings stays near 2% every year while the share of hours flagged and the screened-to-unscreened ratio swing by two orders of magnitude, which is the reason no single correction multiplier is portable.<span class="figsrc">Source: ehs-osha-analysis/outputs/tables/quality_by_year.csv</span></figcaption><div class="tablewrap"><table><thead><tr><th>label</th><th>n_filings</th><th>n_implausible</th><th>implausible_share</th><th>hours_total</th><th>hours_share_implausible</th><th>cases_total</th><th>cases_share_implausible</th><th>aggregate_trir_unscreened</th><th>aggregate_trir_screened</th><th>ratio_screened_to_unscreened</th><th>median_establishment_trir_screened</th></tr></thead><tbody><tr><td>2016</td><td>214977</td><td>4946</td><td>0.02301</td><td>77463038896</td><td>0.3159</td><td>1057138</td><td>0.01715</td><td>2.729</td><td>3.921</td><td>1.437</td><td>2.791</td></tr><tr><td>2017</td><td>259757</td><td>4323</td><td>0.01664</td><td>92404917509</td><td>0.3516</td><td>1217200</td><td>0.01607</td><td>2.634</td><td>3.998</td><td>1.517</td><td>2.936</td></tr><tr><td>2018</td><td>286884</td><td>4467</td><td>0.01557</td><td>93660659695</td><td>0.2915</td><td>1367426</td><td>0.01275</td><td>2.92</td><td>4.069</td><td>1.393</td><td>3.001</td></tr><tr><td>2019</td><td>290475</td><td>4650</td><td>0.01601</td><td>17040948587892</td><td>0.996</td><td>1373514</td><td>0.01208</td><td>0.01612</td><td>4.018</td><td>249.3</td><td>2.928</td></tr><tr><td>2020</td><td>293385</td><td>5593</td><td>0.01906</td><td>101982390289</td><td>0.3862</td><td>1423562</td><td>0.01265</td><td>2.792</td><td>4.491</td><td>1.608</td><td>2.386</td></tr><tr><td>2021</td><td>315936</td><td>8217</td><td>0.02601</td><td>125498203077</td><td>0.4607</td><td>1496763</td><td>0.01237</td><td>2.385</td><td>4.368</td><td>1.831</td><td>2.533</td></tr><tr><td>2022</td><td>346799</td><td>6993</td><td>0.02016</td><td>129072646213</td><td>0.4294</td><td>1717180</td><td>0.01251</td><td>2.661</td><td>4.605</td><td>1.731</td><td>2.422</td></tr><tr><td>2023</td><td>394231</td><td>9235</td><td>0.02343</td><td>225724016054</td><td>0.5674</td><td>1557511</td><td>0.01359</td><td>1.38</td><td>3.147</td><td>2.28</td><td>2</td></tr><tr><td>2024</td><td>398620</td><td>9433</td><td>0.02366</td><td>1064944034343</td><td>0.9242</td><td>1493188</td><td>0.01513</td><td>0.2804</td><td>3.642</td><td>12.99</td><td>1.688</td></tr></tbody></table></div></figure>
+<figure class="paperfig" id="fig-2"><div class="figbody"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img">
+<rect x="0" y="0" width="820" height="460" fill="#ffffff" />
+<line x1="78" y1="386.00" x2="796" y2="386.00" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="390.00" font-size="11" text-anchor="end" fill="#444">0</text>
+<line x1="78" y1="321.80" x2="796" y2="321.80" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="325.80" font-size="11" text-anchor="end" fill="#444">1</text>
+<line x1="78" y1="257.59" x2="796" y2="257.59" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="261.59" font-size="11" text-anchor="end" fill="#444">2</text>
+<line x1="78" y1="193.39" x2="796" y2="193.39" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="197.39" font-size="11" text-anchor="end" fill="#444">3</text>
+<line x1="78" y1="129.18" x2="796" y2="129.18" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="133.18" font-size="11" text-anchor="end" fill="#444">4</text>
+<line x1="78" y1="64.98" x2="796" y2="64.98" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="68.98" font-size="11" text-anchor="end" fill="#444">5</text>
+<line x1="78" y1="46" x2="78" y2="386" stroke="#333" stroke-width="1.2" />
+<line x1="78" y1="386" x2="796" y2="386" stroke="#333" stroke-width="1.2" />
+<rect x="85.98" y="210.76" width="31.91" height="175.24" fill="#0072B2" />
+<rect x="165.76" y="216.85" width="31.91" height="169.15" fill="#0072B2" />
+<rect x="245.53" y="198.53" width="31.91" height="187.47" fill="#0072B2" />
+<rect x="325.31" y="384.97" width="31.91" height="1.03" fill="#0072B2" />
+<rect x="405.09" y="206.76" width="31.91" height="179.24" fill="#0072B2" />
+<rect x="484.87" y="232.85" width="31.91" height="153.15" fill="#0072B2" />
+<rect x="564.64" y="215.17" width="31.91" height="170.83" fill="#0072B2" />
+<rect x="644.42" y="297.40" width="31.91" height="88.60" fill="#0072B2" />
+<rect x="724.20" y="368.00" width="31.91" height="18.00" fill="#0072B2" />
+<rect x="117.89" y="134.24" width="31.91" height="251.76" fill="#D55E00" />
+<rect x="197.67" y="129.34" width="31.91" height="256.66" fill="#D55E00" />
+<rect x="277.44" y="124.78" width="31.91" height="261.22" fill="#D55E00" />
+<rect x="357.22" y="128.00" width="31.91" height="258.00" fill="#D55E00" />
+<rect x="437.00" y="97.69" width="31.91" height="288.31" fill="#D55E00" />
+<rect x="516.78" y="105.56" width="31.91" height="280.44" fill="#D55E00" />
+<rect x="596.56" y="90.35" width="31.91" height="295.65" fill="#D55E00" />
+<rect x="676.33" y="183.97" width="31.91" height="202.03" fill="#D55E00" />
+<rect x="756.11" y="152.20" width="31.91" height="233.80" fill="#D55E00" />
+<text x="117.9" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 117.9 402.0)">2016</text>
+<text x="197.7" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 197.7 402.0)">2017</text>
+<text x="277.4" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 277.4 402.0)">2018</text>
+<text x="357.2" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 357.2 402.0)">2019</text>
+<text x="437.0" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 437.0 402.0)">2020</text>
+<text x="516.8" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 516.8 402.0)">2021</text>
+<text x="596.6" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 596.6 402.0)">2022</text>
+<text x="676.3" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 676.3 402.0)">2023</text>
+<text x="756.1" y="402.0" font-size="11" text-anchor="middle" fill="#333" transform="rotate(0 756.1 402.0)">2024</text>
+<text x="78" y="24" font-size="15" font-weight="600" fill="#111">Aggregate TRIR before and after the plausibility screen</text>
+<text x="78" y="40" font-size="11" fill="#666">OSHA ITA Form 300A, reporting years 2016-2024, n=2,801,064 filings after deduplication</text>
+<text x="437.0" y="448" font-size="12" text-anchor="middle" fill="#333">Reporting year</text>
+<text x="16" y="216.0" font-size="12" text-anchor="middle" fill="#333" transform="rotate(-90 16 216.0)">Recordable cases per 200,000 hours</text>
+<rect x="78.0" y="30" width="10" height="10" fill="#0072B2" />
+<text x="92.0" y="39" font-size="11" fill="#333">unscreened (all filings)</text>
+<rect x="253.6" y="30" width="10" height="10" fill="#D55E00" />
+<text x="267.6" y="39" font-size="11" fill="#333">screened</text>
+</svg></div><figcaption><span class="figlabel">Figure 2.</span> The unscreened aggregate TRIR collapses toward zero in 2019 and 2024 because a handful of filings flood the denominator; the screened series stays between roughly 3.1 and 4.6 across all nine years. The gap between the two lines is the correction, and it is a property of the year, not of the corpus.<span class="figsrc">Source: ehs-osha-analysis/outputs/figures/fig01_aggregate_trir_by_year.svg</span></figcaption></figure>
 <p>The screened rate is stable across nine years (3.15–4.60). The unscreened rate is not (0.016–2.92). The multiplier between them ranges from 1.39× to 249×, and no year subset tried here reproduces the earlier figure. The correct statement of the finding is therefore structural and holds in every single year: a small minority of filings is internally implausible, those filings hold a disproportionate share of the denominator, and removing them raises the aggregate substantially. The specific multiplier is a property of the tail of the hours distribution in whatever slice was taken, and should not be quoted as a constant. We state this here rather than in a limitations paragraph because the earlier framing circulated, and correcting one's own published number in the body of a paper is cheaper than having a reviewer do it.</p>
 <p>The methodological point generalizes beyond this corpus. Hanecke and colleagues faced the same problem in 1998 with more than 1.2 million German accident records and no exposure data, and had to construct and compare estimated exposure models before any rate could be computed at all <sup class="cite">[<a id="cite-hanecke1998-5" href="#ref-hanecke1998" title="Hanecke, K., Tiedemann, S., Nachreiner, F. &amp; Grzech-Sukalo, H. (1998). Accident risk as a function of hour at work and time of day as determined from ...">hanecke1998</a>]</sup>. Hopkins reached the same conclusion from the other direction without any statistics, arguing that what determines whether a safety indicator is meaningful is not whether it is labelled leading or lagging but whether, at the level of aggregation in use, there are enough countable events to form a rate - the "zoom effect" <sup class="cite">[<a id="cite-hopkins2009-3" href="#ref-hopkins2009" title="Hopkins, A. (2009). Thinking about process safety indicators. Safety Science, 47(4), 460–465. https://doi.org/10.1016/j.ssci.2007.12.006">hopkins2009</a>]</sup>. Both are arguments about denominators. Neither has an analogue in the performance-shaping-factor literature, which presupposes a well-defined opportunity count throughout <sup class="cite">[<a id="cite-nureg2198-13" href="#ref-nureg2198" title="U.S. Nuclear Regulatory Commission (2021). The General Methodology of an Integrated Human Event Analysis System (IDHEAS-G). NUREG-2198. Washington, DC...">nureg2198</a>]</sup>, <sup class="cite">[<a id="cite-groth2012-8" href="#ref-groth2012" title="Groth, K.M. &amp; Mosleh, A. (2012). A data-informed PIF hierarchy for model-based Human Reliability Analysis. Reliability Engineering &amp; System Safety, 10...">groth2012</a>]</sup>.</p>
 <h3 id="6-5-zero-recordable-filings-overdispersion-not-a-hidden-non-reporting-population" class="h-l2">6.5 Zero-recordable filings: overdispersion, not a hidden non-reporting population<a class="anchor" href="#6-5-zero-recordable-filings-overdispersion-not-a-hidden-non-reporting-population" aria-label="Link to this section">#</a></h3>
 <p>Among plausible filings, 37.1% of all establishment-years report zero recordable cases. For NAICS 325 (chemical manufacturing) the pooled figure is 37.4%, rising from 34.1% in 2016 to 41.3% in 2024. The prior repository's often-quoted figure of roughly 38% for chemical establishments is consistent with this panel's 37.4% <sup class="cite">[<a id="cite-chimmani2026-6" href="#ref-chimmani2026" title="Priyatham Chimmani, ehs-benchmarks: open OSHA injury-rate benchmarks, GitHub repository, MIT licence, 2026. https://github.com/priyatham9/ehs-benchmar...">chimmani2026</a>]</sup>.</p>
 <p>The obvious reading is that a zero-inflated count model is required - that there exists a distinct population of establishments producing structural zeros through non-reporting. Fitting the models does not support that reading as the main story.</p>
 <p>Four intercept-only models with an exposure offset (Poisson, NB2, ZIP, ZINB) were fitted by maximum likelihood and compared by AIC, BIC and observed-versus-expected zeros over the 30 largest NAICS 3-digit groups in 2024, each with at least 500 establishments, covering 306,711 establishment-filings. Industry selection reads only group size, never outcome values or fit statistics.</p>
-<div class="tablewrap"><table><thead><tr><th>Model</th><th>Industries best by AIC (of 30)</th></tr></thead><tbody><tr><td>Poisson</td><td>0</td></tr><tr><td>ZIP</td><td>0</td></tr><tr><td>NB2</td><td>15</td></tr><tr><td>ZINB</td><td>15</td></tr></tbody></table></div>
+<figure class="papertable" id="tbl-2"><figcaption><span class="figlabel">Table 2.</span> Count-model selection across the 30 largest NAICS 3-digit groups in 2024. Poisson and ZIP never win; NB2 and ZINB split the field under intercept-only fits, so overdispersion is universal and zero inflation is optional; with covariates (text below) ZINB wins in 10 of 30.<span class="figsrc">Source: ehs-osha-analysis/outputs/tables/count_model_selection_summary.csv</span></figcaption><div class="tablewrap"><table><thead><tr><th>model</th><th>n_industries_best_by_aic</th><th>n_industries_fitted</th><th>share_best_by_aic</th></tr></thead><tbody><tr><td>poisson</td><td>0</td><td>30</td><td>0</td></tr><tr><td>nb2</td><td>15</td><td>30</td><td>0.5</td></tr><tr><td>zip</td><td>0</td><td>30</td><td>0</td></tr><tr><td>zinb</td><td>15</td><td>30</td><td>0.5</td></tr></tbody></table></div></figure>
 <p>Two results point in opposite directions. Overdispersion is universal: Poisson never wins in any of the 30 industries, and the variance-to-mean ratio of recordable counts runs from 3.0 to 756 against the value of 1 that Poisson assumes. ZIP is never selected either, so adding structural zeros to a Poisson does not rescue it - the problem is the spread of the whole distribution rather than the zeros alone. Meanwhile zero-inflation is optional and, where present, small: in 14 of the 30 industries the ZINB inflation parameter collapses to the boundary (on the order of 1e-14) and NB2 wins outright, and where ZINB is selected the inflation probability ranges from 0.001 to 0.069. That is a few percent of establishments, not the 37–41% zero share that motivated fitting it. NB2 frequently predicts slightly more zeros than are observed.</p>
+<p>Refitting the four models with a log-hours offset, establishment size-band dummies and NAICS 4-digit fixed effects within each 3-digit group (<code>count_model_covariates_summary.csv</code> in the repository, method in <code>docs/COUNT_MODELS.md</code>) leaves overdispersion intact in all 30 industries (NB2 beats Poisson at boundary-corrected p &lt; 0.001 in every one; NB2 alpha median 0.79, minimum 0.16) but reduces the ZINB wins from 15 of 30 to 10 of 30, with the ZINB-vs-NB2 boundary test below 0.01 in 9. The intercept-only table above therefore overstates zero inflation: part of the excess zeros was mean heterogeneity across size and sub-industry. The conclusion that holds under both specifications is that overdispersion is universal and zero inflation beyond NB2 is present in a minority of industries.</p>
 <p>Establishment size accounts for most of the rest. The zero share falls from 0.751 in the 1–19 employee band to about 0.08 above 500 employees, and the median establishment TRIR rises from 0.00 to 3.61 across the same range; a ten-person site has so little exposure that zero is the modal outcome. (The fall is not strictly monotonic - 0.073 at 250–499 rises to 0.082 at 500–999 - and we note it rather than smoothing it.) Any benchmark comparing a site against an industry median without conditioning on size is comparing it against a number driven by how large the other sites are.</p>
 <p>This is a statement about distributional shape, not about reporting behaviour. An overdispersed process and a mixture of compliant and non-compliant reporters can generate similar count distributions, and these data cannot separate them. Nothing here is evidence that under-reporting is absent. What the result does establish is that the bare zero share is not evidence that it is present, which is how that statistic is ordinarily used.</p>
 <p>The distributional facts also bound what any downstream predictive layer can do. A variance-to-mean ratio of 241 in the largest size band, combined with a base rate that puts one recordable at roughly one per 10,870 eight-hour worker-shifts at the 2024 BLS private-industry rate <sup class="cite">[<a id="cite-bls2026-4" href="#ref-bls2026" title="U.S. Bureau of Labor Statistics (2026). Employer-Reported Workplace Injuries and Illnesses - 2023–2024. News release USDL-26-0101, January 22, 2026.">bls2026</a>]</sup>, is a rare-event regime in which maximum-likelihood logistic regression underestimates event probabilities <sup class="cite">[<a id="cite-king_zeng2001-1" href="#ref-king_zeng2001" title="King, G., &amp; Zeng, L. (2001). Logistic Regression in Rare Events Data. Political Analysis, 9(2), 137–163. https://doi.org/10.1093/oxfordjournals.pan.a0...">king_zeng2001</a>]</sup> and in which the standard imbalance corrections - random over- and undersampling, SMOTE <sup class="cite">[<a id="cite-chawla2002-1" href="#ref-chawla2002" title="Chawla, N. V., Bowyer, K. W., Hall, L. O., &amp; Kegelmeyer, W. P. (2002). SMOTE: Synthetic Minority Over-sampling Technique. Journal of Artificial Intell...">chawla2002</a>]</sup> - degrade calibration by strongly overestimating minority-class probability without improving discrimination <sup class="cite">[<a id="cite-goorbergh2022-3" href="#ref-goorbergh2022" title="van den Goorbergh, R., van Smeden, M., Timmerman, D., &amp; Van Calster, B. (2022). The harm of class imbalance corrections for risk prediction models: il...">goorbergh2022</a>]</sup>, <sup class="cite">[<a id="cite-carriero2025-3" href="#ref-carriero2025" title="Carriero, A., Luijken, K., de Hond, A., Moons, K. G. M., van Calster, B., &amp; van Smeden, M. (2025). The Harms of Class Imbalance Corrections for Machin...">carriero2025</a>]</sup>. Discrimination metrics are close to uninformative here; calibration is the property that determines whether a score can be acted on <sup class="cite">[<a id="cite-vancalster2019-2" href="#ref-vancalster2019" title="Van Calster, B., McLernon, D. J., van Smeden, M., Wynants, L., &amp; Steyerberg, E. W., on behalf of Topic Group 'Evaluating diagnostic tests and predicti...">vancalster2019</a>]</sup>, <sup class="cite">[<a id="cite-vancalster2016-2" href="#ref-vancalster2016" title="Van Calster, B., Nieboer, D., Vergouwe, Y., De Cock, B., Pencina, M. J., &amp; Steyerberg, E. W. (2016). A calibration hierarchy for risk models was defin...">vancalster2016</a>]</sup>.</p>
 <h3 id="6-6-benchmark-bands-move-on-their-own" class="h-l2">6.6 Benchmark bands move on their own<a class="anchor" href="#6-6-benchmark-bands-move-on-their-own" aria-label="Link to this section">#</a></h3>
 <p>Peer groups defined as NAICS 3-digit × size band, compared across eight adjacent year pairs over roughly 440 matched cells per pair, are highly reproducible in <em>ordering</em> (median Spearman rho 0.862–0.933 across the p25, p50, p75 and p90 bands) and 95.7–98.5% of publishable cells persist between adjacent years. But the <em>level</em> of each band moves by a median of 9.5–14.3% per year. An establishment sitting exactly on last year's p75 would be roughly a tenth of the way off this year's p75 without any change in its own performance.</p>
+<figure class="paperfig" id="fig-3"><div class="figbody"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 820 460" font-family="system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" role="img">
+<rect x="0" y="0" width="820" height="460" fill="#ffffff" />
+<line x1="78" y1="386.00" x2="796" y2="386.00" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="390.00" font-size="11" text-anchor="end" fill="#444">0</text>
+<line x1="78" y1="326.65" x2="796" y2="326.65" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="330.65" font-size="11" text-anchor="end" fill="#444">5</text>
+<line x1="78" y1="267.29" x2="796" y2="267.29" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="271.29" font-size="11" text-anchor="end" fill="#444">10</text>
+<line x1="78" y1="207.94" x2="796" y2="207.94" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="211.94" font-size="11" text-anchor="end" fill="#444">15</text>
+<line x1="78" y1="148.59" x2="796" y2="148.59" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="152.59" font-size="11" text-anchor="end" fill="#444">20</text>
+<line x1="78" y1="89.24" x2="796" y2="89.24" stroke="#e6e6e6" stroke-width="1" />
+<text x="70" y="93.24" font-size="11" text-anchor="end" fill="#444">25</text>
+<line x1="78.00" y1="386" x2="78.00" y2="390" stroke="#666" stroke-width="1" />
+<text x="78.00" y="403" font-size="11" text-anchor="middle" fill="#444">0</text>
+<line x1="203.34" y1="386" x2="203.34" y2="390" stroke="#666" stroke-width="1" />
+<text x="203.34" y="403" font-size="11" text-anchor="middle" fill="#444">5</text>
+<line x1="328.68" y1="386" x2="328.68" y2="390" stroke="#666" stroke-width="1" />
+<text x="328.68" y="403" font-size="11" text-anchor="middle" fill="#444">10</text>
+<line x1="454.02" y1="386" x2="454.02" y2="390" stroke="#666" stroke-width="1" />
+<text x="454.02" y="403" font-size="11" text-anchor="middle" fill="#444">15</text>
+<line x1="579.36" y1="386" x2="579.36" y2="390" stroke="#666" stroke-width="1" />
+<text x="579.36" y="403" font-size="11" text-anchor="middle" fill="#444">20</text>
+<line x1="704.69" y1="386" x2="704.69" y2="390" stroke="#666" stroke-width="1" />
+<text x="704.69" y="403" font-size="11" text-anchor="middle" fill="#444">25</text>
+<line x1="78" y1="46" x2="78" y2="386" stroke="#333" stroke-width="1.2" />
+<line x1="78" y1="386" x2="796" y2="386" stroke="#333" stroke-width="1.2" />
+<line x1="78.00" y1="386.00" x2="796.00" y2="46.00" stroke="#888" stroke-width="1.2" stroke-dasharray="5,4" />
+<circle cx="222.91" cy="326.23" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="235.44" cy="302.90" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="281.07" cy="307.32" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="248.23" cy="306.10" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="234.43" cy="301.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="218.80" cy="293.61" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="327.30" cy="286.75" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="281.46" cy="294.69" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="275.71" cy="292.38" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="248.98" cy="300.55" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="238.13" cy="292.44" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="267.77" cy="313.59" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="322.09" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="221.60" cy="314.09" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="222.45" cy="320.44" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="230.26" cy="304.65" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="222.47" cy="314.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="213.17" cy="310.91" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="89.80" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="247.47" cy="339.25" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="134.89" cy="364.76" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="124.92" cy="361.60" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="108.44" cy="374.74" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="108.79" cy="372.40" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="190.29" cy="335.62" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="182.76" cy="335.66" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="169.30" cy="342.83" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="117.22" cy="371.30" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="143.63" cy="351.22" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="120.89" cy="365.32" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="186.27" cy="336.28" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="174.74" cy="343.11" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="154.12" cy="354.22" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="108.88" cy="374.34" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="130.70" cy="362.37" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="121.12" cy="367.64" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="215.44" cy="331.64" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="182.46" cy="339.09" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="152.68" cy="349.47" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="82.74" cy="383.99" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="131.74" cy="360.98" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="101.99" cy="375.38" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="185.14" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="211.27" cy="326.14" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="200.41" cy="330.88" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="177.15" cy="337.94" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="108.83" cy="371.19" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="150.59" cy="356.80" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="121.95" cy="362.58" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="217.29" cy="318.79" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="242.98" cy="313.97" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="248.80" cy="307.28" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="232.98" cy="316.58" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="181.91" cy="339.34" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="197.68" cy="331.44" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="171.48" cy="343.56" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="238.66" cy="321.51" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="271.12" cy="294.99" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="270.63" cy="309.44" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="253.57" cy="315.48" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="223.43" cy="318.57" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="252.24" cy="298.16" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="256.50" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="270.95" cy="296.52" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="229.93" cy="326.55" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="173.78" cy="338.28" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="161.65" cy="356.27" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="330.27" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="221.56" cy="304.47" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="186.91" cy="335.35" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="183.88" cy="334.22" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="187.01" cy="341.46" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="190.03" cy="347.24" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="194.29" cy="341.71" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="209.37" cy="336.93" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="187.96" cy="315.85" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="298.37" cy="308.79" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="307.56" cy="283.64" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="296.58" cy="291.29" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="251.16" cy="310.38" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="234.00" cy="324.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="199.28" cy="329.91" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="188.11" cy="338.80" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="171.38" cy="343.99" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="150.36" cy="356.73" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="138.90" cy="358.68" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="182.67" cy="343.63" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="167.85" cy="342.76" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="173.29" cy="344.57" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="162.69" cy="348.04" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="168.26" cy="340.71" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="191.63" cy="350.53" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="148.14" cy="357.56" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="106.24" cy="376.54" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="90.62" cy="381.57" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="185.09" cy="338.10" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="164.81" cy="345.76" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="152.20" cy="352.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="104.80" cy="374.05" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="132.79" cy="361.71" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="121.13" cy="366.09" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="236.13" cy="335.89" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="240.66" cy="319.57" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="212.07" cy="323.15" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="187.93" cy="336.08" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="160.40" cy="352.12" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="171.74" cy="347.59" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="150.08" cy="357.88" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="267.78" cy="313.76" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="240.14" cy="308.34" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="221.46" cy="320.13" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="203.26" cy="332.86" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="177.55" cy="340.57" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="344.40" cy="304.44" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="300.03" cy="279.98" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="297.67" cy="302.21" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="235.88" cy="318.84" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="124.07" cy="365.23" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="185.95" cy="339.32" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="162.48" cy="353.70" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="237.83" cy="315.74" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="246.39" cy="311.81" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="234.98" cy="314.61" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="211.13" cy="326.90" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="166.10" cy="342.99" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="171.14" cy="347.74" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="209.23" cy="326.65" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="208.23" cy="329.23" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="190.98" cy="338.43" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="158.36" cy="353.95" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="165.28" cy="347.60" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="141.57" cy="355.94" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="128.64" cy="361.43" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="126.93" cy="364.26" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="98.25" cy="378.10" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="114.58" cy="368.75" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="106.81" cy="371.20" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="160.73" cy="341.83" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="162.80" cy="344.24" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="172.19" cy="349.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="145.05" cy="360.65" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="144.43" cy="359.12" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="133.95" cy="359.67" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="238.88" cy="322.68" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="232.38" cy="313.98" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="211.36" cy="328.20" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="181.28" cy="339.39" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="183.64" cy="338.95" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="167.61" cy="348.87" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="242.63" cy="299.82" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="245.20" cy="310.86" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="229.73" cy="308.18" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="210.12" cy="320.10" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="182.35" cy="325.50" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="188.73" cy="334.32" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="208.57" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="186.25" cy="331.24" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="184.98" cy="340.44" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="171.98" cy="346.86" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="115.66" cy="370.91" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="150.03" cy="354.46" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="132.93" cy="359.92" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="208.49" cy="323.37" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="206.95" cy="329.57" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="188.15" cy="337.21" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="101.73" cy="374.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="170.23" cy="342.14" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="183.85" cy="345.14" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="220.19" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="214.49" cy="324.79" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="242.10" cy="312.28" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="270.02" cy="296.24" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="190.63" cy="327.72" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="305.04" cy="285.60" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="276.29" cy="296.80" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="363.78" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="134.39" cy="353.03" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="297.12" cy="269.42" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="287.75" cy="279.85" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="199.85" cy="332.63" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="192.60" cy="333.32" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="195.12" cy="318.07" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="238.65" cy="295.55" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="316.68" cy="257.56" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="235.44" cy="285.10" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="294.64" cy="281.05" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="331.30" cy="270.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="305.95" cy="280.81" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="218.04" cy="317.26" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="222.33" cy="323.32" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="238.19" cy="320.60" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="167.08" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="236.54" cy="274.80" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="237.78" cy="311.91" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="244.49" cy="313.85" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="221.40" cy="315.42" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="238.19" cy="305.07" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="182.42" cy="322.22" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="277.29" cy="287.56" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="234.16" cy="305.19" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="120.93" cy="299.49" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="244.57" cy="298.71" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="213.69" cy="328.52" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="186.16" cy="331.41" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="227.20" cy="318.09" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="284.16" cy="251.87" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="252.07" cy="302.97" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="249.70" cy="301.49" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="254.61" cy="226.23" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="293.76" cy="281.83" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="303.62" cy="285.47" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="273.06" cy="305.08" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="216.96" cy="291.18" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="287.42" cy="273.90" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="247.95" cy="260.46" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="231.71" cy="304.47" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="167.26" cy="340.60" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="157.94" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="223.27" cy="280.72" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="232.03" cy="317.75" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="257.39" cy="298.97" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="597.40" cy="297.22" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="626.95" cy="239.16" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="271.66" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="278.67" cy="303.94" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="193.59" cy="309.95" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="258.75" cy="290.05" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="231.80" cy="272.85" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="329.10" cy="254.20" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="314.56" cy="226.95" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="286.68" cy="274.54" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="275.72" cy="237.15" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="333.93" cy="275.11" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="272.01" cy="307.13" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="242.17" cy="309.91" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="245.89" cy="311.10" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="220.66" cy="320.39" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="206.02" cy="320.65" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="175.45" cy="342.98" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="226.56" cy="311.12" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="232.10" cy="311.31" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="253.26" cy="307.53" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="288.10" cy="298.70" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="274.92" cy="265.23" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="147.25" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="209.59" cy="325.91" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="237.59" cy="308.30" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="219.55" cy="312.63" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="188.73" cy="334.43" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="188.63" cy="327.37" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="206.34" cy="319.88" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="755.36" cy="88.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="316.35" cy="284.64" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="330.20" cy="274.26" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="308.61" cy="281.30" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="240.60" cy="310.79" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="218.55" cy="316.47" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="435.01" cy="237.58" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="495.83" cy="194.60" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="439.51" cy="211.18" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="372.51" cy="263.93" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="452.54" cy="226.89" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="477.88" cy="220.39" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="198.52" cy="332.39" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="199.67" cy="331.95" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="198.33" cy="329.69" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="266.68" cy="302.22" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="220.24" cy="324.49" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="242.30" cy="303.05" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="245.51" cy="318.92" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="244.11" cy="315.25" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="200.20" cy="328.94" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="90.25" cy="377.64" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="111.83" cy="369.07" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="94.84" cy="374.12" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="117.67" cy="347.65" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="139.24" cy="356.89" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="369.10" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="92.32" cy="369.97" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="125.84" cy="371.06" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="214.25" cy="313.67" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="198.44" cy="319.70" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="199.16" cy="330.26" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="214.99" cy="341.02" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="197.03" cy="337.24" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="206.59" cy="299.56" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="209.24" cy="317.09" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="219.95" cy="326.33" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="220.26" cy="324.91" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="189.95" cy="310.28" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="120.28" cy="365.06" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="122.76" cy="369.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="92.64" cy="378.97" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="100.56" cy="374.84" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="92.99" cy="376.31" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="92.38" cy="378.85" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="92.12" cy="377.40" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="88.71" cy="380.94" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="87.47" cy="381.16" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="216.37" cy="314.07" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="204.96" cy="322.64" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="189.92" cy="333.84" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="142.87" cy="357.67" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="175.13" cy="338.75" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="164.41" cy="347.91" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="226.91" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="218.99" cy="322.13" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="222.74" cy="315.89" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="240.74" cy="314.14" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="241.71" cy="325.43" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="245.88" cy="306.96" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="253.48" cy="300.19" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="232.08" cy="311.39" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="168.56" cy="349.28" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="179.19" cy="343.20" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="163.17" cy="352.11" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="246.23" cy="307.28" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="249.25" cy="309.43" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="229.16" cy="320.83" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="154.37" cy="352.15" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="189.74" cy="325.15" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="211.44" cy="331.01" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="220.15" cy="318.31" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="240.87" cy="318.47" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="253.09" cy="301.90" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="242.76" cy="307.22" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="247.85" cy="303.97" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="251.29" cy="306.57" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="253.96" cy="292.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="326.17" cy="276.09" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="349.66" cy="268.62" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="313.00" cy="283.48" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="198.57" cy="327.43" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="275.40" cy="294.72" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="268.66" cy="293.58" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="246.51" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="278.27" cy="290.63" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="246.21" cy="305.40" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="221.58" cy="315.39" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="151.31" cy="378.04" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="188.37" cy="330.46" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="162.02" cy="339.31" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="263.59" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="452.37" cy="222.72" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="385.40" cy="230.35" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="354.40" cy="244.88" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="237.08" cy="307.54" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="92.71" cy="382.49" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="325.39" cy="279.35" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="229.42" cy="309.20" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="272.94" cy="292.24" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="293.30" cy="283.13" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="260.08" cy="321.78" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="239.64" cy="307.08" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="263.37" cy="301.44" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="293.26" cy="300.90" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="232.59" cy="315.08" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="232.05" cy="318.06" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="312.10" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="232.73" cy="316.18" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="250.57" cy="308.03" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="273.30" cy="295.97" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="237.65" cy="318.67" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="272.77" cy="295.10" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="249.82" cy="303.29" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="212.90" cy="318.63" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="198.61" cy="309.89" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="192.19" cy="317.20" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="209.01" cy="321.53" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="211.08" cy="321.48" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="242.23" cy="309.91" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="205.73" cy="327.71" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="186.80" cy="335.35" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="161.39" cy="340.42" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="144.86" cy="355.67" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="234.46" cy="289.06" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="228.22" cy="315.73" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="216.86" cy="328.83" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="204.57" cy="320.13" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="238.30" cy="299.81" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="269.92" cy="309.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="267.03" cy="311.23" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="219.05" cy="315.60" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="250.12" cy="301.97" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="259.07" cy="302.81" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="245.65" cy="296.65" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="257.95" cy="297.52" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="273.65" cy="298.55" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="279.50" cy="298.68" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="340.34" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="366.94" cy="243.03" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="353.70" cy="253.36" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="368.83" cy="260.19" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="414.38" cy="241.68" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="385.03" cy="216.02" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="337.94" cy="251.56" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="154.93" cy="340.71" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="160.87" cy="344.79" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="140.85" cy="354.98" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="131.43" cy="356.69" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="330.83" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="289.23" cy="270.64" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="237.55" cy="303.49" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="265.71" cy="316.92" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="280.24" cy="295.87" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="229.02" cy="327.58" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="246.48" cy="281.90" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="172.22" cy="351.04" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="201.29" cy="318.74" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<circle cx="78.00" cy="386.00" r="2.4" fill="#0072B2" fill-opacity="0.55" />
+<text x="78" y="24" font-size="15" font-weight="600" fill="#111">Peer-group 75th percentile TRIR: 2023 vs 2024</text>
+<text x="78" y="40" font-size="11" fill="#666">OSHA ITA Form 300A, reporting years 2016-2024, n=2,801,064 filings after deduplication  |  469 matched peer groups</text>
+<text x="437.0" y="448" font-size="12" text-anchor="middle" fill="#333">p75 TRIR in 2023</text>
+<text x="16" y="216.0" font-size="12" text-anchor="middle" fill="#333" transform="rotate(-90 16 216.0)">p75 TRIR in 2024</text>
+<rect x="78.0" y="30" width="10" height="10" fill="#0072B2" />
+<text x="92.0" y="39" font-size="11" fill="#333">matched peer group</text>
+</svg></div><figcaption><span class="figlabel">Figure 3.</span> Peer-group 75th percentile TRIR values for 2023 and 2024 are well ordered but scatter around the diagonal; the band level moves year to year even when the ranking does not, so an answer at the band edge is close to a coin flip.<span class="figsrc">Source: ehs-osha-analysis/outputs/figures/fig06_percentile_stability.svg</span></figcaption></figure>
 <p>This bears directly on the question-answering task. A retrieval system asked "is this site's TRIR above the industry 75th percentile?" will return an answer that is approximately a coin flip near the band edge, and it will return it with the same fluency whether the site is clearly above, clearly below, or inside the year-to-year noise. The band is a real quantity with a real sampling distribution; the answer is presented as a fact.</p>
 <h3 id="6-7-hour-of-shift-a-claim-withdrawn-and-the-conditions-for-ever-making-it-again" class="h-l2">6.7 Hour-of-shift: a claim withdrawn, and the conditions for ever making it again<a class="anchor" href="#6-7-hour-of-shift-a-claim-withdrawn-and-the-conditions-for-ever-making-it-again" aria-label="Link to this section">#</a></h3>
 <p>The author's earlier work circulated a shift-timing claim about when during a shift injuries peak <sup class="cite">[<a id="cite-chimmani2026-7" href="#ref-chimmani2026" title="Priyatham Chimmani, ehs-benchmarks: open OSHA injury-rate benchmarks, GitHub repository, MIT licence, 2026. https://github.com/priyatham9/ehs-benchmar...">chimmani2026</a>]</sup>. It is withdrawn here rather than restated, and its numbers are not reproduced anywhere in this manuscript, for a reason that is structural rather than a matter of degree: the pipeline described in this section could not produce such a figure at all. Form 300A is an annual summary. It carries case counts and total hours worked and no time-of-day, time-employee-began-work, or narrative field at all <sup class="cite">[<a id="cite-osha_ita_summary_dict-2" href="#ref-osha_ita_summary_dict" title="Occupational Safety and Health Administration. ITA Summary Data Dictionary (Form 300A). https://www.osha.gov/sites/default/files/summary_data_dictiona...">osha_ita_summary_dict</a>]</sup>. Hour-of-shift requires Form 300/301 case-detail data, which OSHA began publishing on a different and narrower establishment universe with the 2023/2024 collection cycle <sup class="cite">[<a id="cite-osha_ita_case_detail_dict_2026-2" href="#ref-osha_ita_case_detail_dict_2026" title="Occupational Safety and Health Administration. ITA Case Detail Data Dictionary (2026 revision). https://www.osha.gov/sites/default/files/case_detail_d...">osha_ita_case_detail_dict_2026</a>]</sup>. Any future hour-of-shift figure must name its own dataset, year range and N, must not be read as a subset of the 300A panel analysed here, and must not inherit this panel's filing count.</p>

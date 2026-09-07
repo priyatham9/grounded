@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+type: software
+title: "grounded: a research programme on grounded reasoning for safety-critical AI"
+authors:
+  - family-names: Chimmani
+    given-names: Priyatham
+    email: priyatham9@gmail.com
+repository-code: "https://github.com/priyatham9/grounded"
+url: "https://priyatham9.github.io/grounded/"
+license: MIT
+date-released: "2026-09-07"
+version: 0.1.0
