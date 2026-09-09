@@ -1,0 +1,18 @@
+name: docs
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check published pages exist
+        run: |
+          for f in docs/index.html docs/paper.html docs/paper-osha.html; do
+            test -s "$f" || { echo "missing or empty: $f"; exit 1; }
+          done
+          echo "all pages present"

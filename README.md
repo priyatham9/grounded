@@ -1,5 +1,7 @@
 # grounded
 
+[![docs](https://github.com/priyatham9/grounded/actions/workflows/links.yml/badge.svg)](https://github.com/priyatham9/grounded/actions/workflows/links.yml)
+
 Landing site for a research programme on grounded reasoning for safety-critical AI
 in EHS and process industries.
 
