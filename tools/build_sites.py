@@ -1379,21 +1379,24 @@ def build_grounding():
          "Answering one correctly while getting its partner wrong is the signal being measured, "
          "and it is why the primary outcome is paired accuracy rather than per-item accuracy."],
         "State of the work",
-        "<p><strong>No system has been evaluated on this corpus.</strong> What exists is the "
-        "apparatus: a question corpus, a scoring harness, a source verification tool, and a "
-        "preregistered analysis plan frozen before any run.</p>"
-        "<p>That is a real limitation, not a phase of a rollout. Without baselines nobody can tell "
-        "whether these items discriminate between systems at all.</p>")
+        "<p><strong>No language model has been evaluated on this corpus.</strong> What exists is "
+        "the apparatus plus three non-LLM baselines (random floor 52.1%, TF-IDF retrieval 27.0%, "
+        "oracle ceiling 100%) that show the items discriminate, and a real Anthropic Messages API "
+        "adapter with a one-command run script, ready for the owner to run against an actual "
+        "model.</p>"
+        "<p>That is a real limitation, not a phase of a rollout. Nothing here should be read as a "
+        "finding about any language model until that run happens.</p>")
 
     no_results = notice(
-        "Apparatus and preregistration - no results",
-        "<p>This repository contributes a question corpus and a scoring harness. No system has "
-        "been evaluated on it. An internal adversarial review was blunt about what that means: a "
-        "benchmark with zero baselines is a preregistration, not a result, and it cannot be "
-        "assessed for whether its items discriminate.</p>"
+        "Baselines exist - no language model scored yet",
+        "<p>This repository contributes a question corpus, a scoring harness, and three non-LLM "
+        "baselines that establish the items discriminate: random floor 52.1%, TF-IDF retrieval "
+        "27.0%, oracle ceiling 100% accuracy. No language model has been evaluated on it yet.</p>"
         "<ul>"
-        "<li>Running two or three systems across the three arms is the immediate next step, and "
-        "until that happens nothing here should be cited as a finding about any model.</li>"
+        "<li>A real Anthropic Messages API adapter (<code>grounding_eval/adapters/anthropic_api.py</code>) "
+        "and a one-command run script (<code>scripts/run_baselines.sh</code>) now exist. Running "
+        "them against an actual model is the immediate next step, and until that happens nothing "
+        "here should be cited as a finding about any model.</li>"
         "<li>The demonstration run under <code>synthetic/</code> uses mock adapters and exists "
         "only to prove the harness executes end to end. It is not a result and the mock "
         "adapters do not represent any real system.</li>"
@@ -1544,14 +1547,16 @@ def build_grounding():
     return dict(
         repo=repo, mark="G", title="Grounding evaluation for safety-critical QA - " + repo,
         desc="A preregistered benchmark for whether AI answers to safety-critical technical "
-             "questions are bound to authoritative sources. Apparatus only, no baseline results.",
-        kicker="Benchmark - apparatus and preregistration, no results yet",
+             "questions are bound to authoritative sources. Three non-LLM baselines exist; no "
+             "language model has been scored yet.",
+        kicker="Benchmark - baselines exist, no language model scored yet",
         h1="Measuring whether an answer is grounded or merely plausible",
         lede=f"{total} questions built around plausible-but-wrong adjacent answers in pressure "
              f"relief, lockout/tagout, confined space, process safety and recordkeeping, with "
              f"scoring that rewards abstention over confabulation. Every source is verified "
-             f"against a pinned eCFR edition. No system has been evaluated yet: this is apparatus "
-             f"and a frozen analysis plan, not a finding.",
+             f"against a pinned eCFR edition. Three non-LLM baselines are in (random floor 52.1%, "
+             f"TF-IDF 27.0%, oracle 100%) and a real Anthropic adapter with a one-command run "
+             f"script is ready; no language model has been evaluated yet.",
         status=status, body=body, first="why", firstlabel="Why this exists",
         nav='<a href="#why">Why</a><a href="#status">Status</a>'
             '<a href="#corpus">Corpus</a><a href="#sources">Sources</a>'
