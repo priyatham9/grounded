@@ -1900,10 +1900,17 @@ if __name__ == "__main__":
         if spec["repo"] in ("ehs-ai-grounding-eval", "ehs-human-factors-ontology"):
             page = page.replace('<main id="main">\n', '<main id="main">\n<div class="wrap" style="padding-top:40px">'
                                 + statrow(spec["status"]) + '</div>', 1)
-        if spec["repo"] == "ehs-risk-sem":
+        # Extra hero links for pages that ship a companion page in docs/.
+        HERO_EXTRA = {
+            "ehs-risk-sem": '<a class="btn" href="api/">API reference</a>',
+            "ehs-osha-analysis": '<a class="btn" href="explore.html">Explore the denominator</a>',
+            "ehs-ai-grounding-eval": '<a class="btn" href="try.html">Try an item</a>',
+            "ehs-human-factors-ontology": '<a class="btn" href="walkthrough.html">Step through a derivation</a>',
+        }
+        if spec["repo"] in HERO_EXTRA:
             page = page.replace(
                 '      <a class="btn" href="#why">Why this exists</a>',
-                '      <a class="btn" href="api/">API reference</a>\n      <a class="btn" href="#why">Why this exists</a>'
+                '      ' + HERO_EXTRA[spec["repo"]] + '\n      <a class="btn" href="#why">Why this exists</a>', 1
             )
         page = trim_page(page)
         page = page.replace("</body>", "<script>" + CHARTS_JS + "</script>\n</body>", 1)
