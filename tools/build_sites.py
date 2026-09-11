@@ -1900,6 +1900,11 @@ if __name__ == "__main__":
         if spec["repo"] in ("ehs-ai-grounding-eval", "ehs-human-factors-ontology"):
             page = page.replace('<main id="main">\n', '<main id="main">\n<div class="wrap" style="padding-top:40px">'
                                 + statrow(spec["status"]) + '</div>', 1)
+        if spec["repo"] == "ehs-risk-sem":
+            page = page.replace(
+                '      <a class="btn" href="#why">Why this exists</a>',
+                '      <a class="btn" href="api/">API reference</a>\n      <a class="btn" href="#why">Why this exists</a>'
+            )
         page = trim_page(page)
         page = page.replace("</body>", "<script>" + CHARTS_JS + "</script>\n</body>", 1)
         page = page.replace('<footer class="footer">', prevnext(spec["repo"]) + '<footer class="footer">', 1)
