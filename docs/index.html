@@ -346,6 +346,8 @@ html{scroll-padding-top:110px}
       </div>
     </div>
 
+    <p class="label" id="progStatus" style="margin-top:16px">Programme status: see <a href="./changelog.html">changelog</a> for current counts.</p>
+
     <div class="hero-links">
       <a class="btn btn-primary" href="./paper.html">Read the paper <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h13M12 5l7 7-7 7"/></svg></a>
       <a class="btn" href="#data">The chart</a>
@@ -545,6 +547,7 @@ html{scroll-padding-top:110px}
       <li><span class="k">03</span><span>The ontology's four contexts and twenty factors are IDHEAS-G's, taken unchanged and cited. Factor levels in worked scenarios are analyst-assigned.</span></li>
       <li><span class="k">04</span><span>The SEM work is entirely synthetic. Hand-set path weights cannot be read causally, and no real injury data has been analysed with it.</span></li>
     </ul>
+    <p class="claim" style="margin-top:18px;font-size:.9375rem">Dated changes across all six repositories: <a href="./changelog.html">changelog</a> (<a href="./feed.xml">RSS feed</a>).</p>
   </div>
 </section>
 
@@ -567,6 +570,8 @@ html{scroll-padding-top:110px}
           <a href="https://priyatham9.github.io/ehs-benchmarks">EHS benchmarks <span>Live project</span></a>
           <a href="./paper.html">Bundled paper <span>Draft</span></a>
           <a href="./paper-osha.html">OSHA paper <span>Draft</span></a>
+          <a href="./changelog.html">Changelog <span>All six repos</span></a>
+          <a href="./feed.xml">RSS feed <span>feed.xml</span></a>
           <a href="https://github.com/priyatham9">GitHub <span>All repositories</span></a>
           <a href="https://linkedin.com/in/priyatham9">LinkedIn <span>in/priyatham9</span></a>
         </div>
@@ -690,6 +695,16 @@ html{scroll-padding-top:110px}
   var bar=document.getElementById('gbar');
   function h(){document.documentElement.style.setProperty('--topbar-h',Math.round(bar.getBoundingClientRect().height)+'px');}
   h();window.addEventListener('resize',h);
+})();
+</script>
+<script>
+(function () {
+  var el = document.getElementById('progStatus');
+  if (!el) return;
+  fetch('./status.json').then(function (r) { return r.json(); }).then(function (s) {
+    el.textContent = 'Programme status: generated ' + s.generated_utc.slice(0, 10) +
+      ' · ' + s.total_tests + ' tests across six repos · last commit ' + s.last_commit_date;
+  }).catch(function () {});
 })();
 </script>
 </body>

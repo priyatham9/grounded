@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+<title>Grounded - Programme Changelog</title>
+<link>https://priyatham9.github.io/grounded/changelog.html</link>
+<description>Dated changes across the six repositories in the Grounded research programme.</description>
+<language>en-us</language>
+<lastBuildDate>Fri, 11 Sep 2026 02:20:44 +0000</lastBuildDate>
+<item>
+<title>2026-09-10 (22 commits)</title>
+<link>https://priyatham9.github.io/grounded/changelog.html#2026-09-10</link>
+<guid isPermaLink="false">grounded-changelog-2026-09-10</guid>
+<pubDate>2026-09-10T00:00:00Z</pubDate>
+<description>grounded: Update generator to include API reference link for ehs-risk-sem; grounded: Reading paths by audience and why-it-matters lines; grounded: Lint, CI, coverage and community files; grounded: Generator: companion-page hero links for four repos; ehs-risk-sem: Lint, coverage and community files; ehs-risk-sem: Add API reference documentation for ehs_risk_sem; ehs-osha-analysis: Lint, coverage and community files; ehs-osha-analysis: Link the companion page from the hero; ehs-osha-analysis: Interactive denominator explorer; ehs-osha-analysis: Fix CI fixture-pipeline job discovery command; ehs-osha-analysis: Add REPRODUCIBILITY.md and DATASHEET.md, extend CI pipeline; ehs-human-factors-ontology: Link the companion page from the hero; ehs-human-factors-ontology: Derivation walk-through page; ehs-human-factors-ontology: Add JSON-LD and OWL/XML exports for tool interoperability.; ehs-capitals-calculator: Lint, coverage and community files; ehs-capitals-calculator: Guided three-step story on the shared skin with shareable state; ehs-ai-grounding-eval: Try-an-item page for the benchmark; ehs-ai-grounding-eval: README: current test count; ehs-ai-grounding-eval: Lint, coverage and community files; ehs-ai-grounding-eval: Link the companion page from the hero; ehs-ai-grounding-eval: Add corpus card and statistics table; ehs-ai-grounding-eval: Add BM25 retrieval baseline</description>
+</item>
+<item>
+<title>2026-09-09 (23 commits)</title>
+<link>https://priyatham9.github.io/grounded/changelog.html#2026-09-09</link>
+<guid isPermaLink="false">grounded-changelog-2026-09-09</guid>
+<pubDate>2026-09-09T00:00:00Z</pubDate>
+<description>grounded: Sync build_sites.py: grounding-eval copy reflects baselines and the real adapter; grounded: Share metadata, JSON-LD, sitemap, og image, accessibility basics; grounded: Say where the benchmark stands now that a real adapter exists; grounded: Establishment persistence panel analysis, CI, pipeline wiring, project docs; grounded: Build the OSHA paper five-minute path from its own headings; grounded: Align figures across surfaces with generated outputs; ehs-risk-sem: Share metadata, JSON-LD, sitemap, og image, accessibility basics; ehs-risk-sem: Establishment persistence panel analysis, CI, pipeline wiring, project docs; ehs-osha-analysis: Use RandomState for the committed fixture so generation reproduces across NumPy versions; ehs-osha-analysis: Share metadata, JSON-LD, sitemap, og image, accessibility basics; ehs-osha-analysis: Make NAICS prefix missing value and fixture comparison version-independent; ehs-osha-analysis: Establishment persistence panel analysis, CI, pipeline wiring, project docs; ehs-osha-analysis: Commit generated outputs so clones can read tables and rebuild the site; ehs-human-factors-ontology: Share metadata, JSON-LD, sitemap, og image, accessibility basics; ehs-human-factors-ontology: Establishment persistence panel analysis, CI, pipeline wiring, project docs; ehs-capitals-calculator: Share metadata, JSON-LD, sitemap, og image, accessibility basics; ehs-capitals-calculator: Establishment persistence panel analysis, CI, pipeline wiring, project docs; ehs-ai-grounding-eval: Share metadata, JSON-LD, sitemap, og image, accessibility basics; ehs-ai-grounding-eval: Send temperature only to models that accept sampling parameters; ehs-ai-grounding-eval: Regenerate docs/index.html: baselines exist, no LM scored yet; ehs-ai-grounding-eval: One-command baseline run script with a published results folder; ehs-ai-grounding-eval: Establishment persistence panel analysis, CI, pipeline wiring, project docs; ehs-ai-grounding-eval: Anthropic Messages API adapter with grounded and ungrounded arms, dry run, tests</description>
+</item>
+<item>
+<title>2026-09-08 (6 commits)</title>
+<link>https://priyatham9.github.io/grounded/changelog.html#2026-09-08</link>
+<guid isPermaLink="false">grounded-changelog-2026-09-08</guid>
+<pubDate>2026-09-08T00:00:00Z</pubDate>
+<description>grounded: Skip Jekyll for the docs site; ehs-risk-sem: Skip Jekyll for the docs site; ehs-osha-analysis: Skip Jekyll for the docs site; ehs-human-factors-ontology: Skip Jekyll for the docs site; ehs-capitals-calculator: Skip Jekyll for the docs site; ehs-ai-grounding-eval: Skip Jekyll for the docs site</description>
+</item>
+<item>
+<title>2026-09-07 (13 commits)</title>
+<link>https://priyatham9.github.io/grounded/changelog.html#2026-09-07</link>
+<guid isPermaLink="false">grounded-changelog-2026-09-07</guid>
+<pubDate>2026-09-07T00:00:00Z</pubDate>
+<description>grounded: Site switcher on paper pages; grounded: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; grounded: Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher; ehs-risk-sem: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; ehs-risk-sem: Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher; ehs-osha-analysis: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; ehs-osha-analysis: Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher; ehs-human-factors-ontology: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; ehs-human-factors-ontology: Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher; ehs-capitals-calculator: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; ehs-capitals-calculator: Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher; ehs-ai-grounding-eval: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; ehs-ai-grounding-eval: Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher</description>
+</item>
+<item>
+<title>2026-09-06 (35 commits)</title>
+<link>https://priyatham9.github.io/grounded/changelog.html#2026-09-06</link>
+<guid isPermaLink="false">grounded-changelog-2026-09-06</guid>
+<pubDate>2026-09-06T00:00:00Z</pubDate>
+<description>grounded: Unified banner navigation across the programme; engagement improvements; grounded: Render standalone OSHA data-quality paper; grounded: Rename research site to Grounded; remove unverified citation; grounded: Refine site storytelling and UI, add cross-repo navigation; grounded: QA fixes: link targets, navigation consistency, mobile collapse; grounded: Publish standalone OSHA data-quality paper; link from hub; grounded: Allow search indexing; grounded: Add programme navigation: project switcher and previous/next links; grounded: Add navigation link to personal site; ehs-risk-sem: Unified banner navigation across the programme; engagement improvements; ehs-risk-sem: Rename research site to Grounded; remove unverified citation; ehs-risk-sem: Refine site storytelling and UI, add cross-repo navigation; ehs-risk-sem: Allow search indexing; ehs-risk-sem: Add programme navigation: previous/next links; ehs-osha-analysis: Unified banner navigation across the programme; engagement improvements; ehs-osha-analysis: Rename research site to Grounded; remove unverified citation; ehs-osha-analysis: Refine site storytelling and UI, add cross-repo navigation; ehs-osha-analysis: Allow search indexing; ehs-osha-analysis: Add programme navigation: previous/next links; ehs-human-factors-ontology: Unified banner navigation across the programme; engagement improvements; ehs-human-factors-ontology: Rename research site to Grounded; remove unverified citation; ehs-human-factors-ontology: Refine site storytelling and UI, add cross-repo navigation; ehs-human-factors-ontology: Allow search indexing; ehs-human-factors-ontology: Add programme navigation: previous/next links; ehs-capitals-calculator: Unified banner navigation across the programme; engagement improvements; ehs-capitals-calculator: Rename research site to Grounded; remove unverified citation; ehs-capitals-calculator: Refine site storytelling and UI, add cross-repo navigation; ehs-capitals-calculator: QA fixes: link targets, navigation consistency, mobile collapse; ehs-capitals-calculator: Add programme navigation: project switcher and previous/next links; ehs-capitals-calculator: Add OSHA benchmarks to programme navigation; ehs-ai-grounding-eval: Unified banner navigation across the programme; engagement improvements; ehs-ai-grounding-eval: Rename research site to Grounded; remove unverified citation; ehs-ai-grounding-eval: Refine site storytelling and UI, add cross-repo navigation; ehs-ai-grounding-eval: Allow search indexing; ehs-ai-grounding-eval: Add programme navigation: previous/next links</description>
+</item>
+<item>
+<title>2026-09-05 (6 commits)</title>
+<link>https://priyatham9.github.io/grounded/changelog.html#2026-09-05</link>
+<guid isPermaLink="false">grounded-changelog-2026-09-05</guid>
+<pubDate>2026-09-05T00:00:00Z</pubDate>
+<description>grounded: Correct superseded and untraceable figures; cite current pipeline outputs; grounded: Add site generator used to build the per-repo docs sites; ehs-risk-sem: Add static site under docs/ generated from committed outputs; ehs-osha-analysis: Add static site under docs/ generated from committed outputs; ehs-human-factors-ontology: Add static site under docs/ generated from committed outputs; ehs-ai-grounding-eval: Add static site under docs/ generated from committed outputs</description>
+</item>
+<item>
+<title>2026-09-04 (7 commits)</title>
+<link>https://priyatham9.github.io/grounded/changelog.html#2026-09-04</link>
+<guid isPermaLink="false">grounded-changelog-2026-09-04</guid>
+<pubDate>2026-09-04T00:00:00Z</pubDate>
+<description>grounded: Replace em dashes with hyphens; grounded: Landing site for the grounded EHS AI research programme; ehs-risk-sem: ehs-risk-sem: initial commit; ehs-osha-analysis: ehs-osha-analysis: initial commit; ehs-human-factors-ontology: ehs-human-factors-ontology: initial commit; ehs-capitals-calculator: ehs-capitals-calculator: initial commit; ehs-ai-grounding-eval: ehs-ai-grounding-eval: initial commit</description>
+</item>
+</channel>
+</rss>
