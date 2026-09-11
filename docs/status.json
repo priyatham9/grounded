@@ -1,5 +1,5 @@
 {
-  "generated_utc": "2026-09-11T02:20:29Z",
+  "generated_utc": "2026-09-11T02:25:16Z",
   "last_commit_date": "2026-09-10",
   "repos": {
     "ehs-ai-grounding-eval": {
@@ -24,8 +24,8 @@
         "item_count": 68
       },
       "last_commit_date": "2026-09-10",
-      "last_commit_sha": "368638c",
-      "release_tag": null,
+      "last_commit_sha": "59e289b",
+      "release_tag": "v0.1.0",
       "tests": {
         "count": 158,
         "ok": true,
@@ -34,8 +34,8 @@
     },
     "ehs-capitals-calculator": {
       "last_commit_date": "2026-09-10",
-      "last_commit_sha": "b5fce99",
-      "release_tag": null,
+      "last_commit_sha": "502e14f",
+      "release_tag": "v0.1.0",
       "tests": {
         "count": 174,
         "ok": true,
@@ -44,12 +44,12 @@
     },
     "ehs-human-factors-ontology": {
       "last_commit_date": "2026-09-10",
-      "last_commit_sha": "ce5f183",
+      "last_commit_sha": "9e39f16",
       "ontology": {
         "alignment_count": 90,
         "factor_count": 20
       },
-      "release_tag": null,
+      "release_tag": "v0.1.0",
       "tests": {
         "count": 189,
         "ok": true,
@@ -65,8 +65,8 @@
         "trir_screened": 3.983078949653959
       },
       "last_commit_date": "2026-09-10",
-      "last_commit_sha": "fe4e397",
-      "release_tag": null,
+      "last_commit_sha": "7c2f24a",
+      "release_tag": "v0.1.0",
       "tests": {
         "count": 175,
         "ok": true,
@@ -75,8 +75,8 @@
     },
     "ehs-risk-sem": {
       "last_commit_date": "2026-09-10",
-      "last_commit_sha": "26ebe9d",
-      "release_tag": null,
+      "last_commit_sha": "9707cf7",
+      "release_tag": "v0.1.0",
       "tests": {
         "count": 114,
         "ok": true,
@@ -85,8 +85,8 @@
     },
     "grounded": {
       "last_commit_date": "2026-09-10",
-      "last_commit_sha": "5b3ef0e",
-      "release_tag": null,
+      "last_commit_sha": "b5d083a",
+      "release_tag": "v0.1.0",
       "tests": {
         "count": 0,
         "ok": true,
