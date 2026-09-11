@@ -9,7 +9,7 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Check published pages exist
         run: |
           for f in docs/index.html docs/paper.html docs/paper-osha.html; do
