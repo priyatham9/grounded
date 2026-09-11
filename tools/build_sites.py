@@ -1905,7 +1905,7 @@ if __name__ == "__main__":
             "ehs-risk-sem": '<a class="btn" href="api/">API reference</a>',
             "ehs-osha-analysis": '<a class="btn" href="explore.html">Explore the denominator</a>',
             "ehs-ai-grounding-eval": '<a class="btn" href="try.html">Try an item</a>',
-            "ehs-human-factors-ontology": '<a class="btn" href="walkthrough.html">Step through a derivation</a>',
+            "ehs-human-factors-ontology": '<a class="btn" href="walkthrough.html">Step through a derivation</a>\n      <a class="btn" href="crosswalk.html">Crosswalk grid</a>',
         }
         if spec["repo"] in HERO_EXTRA:
             page = page.replace(
