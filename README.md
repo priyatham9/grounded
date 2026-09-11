@@ -31,6 +31,10 @@ Draft. Empirical figures on the page come from real public OSHA Injury Tracking
 Application data. Reference verification for the accompanying paper is incomplete
 and no external peer review has been conducted. The page says so on itself.
 
+## Security
+
+See [SECURITY.md](SECURITY.md) for security policy and how to report vulnerabilities.
+
 ## Licence
 
 MIT

@@ -1,23 +1,36 @@
 ---
 name: Bug report
-about: Something produces the wrong result or does not run
-labels: bug
+about: Report a bug or unexpected behavior
+title: ''
+labels: ''
+assignees: ''
+
 ---
 
-## What happened
+## Description
 
-Describe the unexpected behaviour or error.
+Clearly describe what is not working as expected.
 
-## What you expected
+## Steps to Reproduce
 
-Describe what should have happened instead.
+1. 
+2. 
+3. 
 
-## How to reproduce
+## Expected Behavior
 
-Give the exact steps and commands to trigger the issue.
+Describe what should happen instead.
+
+## Actual Behavior
+
+Describe what actually happened.
 
 ## Environment
 
-- Python version: 
-- Operating system:
-- Browser (if applicable):
+- Browser:
+- OS:
+- URL or page:
+
+## Additional Context
+
+Any other information that might be helpful for reproducing or fixing the issue.
