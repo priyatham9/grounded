@@ -2,8 +2,7 @@
 
 [![docs](https://github.com/priyatham9/grounded/actions/workflows/links.yml/badge.svg)](https://github.com/priyatham9/grounded/actions/workflows/links.yml)
 
-Landing site for a research programme on grounded reasoning for safety-critical AI
-in EHS and process industries.
+Landing site for a research programme on grounded reasoning for safety-critical AI in EHS and process industries. It presents the programme's findings and links six repositories. The programme is in draft status; reference verification is incomplete and no external peer review has been conducted.
 
 The site at `docs/index.html` is a static page with no build step and no runtime
 dependencies beyond two webfonts. It presents the programme's findings, links the
