@@ -1,6 +1,7 @@
 # grounded
 
 [![docs](https://github.com/priyatham9/grounded/actions/workflows/links.yml/badge.svg)](https://github.com/priyatham9/grounded/actions/workflows/links.yml)
+[![site](https://img.shields.io/badge/site-priyatham9.github.io%2Fgrounded-1E40AF)](https://priyatham9.github.io/grounded/)
 
 Landing site for a research programme on grounded reasoning for safety-critical AI in EHS and process industries. It presents the programme's findings and links six repositories. The programme is in draft status; reference verification is incomplete and no external peer review has been conducted.
 
@@ -8,6 +9,13 @@ The site at `docs/index.html` is a static page with no build step and no runtime
 dependencies beyond two webfonts. It presents the programme's findings, links the
 six repositories that make it up, and states plainly what has and has not been
 established.
+
+## At a glance
+
+- Status: draft
+- Data: real (OSHA Injury Tracking Application data)
+- Quickstart: open `docs/index.html` directly, or serve `docs/` with any static file server
+- Licence: MIT
 
 ## Why this repo is separate
 

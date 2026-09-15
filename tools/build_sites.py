@@ -75,49 +75,6 @@ EXTRA_CSS = """
    What stays here is the belt-and-braces guard against a stray wide child. */
 body{overflow-x:hidden}
 
-/* ============ banner: the one navigation strip ============ */
-/* One sticky header. Row one: brand, estate links, section links, toggle.
-   Row two, inside the same banner: the six projects, wrapping or scrolling. */
-.topbar{border-bottom:2px solid var(--rule)}
-.topbar-inner{flex-wrap:wrap;align-items:center;row-gap:0;padding:0 30px;justify-content:flex-start}
-.brand{padding:12px 16px 12px 0;border-right:2px solid var(--rule-soft);margin-right:6px}
-.estate-nav{display:contents}
-.estate-nav a,.topnav a{text-decoration:none;padding:12px 10px;font-family:var(--font-mono);font-size:.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);white-space:nowrap;transition:color .15s,background .15s}
-.estate-nav a:hover,.topnav a:hover{color:var(--ink);background:var(--surface-2)}
-.estate-nav a.nav-external{color:var(--accent)}
-.estate-nav a.nav-external::after{content:'\\2197';margin-left:3px;font-size:.85em;opacity:.75}
-.estate-nav a.nav-external:hover{background:var(--accent-wash);color:var(--accent-2)}
-.estate-nav a.nav-paper{color:var(--accent)}
-.topnav{margin-left:auto;padding-left:6px;border-left:2px solid var(--rule-soft);gap:0}
-.topnav a.is-active{color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
-.toggle{margin-left:8px}
-.projects{order:10;flex-basis:100%;display:flex;align-items:center;gap:0;margin:0 -30px;padding:0 30px;border-top:1px solid var(--rule-soft);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
-.projects::-webkit-scrollbar{display:none}
-.projects-tag{flex:none;font-family:var(--font-mono);font-size:.5625rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);padding:9px 12px 9px 0;white-space:nowrap}
-.projects a{flex:none;padding:9px 11px;font-weight:500;border-left:1px solid var(--rule-soft)}
-.projects a:last-child{border-right:1px solid var(--rule-soft)}
-.projects a[aria-current="page"]{color:var(--ink);font-weight:700;box-shadow:inset 0 -2px 0 var(--accent)}
-@media(max-width:900px){
-  .topbar-inner{padding:0 22px}
-  .projects,.topnav{margin:0 -22px;padding:0 22px}
-  .estate-nav a{order:4}
-  .toggle{order:5;margin-left:auto}
-  .topnav{order:6;flex-basis:100%;border-left:0;border-top:1px solid var(--rule-soft);overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:none}
-  .topnav::-webkit-scrollbar{display:none}
-  .topnav a{flex:none;padding:9px 10px}
-}
-@media(max-width:640px){
-  .brand{border-right:0;padding-right:0}
-  .estate-nav a{padding:12px 7px;font-size:.625rem}
-}
-.hero{border-top:2px solid var(--rule)}
-
-/* ============ shared site switcher ============ */
-.estate{display:flex;gap:0;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;border-bottom:2px solid var(--rule);background:var(--surface-2)}
-.estate a{padding:6px 14px;text-decoration:none;color:var(--muted)}
-.estate a[aria-current="true"]{color:var(--accent);font-weight:700;box-shadow:inset 0 -2px 0 var(--accent)}
-.estate-sep{width:2px;background:var(--rule-soft)}
-
 /* ============ interactive charts ============ */
 .chart{border:2px solid var(--rule);background:var(--surface);padding:22px;margin:0 0 26px}
 .chart .chart-take{font-family:var(--font-display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:1.05rem;line-height:1.2;margin:0 0 14px;max-width:44ch}
@@ -149,7 +106,7 @@ figcaption details.more>div{font-size:inherit;color:inherit}
 @media(max-width:640px){.statrow{grid-template-columns:1fr 1fr}.statrow .st-cell:nth-child(2){border-right:0}.statrow .st-cell:nth-child(-n+2){border-bottom:2px solid var(--rule-soft)}}
 
 /* ============ vertical rhythm ============ */
-.section{padding:78px 0;scroll-margin-top:112px}
+.section{padding:78px 0}
 .section:nth-of-type(even){background:var(--surface-2)}
 .rail-head{margin-bottom:14px}
 .rail-head h2{max-width:22ch}
@@ -267,46 +224,44 @@ SHELL = """<!doctype html>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" />
+<script>document.documentElement.classList.add('js');</script>
 <style>{css}{extra}</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<header class="topbar">
-  <div class="topbar-inner">
-    <a class="brand" href="#top"><span class="brand-mark"></span> {repo}</a>
-    <nav class="estate-nav" aria-label="Research estate">
-      <a class="nav-external" href="{personal}/">Priyatham Chimmani</a>
-      <a href="{hub}">Grounded</a>
-      <a class="nav-paper" href="{hub}paper.html">Paper</a>
-      <div class="projects" role="list" aria-label="Projects">
-        <span class="projects-tag">Projects</span>
-        {crossbar}
-      </div>
-    </nav>
-    <nav class="topnav" aria-label="Sections on this page">{nav}</nav>
-    <button class="toggle" id="themeToggle" aria-label="Toggle colour scheme">
-      <svg class="icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
-      <svg class="icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
-    </button>
-  </div>
-</header>
-<div class="estate" aria-label="Site switcher"><a href="https://priyatham9.github.io/" data-site="personal">Priyatham Chimmani</a><span class="estate-sep"></span><a href="https://priyatham9.github.io/grounded/" data-site="research" aria-current="true">Grounded research</a></div>
 <section class="hero" id="top">
-  <div class="wrap">
-    <div class="hero-eyebrow"><span class="pulse"></span><span class="label">{kicker}</span></div>
-    <h1 class="display">{h1}</h1>
-    <p class="hero-role">{lede}</p>
-    <div class="hero-links">
-      <a class="btn btn-primary" href="{gh}/{repo}">Repository</a>
-      <a class="btn" href="#{first}">{firstlabel}</a>
-      <a class="btn" href="{hub}">All projects</a>
+  <div class="wrap hero-grid">
+    <div class="hero-fig">
+      <div class="hero-eyebrow"><span class="pulse"></span><span class="label">{kicker}</span></div>
+      <p class="hero-big" style="--k:{num_k}" aria-label="{num}{unit_plain}"><span class="hero-num" data-to="{num_to}" data-dec="{num_dec}" data-group="{num_group}" aria-hidden="true">{num}</span><span class="hero-unit" aria-hidden="true">{unit}</span></p>
+      <p class="hero-means"><span class="hm-k">What this means</span>{means}</p>
+      <span class="src">Source artifact: {num_src}</span>
+    </div>
+    <div class="hero-text">
+      <h1 class="display">{h1}</h1>
+      <p class="hero-role">{lede}</p>
+      <div class="hero-links">
+        <a class="btn btn-primary" href="#explore">{cta}</a>
+        <a class="btn" href="{gh}/{repo}">Repository</a>
+      </div>
     </div>
     <div class="status">{status}</div>
   </div>
 </section>
 <main id="main">
+<div class="layout wrap">
+<aside class="toc" aria-label="On this page">
+  <details class="toc-d" open>
+    <summary><span class="toc-num">--</span><span class="toc-current">Contents</span><span class="toc-caret" aria-hidden="true"></span></summary>
+    <ol>{toc}</ol>
+  </details>
+</aside>
+<div class="content">
 {body}
+</div>
+</div>
 </main>
+{programme}
 <footer class="footer">
   <div class="wrap">
     <span class="label">Priyatham Chimmani &middot; EHS data infrastructure, analytics and applied AI</span>
@@ -317,83 +272,11 @@ SHELL = """<!doctype html>
       <a href="{gh}">GitHub</a>
       <a href="https://linkedin.com/in/priyatham9">LinkedIn</a>
     </div>
-    <p class="footer-note">Every number, table and figure on this page is read from a committed
+    <p class="footer-note">Every number, table, figure and interactive on this page is read from a committed
     artifact in this repository at build time by <span class="mono">tools/build_sites.py</span>.
     Captions name the artifact. The page cannot report a value the pipeline did not produce.</p>
   </div>
 </footer>
-<script>
-(function () {{
-  var root = document.documentElement, KEY = 'ehs-ai-theme';
-  try {{ var s = localStorage.getItem(KEY); if (s) root.setAttribute('data-theme', s); }} catch (e) {{}}
-  var btn = document.getElementById('themeToggle');
-  if (btn) btn.addEventListener('click', function () {{
-    var c = root.getAttribute('data-theme');
-    if (!c) c = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    var n = c === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', n);
-    try {{ localStorage.setItem(KEY, n); }} catch (e) {{}}
-  }});
-}})();
-(function () {{
-  var links = Array.prototype.slice.call(document.querySelectorAll('.topnav a[href^="#"]'));
-  if (!links.length || !('IntersectionObserver' in window)) return;
-  var map = {{}}, ratio = {{}};
-  links.forEach(function (a) {{
-    var el = document.getElementById(a.getAttribute('href').slice(1));
-    if (el) {{ map[el.id] = a; ratio[el.id] = 0; }}
-  }});
-  var ids = Object.keys(map);
-  if (!ids.length) return;
-  function paint() {{
-    var best = null, bestv = 0;
-    ids.forEach(function (id) {{ if (ratio[id] > bestv) {{ bestv = ratio[id]; best = id; }} }});
-    links.forEach(function (a) {{ a.classList.remove('is-active'); a.removeAttribute('aria-current'); }});
-    if (best) {{ map[best].classList.add('is-active'); map[best].setAttribute('aria-current', 'true'); }}
-  }}
-  var obs = new IntersectionObserver(function (entries) {{
-    entries.forEach(function (e) {{ ratio[e.target.id] = e.isIntersecting ? e.intersectionRatio : 0; }});
-    paint();
-  }}, {{ rootMargin: '-116px 0px -50% 0px', threshold: [0, 0.05, 0.2, 0.5, 0.9] }});
-  ids.forEach(function (id) {{ obs.observe(document.getElementById(id)); }});
-}})();
-(function () {{
-  /* Hero status numbers count up once when scrolled into view. Skipped under
-     reduced motion and where IntersectionObserver is missing: the final value
-     is already in the markup, so nothing is lost. */
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-  if (!('IntersectionObserver' in window)) return;
-  var cells = Array.prototype.slice.call(document.querySelectorAll('.status .st-v'));
-  var re = /^(\d[\d,]*)(\.\d+)?(%?)$/;
-  cells.forEach(function (el) {{
-    var m = re.exec(el.textContent.trim());
-    if (!m) return;
-    var target = parseFloat(m[1].replace(/,/g, '') + (m[2] || ''));
-    var dec = m[2] ? m[2].length - 1 : 0, suffix = m[3], grouped = m[1].indexOf(',') !== -1;
-    var done = false;
-    function fmt(v) {{
-      var t = v.toFixed(dec);
-      if (grouped) {{ var parts = t.split('.'); parts[0] = parts[0].replace(/\B(?=(\d{{3}})+(?!\d))/g, ','); t = parts.join('.'); }}
-      return t + suffix;
-    }}
-    var obs = new IntersectionObserver(function (entries) {{
-      entries.forEach(function (e) {{
-        if (!e.isIntersecting || done) return;
-        done = true; obs.disconnect();
-        var t0 = null, dur = 900;
-        function step(ts) {{
-          if (t0 === null) t0 = ts;
-          var k = Math.min(1, (ts - t0) / dur); k = 1 - Math.pow(1 - k, 3);
-          el.textContent = fmt(target * k);
-          if (k < 1) requestAnimationFrame(step); else el.textContent = fmt(target);
-        }}
-        requestAnimationFrame(step);
-      }});
-    }}, {{ threshold: 0.4 }});
-    obs.observe(el);
-  }});
-}})();
-</script>
 </body>
 </html>
 """
@@ -423,9 +306,82 @@ def crossbar(current):
 def section(sid, num, title, inner, lede="", note=""):
     n = f'<span class="label">{note}</span>' if note else ""
     l = f'<p class="sec-lede">{lede}</p>' if lede else ""
-    return (f'<section class="section" id="{sid}"><div class="wrap">'
-            f'<div class="rail-head"><span class="rail-num">{num}</span>'
-            f'<h2 class="display">{title}</h2>{n}</div>{l}{inner}</div></section>')
+    return (f'<section class="section rv" id="{sid}" aria-labelledby="h-{sid}"><div class="wrap">'
+            f'<div class="rail-head"><span class="rail-num" aria-hidden="true">{num}</span>'
+            f'<h2 class="display" id="h-{sid}">{title}</h2>{n}</div>{l}{inner}</div></section>')
+
+
+# --------------------------------------------------------------------------
+# page components shared by the four sites
+# --------------------------------------------------------------------------
+def jsdata(eid, obj):
+    """Embed extracted artifact data for an interactive. Read by charts.js."""
+    raw = json.dumps(obj, separators=(",", ":"), ensure_ascii=False).replace("</", "<\\/")
+    return f'<script type="application/json" id="{eid}">{raw}</script>'
+
+
+def scope(does, doesnt, after=""):
+    """What the work shows and what it does not, side by side and equal weight."""
+    li = lambda xs: "".join(f"<li>{x}</li>" for x in xs)
+    return (f'<div class="scope"><div class="scope-col scope-yes"><h3 class="scope-h">'
+            f'<span class="scope-mark" aria-hidden="true">+</span>What this shows</h3>'
+            f'<ul>{li(does)}</ul></div><div class="scope-col scope-no"><h3 class="scope-h">'
+            f'<span class="scope-mark" aria-hidden="true">&minus;</span>What this does not show</h3>'
+            f'<ul>{li(doesnt)}</ul></div></div>{after}')
+
+
+def quickstart(repo, cmds, after=""):
+    def line(c):
+        c = esc(c)
+        m = re.search(r"\s+#\s.*$", c)
+        if m:
+            c = c[:m.start()] + f'<span class="qs-c">{c[m.start():]}</span>'
+        return f'<span class="qs-l">{c}</span>'
+    code = "\n".join(line(c) for c in cmds)
+    return (f'<div class="qs"><div class="qs-bar"><span class="qs-dots" aria-hidden="true"><i></i><i></i><i></i></span>'
+            f'<span class="qs-t">{esc(repo)}</span>'
+            f'<button type="button" class="qs-copy" aria-label="Copy the quickstart commands">Copy</button></div>'
+            f'<pre tabindex="0"><code>{code}</code></pre></div>{after}')
+
+
+def explore_intro(text, link_href="", link_label=""):
+    ln = (f' <a class="ix-more" href="{link_href}">{link_label} &rarr;</a>' if link_href else "")
+    return f'<p class="ix-intro">{text}{ln}</p>'
+
+
+def renumber_and_toc(body, short):
+    """Number sections in reading order and build the table of contents from them."""
+    counter = [0]
+
+    def num(m):
+        counter[0] += 1
+        return f'<span class="rail-num" aria-hidden="true">{counter[0]:02d}</span>'
+    body = re.sub(r'<span class="rail-num" aria-hidden="true">\d+</span>', num, body)
+    items = []
+    for i, m in enumerate(re.finditer(r'<section class="section rv" id="([\w-]+)"', body)):
+        sid = m.group(1)
+        lab = short.get(sid, sid)
+        items.append(f'<li><a href="#{sid}" data-short="{esc(lab)}"><span class="toc-n">{i+1:02d}</span>{esc(lab)}</a></li>')
+    return body, "".join(items)
+
+
+def programme(repo):
+    """Next in the programme: the other sites, starting from the next one."""
+    from banner import PROJECTS as BP
+    notes = {slug: note for slug, _, note in BP}
+    keys = [k for k, _, _ in PROGRAMME]
+    i = keys.index(repo)
+    order = PROGRAMME[i + 1:] + PROGRAMME[:i]
+    cards = []
+    for j, (slug, name, url) in enumerate(order):
+        note = "research hub" if slug == "grounded" else notes.get(slug, "")
+        tag = "Next" if j == 0 else f"{j+1:02d}"
+        cards.append(f'<a class="prog-card{" prog-next" if j == 0 else ""}" href="{url}">'
+                     f'<span class="prog-tag">{tag}</span><span class="prog-name">{esc(name)}</span>'
+                     f'<span class="prog-note">{esc(note)}</span><span class="prog-arrow" aria-hidden="true">&rarr;</span></a>')
+    return (f'<nav class="prog" aria-labelledby="prog-h"><div class="wrap">'
+            f'<h2 class="prog-h display" id="prog-h">Next in the programme</h2>'
+            f'<div class="prog-grid">{"".join(cards)}</div></div></nav>')
 
 
 def opener(big, paras, side_title, side_html):
@@ -1006,24 +962,117 @@ def build_osha():
         "before analysis. Every table and figure on this page is generated by script; none is "
         "hand-entered.</p>"
         "</div><div class=\"prose\">"
-        "<h3>What this does not establish</h3>"
-        "<p>The screen identifies filings that cannot be right. It does not identify filings that "
-        "are merely wrong, and it cannot recover the true hours for an excluded establishment.</p>"
-        "<p>Aggregates after screening are conditional on the surviving population, which is not a "
-        "random sample of the original. If implausible hours are filed disproportionately by one "
-        "kind of employer, the screened aggregate inherits that selection.</p>"
-        "<p>Nothing here is a claim about whether workplaces got safer. It is a claim about what "
-        "the denominator will support.</p>"
         "<h3>Reviewer note</h3>"
         "<p>An internal adversarial review held that this analysis is a separable contribution "
         "being buried inside a larger manuscript, and that it should stand as its own paper. That "
         "criticism is recorded here rather than answered.</p>"
         "</div></div>")
 
+    # ---- signature interactive: screen window, TRIR by year, peer lookup ----
+    grid = []
+    for r in read_csv(out / "tables" / "quality_sensitivity_grid.csv"):
+        try:
+            lo, hi = float(r["min_hours_per_employee"]), float(r["max_hours_per_employee"])
+        except (TypeError, ValueError):
+            continue
+        if not re.fullmatch(r"\d+-\d+", r["label"]):
+            continue
+        grid.append({"lo": int(lo), "hi": int(hi), "flag": round(float(r["implausible_share"]), 6),
+                     "hours": round(float(r["hours_share_implausible"]), 6),
+                     "scr": round(float(r["aggregate_trir_screened"]), 4),
+                     "uns": round(float(r["aggregate_trir_unscreened"]), 4),
+                     "ratio": round(float(r["ratio_screened_to_unscreened"]), 3)})
+    titles = {}
+    ex_path = REPOS / repo / "docs" / "explore-data.json"
+    if ex_path.exists():
+        titles = json.loads(ex_path.read_text(encoding="utf-8")).get("titles", {})
+    prow = {}
+    naics = []
+    bands = []
+    for r in read_csv(out / "tables" / "peer_percentiles_pooled.csv"):
+        def f2(k):
+            try:
+                return round(float(r[k]), 3)
+            except (TypeError, ValueError):
+                return None
+        prow[f'{r["naics3"]}|{r["size_band"]}'] = [int(r["n"]), r["publishable"] == "True"] + \
+            [f2(k) for k in ("p10", "p25", "p50", "p75", "p90", "p95", "aggregate_trir")]
+        if r["naics3"] not in naics:
+            naics.append(r["naics3"])
+        if r["size_band"] not in bands:
+            bands.append(r["size_band"])
+    band_order = ["001-019", "020-049", "050-099", "100-249", "250-499", "500-999", "1000+"]
+    bands.sort(key=lambda b_: band_order.index(b_) if b_ in band_order else 99)
+    ixdata = {
+        "def": {"lo": 120, "hi": 4500}, "grid": grid,
+        "years": [{"y": int(float(y["label"])), "scr": round(y["aggregate_trir_screened"], 4),
+                   "uns": round(y["aggregate_trir_unscreened"], 4),
+                   "ratio": round(y["ratio_screened_to_unscreened"], 3),
+                   "hours": round(y["hours_share_implausible"], 5)} for y in years],
+        "peers": {"naics": [[n_, titles.get(n_, "")] for n_ in sorted(naics)], "bands": bands, "rows": prow},
+    }
+    explore = (
+        explore_intro("Three ways into the same public filings. Move the plausibility window and "
+                      "watch what it does to the national rate, switch the yearly series, then place "
+                      "a site's TRIR against its industry peers.", "explore.html", "Full denominator explorer")
+        + '<div class="ix" id="ix-osha">'
+        '<div class="ix-panel ix-wide"><div class="ix-head"><span class="ix-k">A</span><h3>Move the screen</h3>'
+        '<p>Hours per employee per year a filing must fall between to count.</p></div>'
+        '<div class="ix-controls"><label>Minimum<select id="ox-lo"></select></label>'
+        '<label>Maximum<select id="ox-hi"></select></label></div>'
+        '<div class="ox-out" id="ox-out" aria-live="polite">'
+        '<div class="ox-read"><span>Filings flagged</span><b data-k="flag">-</b><div class="ox-bar"><i class="ox-bar-f"></i></div></div>'
+        '<div class="ox-read"><span>Hours in flagged filings</span><b data-k="hours">-</b><div class="ox-bar"><i class="ox-bar-h"></i></div></div>'
+        '<div class="ox-read"><span>TRIR screened</span><b data-k="scr" class="acc">-</b></div>'
+        '<div class="ox-read"><span>TRIR unscreened</span><b data-k="uns">-</b></div>'
+        '<div class="ox-read"><span>Ratio</span><b data-k="ratio">-</b></div>'
+        '<p class="ox-note"></p></div>'
+        '<span class="src">Source artifact: outputs/tables/quality_sensitivity_grid.csv (pooled, all years)</span></div>'
+        '<div class="ix-panel"><div class="ix-head"><span class="ix-k">B</span><h3>TRIR by year</h3>'
+        '<p>Hover or tab through the bars for the year.</p></div>'
+        '<div class="seg" id="ox-mode"></div><div class="ox-years" id="ox-years"></div>'
+        '<p class="ix-read" id="ox-year-read" aria-live="polite">Select a bar to read the year.</p>'
+        '<span class="src">Source artifact: outputs/summary.json - quality.by_year</span></div>'
+        '<div class="ix-panel"><div class="ix-head"><span class="ix-k">C</span><h3>Peer percentile lookup</h3>'
+        '<p>Pooled screened percentiles by three-digit NAICS and size band.</p></div>'
+        '<div class="ix-controls"><label>Industry (NAICS 3)<select id="ox-naics"></select></label>'
+        '<label>Size band<select id="ox-size"></select></label>'
+        '<label>Your TRIR<input id="ox-trir" type="number" inputmode="decimal" min="0" step="0.1" value="3.0" /></label></div>'
+        '<div class="ox-peer" id="ox-peer"><div class="ox-strip"></div><div class="ox-pcts"></div><p class="ox-peer-msg" aria-live="polite"></p><p class="ox-peer-meta"></p></div>'
+        '<span class="src">Source artifact: outputs/tables/peer_percentiles_pooled.csv</span></div>'
+        '</div>' + jsdata("ix-osha-data", ixdata))
+
+    sens = s["quality"]
+    osha_scope = scope(
+        [f"Which filings report hours that cannot be right: {q['implausible_share']*100:.2f}% of "
+         f"{q['n_filings']:,} filings, carrying {q['hours_share_implausible']*100:.1f}% of all hours.",
+         f"That the screened-to-unscreened correction is not a constant. It runs {min(ratios):.2f}x "
+         f"to {max(ratios):.0f}x depending on the year.",
+         f"That the result does not hinge on where the window is drawn: across the sensitivity grid "
+         f"corrected TRIR stays between {sens['sensitivity_min_corrected_trir']:.3f} and "
+         f"{sens['sensitivity_max_corrected_trir']:.3f}.",
+         "That screened percentile ordering is stable between years, while the low bands move most."],
+        ["The screen identifies filings that cannot be right. It does not identify filings that "
+         "are merely wrong, and it cannot recover the true hours for an excluded establishment.",
+         "Aggregates after screening are conditional on the surviving population, which is not a "
+         "random sample of the original. If implausible hours are filed disproportionately by one "
+         "kind of employer, the screened aggregate inherits that selection.",
+         "Nothing here is a claim about whether workplaces got safer. It is a claim about what "
+         "the denominator will support."])
+    qs = quickstart(repo, [
+        "python scripts/download_data.py --list     # show the catalog and URLs",
+        "python scripts/download_data.py            # ~170 MB into data/raw",
+        "python scripts/run_analysis.py             # writes outputs/",
+        'cd tests && python -m unittest discover -s . -p "test_*.py"'],
+        '<p class="qs-note">Or <code>make data</code>, <code>make analysis</code>, <code>make test</code>. '
+        'The pipeline downloads the public ITA files itself and fails loudly rather than substituting fixtures.</p>')
+
     body = (
-        section("why", "01", "Why this exists", lead)
+        section("explore", "00", "Try the denominator", explore)
+        + section("why", "01", "Why this exists", lead)
         + section("findings", "02", "Findings", findings,
                   lede="Four numbers, each traceable to the artifact named beneath it.")
+        + section("scope", "00", "What this does and does not show", osha_scope)
         + section("byyear", "03", "Year by year", yr_tbl,
                   lede="The pooled ratio is an average over years that do not resemble each other. "
                        "The point of this table is the spread, not the centre.")
@@ -1053,6 +1102,7 @@ def build_osha():
                        "judged against has to be stable between years.")
         + section("method", "08", "Method and limits", method,
                   lede="The screen, its sensitivity, and what the result does not license.")
+        + section("run", "00", "Run it yourself", qs)
     )
 
     return dict(
@@ -1061,16 +1111,21 @@ def build_osha():
              "establishment filings, over 2.8 million real public records.",
         kicker="Empirical analysis - real public data",
         h1="The hours column decides every benchmark built on it",
-        lede=f"A reproducible pipeline over {q['n_filings']:,} public establishment filings, "
-             f"CY{y0} to CY{y1}. {q['implausible_share']*100:.2f}% of filings carry "
-             f"{q['hours_share_implausible']*100:.1f}% of all reported hours, and the correction "
-             f"that follows ranges from {min(ratios):.2f}x to {max(ratios):.0f}x depending on the "
-             f"year. It cannot be published as a constant.",
-        status=status, body=body, first="why", firstlabel="Why this exists",
-        nav='<a href="#why">Why</a><a href="#findings">Findings</a>'
-            '<a href="#byyear">By year</a><a href="#hours">Hours</a>'
-            '<a href="#figures">Figures</a><a href="#models">Models</a>'
-            '<a href="#peers">Peers</a><a href="#method">Method</a>')
+        lede=f"A reproducible pipeline over {q['n_filings']:,} filings, CY{y0}-{y1}. "
+             f"{q['implausible_share']*100:.2f}% of filings carry "
+             f"{q['hours_share_implausible']*100:.1f}% of all hours, and the correction ranges "
+             f"{min(ratios):.2f}x to {max(ratios):.0f}x by year. It cannot be published as a "
+             f"constant.",
+        num=f"{q['hours_share_implausible']*100:.1f}", num_dec=1, unit="%",
+        means=f"of every reported hour sits in the {q['implausible_share']*100:.2f}% of filings "
+              f"that fail the plausibility screen. Correcting for them moves aggregate TRIR by "
+              f"{min(ratios):.2f}x in one year and {max(ratios):.0f}x in another.",
+        num_src="outputs/summary.json - quality.pooled", cta="Try the denominator",
+        toc={"explore": "Try it", "why": "Why this exists", "findings": "Findings",
+             "scope": "Does / does not", "byyear": "Year by year", "hours": "Where the hours are",
+             "figures": "Figures", "models": "Count models", "peers": "Peer benchmarking",
+             "method": "Method", "run": "Run it"},
+        status=status, body=body)
 
 
 # ===================== ehs-risk-sem =====================
@@ -1261,27 +1316,74 @@ def build_sem():
                 "their scores compares two different constructs.",
                 source="results/study04_invariance.csv", limit=10))
 
-    limits = notice(
-        "What this does not establish",
-        '<p>Simulation establishes estimator properties, not empirical facts. These studies show '
-        "what the method does when its assumptions hold and how it fails when they do not. They "
-        "say nothing about whether any particular safety programme works, and they are not "
-        "evidence about any real site.</p>"
-        "<ul>"
-        "<li>The generating models are the author's, chosen to resemble the structure the "
-        "circulating formula implies. A different generating model would give different numbers, "
-        "though the identification results do not depend on the parameterisation.</li>"
-        "<li>Replication counts are modest in places and each table records its own. The "
-        "bootstrap study runs 40 replications, which is enough to show the direction of the "
-        "coverage gap and not enough to pin its size.</li>"
-        "<li>Nothing here has been peer reviewed.</li>"
-        "</ul>"
-        "<p>The practical conclusion is narrow and worth stating plainly: illustrative path "
+    short = {"UnsafeActs": "Unsafe acts", "OperationalStress": "Operational stress",
+             "SystemCondition": "System condition", "SafetyResponseCapability": "Safety response"}
+    reps = sorted({int(r["n_reps"]) for r in rec})
+    ixdata = {
+        "ns": ns, "preds": preds, "short": {p_: short.get(p_, p_) for p_ in preds},
+        "rows": [{"n": int(r["n"]), "p": r["predictor"], "beta": float(r["true_beta"]),
+                  "mean": round(float(r["mean_estimate"]), 5), "sd": round(float(r["empirical_sd"]), 5),
+                  "se": round(float(r["mean_analytic_se"]), 5),
+                  "cov": round(float(r["coverage_95_analytic"]), 4),
+                  "ratio": round(float(r["se_ratio_analytic_over_empirical"]), 4)} for r in rec],
+    }
+    explore = (
+        explore_intro(f"Every estimate below was produced by fitting data simulated from known path "
+                      f"weights, {', '.join(str(x) for x in reps)} replications per cell. Drag the "
+                      "sample size. The wide band is where estimates actually land; the thin bar is the "
+                      "interval the estimator reports. When the thin bar is shorter, the reported "
+                      "confidence is false.", "api/", "API reference")
+        + '<div class="ix" id="ix-sem">'
+        '<div class="ix-panel ix-wide"><div class="ix-controls sx-controls">'
+        f'<label class="sx-slider">Sample size <output id="sx-nlab">n = {ns[0]:,}</output>'
+        f'<input id="sx-n" type="range" min="0" max="{len(ns)-1}" step="1" value="0" /></label>'
+        '<div class="sx-legend"><span><i class="lg-emp"></i>Where estimates land (mean &plusmn; 1.96 empirical SD)</span>'
+        '<span><i class="lg-an"></i>Interval the estimator reports (&plusmn; 1.96 analytic SE)</span>'
+        '<span><i class="lg-true"></i>True weight</span></div></div>'
+        '<div class="sx-grid"><div><h3 class="ix-sub">All four paths at this n <small>select a row</small></h3><div id="sx-four" class="sx-svg"></div></div>'
+        '<div class="sx-readout" aria-live="polite"><h3 class="ix-sub" data-k="p">-</h3><dl>'
+        '<dt>True weight</dt><dd data-k="beta">-</dd><dt>Mean estimate</dt><dd data-k="mean">-</dd>'
+        '<dt>Empirical SD</dt><dd data-k="sd">-</dd><dt>Mean analytic SE</dt><dd data-k="se">-</dd>'
+        '<dt>SE ratio</dt><dd data-k="ratio">-</dd><dt>95% coverage</dt><dd data-k="cov" class="acc">-</dd></dl>'
+        '<div class="sx-covbar" aria-hidden="true"><i></i><b style="left:95%"></b></div>'
+        '<p class="sx-covnote">Tick marks the nominal 95%.</p></div></div>'
+        '<h3 class="ix-sub">The selected path, at every sample size tested</h3><div id="sx-byn" class="sx-svg"></div>'
+        '<span class="src">Source artifact: results/study01_recovery.csv</span></div></div>'
+        + jsdata("ix-sem-data", ixdata))
+
+    sem_scope = scope(
+        [f"Point estimates are nearly unbiased at every sample size tested, from n={ns[0]:,} to n={ns[-1]:,}.",
+         f"Interval coverage sits at {min(cov_all)*100:.0f}% to {max(cov_all)*100:.0f}% against a nominal 95%, "
+         f"and does not improve with n.",
+         "Telling the two negative coefficients apart at 80% power needs a sample of "
+         f"{req_map.get('distinguish beta = -0.25 from beta = -0.20 at 80% power', 0):,}.",
+         f"Fitting the same data with the causal arrow reversed returns an identical coefficient "
+         f"({float(equiv[0]['beta']):.3f} both ways) and identical fit statistics."],
+        ["Simulation establishes estimator properties, not empirical facts. These studies say nothing "
+         "about whether any particular safety programme works, and they are not evidence about any real site.",
+         "The generating models are the author's, chosen to resemble the structure the "
+         "circulating formula implies. A different generating model would give different numbers, "
+         "though the identification results do not depend on the parameterisation.",
+         "Replication counts are modest in places and each table records its own. The "
+         "bootstrap study runs 40 replications, which is enough to show the direction of the "
+         "coverage gap and not enough to pin its size.",
+         "Nothing here has been peer reviewed."],
+        '<p class="scope-after">The practical conclusion is narrow and worth stating plainly: illustrative path '
         "weights of the kind that circulate in practitioner writing cannot be read causally, "
         "cannot be transferred between sites, and cannot be validated by goodness of fit.</p>")
+    qs = quickstart(repo, [
+        "git clone https://github.com/priyatham9/ehs-risk-sem",
+        "cd ehs-risk-sem",
+        "python3 -m unittest discover -s tests -v",
+        "python3 simulations/run_all.py --quick       # writes results_quick/",
+        "python3 simulations/run_all.py               # full run, writes results/"],
+        '<p class="qs-note"><code>--quick</code> writes to <code>results_quick/</code>, so a reduced-replication '
+        "run cannot silently replace the checked-in tables.</p>")
 
     body = (
-        section("why", "01", "Why this exists", lead)
+        section("explore", "00", "Drag the sample size", explore)
+        + section("why", "01", "Why this exists", lead)
+        + section("scope", "00", "What this does and does not show", sem_scope)
         + section("recovery", "02", "Recovery, and the intervals around it", cov_fig + rec_tbl,
                   lede="Start with the friendliest possible test. Generate data from a known "
                        "model, then estimate it. If the estimator cannot recover coefficients it "
@@ -1304,7 +1406,7 @@ def build_sem():
         + section("meaning", "07", "What a coefficient means", meaning,
                   lede="Even a correctly estimated coefficient does not tell you what happens if "
                        "you intervene, and does not survive a change of scale or a change of site.")
-        + section("limits", "08", "Limits", limits)
+        + section("run", "00", "Run it yourself", qs)
     )
 
     return dict(
@@ -1313,15 +1415,20 @@ def build_sem():
              "recover for safety risk scoring. All data simulated by design.",
         kicker="Method study - every number simulated by design",
         h1="What SEM cannot tell you about safety risk",
-        lede="A from-scratch estimator in numpy, then simulation studies covering coefficient "
+        lede="A from-scratch numpy estimator, then simulation studies covering coefficient "
              "recovery, interval coverage, sample size, rare-event calibration, misspecification "
-             "and model equivalence. Ground truth is known by construction, so estimator behaviour "
-             "is measured rather than assumed. Nothing here analyses real injury data.",
-        status=status, body=body, first="why", firstlabel="Why this exists",
-        nav='<a href="#why">Why</a><a href="#recovery">Recovery</a>'
-            '<a href="#sizing">Sizing</a><a href="#rare">Rare events</a>'
-            '<a href="#zero">Zero inflation</a><a href="#misspec">Misspecification</a>'
-            '<a href="#meaning">Meaning</a><a href="#limits">Limits</a>')
+             "and equivalence. Ground truth is known by construction: behaviour is measured, not "
+             "assumed. No real injury data here.",
+        num=f"{max(cov_all)*100:.0f}", num_dec=0, unit="%",
+        means=f"is the best 95% interval coverage the estimator reaches at any sample size tested. "
+              f"The estimates are nearly unbiased; the uncertainty reported around them is too narrow, "
+              f"which reads as confidence.",
+        num_src="results/study01_recovery.csv", cta="Drag the sample size",
+        toc={"explore": "Try it", "why": "Why this exists", "scope": "Does / does not",
+             "recovery": "Recovery", "sizing": "Sizing", "rare": "Rare events",
+             "zero": "Zero inflation", "misspec": "Misspecification", "meaning": "Meaning",
+             "run": "Run it"},
+        status=status, body=body)
 
 
 # ===================== ehs-ai-grounding-eval =====================
@@ -1524,11 +1631,101 @@ def build_grounding():
         f'<p><a class="backlink" href="{GH}/{repo}/blob/main/docs/preregistration.md">'
         "The full preregistration</a></p></div>")
 
+    # ---- signature interactive: browse items, reveal the trap, baseline outcomes ----
+    summ = {r["adapter"]: r for r in read_csv(d / "results" / "baselines_summary.csv")}
+    ADAPTERS = [("random_floor", "Random floor"), ("retrieval_tfidf", "TF-IDF"),
+                ("retrieval_bm25", "BM25"), ("oracle", "Oracle")]
+    ADAPTERS = [(k, l) for k, l in ADAPTERS if (d / "results" / f"baselines_{k}.json").exists()]
+    outcomes = {}
+    for k, _ in ADAPTERS:
+        run = json.loads((d / "results" / f"baselines_{k}.json").read_text(encoding="utf-8"))
+        per = {}
+        for r_ in run["runs"]:
+            for sc in r_["scores"]:
+                per.setdefault(sc["item_id"], []).append(sc["outcome"])
+        outcomes[k] = per
+    dom_short = {"confined_space": "Confined space", "hazard_communication": "Hazard comms",
+                 "injury_recordkeeping": "Recordkeeping", "lockout_tagout": "Lockout/tagout",
+                 "machine_electrical_fire": "Machine, electrical, fire",
+                 "pressure_relief_devices": "Pressure relief",
+                 "process_safety_management": "Process safety",
+                 "respiratory_protection_and_noise": "Respiratory, noise"}
+    dlist, items = [], []
+    for p_ in sorted((d / "corpus" / "items").glob("*.json")):
+        doc = json.loads(p_.read_text(encoding="utf-8"))
+        di = len(dlist)
+        its = doc.get("items", [])
+        fact_ids = [i["id"] for i in its if i.get("item_type") == "factual"]
+        acc = []
+        for k, _ in ADAPTERS:
+            obs = [o for iid in fact_ids for o in outcomes[k].get(iid, [])]
+            acc.append(round(sum(o == "correct" for o in obs) / len(obs), 4) if obs else 0)
+        dlist.append({"id": doc["domain"], "short": dom_short.get(doc["domain"], short(doc["domain"])),
+                      "n": len(its), "acc": acc})
+        for i in its:
+            aw = i.get("adjacent_wrong") or {}
+            out_ = {}
+            for k, _ in ADAPTERS:
+                o = outcomes[k].get(i["id"])
+                if not o:
+                    continue
+                out_[k] = o[0] if len(o) == 1 else [sum(x == "correct" for x in o), len(o)]
+            items.append({"id": i["id"], "d": di, "type": i.get("item_type"), "tier": i.get("risk_tier"),
+                          "pair": i.get("pair_id"), "q": i["question"], "a": i["correct_answer"],
+                          "cite": (i.get("source") or {}).get("clause", ""),
+                          "trap": {"label": aw.get("label", ""), "answer": aw.get("answer", ""),
+                                   "why": aw.get("why_dangerous", "")},
+                          "out": out_ if i.get("item_type") == "factual" else None})
+    ixdata = {"domains": dlist, "items": items,
+              "adapters": [{"key": k, "label": l} for k, l in ADAPTERS]}
+    tf = float(summ["retrieval_tfidf"]["accuracy"]) if "retrieval_tfidf" in summ else None
+    rf = float(summ["random_floor"]["accuracy"]) if "random_floor" in summ else None
+
+    explore = (
+        explore_intro(f"Every one of the {total} corpus items, with the plausible wrong answer it was "
+                      "built to catch. Pick a domain, open an item, reveal the trap. The bars show how the "
+                      "three non-LLM baselines score per domain on factual items; none of them is a "
+                      "language model.", "try.html", "Try answering an item yourself")
+        + '<div class="ix" id="ix-ground">'
+        '<div class="ix-panel ix-wide"><h3 class="ix-sub">Baseline accuracy by domain <small>select a domain to filter</small></h3>'
+        '<div class="gx-legend">' + "".join(f'<span><i class="a{j}"></i>{esc(l)}</span>' for j, (_, l) in enumerate(ADAPTERS)) + '</div>'
+        '<div class="gx-acc" id="gx-acc"></div>'
+        '<span class="src">Source artifact: results/baselines_*.json - scores, factual items, correct outcome share</span></div>'
+        '<div class="ix-panel ix-wide"><div class="seg seg-wrap" id="gx-domains"></div>'
+        '<div class="gx-browse"><div class="gx-list" id="gx-list" aria-label="Corpus items"></div>'
+        '<div class="gx-card" id="gx-card" aria-live="polite"></div></div>'
+        '<span class="src">Source artifact: corpus/items/*.json</span></div>'
+        '</div>' + jsdata("ix-ground-data", ixdata))
+
+    g_scope = scope(
+        [f"A corpus of {total} items across {len(domains)} domains, built around plausible-but-wrong "
+         f"adjacent answers, with {len(pairs)} minimal pairs.",
+         f"Structural source verification: {ver['n_ok']} of {ver['n_checked']} checked items pass "
+         "against the eCFR at a pinned edition date.",
+         "That the items discriminate: random floor 52.1%, TF-IDF retrieval 27.0%, oracle ceiling 100%.",
+         "A scoring harness and preregistration fixed before any system was run."],
+        ["<strong>No language model has been evaluated on this corpus.</strong> Nothing here should be "
+         "cited as a finding about any model.",
+         "The demonstration run under <code>synthetic/</code> uses mock adapters and exists "
+         "only to prove the harness executes end to end. It is not a result.",
+         "Verification is structural. It does not confirm that the answer key is a good answer.",
+         "Scoring is lexical. A lexical scorer can be gamed by a verbose answer and can miss a correct "
+         "answer phrased unusually."])
+    qs = quickstart(repo, [
+        "python3 -m grounding_eval.cli corpus      # describe the corpus",
+        "python3 -m grounding_eval.cli validate    # corpus + stored source verification",
+        "python3 -m grounding_eval.cli demo        # labelled demonstration run",
+        "python3 -m unittest discover -s tests -v"],
+        '<p class="qs-note">Python 3.9+, pandas and numpy. No other dependencies, no build step. '
+        'Baselines: <code>scripts/run_baselines.sh</code>.</p>')
+
     body = (
-        section("why", "01", "Why this exists", lead)
+        section("explore", "00", "Browse the traps", explore)
         + section("status", "02", "Status", no_results,
                   lede="Stated before anything else on the page, because a benchmark is easy to "
                        "mistake for a result.")
+        + section("why", "01", "Why this exists", lead)
+        + section("scope", "00", "What this does and does not show", g_scope)
         + section("corpus", "03", "The corpus", dom_fig + dom_tbl,
                   lede=f"{total} items across {len(domains)} domains, {types['factual']} factual "
                        f"and {types['category_error']} category-error, organised into "
@@ -1542,6 +1739,7 @@ def build_grounding():
         + section("prereg", "06", "Preregistration", "".join(prereg_parts),
                   lede="Fixed before any system was run, so that a later result cannot be the "
                        "product of choices made after seeing the data.")
+        + section("run", "00", "Run it yourself", qs)
     )
 
     return dict(
@@ -1552,15 +1750,18 @@ def build_grounding():
         kicker="Benchmark - baselines exist, no language model scored yet",
         h1="Measuring whether an answer is grounded or merely plausible",
         lede=f"{total} questions built around plausible-but-wrong adjacent answers in pressure "
-             f"relief, lockout/tagout, confined space, process safety and recordkeeping, with "
-             f"scoring that rewards abstention over confabulation. Every source is verified "
-             f"against a pinned eCFR edition. Three non-LLM baselines are in (random floor 52.1%, "
-             f"TF-IDF 27.0%, oracle 100%) and a real Anthropic adapter with a one-command run "
-             f"script is ready; no language model has been evaluated yet.",
-        status=status, body=body, first="why", firstlabel="Why this exists",
-        nav='<a href="#why">Why</a><a href="#status">Status</a>'
-            '<a href="#corpus">Corpus</a><a href="#sources">Sources</a>'
-            '<a href="#scoring">Scoring</a><a href="#prereg">Prereg</a>')
+             f"relief, lockout/tagout, confined space, process safety and recordkeeping. Baselines "
+             f"exist; no language model has been evaluated yet.",
+        num=f"{tf*100:.1f}" if tf is not None else str(total), num_dec=1 if tf is not None else 0,
+        unit="%" if tf is not None else "",
+        means=(f"is what TF-IDF retrieval scores on the factual items, below the {rf*100:.1f}% random "
+               "floor. The items discriminate. No language model has been evaluated yet."
+               if tf is not None and rf is not None else "corpus items. No language model has been evaluated yet."),
+        num_src="results/baselines_summary.csv", cta="Browse the traps",
+        toc={"explore": "Try it", "status": "Status", "why": "Why this exists",
+             "scope": "Does / does not", "corpus": "The corpus", "sources": "Sources",
+             "scoring": "Scoring", "prereg": "Preregistration", "run": "Run it"},
+        status=status, body=body)
 
 
 # ===================== ehs-human-factors-ontology =====================
@@ -1792,8 +1993,77 @@ def build_ontology():
         "hand-written illustration and is not a record of a real event at any site.</li>"
         "</ul>")
 
+    # ---- signature interactive: PIF explorer + rule-engine demo ----
+    fws_order = [f for f in ("SPAR-H", "CREAM", "HFACS") if f in frameworks] + \
+        [f for f in frameworks if f not in ("SPAR-H", "CREAM", "HFACS")]
+    dim_map = {}
+    for r in xw:
+        dd = dim_map.setdefault(r["dimension_label"], {})
+        fa = dd.setdefault(r["factor_curie"], {"curie": r["factor_curie"], "label": r["factor_label"],
+                                               "verbatim": r["factor_verbatim_label"], "xw": []})
+        fa["xw"].append({"fw": r["framework_label"], "ext": r["external_label"], "s": r["match_strength"],
+                         "cite": r["source_refs"], "note": r["note"]})
+    demo = _engine_demo(d)
+    ixdata = {"frameworks": fws_order,
+              "dims": [{"label": dl, "factors": sorted(dim_map[dl].values(), key=lambda f: f["label"])}
+                       for dl in dims],
+              "demo": demo}
+    demo_html = ""
+    if demo:
+        demo_html = (
+            '<div class="ix-panel ix-wide hx-demo"><div class="ix-head"><span class="ix-k">B</span>'
+            '<h3>Run the rule engine</h3><p>Start from a scenario, change one factor, read the band and '
+            'the derivation. Every result was computed by the repository\'s own engine when this page '
+            'was built, one factor changed at a time.</p></div>'
+            '<div class="ix-controls hx-dcontrols"><div><span class="ix-lab">Starting scenario</span><div class="seg" id="hx-dbase"></div></div>'
+            '<label>Factor<select id="hx-dfactor"></select></label>'
+            '<div><span class="ix-lab">Level</span><div class="seg seg-wrap" id="hx-dlevel"></div></div></div>'
+            '<div class="hx-dres" id="hx-dres" aria-live="polite"></div>'
+            '<p class="hx-disclaimer">Ordinal screening label. Not a human error probability, not a rate, '
+            'not calibrated against outcome data. Band thresholds are conventions chosen by the author.</p>'
+            '<span class="src">Computed at build time: ehs_hfo.assessment.assess on examples/reactor_startup_nonroutine.json '
+            'and an all-nominal variant</span></div>')
+    explore = (
+        explore_intro(f"Pick a context, pick a factor, and see where it lands in {len(fws_order)} "
+                      "external frameworks, including the rows that assert there is no counterpart. "
+                      "Then push the same factor through the rule engine.",
+                      "walkthrough.html", "Step through a full derivation")
+        + '<div class="ix" id="ix-onto">'
+        '<div class="ix-panel ix-wide"><div class="ix-head"><span class="ix-k">A</span><h3>PIF explorer</h3>'
+        '<p>Four context dimensions, twenty IDHEAS-G factors, one crosswalk.</p></div>'
+        '<div class="hx-tabs" id="hx-tabs" role="tablist" aria-label="Context dimension"></div>'
+        '<div class="hx-body"><div class="hx-factors" id="hx-factors" role="tabpanel"></div>'
+        '<div class="hx-xw" id="hx-xw" aria-live="polite"></div></div>'
+        '<span class="src">Source artifact: crosswalk/crosswalk.csv</span></div>'
+        + demo_html + '</div>' + jsdata("ix-onto-data", ixdata))
+
+    o_scope = scope(
+        [f"An encoding of the {local_factors} IDHEAS-G factors with the source's own wording attached, "
+         "so the transcription can be checked rather than trusted.",
+         f"A crosswalk to {len(frameworks)} external frameworks: {len(aligned)} cited alignments, "
+         f"{len(absences)} asserted absences, only {n_close} close matches.",
+         "A forward-chaining engine whose every conclusion carries the rule that fired and the facts "
+         "behind it, deterministic run to run."],
+        ["<strong>Factor levels are analyst-assigned ordinals.</strong> The observable proxies "
+         "suggested for deriving them from operational data are proposed, not validated.",
+         "<strong>A compatibility argument is owed.</strong> Adopting a PIF set while restructuring "
+         "the error taxonomy it was constructed against requires an explicit argument. That argument "
+         "is not yet made.",
+         "<strong>The engine has not been evaluated against expert judgement.</strong>",
+         "<strong>The screening bands are conventions.</strong> The thresholds are the author's.",
+         "<strong>The scenario corpus is synthetic.</strong> The worked example is a hand-written "
+         "illustration and is not a record of a real event at any site."])
+    qs = quickstart(repo, [
+        "git clone https://github.com/priyatham9/ehs-human-factors-ontology",
+        "cd ehs-human-factors-ontology",
+        "python3 -m unittest discover -s tests -t .",
+        "PYTHONPATH=src python3 -m ehs_hfo assess examples/reactor_startup_nonroutine.json"],
+        '<p class="qs-note">Standard library only. Two runs of the same scenario produce byte-identical reports.</p>')
+
     body = (
-        section("why", "01", "Why this exists", lead)
+        section("explore", "00", "Explore the factors", explore)
+        + section("why", "01", "Why this exists", lead)
+        + section("scope", "00", "What this does and does not show", o_scope)
         + section("adopted", "02", "The taxonomy is adopted, not invented", adopted,
                   lede="The most useful thing this page can do is tell you what is borrowed "
                        "before you find out yourself.")
@@ -1808,6 +2078,7 @@ def build_ontology():
         + section("gaps", "06", "What the factor set does not reach", gaps_tbl,
                   lede="A crosswalk is only credible if it publishes its own gaps.")
         + section("limits", "07", "Honest limits", limits)
+        + section("run", "00", "Run it yourself", qs)
     )
 
     return dict(
@@ -1816,16 +2087,361 @@ def build_ontology():
              "crosswalk to prior human reliability work and auditable derivation traces.",
         kicker="Ontology - adopted taxonomy, contributed formalisation",
         h1="Human error context, formalised and traceable",
-        lede=f"An OWL ontology of {local_factors} contextual factors shaping human error, adopted "
-             f"from IDHEAS-G and mapped explicitly onto {len(frameworks)} external frameworks "
-             f"through {len(aligned)} cited alignments and {len(absences)} asserted absences, with "
-             f"a forward-chaining engine that emits a real derivation trace for every conclusion. "
-             f"Factor levels are analyst-assigned, and the page says so throughout.",
-        status=status, body=body, first="why", firstlabel="Why this exists",
-        nav='<a href="#why">Why</a><a href="#adopted">Adopted</a>'
-            '<a href="#crosswalk">Crosswalk</a><a href="#trace">Trace</a>'
-            '<a href="#engine">Engine</a><a href="#gaps">Gaps</a>'
-            '<a href="#limits">Limits</a>')
+        lede=f"An OWL ontology of {local_factors} contextual factors from IDHEAS-G, mapped onto "
+             f"{len(frameworks)} external frameworks through {len(aligned)} cited alignments and "
+             f"{len(absences)} asserted absences. A forward-chaining engine traces every "
+             f"conclusion; factor levels are analyst-assigned.",
+        num=str(n_close), num_dec=0, unit=f"/{len(aligned)}",
+        means=f"crosswalk alignments are close matches. The rest are broader, narrower or partial, "
+              f"and {len(absences)} more rows assert that a framework has no counterpart at all.",
+        num_src="crosswalk/crosswalk.csv", cta="Explore the factors",
+        toc={"explore": "Try it", "why": "Why this exists", "scope": "Does / does not",
+             "adopted": "Adopted taxonomy", "crosswalk": "Crosswalk", "trace": "Derivation trace",
+             "engine": "Guarantees", "gaps": "Gaps", "limits": "Honest limits", "run": "Run it"},
+        status=status, body=body)
+
+
+_DEMO_PY = r"""
+import json
+from ehs_hfo.facts import Scenario
+from ehs_hfo.assessment import assess
+from ehs_hfo.ontology import Ontology
+from ehs_hfo.rules import build_program, BAND_ORDER
+import re
+o = Ontology.load(); p = build_program()
+ex = json.load(open("examples/reactor_startup_nonroutine.json"))
+factors = sorted(ex["factor_levels"])
+LV = [("ehs:LevelEnhanced", "enhanced"), ("ehs:LevelNominal", "nominal"), ("ehs:LevelDegraded", "degraded"),
+      ("ehs:LevelSeverelyDegraded", "severely degraded"), ("ehs:LevelUnknown", "unknown")]
+def pretty(c):
+    return re.sub(r"(?<!^)(?=[A-Z])", " ", c.split(":", 1)[-1]).lower()
+results, index = [], {}
+def run(levels):
+    a = assess(Scenario.from_dict({"scenario_id": "demo", "factor_levels": levels}), o, p)
+    r = {"band": a.screening_band, "fired": len(a.result.rules_fired()),
+         "funcs": [pretty(x) for x in a.challenged_functions],
+         "agg": [pretty(x) for x in a.aggravated_error_modes],
+         "cov": "%d of %d factors assessed" % a.coverage,
+         "trace": a.band_trace()[:9]}
+    k = json.dumps(r, sort_keys=True)
+    if k not in index:
+        index[k] = len(results); results.append(r)
+    return index[k]
+bases = {"example": dict(ex["factor_levels"]), "nominal": {f: "ehs:LevelNominal" for f in factors}}
+out = {"bands": list(BAND_ORDER), "levels": LV, "bases": {}, "runs": {}, "results": results}
+for name, lv in bases.items():
+    out["bases"][name] = {"levels": lv, "result": run(lv)}
+    for f in factors:
+        for code, _ in LV:
+            if code == lv[f]:
+                continue
+            v = dict(lv); v[f] = code
+            out["runs"]["%s|%s|%s" % (name, f, code)] = run(v)
+print(json.dumps(out))
+"""
+
+
+def _engine_demo(repo_dir):
+    """Run the repository's own engine over single-factor changes. None if it cannot run."""
+    try:
+        r = subprocess.run([sys.executable, "-c", _DEMO_PY], cwd=str(repo_dir),
+                           env={"PYTHONPATH": "src", "PATH": "/usr/bin:/bin"},
+                           stdout=subprocess.PIPE, stderr=subprocess.PIPE, timeout=240)
+        if r.returncode != 0:
+            print(r.stderr.decode()[-800:], file=sys.stderr)
+            return None
+        return json.loads(r.stdout.decode("utf-8"))
+    except Exception as e:  # noqa: BLE001
+        print("engine demo skipped:", e, file=sys.stderr)
+        return None
+
+
+SITE_CSS = r"""
+/* ================= project site v2 ================= */
+body{overflow-x:clip}
+.src{display:block;margin-top:14px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+/* ---- reveals ---- */
+.js .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
+@media print{.js .rv{opacity:1;transform:none}}
+
+/* ---- hero: the figure leads ---- */
+.hero{padding:64px 0 56px;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px 56px;align-items:end}
+.hero-fig{min-width:0}
+.hero-eyebrow{margin-bottom:10px}
+.hero-big{margin:0;display:flex;align-items:flex-start;font-family:var(--font-sans);font-stretch:125%;font-weight:900;line-height:.8;letter-spacing:-.045em;color:var(--accent);font-variant-numeric:tabular-nums;white-space:nowrap}
+.hero-num{font-size:min(30vw,calc((100vw - 44px) / var(--k,3.7)))}
+@media(min-width:901px){.hero-num{font-size:min(10.5rem,10.5vw)}}
+.hero-unit{font-size:clamp(1.6rem,6vw,4rem);margin:.08em 0 0 .06em;color:var(--ink);letter-spacing:-.02em}
+.hero-means{margin:26px 0 0;padding-left:18px;border-left:4px solid var(--accent);font-size:clamp(1.02rem,1.6vw,1.22rem);line-height:1.45;font-weight:600;color:var(--ink);max-width:44ch}
+.hm-k{display:block;font-family:var(--font-mono);font-size:.625rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:6px}
+.hero-text{min-width:0;padding-bottom:6px}
+.hero .hero-text h1{font-size:clamp(1.7rem,3.3vw,2.75rem);max-width:20ch;line-height:1.02}
+.hero .hero-role{font-size:.98rem;margin-top:16px;max-width:56ch}
+.hero .status{grid-column:1/-1;margin-top:0;max-width:none}
+.hero .st-v{font-size:1.15rem}
+@media(max-width:900px){.hero{padding:40px 0 40px}.hero-grid{grid-template-columns:1fr;gap:32px}}
+
+/* ---- layout + table of contents ---- */
+.layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:0 56px;align-items:start}
+.toc{position:sticky;top:calc(var(--hdr-h,56px) + 28px);padding:64px 0 24px;z-index:20}
+.toc-d>summary{list-style:none;display:flex;align-items:baseline;gap:10px;padding:0 0 12px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);cursor:default;border-bottom:2px solid var(--rule)}
+.toc-d>summary::-webkit-details-marker{display:none}
+.toc-num{color:var(--accent);font-weight:700}
+.toc-current{color:var(--ink);font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.toc-caret{display:none}
+.toc ol{list-style:none;margin:0;padding:8px 0 0}
+.toc li a{display:flex;gap:10px;align-items:baseline;min-height:34px;padding:7px 0 7px 12px;border-left:2px solid var(--rule-soft);font-size:.8125rem;line-height:1.3;color:var(--ink-2);text-decoration:none;transition:color .15s,border-color .15s,background .15s}
+.toc li a:hover{color:var(--ink);border-left-color:var(--ink)}
+.toc li a.is-on{color:var(--accent);border-left-color:var(--accent);font-weight:700;background:var(--accent-wash)}
+.toc-n{font-family:var(--font-mono);font-size:.625rem;color:var(--muted);flex:none}
+.toc li a.is-on .toc-n{color:var(--accent)}
+@media(max-width:1023px){
+  .layout{display:block}
+  .toc{top:var(--hdr-h,56px);margin:0 -30px;padding:0;background:var(--paper);border-bottom:2px solid var(--rule)}
+  .toc-d>summary{cursor:pointer;min-height:48px;align-items:center;padding:0 30px;border-bottom:0}
+  .toc-caret{display:block;margin-left:auto;width:10px;height:10px;border-right:2px solid var(--ink);border-bottom:2px solid var(--ink);transform:rotate(45deg) translateY(-3px);transition:transform .2s}
+  .toc-d[open] .toc-caret{transform:rotate(-135deg)}
+  .toc ol{position:absolute;left:0;right:0;top:100%;background:var(--surface);border-top:2px solid var(--rule);border-bottom:2px solid var(--rule);padding:6px 30px 12px;max-height:70vh;overflow:auto;box-shadow:0 18px 30px var(--shadow)}
+  .toc li a{min-height:44px}
+  }
+@media(max-width:900px){.toc{margin:0 -22px}.toc-d>summary,.toc ol{padding-left:22px;padding-right:22px}}
+.content{min-width:0}
+.content .wrap{max-width:none;padding:0}
+.content .section,.content .section:nth-of-type(even){background:transparent;padding:72px 0;border-bottom:2px solid var(--rule)}
+.content .section:last-child{border-bottom:0}
+.content .rail-head{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:18px;align-items:end;margin-bottom:26px}
+.content .rail-num{font-family:var(--font-sans);font-stretch:125%;font-weight:900;font-size:clamp(2.4rem,5vw,3.8rem);line-height:.78;letter-spacing:-.04em;color:transparent;-webkit-text-stroke:1.5px var(--accent)}
+.content .rail-head h2{font-size:clamp(1.3rem,3.4vw,2.6rem);max-width:none;line-height:1;overflow-wrap:break-word;hyphens:auto;min-width:0}
+.content .rail-head .label{grid-column:2}
+@media(max-width:640px){.content .section,.content .section:nth-of-type(even){padding:52px 0}.content .rail-num{-webkit-text-stroke-width:1px}}
+
+/* ---- interactive shell ---- */
+.ix-intro{font-size:1.06rem;line-height:1.55;color:var(--ink-2);max-width:66ch;margin:0 0 26px}
+.ix-more{font-family:var(--font-mono);font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-bottom:2px solid var(--accent);white-space:nowrap}
+.ix{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2px;background:var(--rule-soft);border:2px solid var(--rule)}
+.ix-panel{background:var(--surface);padding:26px;min-width:0}
+.ix-wide{grid-column:1/-1}
+@media(max-width:860px){.ix{grid-template-columns:1fr}.ix-panel{padding:20px 16px}}
+.ix-head{display:grid;grid-template-columns:auto minmax(0,1fr);column-gap:14px;margin-bottom:18px}
+.ix-head h3{font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:1.15rem;line-height:1.1;align-self:center}
+.ix-head p{grid-column:2;margin:6px 0 0;font-size:.875rem;color:var(--muted)}
+.ix-k{grid-row:span 2;width:40px;height:40px;display:grid;place-items:center;background:var(--accent);color:var(--accent-ink);font-family:var(--font-mono);font-weight:700;font-size:1rem}
+.ix-sub{font-family:var(--font-mono);font-size:.6875rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--ink);margin:0 0 12px}
+.ix-sub small{font-weight:500;color:var(--muted);margin-left:8px;letter-spacing:.06em}
+.ix-read{font-family:var(--font-mono);font-size:.75rem;color:var(--ink-2);min-height:3em;margin:10px 0 0}
+.ix-controls{display:flex;flex-wrap:wrap;gap:14px 18px;margin-bottom:20px;align-items:flex-end}
+.ix-controls label,.ix-lab{display:flex;flex-direction:column;gap:6px;font-family:var(--font-mono);font-size:.625rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.ix-lab{margin-bottom:6px}
+.ix select,.ix input[type=number]{min-height:44px;min-width:0;max-width:100%;padding:0 12px;border:2px solid var(--rule);border-radius:0;background:var(--paper);color:var(--ink);font-family:var(--font-mono);font-size:.875rem;letter-spacing:0;text-transform:none}
+.ix input[type=number]{width:120px}
+#ox-naics{width:min(360px,100%)}
+.seg{display:flex;margin-bottom:14px}
+.seg-wrap{flex-wrap:wrap}
+.seg-b{min-height:44px;padding:0 14px;margin:0 -2px -2px 0;border:2px solid var(--rule);border-radius:0;background:var(--surface);color:var(--ink);font-family:var(--font-mono);font-size:.6875rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:background .15s,color .15s}
+.seg-b:hover{background:var(--surface-2)}
+.seg-b[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--accent-ink);position:relative;z-index:1}
+.ix button:focus-visible,.ix select:focus-visible,.ix input:focus-visible{outline:3px solid var(--accent);outline-offset:2px;position:relative;z-index:2}
+
+/* ---- osha ---- */
+.ox-out{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:2px;background:var(--rule-soft);border:2px solid var(--rule)}
+.ox-read{background:var(--surface);padding:14px 16px;min-width:0}
+.ox-read span{display:block;font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.ox-read b{display:block;margin-top:6px;font-stretch:125%;font-weight:900;font-size:clamp(1.3rem,2.6vw,2rem);line-height:1;font-variant-numeric:tabular-nums}
+.ox-read b.acc{color:var(--accent)}
+.ox-bar{height:6px;background:var(--surface-2);margin-top:10px}
+.ox-bar i{display:block;height:100%;background:var(--s2);width:0;transition:width .5s cubic-bezier(.2,.7,.2,1)}
+.ox-bar i.ox-bar-f{background:var(--accent)}
+.ox-note{grid-column:1/-1;background:var(--surface-2);margin:0;padding:10px 16px;font-family:var(--font-mono);font-size:.6875rem;color:var(--ink-2)}
+@media(max-width:760px){.ox-out{grid-template-columns:1fr 1fr}}
+.ox-years svg{display:block;width:100%;height:auto}
+.ox-yr{cursor:pointer;transition:opacity .15s;outline:none}
+.ox-yr:hover,.ox-yr:focus{opacity:.72}
+.ox-yr:focus-visible{stroke:var(--ink);stroke-width:3}
+.ox-strip{position:relative;height:46px;margin:30px 8px 0;border-bottom:2px solid var(--rule);background:linear-gradient(90deg,var(--accent-wash),transparent)}
+.ox-tick{position:absolute;bottom:0;width:2px;height:24px;background:var(--accent);transform:translateX(-1px)}
+.ox-you{position:absolute;top:-16px;bottom:-8px;width:4px;background:var(--s2);transform:translateX(-2px);transition:left .3s}
+.ox-you span{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.625rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink);white-space:nowrap}
+.ox-pcts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;margin-top:16px}
+.ox-pcts div{background:var(--surface-2);padding:8px 8px}
+.ox-pcts span{display:block;font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.12em;color:var(--muted)}
+.ox-pcts b{font-family:var(--font-mono);font-size:.875rem;font-variant-numeric:tabular-nums}
+@media(max-width:420px){.ox-pcts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.ox-peer-msg{margin:14px 0 4px;font-weight:600;font-size:.95rem;min-height:1.5em}
+.ox-peer-meta{margin:0;font-family:var(--font-mono);font-size:.6875rem;color:var(--muted)}
+
+/* ---- risk sem ---- */
+.sx-controls{display:grid;grid-template-columns:minmax(0,1fr);gap:14px}
+.sx-slider{width:100%}
+.sx-slider output{font-stretch:125%;font-weight:900;font-size:clamp(1.6rem,4vw,2.6rem);color:var(--accent);letter-spacing:-.02em;text-transform:none;font-family:var(--font-sans);line-height:1}
+.sx-slider input{width:100%;height:44px;accent-color:var(--accent);cursor:pointer}
+.sx-legend{display:flex;flex-wrap:wrap;gap:8px 20px;font-family:var(--font-mono);font-size:.6875rem;color:var(--ink-2)}
+.sx-legend span{display:inline-flex;align-items:center;gap:8px}
+.sx-legend i{width:22px;height:12px;flex:none}
+.lg-emp{background:var(--s2);opacity:.45}
+.lg-an{height:5px!important;background:var(--accent)}
+.lg-true{width:0!important;height:16px!important;border-left:2px dashed var(--ink)}
+.sx-grid{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:28px;margin-bottom:26px}
+@media(max-width:860px){.sx-grid{grid-template-columns:1fr}}
+.sx-svg svg{display:block;width:100%;height:auto}
+.sx-row{cursor:pointer;outline:none}
+.sx-row:hover text{fill:var(--accent)}
+.sx-row:focus-visible text{fill:var(--accent);text-decoration:underline}
+.sx-row:focus-visible rect:first-of-type{stroke:var(--accent);stroke-width:2}
+.sx-readout{border:2px solid var(--rule);padding:18px;background:var(--surface-2);align-self:start}
+.sx-readout dl{display:grid;grid-template-columns:auto auto;gap:8px 12px;margin:0}
+.sx-readout dt{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);align-self:center}
+.sx-readout dd{margin:0;text-align:right;font-stretch:125%;font-weight:900;font-size:1.25rem;font-variant-numeric:tabular-nums}
+.sx-readout dd.acc{color:var(--accent);font-size:1.7rem}
+.sx-covbar{position:relative;height:12px;background:var(--paper);border:2px solid var(--rule);margin-top:16px}
+.sx-covbar i{display:block;height:100%;background:var(--accent);width:0;transition:width .45s cubic-bezier(.2,.7,.2,1)}
+.sx-covbar b{position:absolute;top:-8px;bottom:-8px;width:3px;background:var(--ink)}
+.sx-covnote{margin:8px 0 0;font-family:var(--font-mono);font-size:.625rem;color:var(--muted)}
+
+/* ---- grounding ---- */
+.gx-legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:14px;font-family:var(--font-mono);font-size:.6875rem;color:var(--ink-2)}
+.gx-legend span{display:inline-flex;align-items:center;gap:7px}
+.gx-legend i{width:14px;height:8px}
+.gx-acc{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:2px;background:var(--rule-soft);border:2px solid var(--rule)}
+.gx-dom{display:block;text-align:left;background:var(--surface);border:0;border-radius:0;padding:14px;color:var(--ink);font:inherit;cursor:pointer;transition:background .15s}
+.gx-dom:hover{background:var(--surface-2)}
+.gx-dom[aria-pressed="true"]{background:var(--accent-wash);box-shadow:inset 0 0 0 3px var(--accent)}
+.gx-dom-t{display:block;font-weight:700;font-size:.875rem;margin-bottom:8px}
+.gx-accrow{display:grid;grid-template-columns:80px minmax(0,1fr) 38px;gap:8px;align-items:center;margin-top:3px}
+.gx-accrow small{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.gx-accrow b{font-family:var(--font-mono);font-size:.6875rem;text-align:right;font-variant-numeric:tabular-nums}
+.gx-track{height:7px;background:var(--surface-2)}
+.gx-track i{display:block;height:100%}
+.a0{background:var(--s2)}.a1{background:var(--s1)}.a2{background:var(--s3)}.a3{background:var(--muted)}
+.gx-browse{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.45fr);border:2px solid var(--rule)}
+.gx-list{max-height:620px;overflow:auto;overscroll-behavior:contain;border-right:2px solid var(--rule)}
+.gx-item{display:grid;grid-template-columns:auto auto;justify-content:start;gap:4px 8px;width:100%;text-align:left;padding:12px 14px;background:var(--surface);color:var(--ink);border:0;border-bottom:1px solid var(--rule-soft);border-left:4px solid transparent;border-radius:0;font:inherit;cursor:pointer}
+.gx-item:hover{background:var(--surface-2)}
+.gx-item[aria-pressed="true"]{background:var(--accent-wash);border-left-color:var(--accent)}
+.gx-id{font-family:var(--font-mono);font-size:.6875rem;font-weight:700;color:var(--accent)}
+.gx-tier{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.1em;text-transform:uppercase;padding:1px 6px;border:1px solid var(--rule-soft);color:var(--muted)}
+.gx-tier.t-high{border-color:var(--warn);color:var(--warn)}
+.gx-q{grid-column:1/-1;font-size:.8125rem;line-height:1.4;color:var(--ink-2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.gx-card{padding:24px;min-width:0;background:var(--surface)}
+.gx-question{font-size:clamp(1.05rem,1.8vw,1.28rem);line-height:1.4;font-weight:600;margin:8px 0 18px}
+.gx-block{padding:14px 16px;margin:0 0 14px;border-left:4px solid var(--s3);background:var(--surface-2)}
+.gx-block p{margin:6px 0 0;font-size:.9rem;line-height:1.55;color:var(--ink-2)}
+.gx-block .src{margin-top:8px}
+.gx-block.trap{border-left-color:var(--warn);background:var(--warn-wash)}
+.gx-block.trap .label{color:var(--warn)}
+.gx-why{font-weight:600;color:var(--ink)!important}
+.gx-reveal{margin:0 0 14px;cursor:pointer;min-height:44px}
+.gx-outs{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.gx-outs .label{flex-basis:100%;margin-bottom:2px}
+.gx-out{font-family:var(--font-mono);font-size:.6875rem;padding:5px 9px;border:1px solid var(--rule-soft);color:var(--ink-2)}
+.gx-out b{color:var(--ink)}
+.gx-out.good{border-color:var(--s3)}
+@media(max-width:760px){.gx-browse{grid-template-columns:1fr}.gx-list{max-height:300px;border-right:0;border-bottom:2px solid var(--rule)}.gx-card{padding:18px 14px}}
+
+/* ---- ontology ---- */
+.hx-tabs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:2px solid var(--rule);margin-bottom:0}
+.hx-tab{display:flex;flex-direction:column;align-items:flex-start;gap:2px;min-height:60px;padding:10px 14px;background:var(--surface);color:var(--ink);border:0;border-left:2px solid var(--rule-soft);border-radius:0;text-align:left;font:inherit;cursor:pointer}
+.hx-tab:first-child{border-left:0}
+.hx-tab span{font-stretch:125%;font-weight:800;text-transform:uppercase;font-size:.8125rem;line-height:1.1}
+.hx-tab small{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.hx-tab:hover{background:var(--surface-2)}
+.hx-tab[aria-selected="true"]{background:var(--accent);color:var(--accent-ink)}
+.hx-tab[aria-selected="true"] small{color:var(--accent-ink)}
+@media(max-width:640px){.hx-tabs{grid-template-columns:1fr 1fr}.hx-tab:nth-child(3){border-left:0}.hx-tab:nth-child(n+3){border-top:2px solid var(--rule-soft)}}
+.hx-body{display:grid;grid-template-columns:minmax(0,250px) minmax(0,1fr);border:2px solid var(--rule);border-top:0}
+.hx-factors{border-right:2px solid var(--rule);background:var(--surface-2)}
+.hx-f{display:flex;flex-direction:column;gap:2px;width:100%;min-height:48px;padding:10px 14px;text-align:left;background:transparent;color:var(--ink);border:0;border-bottom:1px solid var(--rule-soft);border-left:4px solid transparent;border-radius:0;font:inherit;font-size:.875rem;font-weight:600;cursor:pointer}
+.hx-f small{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
+.hx-f:hover{background:var(--surface)}
+.hx-f[aria-pressed="true"]{background:var(--surface);border-left-color:var(--accent);color:var(--accent)}
+.hx-xw{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:2px;background:var(--rule-soft);align-content:start}
+.hx-xw-head{grid-column:1/-1;background:var(--surface);padding:14px 16px}
+.hx-xw-head p{margin:4px 0 0;font-weight:700;font-size:1rem}
+.hx-fw{background:var(--surface);padding:14px 16px}
+.hx-fw-name{display:block;font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:.9rem;margin-bottom:10px}
+.hx-m{border-left:4px solid var(--s1);padding:6px 0 6px 10px;margin-bottom:10px}
+.hx-m b{display:block;font-size:.875rem;line-height:1.35}
+.hx-m p{margin:4px 0 0;font-size:.78rem;line-height:1.45;color:var(--ink-2)}
+.hx-m .src{margin-top:4px}
+.hx-strength{display:inline-block;font-family:var(--font-mono);font-size:.5625rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.hx-m.s-close{border-left-color:var(--s1)}.hx-m.s-broader,.hx-m.s-narrower{border-left-color:var(--s3)}.hx-m.s-partial{border-left-color:var(--s2)}
+.hx-m.s-none{border-left:4px dashed var(--muted)}
+.hx-m.s-none b{color:var(--muted)}
+.hx-empty{font-size:.8rem;color:var(--muted);margin:0}
+@media(max-width:760px){.hx-body{grid-template-columns:1fr}.hx-factors{border-right:0;border-bottom:2px solid var(--rule);display:flex;overflow-x:auto}.hx-f{flex:none;width:auto;max-width:220px;border-left:0;border-bottom:4px solid transparent;border-right:1px solid var(--rule-soft)}.hx-f[aria-pressed="true"]{border-left:0;border-bottom-color:var(--accent)}}
+.hx-dcontrols{display:grid;grid-template-columns:auto minmax(0,1fr);gap:16px 24px;align-items:start}
+.hx-dcontrols>div:last-child{grid-column:1/-1}
+.hx-dcontrols .seg{margin-bottom:0}
+#hx-dfactor{width:100%}
+@media(max-width:640px){.hx-dcontrols{grid-template-columns:1fr}}
+.hx-meter{list-style:none;margin:0 0 18px;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border:2px solid var(--rule)}
+.hx-meter li{padding:14px 10px;text-align:center;font-family:var(--font-mono);font-size:.6875rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border-left:2px solid var(--rule-soft);transition:background .25s,color .25s}
+.hx-meter li:first-child{border-left:0}
+.hx-meter li.on{background:var(--accent);color:var(--accent-ink)}
+.hx-meter li.on:last-child{background:var(--warn);color:var(--paper)}
+@media(max-width:520px){.hx-meter{grid-template-columns:1fr 1fr}.hx-meter li:nth-child(3){border-left:0}.hx-meter li:nth-child(n+3){border-top:2px solid var(--rule-soft)}}
+.hx-facts{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:8px 18px;margin:0 0 16px}
+.hx-facts dt{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);padding-top:3px}
+.hx-facts dd{margin:0;font-size:.9rem;font-weight:600}
+@media(max-width:520px){.hx-facts{grid-template-columns:1fr}.hx-facts dd{margin-bottom:6px}}
+.hx-trace{margin:0;max-height:280px;overflow:auto;background:var(--surface-2);border:2px solid var(--rule-soft);padding:14px 16px;font-family:var(--font-mono);font-size:.6875rem;line-height:1.65;color:var(--ink-2);white-space:pre}
+.hx-disclaimer{margin:14px 0 0;font-family:var(--font-mono);font-size:.6875rem;color:var(--warn)}
+
+/* ---- does / does not ---- */
+.scope{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));border:2px solid var(--rule)}
+.scope-col{padding:28px 28px 20px;min-width:0}
+.scope-yes{background:var(--surface)}
+.scope-no{background:var(--warn-wash);border-left:2px solid var(--rule)}
+.scope-h{display:flex;align-items:center;gap:14px;font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:clamp(1rem,1.8vw,1.3rem);line-height:1.05;margin-bottom:14px}
+.scope-mark{flex:none;width:40px;height:40px;display:grid;place-items:center;font-size:1.6rem;font-weight:900;background:var(--accent);color:var(--accent-ink);font-stretch:100%}
+.scope-no .scope-mark{background:var(--warn);color:var(--paper)}
+.scope ul{list-style:none;margin:0;padding:0;counter-reset:sc}
+.scope li{counter-increment:sc;display:grid;grid-template-columns:28px minmax(0,1fr);padding:12px 0;border-top:1px solid var(--rule-soft);font-size:.92rem;line-height:1.55;color:var(--ink-2)}
+.scope li::before{content:counter(sc,decimal-leading-zero);font-family:var(--font-mono);font-size:.625rem;font-weight:700;color:var(--accent);padding-top:4px}
+.scope-no li::before{color:var(--warn)}
+.scope-no li{border-top-color:rgba(138,90,0,.25)}
+.scope li strong{color:var(--ink)}
+.scope-after{margin:18px 0 0;padding-left:18px;border-left:4px solid var(--accent);font-weight:600;max-width:70ch}
+@media(max-width:760px){.scope{grid-template-columns:1fr}.scope-no{border-left:0;border-top:2px solid var(--rule)}.scope-col{padding:22px 16px 14px}}
+
+/* ---- quickstart ---- */
+.qs{border:2px solid var(--rule);background:#0E1117;color:#E6E8EE}
+.qs-bar{display:flex;align-items:center;gap:14px;padding:0 0 0 16px;border-bottom:2px solid #262B36;min-height:48px}
+.qs-dots{display:flex;gap:6px}
+.qs-dots i{width:9px;height:9px;background:#3A4150}
+.qs-dots i:first-child{background:#7C9EFF}
+.qs-t{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;color:#9AA1B0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qs-copy{margin-left:auto;align-self:stretch;min-width:92px;min-height:48px;padding:0 18px;border:0;border-left:2px solid #262B36;border-radius:0;background:#171B24;color:#E6E8EE;font-family:var(--font-mono);font-size:.6875rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .15s,color .15s}
+.qs-copy:hover{background:#7C9EFF;color:#06101F}
+.qs-copy:focus-visible{outline:3px solid #7C9EFF;outline-offset:-3px}
+.qs pre{margin:0;padding:20px 20px 22px;overflow-x:auto;font-family:var(--font-mono);font-size:.8125rem;line-height:1.85;white-space:pre}
+.qs pre:focus-visible{outline:3px solid #7C9EFF;outline-offset:-3px}
+.qs-l::before{content:'$ ';color:#7C9EFF;user-select:none;-webkit-user-select:none}
+.qs-c{color:#8A93A5}
+.qs-note{margin:14px 0 0;font-size:.875rem;color:var(--ink-2);max-width:70ch}
+.qs-note code{font-family:var(--font-mono);font-size:.8125em;background:var(--surface-2);padding:2px 5px}
+
+/* ---- next in the programme ---- */
+.prog{background:var(--surface-2);border-top:2px solid var(--rule);padding:72px 0}
+.prog-h{font-size:clamp(1.5rem,3.4vw,2.6rem);margin-bottom:26px}
+.prog-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:2px;background:var(--rule-soft);border:2px solid var(--rule)}
+.prog-card{position:relative;display:flex;flex-direction:column;gap:6px;min-height:132px;padding:20px 20px 44px;background:var(--surface);color:var(--ink);text-decoration:none;transition:background .15s}
+.prog-card:hover{background:var(--accent-wash)}
+.prog-next{grid-row:span 2;background:var(--accent);color:var(--accent-ink);justify-content:flex-end}
+.prog-next:hover{background:var(--accent-2)}
+.prog-tag{font-family:var(--font-mono);font-size:.625rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.prog-next .prog-tag{color:var(--accent-ink)}
+.prog-name{font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:1rem;line-height:1.1}
+.prog-next .prog-name{font-size:clamp(1.4rem,2.6vw,2.1rem)}
+.prog-note{font-family:var(--font-mono);font-size:.6875rem;color:var(--ink-2)}
+.prog-next .prog-note{color:var(--accent-ink)}
+.prog-arrow{position:absolute;right:18px;bottom:14px;font-size:1.3rem;transition:transform .2s}
+.prog-card:hover .prog-arrow,.prog-card:focus-visible .prog-arrow{transform:translateX(6px)}
+@media(max-width:900px){.prog-grid{grid-template-columns:1fr 1fr}.prog-next{grid-column:1/-1;grid-row:auto;min-height:150px}}
+@media(max-width:480px){.prog-grid{grid-template-columns:1fr}.prog{padding:52px 0}}
+"""
 
 
 PROGRAMME = [
@@ -1837,27 +2453,6 @@ PROGRAMME = [
     ("ehs-capitals-calculator", "Cost-benefit calculator", "https://priyatham9.github.io/ehs-capitals-calculator/"),
     ("ehs-benchmarks", "OSHA benchmarks", "https://priyatham9.github.io/ehs-benchmarks/"),
 ]
-
-PREVNEXT_CSS = """
-.pn{display:grid;grid-template-columns:1fr 1fr;border:2px solid var(--rule);background:var(--surface);margin:0 auto;max-width:var(--maxw)}
-.pn a{padding:22px 26px;text-decoration:none;color:var(--ink);display:flex;flex-direction:column;gap:6px;transition:background .15s}
-.pn a:hover{background:var(--accent-wash)}
-.pn a+a{border-left:2px solid var(--rule-soft);text-align:right;align-items:flex-end}
-.pn .label{color:var(--accent)}
-.pn .pn-t{font-family:var(--font-mono);font-weight:700;font-size:.95rem}
-.pn-wrap{padding:0 30px 48px}
-@media(max-width:640px){.pn{grid-template-columns:1fr}.pn a+a{border-left:0;border-top:2px solid var(--rule-soft);text-align:left;align-items:flex-start}}
-"""
-
-def prevnext(repo):
-    keys = [k for k,_,_ in PROGRAMME]
-    i = keys.index(repo)
-    pv = PROGRAMME[(i - 1) % len(PROGRAMME)]
-    nx = PROGRAMME[(i + 1) % len(PROGRAMME)]
-    return (f'<div class="pn-wrap"><nav class="pn" aria-label="Programme navigation">'
-            f'<a href="{pv[2]}"><span class="label">Previous</span><span class="pn-t">&larr; {pv[1]}</span></a>'
-            f'<a href="{nx[2]}"><span class="label">Next</span><span class="pn-t">{nx[1]} &rarr;</span></a>'
-            f'</nav></div>')
 
 BUILDERS = [build_osha, build_sem, build_grounding, build_ontology]
 
@@ -1894,27 +2489,19 @@ if __name__ == "__main__":
             },
         }
         ldjson = json.dumps(ld, ensure_ascii=False)
-        page = SHELL.format(css=CSS, extra=EXTRA_CSS, hub=HUB, personal=PERSONAL, gh=GH,
-                            crossbar=crossbar(spec["repo"]), pageurl=pageurl, ldjson=ldjson, **spec)
-        page = page.replace("</style>", PREVNEXT_CSS + "</style>", 1)
-        if spec["repo"] in ("ehs-ai-grounding-eval", "ehs-human-factors-ontology"):
-            page = page.replace('<main id="main">\n', '<main id="main">\n<div class="wrap" style="padding-top:40px">'
-                                + statrow(spec["status"]) + '</div>', 1)
-        # Extra hero links for pages that ship a companion page in docs/.
-        HERO_EXTRA = {
-            "ehs-risk-sem": '<a class="btn" href="api/">API reference</a>',
-            "ehs-osha-analysis": '<a class="btn" href="explore.html">Explore the denominator</a>',
-            "ehs-ai-grounding-eval": '<a class="btn" href="try.html">Try an item</a>',
-            "ehs-human-factors-ontology": '<a class="btn" href="walkthrough.html">Step through a derivation</a>\n      <a class="btn" href="crosswalk.html">Crosswalk grid</a>',
-        }
-        if spec["repo"] in HERO_EXTRA:
-            page = page.replace(
-                '      <a class="btn" href="#why">Why this exists</a>',
-                '      ' + HERO_EXTRA[spec["repo"]] + '\n      <a class="btn" href="#why">Why this exists</a>', 1
-            )
+        body, tocl = renumber_and_toc(spec.pop("body"), spec.pop("toc"))
+        unit = spec.get("unit", "")
+        num = spec["num"]
+        extra = dict(
+            num_to=num.replace(",", ""), num_group="1" if "," in num else "0",
+            unit_plain=html.unescape(re.sub(r"<[^>]+>", "", unit)),
+            num_k=f"{0.8 * len(num) + 0.3 * len(html.unescape(unit)) + 0.2:.2f}",
+        )
+        page = SHELL.format(css=CSS, extra=EXTRA_CSS + SITE_CSS, hub=HUB, personal=PERSONAL, gh=GH,
+                            pageurl=pageurl, ldjson=ldjson, body=body, toc=tocl,
+                            programme=programme(spec["repo"]), **extra, **spec)
         page = trim_page(page)
         page = page.replace("</body>", "<script>" + CHARTS_JS + "</script>\n</body>", 1)
-        page = page.replace('<footer class="footer">', prevnext(spec["repo"]) + '<footer class="footer">', 1)
         page = apply_banner(page, current_project=spec["repo"])
         page = dedash(page)
         for bad in DASHES:
