@@ -226,22 +226,28 @@ SHELL = """<!doctype html>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" />
 <script>document.documentElement.classList.add('js');</script>
 <style>{css}{extra}</style>
+<style id="story-css">/*STORY_CSS_START*/{storycss}/*STORY_CSS_END*/</style>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <section class="hero" id="top">
   <div class="wrap hero-grid">
     <div class="hero-fig">
-      <div class="hero-eyebrow"><span class="pulse"></span><span class="label">{kicker}</span></div>
-      <p class="hero-big" style="--k:{num_k}" aria-label="{num}{unit_plain}"><span class="hero-num" data-to="{num_to}" data-dec="{num_dec}" data-group="{num_group}" aria-hidden="true">{num}</span><span class="hero-unit" aria-hidden="true">{unit}</span></p>
-      <p class="hero-means"><span class="hm-k">What this means</span>{means}</p>
+      <div class="hero-eyebrow" data-st-reveal><span class="pulse"></span><span class="label">{kicker}</span></div>
+      <p class="hero-big" data-st-reveal style="--k:{num_k}" aria-label="{num}{unit_plain}"><span class="hero-num" data-to="{num_to}" data-dec="{num_dec}" data-group="{num_group}" aria-hidden="true">{num}</span><span class="hero-unit" aria-hidden="true">{unit}</span></p>
+      <p class="hero-means" data-st-reveal><span class="hm-k">What this means</span>{means}</p>
       <span class="src">Source artifact: {num_src}</span>
     </div>
     <div class="hero-text">
-      <h1 class="display">{h1}</h1>
-      <p class="hero-role">{lede}</p>
-      <div class="hero-links">
-        <a class="btn btn-primary" href="#explore">{cta}</a>
+      <div class="hero-orb-wrap st-orb-wrap" data-state="idle">
+        <canvas class="st-orb hero-orb" id="hero-orb" width="320" height="320" role="img"
+                aria-label="Animated mark for the system under review"></canvas>
+      </div>
+      <h1 class="display" data-st-reveal>{h1}</h1>
+      <p class="hero-role" data-st-reveal>{lede}</p>
+      <div class="hero-links" data-st-reveal>
+        <a class="btn btn-primary btn-story" href="story.html">Read the story<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+        <a class="btn" href="#explore">{cta}</a>
         <a class="btn" href="{gh}/{repo}">Repository</a>
       </div>
     </div>
@@ -291,6 +297,13 @@ def esc(s):
 
 def cell(k, v, accent=False):
     cls = "st-v accent" if accent else "st-v"
+    # A value that is nothing but a number (with an optional percent sign) counts
+    # up when it scrolls into view. charts.js reads the data-* attributes.
+    m = re.fullmatch(r"([\d,]+(?:\.(\d+))?)(%?)", str(v))
+    if m:
+        num, dec, suffix = m.group(1), len(m.group(2) or ""), m.group(3)
+        v = (f'<span data-countup data-to="{num.replace(",", "")}" data-dec="{dec}" '
+             f'data-group="{1 if "," in num else 0}">{num}</span>{suffix}')
     return f'<div class="st-cell"><span class="st-k">{k}</span><span class="{cls}">{v}</span></div>'
 
 
@@ -527,6 +540,53 @@ def figure(repo, name, caption, legend=""):
 
 
 CHARTS_JS = (ROOT / "tools" / "charts.js").read_text(encoding="utf-8")
+
+
+def _engine(name):
+    """Read a storytelling engine asset. Missing assets are tolerated: the page
+    keeps the markers, so tools/inline_story.py can fill them in later."""
+    p = ROOT / "tools" / name
+    try:
+        return p.read_text(encoding="utf-8")
+    except OSError:
+        print(f"note: tools/{name} not found, page ships without the engine", file=sys.stderr)
+        return ""
+
+
+STORY_CSS = _engine("story.css")
+STORY_JS = _engine("story.js")
+
+# Hero orb, scroll progress and staggered reveals, driven by the shared engine.
+# Every call is guarded, so the page behaves correctly when the engine is absent.
+GLUE_JS = r"""
+(function () {
+  var S = window.Story, wrap = document.querySelector('.hero-orb-wrap');
+  if (!S) { if (wrap) wrap.classList.add('no-orb'); return; }
+  if (S.progressBar) { try { S.progressBar(); } catch (e) {} }
+  if (S.reveal) { try { S.reveal(document); } catch (e) {} }
+  var cv = document.getElementById('hero-orb');
+  if (!wrap || !cv || !S.orb) { if (wrap) wrap.classList.add('no-orb'); return; }
+  var orb;
+  try { orb = S.orb(cv, { size: 320 }); } catch (e) { wrap.classList.add('no-orb'); return; }
+  function set(name) {
+    if (!orb || !orb.setState) return;
+    try { orb.setState(name); } catch (e) {}
+    wrap.setAttribute('data-state', name);
+  }
+  set('idle');
+  if (!('IntersectionObserver' in window)) return;
+  // the orb settles while the hero is on screen and works once reading starts
+  var hero = document.querySelector('.hero');
+  var last = document.querySelector('.prog') || document.querySelector('.footer');
+  var done = false;
+  if (hero) new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (!done) set(e.isIntersecting ? 'idle' : 'thinking'); });
+  }, { threshold: 0.15 }).observe(hero);
+  if (last) new IntersectionObserver(function (es) {
+    es.forEach(function (e) { if (e.isIntersecting) { done = true; set('grounded'); } });
+  }, { threshold: 0.05 }).observe(last);
+})();
+"""
 
 
 def chart(spec, takeaway, source):
@@ -2497,12 +2557,17 @@ if __name__ == "__main__":
             unit_plain=html.unescape(re.sub(r"<[^>]+>", "", unit)),
             num_k=f"{0.8 * len(num) + 0.3 * len(html.unescape(unit)) + 0.2:.2f}",
         )
-        page = SHELL.format(css=CSS, extra=EXTRA_CSS + SITE_CSS, hub=HUB, personal=PERSONAL, gh=GH,
+        page = SHELL.format(css=CSS, extra=EXTRA_CSS + SITE_CSS, storycss=STORY_CSS,
+                            hub=HUB, personal=PERSONAL, gh=GH,
                             pageurl=pageurl, ldjson=ldjson, body=body, toc=tocl,
                             programme=programme(spec["repo"]), **extra, **spec)
         page = trim_page(page)
-        page = page.replace("</body>", "<script>" + CHARTS_JS + "</script>\n</body>", 1)
-        page = apply_banner(page, current_project=spec["repo"])
+        page = page.replace(
+            "</body>",
+            '<script id="story-js">/*STORY_JS_START*/' + STORY_JS + "/*STORY_JS_END*/</script>\n"
+            + "<script>" + CHARTS_JS + "</script>\n"
+            + '<script id="story-glue">' + GLUE_JS + "</script>\n</body>", 1)
+        page = apply_banner(page, current_project=spec["repo"], story_href="story.html")
         page = dedash(page)
         for bad in DASHES:
             if bad in page:

@@ -1,170 +1,166 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Start here - Grounded - Priyatham Chimmani</title>
-<meta name="description" content="Five figures, five minutes: the denominator, persistence, the ontology derivation, the cost model, and the benchmark item you can try yourself." />
-<link rel="canonical" href="https://priyatham9.github.io/grounded/start.html" />
-<meta property="og:title" content="Start here - Grounded - Priyatham Chimmani" />
-<meta property="og:description" content="Five figures, five minutes: the denominator, persistence, the ontology derivation, the cost model, and the benchmark item you can try yourself." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://priyatham9.github.io/grounded/start.html" />
-<meta property="og:image" content="https://priyatham9.github.io/grounded/og.png" />
-<meta property="og:site_name" content="Grounded" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content="Start here - Grounded - Priyatham Chimmani" />
-<meta name="twitter:description" content="Five figures, five minutes: the denominator, persistence, the ontology derivation, the cost model, and the benchmark item you can try yourself." />
-<meta name="twitter:image" content="https://priyatham9.github.io/grounded/og.png" />
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"Start here","url":"https://priyatham9.github.io/grounded/start.html","isPartOf":{"@type":"WebSite","name":"Grounded Reasoning for Safety-Critical AI","url":"https://priyatham9.github.io/grounded/"},"author":{"@type":"Person","name":"Priyatham Chimmani"}},{"@type":"Person","name":"Priyatham Chimmani","url":"https://priyatham9.github.io/","sameAs":["https://github.com/priyatham9","https://linkedin.com/in/priyatham9"]}]}</script>
-<meta name="theme-color" content="#F7F7F3" media="(prefers-color-scheme: light)" />
-<meta name="theme-color" content="#0A0C10" media="(prefers-color-scheme: dark)" />
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%231E40AF'/%3E%3Ctext x='8' y='12' font-family='monospace' font-size='11' font-weight='700' text-anchor='middle' fill='white'%3ER%3C/text%3E%3C/svg%3E" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Story engine demo — all data on this page is fake</title>
 <style>
-
+/*SHARED_CSS_START*/
 /* ============ tokens ============ */
-:root{
+:root {
  color-scheme:light;
  --paper:#F7F7F3; --surface:#FFFFFF; --surface-2:#EFEFE9;
- --ink:#101311; --ink-2:#3A403C; --muted:#5E655F;
+ --ink:#101311; --ink-2:#3A403C; --muted:#666D68;
  --rule:#101311; --rule-soft:#D6D7CE;
  --accent:#1E40AF; --accent-2:#17307F; --accent-ink:#FFFFFF; --accent-wash:#E2E8FB;
  --warn:#8A5A00; --warn-wash:#FBF0DC;
- --grid-dot:rgba(16,19,17,.10);
- --shadow:rgba(16,19,17,.14);
+ --grid-dot:rgba(16,19,17,.10); --shadow:rgba(16,19,17,.08);
  --font-sans:"Archivo",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
  --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
- --maxw:1240px;
+ --maxw:1180px;
 }
-@media (prefers-color-scheme: dark){
- :root:not([data-theme="light"]){
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
  color-scheme:dark;
  --paper:#0A0C10; --surface:#12151C; --surface-2:#171B24;
- --ink:#EAECF2; --ink-2:#BFC4CF; --muted:#959CAB;
- --rule:#EAECF2; --rule-soft:#2C3240;
+ --ink:#EAECF2; --ink-2:#BFC4CF; --muted:#838A99;
+ --rule:#EAECF2; --rule-soft:#262B36;
  --accent:#7C9EFF; --accent-2:#5B7FE8; --accent-ink:#06101F; --accent-wash:#151C33;
  --warn:#E3B25F; --warn-wash:#241C0C;
- --grid-dot:rgba(234,236,242,.09);
- --shadow:rgba(0,0,0,.5);
- }
+ --grid-dot:rgba(234,236,242,.09); --shadow:rgba(0,0,0,.4);
+  }
 }
-:root[data-theme="dark"]{
+:root[data-theme="dark"] {
  color-scheme:dark;
  --paper:#0A0C10; --surface:#12151C; --surface-2:#171B24;
- --ink:#EAECF2; --ink-2:#BFC4CF; --muted:#959CAB;
- --rule:#EAECF2; --rule-soft:#2C3240;
+ --ink:#EAECF2; --ink-2:#BFC4CF; --muted:#838A99;
+ --rule:#EAECF2; --rule-soft:#262B36;
  --accent:#7C9EFF; --accent-2:#5B7FE8; --accent-ink:#06101F; --accent-wash:#151C33;
  --warn:#E3B25F; --warn-wash:#241C0C;
- --grid-dot:rgba(234,236,242,.09);
- --shadow:rgba(0,0,0,.5);
+ --grid-dot:rgba(234,236,242,.09); --shadow:rgba(0,0,0,.4);
 }
+:root[data-theme="light"]{color-scheme:light}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
-h1,h2,h3,h4{margin:0;line-height:1.02;letter-spacing:-.01em;text-wrap:balance}
-p{margin:0 0 1em;text-wrap:pretty}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.62;-webkit-font-smoothing:antialiased}
+h1,h2,h3{margin:0;line-height:1.06;letter-spacing:-.01em}
+p{margin:0 0 1em}
 a{color:var(--accent)}
 img,svg{max-width:100%}
-button{font:inherit;color:inherit}
-:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 30px}
 .display{font-stretch:125%;font-weight:900;text-transform:uppercase}
 .label{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
-.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.skip{position:absolute;left:-999px;top:8px;background:var(--accent);color:var(--accent-ink);padding:10px 14px;z-index:100}
-.skip:focus{left:8px}
-.btn{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:12px 18px;border:2px solid var(--rule);background:var(--surface);color:var(--ink);text-decoration:none;font-family:var(--font-mono);font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:background .15s,color .15s,transform .15s}
-.btn:hover{background:var(--accent-wash)}
-.btn-primary{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.btn-primary:hover{background:var(--accent-2);color:var(--accent-ink)}
-.btn svg{transition:transform .2s}
-.btn:hover svg{transform:translateX(3px)}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
-
-.hero{padding:64px 0 48px;background-image:radial-gradient(var(--grid-dot) 1.2px,transparent 1.2px);background-size:22px 22px;border-bottom:2px solid var(--rule)}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:48px;align-items:end}
-.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:20px}
-.pulse{width:10px;height:10px;background:var(--accent);display:inline-block}
-.hero h1{font-size:clamp(3rem,9vw,7.5rem);line-height:.88;letter-spacing:-.02em}
-.hero-lede{margin:24px 0 0;font-size:clamp(1.05rem,1.8vw,1.3rem);line-height:1.45;max-width:44ch;color:var(--ink-2)}
-.claim{font-size:1rem;color:var(--ink-2);margin:0 0 8px;max-width:48ch}
-.hero-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.meter{border:2px solid var(--rule);background:var(--surface);padding:20px}
-.meter-n{font-family:var(--font-mono);font-weight:700;font-size:clamp(3rem,7vw,5rem);line-height:.9;color:var(--accent);display:block;margin:8px 0 14px;font-variant-numeric:tabular-nums}
-.meter-n small{font-size:.35em;color:var(--muted)}
-.bar{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-.bar a{height:14px;border:2px solid var(--rule);background:var(--surface-2);display:block;position:relative}
-.bar a.done{background:var(--accent);border-color:var(--accent)}
-.bar a.cur{box-shadow:inset 0 0 0 2px var(--surface),0 0 0 2px var(--accent)}
-.meter-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
-.linkbtn{background:none;border:0;padding:10px 0;min-height:44px;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--accent);cursor:pointer}
-@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:32px}}
-
-.path{padding:72px 0 96px}
-.route{list-style:none;margin:0;padding:0;position:relative}
-.route::before{content:'';position:absolute;left:35px;top:0;bottom:0;width:2px;background:var(--rule-soft)}
-.route .fillline{position:absolute;left:35px;top:0;width:2px;background:var(--accent);transition:height .6s ease}
-.step{display:grid;grid-template-columns:72px minmax(0,1fr);gap:24px;margin-bottom:28px;position:relative}
-.dot{width:72px;height:72px;border:2px solid var(--rule);background:var(--paper);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:700;font-size:1.1rem;position:relative;z-index:1;transition:background .3s,color .3s}
-.step.done .dot{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.step.done .dot::after{content:'\2713';position:absolute;right:-8px;top:-8px;width:24px;height:24px;background:var(--ink);color:var(--paper);font-size:.8rem;display:flex;align-items:center;justify-content:center}
-.card{border:2px solid var(--rule);background:var(--surface);display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);transition:box-shadow .25s,transform .25s}
-.step.cur .card{box-shadow:10px 10px 0 var(--accent-wash);transform:translate(-3px,-3px)}
-.card-fig{padding:24px;border-right:2px solid var(--rule);background:var(--surface-2)}
-.fig{font-family:var(--font-mono);font-weight:700;color:var(--accent);font-size:clamp(2.8rem,6vw,4.4rem);line-height:.92;letter-spacing:-.03em;display:block;margin-top:10px;font-variant-numeric:tabular-nums;word-break:break-word}
-.fig small{font-size:.3em;letter-spacing:0;display:block;color:var(--muted);font-weight:600;margin-top:10px}
-.card-body{padding:24px;display:flex;flex-direction:column;gap:14px}
-.card-body h2{font-size:clamp(1.4rem,3vw,2.2rem)}
-.card-body p{font-size:1.05rem;color:var(--ink-2);margin:0;max-width:62ch}
-.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto;align-items:center}
-.mark[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.caveat{border:2px solid var(--warn);background:var(--warn-wash);padding:10px 12px;font-size:.875rem}
-.caveat b{color:var(--warn);font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;display:block}
-.finish{border:2px solid var(--rule);background:var(--ink);color:var(--paper);padding:32px;margin-left:96px}
-.finish h2{font-size:clamp(1.6rem,4vw,3rem)}
-.finish p{opacity:.85;max-width:56ch;margin:12px 0 0}
-.finish .btn{border-color:var(--paper)}
-@media(max-width:720px){
- .route::before,.route .fillline{left:21px}
- .step{grid-template-columns:44px minmax(0,1fr);gap:12px}
- .dot{width:44px;height:44px;font-size:.85rem}
- .card{grid-template-columns:1fr}.card-fig{border-right:0;border-bottom:2px solid var(--rule)}
- .card-fig,.card-body{padding:18px}
- .finish{margin-left:0;padding:22px}
+/* ============ accessibility baseline ============ */
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.skip{position:absolute;left:-9999px;top:0;z-index:100;background:var(--accent);color:var(--accent-ink);padding:11px 17px;font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none}
+.skip:focus{left:0}
+@media (prefers-reduced-motion: reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
-.footer{border-top:2px solid var(--rule);background:var(--ink);color:var(--paper);padding:64px 0 40px}
-.footer a{color:var(--paper)}
-.footer .label{color:var(--paper);opacity:.7}
-.foot-big{font-size:clamp(2.2rem,7vw,6rem);line-height:.9;margin:12px 0 0}
-.foot-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) minmax(0,1fr);gap:48px;margin-top:56px}
-.foot-role{font-size:.9375rem;opacity:.85;margin-top:12px;max-width:44ch}
-.footer-links{display:flex;flex-direction:column;border-top:2px solid var(--paper);margin-top:12px}
-.footer-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;padding:12px 0;min-height:44px;border-bottom:1px solid rgba(127,127,127,.4);display:flex;justify-content:space-between;align-items:center;gap:16px}
-.footer-links a span{opacity:.65;font-size:.625rem;letter-spacing:.1em;text-align:right}
-.footer :focus-visible{outline-color:var(--paper)}
-.foot-base{margin-top:56px;padding-top:18px;border-top:2px solid rgba(127,127,127,.4);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
-@media(max-width:880px){.foot-grid{grid-template-columns:1fr;gap:32px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+/* long unbreakable strings (file paths, URLs, identifiers) must wrap, not overflow */
+code,.mono,.src,.f-src,.backlink{overflow-wrap:anywhere}
+@media print{
+  .skip,.hero-links,footer.footer{display:none!important}
+  body{background:#fff!important;color:#000!important}
+  a{color:#000!important;text-decoration:underline}
+  .wrap{max-width:none}
+}
 
-/* ============ guided path story layer ============ */
-.orbwrap{position:relative;width:100%;max-width:150px;aspect-ratio:1;margin:0 0 12px}
-.orbwrap canvas{display:block;width:100%;height:100%}
-.orbcap{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block}
-.hero-orbrow{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
-.storylink{display:inline-flex;align-items:center;min-height:44px;padding:12px 14px;border:2px solid var(--accent);color:var(--accent);text-decoration:none;font-family:var(--font-mono);font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:background .15s,color .15s}
-.storylink:hover,.storylink:focus-visible{background:var(--accent);color:var(--accent-ink)}
-:root.st-presenting .rs-header,:root.st-presenting .footer,:root.st-presenting .skip,:root.st-presenting .hide-present{display:none!important}
+/* ============ hero ============ */
+.hero{position:relative;padding:74px 0 56px;border-bottom:2px solid var(--rule);background-image:radial-gradient(var(--grid-dot) 1px,transparent 1px);background-size:22px 22px}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:9px;margin-bottom:24px}
+.pulse{width:7px;height:7px;background:var(--accent);flex:none;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+.hero h1{font-size:clamp(2.4rem,6.4vw,4.6rem);max-width:16ch;overflow-wrap:break-word;hyphens:auto}
+.hero-role{margin-top:18px;font-size:1.05rem;color:var(--ink-2);max-width:62ch}
+.hero-lede{margin-top:14px;font-size:1rem;color:var(--muted);max-width:66ch}
+.hero-links{display:flex;flex-wrap:wrap;margin-top:30px}
+.btn{display:inline-flex;align-items:center;gap:9px;padding:13px 19px;border:2px solid var(--rule);margin:0 -2px -2px 0;font-family:var(--font-mono);font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;text-decoration:none;color:var(--ink);background:var(--surface);transition:background .15s,color .15s}
+.btn:hover{background:var(--surface-2)}
+.btn-primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn-primary:hover{background:var(--accent-2);color:var(--accent-ink)}
 
-:root.st-presenting .step{margin-bottom:12px}
-.presbtn{position:fixed;right:16px;bottom:16px;z-index:80}
-@media(max-width:600px){.presbtn{display:none}}
-.step.cur .dot{box-shadow:0 0 0 3px var(--accent-wash)}
-</style>
-<style id="story-engine-css">/*STORY_CSS_START*/
+/* ============ status strip ============ */
+.status{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--rule);background:var(--surface);margin-top:34px;max-width:940px}
+.st-cell{padding:13px 16px;border-left:2px solid var(--rule-soft);min-width:0}
+.st-cell:first-child{border-left:0}
+.st-k{font-family:var(--font-mono);font-size:.5625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.st-v{font-family:var(--font-mono);font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums}
+.st-v.accent{color:var(--accent)}
+@media(max-width:760px){.status{grid-template-columns:1fr 1fr}.st-cell:nth-child(3){border-left:0}.st-cell:nth-child(n+3){border-top:2px solid var(--rule-soft)}}
+
+/* ============ sections ============ */
+.section{padding:66px 0;border-bottom:2px solid var(--rule)}
+.rail-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px;flex-wrap:wrap}
+.rail-head h2{font-size:clamp(1.5rem,3vw,2.1rem)}
+.rail-num{font-family:var(--font-mono);font-size:.6875rem;color:var(--accent);font-weight:700;letter-spacing:.16em}
+
+/* ============ findings ============ */
+.findings{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));border:2px solid var(--rule);background:var(--surface)}
+.finding{padding:26px 24px;border-left:2px solid var(--rule-soft)}
+.finding:first-child{border-left:0}
+.f-num{font-family:var(--font-mono);font-size:2.3rem;font-weight:700;color:var(--accent);line-height:1;font-variant-numeric:tabular-nums}
+.f-unit{font-size:.9rem;color:var(--muted);font-weight:600}
+.f-title{margin-top:12px;font-weight:700;font-size:.95rem}
+.f-body{margin-top:8px;font-size:.875rem;color:var(--ink-2);line-height:1.55}
+.f-src{margin-top:12px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+@media(max-width:900px){.finding{border-left:0;border-top:2px solid var(--rule-soft)}.finding:first-child{border-top:0}}
+
+/* ============ projects ============ */
+.projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0;border:2px solid var(--rule)}
+.project{padding:28px 26px;border-left:2px solid var(--rule-soft);background:var(--surface);display:flex;flex-direction:column}
+.project:first-child{border-left:0}
+.project-kicker{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.project h3{margin-top:10px;font-size:1.05rem;font-family:var(--font-mono);font-weight:700}
+.project p{margin-top:10px;font-size:.875rem;color:var(--ink-2);line-height:1.58;flex:1}
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
+.chip{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--rule-soft);color:var(--muted)}
+.p-links{margin-top:16px;display:flex;gap:14px}
+.p-links a{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:2px}
+@media(max-width:900px){.project{border-left:0;border-top:2px solid var(--rule-soft)}.project:first-child{border-top:0}}
+
+/* ============ notice ============ */
+.notice{border:2px solid var(--warn);background:var(--warn-wash);padding:24px 26px}
+.notice h3{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.1em;text-transform:uppercase;color:var(--warn);font-weight:700}
+.notice p{margin-top:12px;font-size:.9rem;color:var(--ink-2)}
+.notice ul{margin:12px 0 0;padding-left:20px;font-size:.875rem;color:var(--ink-2)}
+.notice li{margin-bottom:6px}
+
+/* ============ paper ============ */
+.paper-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:0;border:2px solid var(--rule);background:var(--surface)}
+.paper-main{padding:32px 30px}
+.paper-side{padding:32px 30px;border-left:2px solid var(--rule-soft);background:var(--surface-2)}
+.paper-main h3{font-size:1.35rem;line-height:1.2;max-width:24ch}
+.paper-main p{margin-top:14px;font-size:.9rem;color:var(--ink-2)}
+.toc{list-style:none;margin:14px 0 0;padding:0}
+.toc li{font-family:var(--font-mono);font-size:.75rem;padding:7px 0;border-bottom:1px solid var(--rule-soft);color:var(--ink-2);display:flex;gap:10px}
+.toc span{color:var(--accent);font-weight:700}
+@media(max-width:820px){.paper-grid{grid-template-columns:1fr}.paper-side{border-left:0;border-top:2px solid var(--rule-soft)}}
+
+/* ============ footer ============ */
+.footer{padding:54px 0 66px}
+.footer-links{display:flex;flex-wrap:wrap;gap:18px;margin-top:14px}
+.footer-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--muted);display:inline-flex;align-items:center;min-height:24px}
+.footer-links a:hover{color:var(--accent)}
+
+/* ============ story entry (generated pages) ============ */
+.hero-orb-wrap{position:relative;width:clamp(96px,13vw,148px);aspect-ratio:1;margin:0 0 20px}
+.hero-orb-wrap.no-orb{display:none}
+.hero-orb{display:block;width:100%;height:100%}
+.btn-story{gap:11px}
+.btn-story .btn-arrow{font-family:var(--font-mono);font-weight:700}
+/* one reading-progress bar per page: the story engine's wins when present */
+body:has(.st-progress) .rs-header .rs-progress{display:none}
+/* presenter mode hides site chrome that the engine does not know about */
+.st-presenting .rs-header,.st-presenting .toc,.st-presenting .prog,.st-presenting .footer{display:none!important}
+.st-presenting .layout{grid-template-columns:minmax(0,1fr)}
+/*SHARED_CSS_END*/
+/*STORY_CSS_START*/
 /* ============================================================
    story.css  -  shared storytelling engine styles
    Depends on tokens defined in tools/shared.css:
@@ -196,9 +192,9 @@ button{font:inherit;color:inherit}
 .st-scene-rail::after{content:"";position:absolute;left:0;top:0;width:2px;height:calc(var(--p,0) * 100%);background:var(--accent)}
 @media(max-width:800px){
   .st-scene,.st-scene[data-side="left"]{grid-template-columns:1fr;gap:0}
-  .st-scene .st-stage,.st-scene[data-side="left"] .st-stage{order:0;position:sticky;top:var(--st-top,58px);height:50vh;height:50svh;background:var(--paper);z-index:2;padding:12px 0;border-bottom:2px solid var(--rule-soft)}
+  .st-scene .st-stage,.st-scene[data-side="left"] .st-stage{order:0;position:sticky;top:0;height:54vh;height:54svh;background:var(--paper);z-index:2;padding:12px 0;border-bottom:2px solid var(--rule-soft)}
   .st-scene .st-steps,.st-scene[data-side="left"] .st-steps{order:1}
-  .st-step{min-height:80vh;padding:26px 0}
+  .st-step{min-height:72vh;padding:26px 0}
   .st-scene-rail{display:none}
 }
 
@@ -246,227 +242,140 @@ button{font:inherit;color:inherit}
   .st-step{opacity:1;transition:none}
 }
 /*STORY_CSS_END*/
-<script id="rs-theme-init">try{var t=localStorage.getItem("pc-theme")||localStorage.getItem("ehs-ai-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script><style id="rs-header-css">
-.rs-header{
- --rs-paper:var(--paper,#F7F7F3);--rs-surface:var(--surface,#FFFFFF);--rs-surface-2:var(--surface-2,#EFEFE9);
- --rs-ink:var(--ink,#101311);--rs-muted:var(--muted,var(--ink-2,#5E655F));--rs-rule:var(--rule,#101311);
- --rs-rule-soft:var(--rule-soft,#D6D7CE);--rs-accent:var(--accent,#1E40AF);
- --rs-mono:var(--font-mono,"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace);
- --rs-sans:var(--font-sans,"Archivo",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif);
-}
-:root[data-theme="dark"] .rs-header{
- --rs-paper:var(--paper,#0A0C10);--rs-surface:var(--surface,#12151C);--rs-surface-2:var(--surface-2,#171B24);
- --rs-ink:var(--ink,#EAECF2);--rs-muted:var(--muted,var(--ink-2,#959CAB));--rs-rule:var(--rule,#EAECF2);
- --rs-rule-soft:var(--rule-soft,#2C3240);--rs-accent:var(--accent,#7C9EFF);
-}
-@media (prefers-color-scheme:dark){:root:not([data-theme]) .rs-header{
- --rs-paper:var(--paper,#0A0C10);--rs-surface:var(--surface,#12151C);--rs-surface-2:var(--surface-2,#171B24);
- --rs-ink:var(--ink,#EAECF2);--rs-muted:var(--muted,var(--ink-2,#959CAB));--rs-rule:var(--rule,#EAECF2);
- --rs-rule-soft:var(--rule-soft,#2C3240);--rs-accent:var(--accent,#7C9EFF);
-}}
-/* isolation: neutralise page element rules (header{}, nav a{}, button{} ...) */
-.rs-header :where(a,button,nav,div,span,summary,details,b,i){all:revert;box-sizing:border-box}
-.rs-header [hidden]{display:none!important}
-.rs-header svg{display:block;width:18px;height:18px;fill:none;stroke:currentColor}
-.rs-header{all:revert;display:block;position:sticky;top:0;z-index:1000;margin:0;padding:0;width:auto;max-width:none;float:none;transform:none;
- box-sizing:border-box;background:var(--rs-paper);color:var(--rs-ink);border:0;box-shadow:none;font:400 14px/1.3 var(--rs-sans);text-align:left}
-.rs-header .rs-bar{border-bottom:2px solid var(--rs-rule);background:var(--rs-paper)}
-.rs-header .rs-row{display:flex;align-items:center;max-width:1180px;height:56px;margin:0 auto;padding:0 24px}
-.rs-header .rs-brand{display:flex;align-items:center;gap:10px;height:56px;padding:0 16px 0 0;font:700 13px/1 var(--rs-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--rs-ink);text-decoration:none;white-space:nowrap}
-.rs-header .rs-mark{display:block;width:14px;height:14px;background:var(--rs-accent);flex:none}
-.rs-header .rs-author{display:flex;align-items:center;height:24px;padding:0 0 0 16px;border-left:2px solid var(--rs-rule-soft);font:500 11px/1 var(--rs-mono);letter-spacing:.06em;color:var(--rs-muted);text-decoration:none;white-space:nowrap}
-.rs-header .rs-author:hover{color:var(--rs-accent)}
-.rs-header .rs-nav{display:flex;align-items:center;height:56px;margin:0 0 0 auto;padding:0}
-.rs-header .rs-menu{display:flex;align-items:center;position:relative;height:56px;margin:0;padding:0}
-.rs-header .rs-item{display:flex;align-items:center;gap:6px;height:56px;margin:0;padding:0 14px;font:600 12px/1 var(--rs-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rs-muted);text-decoration:none;white-space:nowrap;cursor:pointer;list-style:none;background:transparent;border:0}
-.rs-header .rs-item::-webkit-details-marker{display:none}
-.rs-header .rs-item::marker{content:""}
-.rs-header .rs-item:hover,.rs-header .rs-menu[open]>.rs-item{background:var(--rs-surface-2);color:var(--rs-ink)}
-.rs-header .rs-item[aria-current="page"],.rs-header .rs-menu[data-current]>.rs-item{color:var(--rs-ink);box-shadow:inset 0 -3px 0 var(--rs-accent)}
-.rs-header .rs-caret{display:block;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid currentColor;transition:transform .15s}
-.rs-header .rs-menu[open] .rs-caret{transform:rotate(180deg)}
-.rs-header .rs-panel{display:block;position:absolute;top:calc(100% + 2px);right:0;width:340px;max-width:calc(100vw - 32px);margin:0;padding:0;background:var(--rs-surface);border:2px solid var(--rs-rule);box-shadow:6px 6px 0 var(--rs-rule);z-index:1}
-.rs-header .rs-opt{display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:44px;padding:9px 14px;border-bottom:1px solid var(--rs-rule-soft);color:var(--rs-ink);text-decoration:none}
-.rs-header .rs-opt:last-child{border-bottom:0}
-.rs-header .rs-opt:hover{background:var(--rs-surface-2)}
-.rs-header .rs-opt[aria-current="page"]{box-shadow:inset 4px 0 0 var(--rs-accent);background:var(--rs-surface-2)}
-.rs-header .rs-t{display:block;font:500 14px/1.25 var(--rs-sans);color:var(--rs-ink)}
-.rs-header .rs-n{display:block;font:400 11px/1.2 var(--rs-mono);letter-spacing:.04em;color:var(--rs-muted)}
-.rs-header .rs-opt[aria-current="page"] .rs-n::after{content:" \00B7  you are here";color:var(--rs-accent)}
-.rs-header .rs-sep{display:block;width:2px;height:24px;margin:0 12px 0 10px;background:var(--rs-rule-soft);flex:none}
-.rs-header .rs-btn{display:inline-flex;align-items:center;justify-content:center;flex:none;width:40px;height:40px;margin:0;padding:0;background:var(--rs-paper);color:var(--rs-ink);border:2px solid var(--rs-rule);border-radius:0;cursor:pointer;font:600 11px/1 var(--rs-mono)}
-.rs-header .rs-btn:hover{background:var(--rs-surface-2)}
-.rs-header .rs-moon{display:none}
-:root[data-theme="dark"] .rs-header .rs-sun{display:none}
-:root[data-theme="dark"] .rs-header .rs-moon{display:block}
-@media (prefers-color-scheme:dark){:root:not([data-theme]) .rs-header .rs-sun{display:none}:root:not([data-theme]) .rs-header .rs-moon{display:block}}
-.rs-header .rs-burger{display:none;width:44px;height:44px;margin-left:8px}
-.rs-header .rs-burger i{display:block;position:relative;width:18px;height:2px;background:currentColor;transition:background .15s}
-.rs-header .rs-burger i::before,.rs-header .rs-burger i::after{content:"";position:absolute;left:0;width:18px;height:2px;background:currentColor;transition:transform .15s}
-.rs-header .rs-burger i::before{top:-6px}.rs-header .rs-burger i::after{top:6px}
-.rs-header .rs-burger[aria-expanded="true"] i{background:transparent}
-.rs-header .rs-burger[aria-expanded="true"] i::before{transform:translateY(6px) rotate(45deg)}
-.rs-header .rs-burger[aria-expanded="true"] i::after{transform:translateY(-6px) rotate(-45deg)}
-.rs-header :focus-visible{outline:2px solid var(--rs-accent);outline-offset:-2px}
-/* row 2 */
-.rs-header .rs-sub{position:relative;border-bottom:2px solid var(--rs-rule-soft);background:var(--rs-paper)}
-.rs-header .rs-subrow{height:44px}
-.rs-header .rs-sublabel{display:block;flex:none;padding:0 12px 0 0;font:500 11px/1 var(--rs-mono);letter-spacing:.06em;color:var(--rs-muted);white-space:nowrap}
-.rs-header .rs-sections{display:flex;align-items:center;position:relative;flex:1 1 auto;min-width:0;height:44px;margin:0;padding:0;overflow-x:auto;scrollbar-width:none}
-.rs-header .rs-sections::-webkit-scrollbar{display:none}
-.rs-header .rs-sections.rs-fl{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px);mask-image:linear-gradient(90deg,transparent,#000 32px)}
-.rs-header .rs-sections.rs-fr{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent)}
-.rs-header .rs-sections.rs-fl.rs-fr{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent)}
-.rs-header .rs-sec{display:flex;align-items:center;flex:none;height:44px;padding:0 10px;font:600 11px/1 var(--rs-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rs-muted);text-decoration:none;white-space:nowrap}
-.rs-header .rs-sec:hover{color:var(--rs-ink)}
-.rs-header .rs-sec.rs-active{color:var(--rs-accent);box-shadow:inset 0 -2px 0 var(--rs-accent)}
-.rs-header .rs-subbtn{display:none;align-items:center;gap:8px;width:100%;height:44px;margin:0;padding:0;background:transparent;border:0;color:var(--rs-muted);font:500 11px/1 var(--rs-mono);letter-spacing:.06em;cursor:pointer;text-align:left}
-.rs-header .rs-subbtn b{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--rs-ink);font-weight:600;text-transform:uppercase}
-.rs-header .rs-subbtn[aria-expanded="true"] .rs-caret{transform:rotate(180deg)}
-.rs-header .rs-sublist{position:absolute;top:calc(100% + 2px);left:0;right:0;max-height:60vh;overflow-y:auto;margin:0;padding:0;background:var(--rs-surface);border-top:2px solid var(--rs-rule);border-bottom:2px solid var(--rs-rule);box-shadow:0 6px 0 var(--rs-rule)}
-.rs-header .rs-sublist .rs-sec{height:auto;min-height:44px;padding:0 16px;border-bottom:1px solid var(--rs-rule-soft)}
-.rs-header .rs-sublist .rs-sec.rs-active{box-shadow:inset 4px 0 0 var(--rs-accent)}
-.rs-header .rs-progress{display:block;position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--rs-accent);transform:scaleX(0);transform-origin:0 50%;pointer-events:none}
-.rs-header .rs-sheet{position:fixed;top:58px;left:0;right:0;bottom:0;overflow-y:auto;margin:0;padding:8px 16px 32px;background:var(--rs-paper);border-top:0;z-index:2}
-.rs-header .rs-sheet a{display:flex;align-items:center;min-height:48px;padding:0 4px;border-bottom:1px solid var(--rs-rule-soft);color:var(--rs-ink);text-decoration:none;font:600 13px/1.2 var(--rs-mono);letter-spacing:.06em;text-transform:uppercase}
-.rs-header .rs-sheet a[aria-current="page"]{color:var(--rs-accent);box-shadow:inset 4px 0 0 var(--rs-accent);padding-left:14px}
-.rs-header .rs-sheet .rs-opt{align-items:flex-start;font:inherit;text-transform:none;letter-spacing:0;padding:8px 4px}
-.rs-header .rs-sheet .rs-opt[aria-current="page"]{padding-left:14px}
-.rs-header .rs-group{display:block;margin:24px 0 4px;font:500 11px/1 var(--rs-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rs-muted)}
-.rs-header .rs-sheet a.rs-sheet-author{margin-top:24px;border-top:2px solid var(--rs-rule);border-bottom:0;color:var(--rs-muted);text-transform:none;font-weight:500}
-html.rs-lock,html.rs-lock body{overflow:hidden}
-@media (max-width:1040px){.rs-header .rs-author{display:none}.rs-header .rs-item{padding:0 11px}}
-@media (max-width:860px){
- .rs-header .rs-row{padding:0 16px}
- .rs-header.rs-js .rs-nav,.rs-header.rs-js .rs-sep,.rs-header .rs-author{display:none}
- .rs-header.rs-js .rs-burger{display:inline-flex}
- .rs-header .rs-brand{margin-right:auto}
- .rs-header:not(.rs-js) .rs-nav{overflow-x:auto;margin-left:0}
- .rs-header.rs-js .rs-sublabel,.rs-header.rs-js .rs-subrow>.rs-sections{display:none}
- .rs-header.rs-js .rs-subbtn{display:flex}
-}
-@media (min-width:861px){.rs-header .rs-sheet,.rs-header .rs-sublist{display:none}}
-@media (prefers-reduced-motion:reduce){.rs-header *,.rs-header *::before,.rs-header *::after{transition:none!important}}
-@media print{.rs-header{display:none!important}}
-</style></head>
+
+/* ---- demo-only chrome ---- */
+.demo-bar{position:sticky;top:0;z-index:50;display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:10px 30px;border-bottom:2px solid var(--rule);background:var(--surface)}
+.demo-bar .label{margin:0}
+.btn.sm{padding:8px 12px;font-size:.6875rem}
+.fake{display:inline-block;border:2px solid var(--warn);background:var(--warn-wash);color:var(--warn);font-family:var(--font-mono);font-size:.625rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;padding:4px 9px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:34px}
+.card{border:2px solid var(--rule);background:var(--surface);padding:22px}
+.card h3{font-size:1rem;font-family:var(--font-mono);margin-bottom:6px}
+.card .src{display:block;margin:6px 0 14px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.orbrow{display:flex;gap:26px;align-items:flex-end;flex-wrap:wrap;margin-top:22px}
+.orbrow figure{margin:0;text-align:center}
+.orbrow figcaption{margin-top:8px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+#hero-orb{width:min(420px,72vw);height:min(420px,72vw)}
+#orb-sm{width:20px;height:20px}
+#orb-md{width:96px;height:96px}
+#orb-lg{width:180px;height:180px}
+#stage-orb{display:block;width:min(300px,52vw,30svh);aspect-ratio:1;margin:0 auto}
+.statechips{display:flex;flex-wrap:wrap;gap:0;margin-top:20px}
+.target-word{display:inline-block;padding:2px 8px;border:2px solid var(--warn);color:var(--warn);font-weight:700}
+#hero-grid{display:grid;grid-template-columns:auto 1fr;gap:34px;align-items:center;margin-top:30px}
+.statechips .btn{max-width:100%}
+@media(max-width:860px){#hero-grid{grid-template-columns:1fr}#hero-orb{width:min(320px,80vw);height:min(320px,80vw);margin:0 auto}}
+</style>
+</head>
 <body>
-<a class="skip" href="#main">Skip to content</a><header class="rs-header" id="rs-header"><div class="rs-bar"><div class="rs-row"><a class="rs-brand" href="https://priyatham9.github.io/grounded/" aria-label="Grounded research hub"><span class="rs-mark" aria-hidden="true"></span>Grounded</a><a class="rs-author" href="https://priyatham9.github.io/">Priyatham Chimmani&nbsp;&#8599;</a><nav class="rs-nav" aria-label="Research site"><a class="rs-item" href="https://priyatham9.github.io/grounded/">Overview</a><a class="rs-item" href="https://priyatham9.github.io/grounded/start.html" aria-current="page">Start here</a><a class="rs-item" href="https://priyatham9.github.io/grounded/observatory.html">Observatory</a><details class="rs-menu"><summary class="rs-item" aria-haspopup="true">Projects<span class="rs-caret" aria-hidden="true"></span></summary><div class="rs-panel"><a class="rs-opt" href="https://priyatham9.github.io/ehs-osha-analysis/"><span class="rs-t">OSHA data quality</span><span class="rs-n">2.8M real filings</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-ai-grounding-eval/"><span class="rs-t">Grounding benchmark</span><span class="rs-n">first baselines</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-human-factors-ontology/"><span class="rs-t">Human factors ontology</span><span class="rs-n">derivation traces</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-risk-sem/"><span class="rs-t">SEM for safety risk</span><span class="rs-n">simulation studies</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-capitals-calculator/"><span class="rs-t">Cost-benefit calculator</span><span class="rs-n">interactive tool</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-benchmarks/"><span class="rs-t">OSHA benchmarks</span><span class="rs-n">TRIR/DART library</span></a></div></details><details class="rs-menu"><summary class="rs-item" aria-haspopup="true">Papers<span class="rs-caret" aria-hidden="true"></span></summary><div class="rs-panel"><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper.html"><span class="rs-t">Grounded reasoning for safety-critical AI</span><span class="rs-n">bundled draft</span></a><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper-osha.html"><span class="rs-t">The hours denominator</span><span class="rs-n">standalone OSHA paper</span></a></div></details></nav><span class="rs-sep" aria-hidden="true"></span><button class="rs-btn" id="rs-theme" type="button" aria-label="Toggle colour theme"><svg class="rs-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="rs-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button><button class="rs-btn rs-burger" id="rs-menu-btn" type="button" aria-expanded="false" aria-controls="rs-sheet" aria-label="Open menu"><i></i></button></div></div><div class="rs-sheet" id="rs-sheet" hidden><a class="rs-item" href="https://priyatham9.github.io/grounded/">Overview</a><a class="rs-item" href="https://priyatham9.github.io/grounded/start.html" aria-current="page">Start here</a><a class="rs-item" href="https://priyatham9.github.io/grounded/observatory.html">Observatory</a><span class="rs-group">Projects</span><a class="rs-opt" href="https://priyatham9.github.io/ehs-osha-analysis/"><span class="rs-t">OSHA data quality</span><span class="rs-n">2.8M real filings</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-ai-grounding-eval/"><span class="rs-t">Grounding benchmark</span><span class="rs-n">first baselines</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-human-factors-ontology/"><span class="rs-t">Human factors ontology</span><span class="rs-n">derivation traces</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-risk-sem/"><span class="rs-t">SEM for safety risk</span><span class="rs-n">simulation studies</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-capitals-calculator/"><span class="rs-t">Cost-benefit calculator</span><span class="rs-n">interactive tool</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-benchmarks/"><span class="rs-t">OSHA benchmarks</span><span class="rs-n">TRIR/DART library</span></a><span class="rs-group">Papers</span><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper.html"><span class="rs-t">Grounded reasoning for safety-critical AI</span><span class="rs-n">bundled draft</span></a><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper-osha.html"><span class="rs-t">The hours denominator</span><span class="rs-n">standalone OSHA paper</span></a><a class="rs-sheet-author" href="https://priyatham9.github.io/">Priyatham Chimmani&nbsp;&#8599;</a></div><span class="rs-progress" aria-hidden="true"></span></header>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="demo-bar">
+  <span class="label">Story engine demo</span>
+  <span class="fake">All numbers fake</span>
+  <button class="btn sm" id="theme">Toggle theme</button>
+  <button class="btn sm" id="present">Presenter mode (P)</button>
+  <a class="btn sm" href="?present=1">?present=1</a>
+</div>
 
 <main id="main">
-<section class="hero" id="top">
- <div class="wrap hero-grid">
-  <div>
-   <p class="claim">Safety numbers are only as good as the denominator and the citation underneath them.</p>
-   <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span class="label">Five minutes &middot; five figures</span></div>
-   <h1 class="display">Start here</h1>
-   <div class="hero-orbrow">
-    <div class="orbwrap"><canvas id="startOrb" width="300" height="300" role="img" aria-label="The system under review, moving from searching to a grounded state as you work through the five stops."></canvas></div>
-    <div>
-     <p class="hero-lede">Five stops, each one figure, one sentence, and one link into the source. The path ends on a benchmark item you can score yourself. Press P for presenter mode.</p>
-     <span class="orbcap" id="startOrbCap">Searching</span>
+
+<!-- ================= hero orb + every state ================= -->
+<section class="hero">
+  <div class="wrap">
+    <span class="label">Section 01</span>
+    <h1 class="display">The thinking orb</h1>
+    <p class="hero-role">Dotted monochrome canvas orb. Every state below morphs the same dots, so nothing cuts. Ink is <code>--ink</code>; only <em>grounded</em> and <em>resolved</em> use <code>--accent</code> and only <em>wrong</em> uses <code>--warn</code>.</p>
+
+    <div id="hero-grid">
+      <div><canvas id="hero-orb" aria-label="Orb showing the state of the system under review"></canvas></div>
+      <div>
+        <div class="statechips">
+          <button class="btn sm orbstate" data-s="idle">idle / breathing</button>
+          <button class="btn sm orbstate" data-s="thinking">thinking / working</button>
+          <button class="btn sm orbstate" data-s="retrieving">retrieving / searching</button>
+          <button class="btn sm orbstate" data-s="solving">solving</button>
+          <button class="btn sm orbstate" data-s="connecting">connecting</button>
+          <button class="btn sm orbstate" data-s="listening">listening</button>
+          <button class="btn sm orbstate" data-s="wrong">wrong</button>
+          <button class="btn sm orbstate" data-s="grounded">grounded</button>
+          <button class="btn sm orbstate" data-s="resolved">resolved</button>
+          <button class="btn sm" id="pointat">pointAt(the flagged clause)</button>
+        </div>
+        <p style="margin-top:18px;font-size:.9rem;color:var(--ink-2)">Current state: <b class="mono" id="statenow">breathing</b>. The orb streams dots at <span class="target-word" id="clause">1910.147(c)(4)</span> when pointed at it.</p>
+        <div class="orbrow">
+          <figure><canvas id="orb-sm"></canvas><figcaption>20px</figcaption></figure>
+          <figure><canvas id="orb-md"></canvas><figcaption>96px</figcaption></figure>
+          <figure><canvas id="orb-lg"></canvas><figcaption>180px</figcaption></figure>
+        </div>
+      </div>
     </div>
-   </div>
-   <div class="hero-links">
-    <a class="btn btn-primary" id="resume" href="#s1">Begin &darr;</a>
-    <a class="btn" href="./index.html">Back to overview</a>
-   </div>
   </div>
-  <div class="meter" aria-labelledby="meterLbl">
-   <span class="label" id="meterLbl">Your progress</span>
-   <span class="meter-n" id="meterN" aria-live="polite">0<small> of 5 stops</small></span>
-   <div class="bar" id="bar">
-    <a href="#s1" aria-label="Stop 1, The denominator"></a><a href="#s2" aria-label="Stop 2, Persistence"></a><a href="#s3" aria-label="Stop 3, The ontology derivation"></a><a href="#s4" aria-label="Stop 4, The cost model"></a><a href="#s5" aria-label="Stop 5, Try a benchmark item"></a>
-   </div>
-   <div class="meter-foot"><span class="label">Saved in this browser only</span><button class="linkbtn" type="button" id="reset">Reset</button></div>
-  </div>
- </div>
 </section>
 
-<section class="path" aria-label="The five stops">
- <div class="wrap">
-  <div class="route" id="route"><span class="fillline" id="fill" aria-hidden="true"></span>
-  <ol style="list-style:none;margin:0;padding:0">
-   <li class="step" id="s1" data-k="1"><span class="dot" aria-hidden="true">01</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 01</span><span class="fig">249x<small>one reporting year</small></span></div>
-    <div class="card-body"><h2 class="display">The denominator</h2>
-     <p>A plausibility screen on hours per employee moves the national TRIR 249 times over between the raw 2019 filing and the screened one, because a single keying error in the hours column can dominate the denominator of a national rate.</p>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-osha-analysis/explore.html">Explore the filings &rarr;</a><a class="storylink" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">Story: The denominator &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-   <li class="step" id="s2" data-k="2"><span class="dot" aria-hidden="true">02</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 02</span><span class="fig">27.2%<small>vs 0.95%</small></span></div>
-    <div class="card-body"><h2 class="display">Persistence</h2>
-     <p>An establishment flagged as implausible gets flagged again the next year 27.2% of the time, against 0.95% for one that was never flagged, so the same handful of filers likely account for a disproportionate share of the noise.</p>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-osha-analysis/PANEL.md">Read the persistence result &rarr;</a><a class="storylink" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">Story: The denominator &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-   <li class="step" id="s3" data-k="3"><span class="dot" aria-hidden="true">03</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 03</span><span class="fig">20<small>factor levels, one scenario</small></span></div>
-    <div class="card-body"><h2 class="display">The ontology derivation</h2>
-     <p>Twenty analyst-assigned factor levels feed the reactor-startup worked scenario, and every rule that fires on the way to the screening result is traced, so the judgment call is visible rather than buried in a free-text write-up.</p>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-human-factors-ontology/walkthrough.html">Follow the derivation &rarr;</a><a class="storylink" href="https://priyatham9.github.io/ehs-human-factors-ontology/story.html">Story: Why people err &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-   <li class="step" id="s4" data-k="4"><span class="dot" aria-hidden="true">04</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 04</span><span class="fig">$63,000<small>uncounted, one incident</small></span></div>
-    <div class="card-body"><h2 class="display">The cost model</h2>
-     <p>The published loading-station example books $55,000 in incident cost on the traditional ledger and carries $63,000 more that only the human-capital ledger counts, which can flip an investment from a fail to a pass depending on which ledger is used.</p>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-capitals-calculator/#story">Walk through the incident &rarr;</a><a class="storylink" href="https://priyatham9.github.io/ehs-capitals-calculator/story.html">Story: The capital case &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-   <li class="step" id="s5" data-k="5"><span class="dot" aria-hidden="true">05</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 05</span><span class="fig">68<small>items, 0 scored by a model</small></span></div>
-    <div class="card-body"><h2 class="display">Try a benchmark item</h2>
-     <p>Three non-LLM baselines run on the 68-item benchmark (random floor 52.1%, TF-IDF 27.0%, oracle 100%), and no language model has been scored yet, so the fastest way to judge the apparatus is to read one item and grade an answer yourself.</p>
-     <div class="caveat"><b>No language model evaluated</b>Baselines only. No model result should be inferred from them.</div>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-ai-grounding-eval/try.html">Try an item &rarr;</a><a class="btn" href="./index.html#try">Three items on the overview</a><a class="storylink" href="https://priyatham9.github.io/ehs-ai-grounding-eval/story.html">Story: The adjacent clause &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-  </ol></div>
-  <div class="finish" id="finish">
-   <span class="label" style="color:var(--paper)" id="finishLbl">When you are done</span>
-   <h2 class="display" id="finishH">Then read the drafts</h2>
-   <p>Both papers are drafts, not submitted. Every section states what it does not yet establish.</p>
-   <div class="hero-links"><a class="btn btn-primary" href="./paper.html">Bundled draft &rarr;</a><a class="btn" style="background:transparent;color:var(--paper)" href="./paper-osha.html">OSHA paper &rarr;</a></div>
-   <p style="margin-top:24px"><span class="label" style="color:var(--paper)">All six stories</span></p>
-   <div class="hero-links" style="margin-top:8px">
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">The denominator</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-ai-grounding-eval/story.html">The adjacent clause</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-human-factors-ontology/story.html">Why people err</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-risk-sem/story.html">Where the method breaks</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-capitals-calculator/story.html">The capital case</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-benchmarks/story.html">Compared with whom</a>
-   </div>
+<!-- ================= scroll scene ================= -->
+<section class="section">
+  <div class="wrap">
+    <div class="rail-head"><span class="rail-num">02</span><h2>Five-step scroll scene</h2><span class="fake">Fake data</span></div>
+    <div class="st-scene" id="scene" data-side="right">
+      <div class="st-stage">
+        <div class="st-stage-inner">
+          <canvas id="stage-orb" aria-label="Orb reacting to the current scroll step"></canvas>
+          <div id="scene-chart" style="margin-top:14px"></div>
+          <p class="label" style="text-align:center;margin-top:10px">Step <b class="mono" id="stepnum">1</b> · progress <b class="mono" id="prognum">0.00</b></p>
+        </div>
+      </div>
+      <div class="st-steps">
+        <div class="st-scene-rail"></div>
+        <div class="st-step" data-orb="idle" data-step="1"><span class="label">Step one</span><h3>The rate looks fine</h3><p>A fake establishment reports a fake rate of 2.4. Nothing about it invites a second look. The orb breathes.</p></div>
+        <div class="st-step" data-orb="thinking" data-step="2"><span class="label">Step two</span><h3>The denominator moves</h3><p>Fake hours are revised. The orb goes to work: particles run tilted orbits.</p></div>
+        <div class="st-step" data-orb="retrieving" data-step="3"><span class="label">Step three</span><h3>Look for the source</h3><p>A scan meridian sweeps the dotted globe while the chart redraws with fake screened values.</p></div>
+        <div class="st-step" data-orb="wrong" data-step="4"><span class="label">Step four</span><h3>The answer was wrong</h3><p>The dots fracture and take the warn colour. The fake rate was built on a fake hours figure nobody screened.</p></div>
+        <div class="st-step" data-orb="grounded" data-step="5"><span class="label">Step five</span><h3>Grounded</h3><p>Dots lock onto a stable lattice in the accent colour. The fake screened series is the one to quote.</p></div>
+      </div>
+    </div>
   </div>
- </div>
 </section>
+
+<!-- ================= charts ================= -->
+<section class="section">
+  <div class="wrap">
+    <div class="rail-head"><span class="rail-num">03</span><h2>Chart primitives</h2><span class="fake">Every series below is invented for this demo</span></div>
+    <div class="grid2">
+
+      <div class="card"><h3>line — shaded gap + draw-in</h3><span class="src">source: fabricated in story_demo.html</span><div id="c-line"></div></div>
+      <div class="card"><h3>bars — spring between states</h3><span class="src">source: fabricated</span><div id="c-bars"></div><button class="btn sm" id="bars-btn" style="margin-top:12px">New fake values</button></div>
+      <div class="card"><h3>flow — proportional bands</h3><span class="src">source: fabricated</span><div id="c-flow"></div></div>
+      <div class="card"><h3>scatter — shaded forbidden region</h3><span class="src">source: fabricated</span><div id="c-scatter"></div></div>
+      <div class="card"><h3>histogram — fills, marker line</h3><span class="src">source: fabricated</span><div id="c-hist"></div><button class="btn sm" id="hist-btn" style="margin-top:12px">Refill</button></div>
+      <div class="card"><h3>tornado — sorts itself</h3><span class="src">source: fabricated</span><div id="c-tornado"></div><button class="btn sm" id="tor-btn" style="margin-top:12px">Re-sort</button></div>
+      <div class="card"><h3>force — graph with path highlight</h3><span class="src">source: fabricated</span><div id="c-force"></div><button class="btn sm" id="force-btn" style="margin-top:12px">Trace a path</button></div>
+      <div class="card"><h3>paths — SEM diagram, animated coefficients</h3><span class="src">source: fabricated</span><div id="c-paths"></div><button class="btn sm" id="paths-btn" style="margin-top:12px">New fake estimates</button></div>
+      <div class="card"><h3>dots — beeswarm on canvas</h3><span class="src">source: fabricated</span><div id="c-dots"></div></div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= primitives ================= -->
+<section class="section">
+  <div class="wrap">
+    <div class="rail-head"><span class="rail-num">04</span><h2>Motion primitives</h2></div>
+    <div class="findings">
+      <div class="finding" data-st-reveal><div class="f-num" data-count>27.2</div><div class="f-unit">percent (fake)</div><div class="f-title">countUp + reveal</div><div class="f-body">Counts when it scrolls into view.</div></div>
+      <div class="finding" data-st-reveal><div class="f-num" data-count>0.95</div><div class="f-unit">percent (fake)</div><div class="f-title">staggered enter</div><div class="f-body">Each sibling comes in 70ms after the last.</div></div>
+      <div class="finding" data-st-reveal><div class="f-num" data-count>39.1</div><div class="f-unit">odds ratio (fake)</div><div class="f-title">tabular numerals</div><div class="f-body">Mono figures do not jitter while counting.</div></div>
+      <div class="finding" data-st-reveal><div class="f-num" data-count>2,800,000</div><div class="f-unit">filings (fake)</div><div class="f-title">grouped digits</div><div class="f-body">Thousands separators are preserved.</div></div>
+    </div>
+    <p style="margin-top:26px"><button class="btn sm" id="flip-btn">FLIP: shuffle the cards above</button></p>
+  </div>
+</section>
+
+<footer class="footer"><div class="wrap"><span class="label">Story engine demo</span><p style="margin-top:10px;font-size:.875rem;color:var(--muted)">Nothing on this page is a real measurement.</p></div></footer>
 </main>
 
-<footer class="footer">
- <div class="wrap">
-  <span class="label">Next step</span>
-  <p class="display foot-big">The whole<br />programme.</p>
-  <div class="hero-links"><a class="btn btn-primary" href="./index.html">Back to the overview</a><a class="btn" href="https://priyatham9.github.io/ehs-osha-analysis/" style="background:transparent;color:var(--paper);border-color:var(--paper)">OSHA data quality &rarr;</a></div>
-  <div class="foot-grid">
-   <div>
-    <span class="label">Author</span>
-    <h2 class="display" style="font-size:clamp(1.4rem,3vw,2rem);margin-top:8px">Priyatham Chimmani</h2>
-    <p class="foot-role">EHS data infrastructure, analytics and applied AI. This site covers the research programme. Professional work and background live on the personal site.</p>
-   </div>
-   <div>
-    <span class="label">Research</span>
-    <div class="footer-links">
-     <a href="./paper.html">Bundled paper <span>Draft</span></a>
-     <a href="./paper-osha.html">OSHA paper <span>Draft</span></a>
-     <a href="./changelog.html">Changelog <span>All six repos</span></a>
-     <a href="./feed.xml">RSS feed <span>feed.xml</span></a>
-    </div>
-   </div>
-   <div>
-    <span class="label">Elsewhere</span>
-    <div class="footer-links">
-     <a href="https://priyatham9.github.io">Personal site <span>priyatham9.github.io</span></a>
-     <a href="https://priyatham9.github.io/ehs-benchmarks">EHS benchmarks <span>Live project</span></a>
-     <a href="https://github.com/priyatham9">GitHub <span>All repositories</span></a>
-     <a href="https://linkedin.com/in/priyatham9">LinkedIn <span>in/priyatham9</span></a>
-    </div>
-   </div>
-  </div>
-  <div class="foot-base"><span>Grounded &middot; research programme</span><span>Drafts, not peer reviewed</span><a href="#top" style="text-decoration:none">Back to top &uarr;</a></div>
- </div>
-</footer>
-
-<script id="story-engine-js">/*STORY_JS_START*/
+<script>
+/*STORY_JS_START*/
 /* ============================================================
    story.js  -  shared storytelling engine (stdlib only, no deps)
    Exposes one global: Story
@@ -721,7 +630,6 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
   function reveal(root, opts) {
     opts = opts || {};
     var sel = opts.selector || "[data-st-reveal]";
-    if (!root || root.nodeType === 9) root = document.body;
     var nodes = isEl(root) ? (root.matches && root.matches(sel) ? [root] : els(sel, root)) : Array.prototype.slice.call(root);
     var step = opts.stagger == null ? 70 : opts.stagger;
     nodes.forEach(function (n) { n.classList.add("st-reveal"); });
@@ -1254,14 +1162,12 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
     }
 
     if (global.IntersectionObserver) {
-      // under 800px the stage is stacked on top, so the active band sits in the lower part of the viewport
-      var narrow = global.matchMedia && global.matchMedia("(max-width:800px)").matches, bandMid = narrow ? 0.78 : 0.5;
       ioStep = new IntersectionObserver(function (es) {
         // pick the entry closest to the middle band of the viewport
         var best = null, bestD = Infinity;
-        es.forEach(function (e) { if (e.isIntersecting) { var d = Math.abs(e.boundingClientRect.top + e.boundingClientRect.height / 2 - innerHeight * bandMid); if (d < bestD) { bestD = d; best = e; } } });
+        es.forEach(function (e) { if (e.isIntersecting) { var d = Math.abs(e.boundingClientRect.top + e.boundingClientRect.height / 2 - innerHeight / 2); if (d < bestD) { bestD = d; best = e; } } });
         if (best) setActive(steps.indexOf(best.target));
-      }, { rootMargin: narrow ? "-68% 0px -12% 0px" : "-45% 0px -45% 0px", threshold: 0 });
+      }, { rootMargin: "-45% 0px -45% 0px", threshold: 0 });
       steps.forEach(function (s) { ioStep.observe(s); });
     } else { setActive(0); }
 
@@ -1983,130 +1889,156 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
   // presenter mode is always available; pages may call Story.autoPresent() again with options
   autoPresent();
 })(typeof window !== "undefined" ? window : this);
-/*STORY_JS_END*/</script>
+/*STORY_JS_END*/
+</script>
 <script>
 (function () {
-  var root = document.documentElement, PK = 'grounded-start-progress';
-  function $(id) { return document.getElementById(id); }
-  var steps = [].slice.call(document.querySelectorAll('.step')), bars = [].slice.call($('bar').children);
-  var done = {};
-  try { done = JSON.parse(localStorage.getItem(PK) || '{}') || {}; } catch (e) { done = {}; }
-  function save() { try { localStorage.setItem(PK, JSON.stringify(done)); } catch (e) {} }
-  function render() {
-    var n = 0, next = -1;
-    steps.forEach(function (s, i) {
-      var d = !!done[i + 1]; if (d) n++; else if (next < 0) next = i;
-      s.classList.toggle('done', d);
-      var b = s.querySelector('.mark'); b.setAttribute('aria-pressed', d ? 'true' : 'false'); b.textContent = d ? 'Read ✓' : 'Mark as read';
-      bars[i].classList.toggle('done', d);
-    });
-    steps.forEach(function (s, i) { s.classList.toggle('cur', i === next); bars[i].classList.toggle('cur', i === next); });
-    $('meterN').innerHTML = n + '<small> of 5 stops</small>';
-    if (window.startOrbSet) window.startOrbSet(n);
-    var r = $('resume');
-    if (n === 0) { r.textContent = 'Begin ↓'; r.href = '#s1'; }
-    else if (next < 0) { r.textContent = 'Path complete: read the drafts'; r.href = '#finish'; }
-    else { r.textContent = 'Resume at stop 0' + (next + 1) + ' ↓'; r.href = '#s' + (next + 1); }
-    $('finishLbl').textContent = next < 0 ? 'All five stops read' : 'When you are done';
-    var last = next < 0 ? steps[steps.length - 1] : steps[next];
-    $('fill').style.height = (n === 0 ? 0 : (next < 0 ? $('route').offsetHeight : last.offsetTop + 36)) + 'px';
-  }
-  steps.forEach(function (s, i) {
-    s.querySelector('.mark').addEventListener('click', function () { done[i + 1] = !done[i + 1]; save(); render(); });
-    s.querySelectorAll('a.btn').forEach(function (a) { a.addEventListener('click', function () { done[i + 1] = true; save(); render(); }); });
+  "use strict";
+  var $ = function (s) { return document.querySelector(s); };
+  var rand = (function () { var s = 42; return function () { s = (s * 1103515245 + 12345) % 2147483648; return s / 2147483648; }; })();
+
+  /* ---- theme toggle ---- */
+  $("#theme").addEventListener("click", function () {
+    var r = document.documentElement;
+    r.setAttribute("data-theme", r.getAttribute("data-theme") === "dark" ? "light" : "dark");
   });
-  $('reset').addEventListener('click', function () { done = {}; save(); render(); });
-  window.addEventListener('resize', render);
-  render();
+  $("#present").addEventListener("click", function () { Story.present(); });
 
-  /* ---- orb: it settles as you work through the stops ---- */
-  (function () {
-    var cv = document.getElementById('startOrb'); if (!cv || !window.Story) return;
-    var o = Story.orb(cv, { density: 900 }), cap = document.getElementById('startOrbCap');
-    var LB = { searching: 'Searching', connecting: 'Connecting the stops', solving: 'Four of five read', grounded: 'Grounded: path complete' };
-    window.startOrbSet = function (n) {
-      var s = n === 0 ? 'searching' : n >= 5 ? 'grounded' : n >= 4 ? 'solving' : 'connecting';
-      o.setState(s); cap.textContent = LB[s];
-    };
-    window.startOrbSet(0);
-  })();
-
-  /* ---- presenter mode: P toggles, arrows step the stops ---- */
-  (function () {
-    if (!window.Story) return;
-    var pres = null, b = document.createElement('button');
-    b.type = 'button'; b.className = 'btn presbtn hide-present'; b.textContent = 'Presenter mode (P)';
-    b.addEventListener('click', function () {
-      if (pres) { pres.exit(); pres = null; }
-      else { pres = Story.present({ selector: '.step', onExit: function () { pres = null; } }); }
+  /* ---- orbs ---- */
+  var hero = Story.orb($("#hero-orb"), { state: "idle" });
+  Story.orb($("#orb-sm"), { state: "thinking", parallax: false });
+  Story.orb($("#orb-md"), { state: "connecting", parallax: false });
+  Story.orb($("#orb-lg"), { state: "searching", parallax: false });
+  Array.prototype.forEach.call(document.querySelectorAll(".orbstate"), function (b) {
+    b.addEventListener("click", function () {
+      hero.setState(b.getAttribute("data-s"));
+      $("#statenow").textContent = hero.state;
     });
-    document.body.appendChild(b);
-  })();
+  });
+  $("#pointat").addEventListener("click", function () {
+    hero.pointAt($("#clause"));
+    $("#statenow").textContent = hero.state;
+  });
+
+  /* ---- scroll scene ---- */
+  var stageOrb = Story.orb($("#stage-orb"), { state: "idle" });
+  var raw = [], screened = [];
+  for (var y = 2016; y <= 2024; y++) {
+    raw.push([y, 2.1 + Math.sin((y - 2016) * .7) * .35 + (y - 2016) * .04]);
+    screened.push([y, 1.5 + Math.sin((y - 2016) * .7) * .22 + (y - 2016) * .02]);
+  }
+  var sceneChart = Story.chart.line($("#scene-chart"), {
+    series: [{ name: "raw (fake)", points: raw }, { name: "screened (fake)", points: screened, color: "ink-2" }],
+    gap: [0, 1]
+  }, { height: 180, label: "Fake raw and screened rate series with the gap shaded", margin: { top: 16, right: 30, bottom: 30, left: 38 } });
+
+  Story.scenes($("#scene"), {
+    orb: stageOrb,
+    onStep: function (i, node) {
+      $("#stepnum").textContent = String(i + 1);
+      if (i >= 2) sceneChart.update({ series: [{ name: "raw (fake)", points: raw }, { name: "screened (fake)", points: screened, color: "ink-2" }], gap: [0, 1] });
+    },
+    onProgress: function (i, p) { $("#prognum").textContent = p.toFixed(2); }
+  });
+
+  /* ---- charts (all fake) ---- */
+  Story.chart.line($("#c-line"), {
+    series: [{ name: "raw", points: raw }, { name: "screened", points: screened, color: "ink-2" }],
+    gap: [0, 1]
+  }, { height: 240, label: "Fake line chart with a shaded gap between two invented series" });
+
+  function fakeBars() {
+    return ["Alpha", "Bravo", "Charlie", "Delta", "Echo"].map(function (l) {
+      return { label: l, value: Math.round(rand() * 80 + 10) };
+    });
+  }
+  var bars = Story.chart.bars($("#c-bars"), fakeBars(), { height: 240, label: "Fake bar chart" });
+  $("#bars-btn").addEventListener("click", function () { bars.update(fakeBars()); });
+
+  Story.chart.flow($("#c-flow"), {
+    left: [{ label: "flagged", value: 100 }, { label: "not flagged", value: 300 }],
+    right: [{ label: "re-flagged", value: 30 }, { label: "clear", value: 370 }],
+    links: [
+      { from: "flagged", to: "re-flagged", value: 27, label: "27.2% (fake)" },
+      { from: "flagged", to: "clear", value: 73 },
+      { from: "not flagged", to: "re-flagged", value: 3, label: "0.95% (fake)", color: "warn" },
+      { from: "not flagged", to: "clear", value: 297 }
+    ]
+  }, { height: 260, label: "Fake persistence flow bands" });
+
+  var pts = [];
+  for (var i = 0; i < 34; i++) pts.push({ x: rand() * 60 + 5, y: rand() * 40 + 8 });
+  pts.push({ x: 27, y: 0.2, label: "TF-IDF (fake)", color: "warn", r: 7 });
+  Story.chart.scatter($("#c-scatter"), {
+    points: pts,
+    region: { x0: 0, x1: 70, y0: 0, y1: 6, label: "no language model run yet (fake)" }
+  }, { height: 250, label: "Fake scatter with a shaded region nothing occupies", zero: true });
+
+  function draws() { var v = []; for (var i = 0; i < 1200; i++) { var s = 0; for (var k = 0; k < 6; k++) s += rand(); v.push(s / 6 * 30); } return v; }
+  var hist = Story.chart.histogram($("#c-hist"), { values: draws(), bins: 30, marker: { x: 26.5, label: "observed (fake)" } }, { height: 240, label: "Fake permutation null with the observed value marked" });
+  $("#hist-btn").addEventListener("click", function () { hist.update({ values: draws(), bins: 30, marker: { x: 26.5, label: "observed (fake)" } }); });
+
+  function fakeTornado() {
+    return [
+      { label: "training hours", low: -120, high: 180 },
+      { label: "turnover", low: -260, high: 90 },
+      { label: "discount rate", low: -60, high: 70 },
+      { label: "incident cost", low: -340, high: 410 },
+      { label: "uptake", low: -90, high: 150 }
+    ].map(function (d) { return { label: d.label, low: d.low * (0.6 + rand() * 0.8), high: d.high * (0.6 + rand() * 0.8) }; });
+  }
+  var tor = Story.chart.tornado($("#c-tornado"), fakeTornado(), { height: 260, base: 0, margin: { left: 118, right: 46, top: 14, bottom: 34 }, label: "Fake tornado chart that sorts itself by swing" });
+  $("#tor-btn").addEventListener("click", function () { tor.update(fakeTornado()); });
+
+  var fnodes = ["fatigue", "time pressure", "training", "procedures", "supervision", "workload", "communication", "experience", "tooling"];
+  var force = Story.chart.force($("#c-force"), {
+    nodes: fnodes.map(function (n) { return { id: n }; }),
+    links: [["fatigue", "workload"], ["workload", "time pressure"], ["time pressure", "procedures"], ["procedures", "training"],
+    ["training", "experience"], ["supervision", "procedures"], ["communication", "supervision"], ["tooling", "workload"], ["experience", "fatigue"]]
+      .map(function (l) { return { source: l[0], target: l[1] }; })
+  }, { height: 280, label: "Fake performance-influencing-factor network" });
+  $("#force-btn").addEventListener("click", function () { force.tracePath(["fatigue", "workload", "time pressure", "procedures"], 420); });
+
+  function fakePaths(scale) {
+    return {
+      nodes: [
+        { id: "cl", label: "climate", x: .16, y: .5, latent: true, w: .2, h: .16 },
+        { id: "be", label: "behaviour", x: .5, y: .22, latent: true, w: .22, h: .16 },
+        { id: "ex", label: "exposure", x: .5, y: .78, latent: true, w: .22, h: .16 },
+        { id: "in", label: "incidents", x: .86, y: .5, w: .2, h: .16 }
+      ],
+      edges: [
+        { from: "cl", to: "be", coef: 0.62 * scale },
+        { from: "cl", to: "ex", coef: -0.41 * scale },
+        { from: "be", to: "in", coef: -0.35 * scale },
+        { from: "ex", to: "in", coef: 0.58 * scale }
+      ]
+    };
+  }
+  var paths = Story.chart.paths($("#c-paths"), fakePaths(1), { height: 250, label: "Fake SEM path diagram with invented coefficients" });
+  $("#paths-btn").addEventListener("click", function () { paths.update(fakePaths(0.4 + rand() * 1.2)); });
+
+  var dpts = [];
+  ["NAICS 3251", "NAICS 3252", "NAICS 3259"].forEach(function (g) {
+    for (var i = 0; i < 260; i++) {
+      var v = Math.abs((rand() + rand() + rand()) / 3 * 9 - 1.2) + 0.2;
+      dpts.push({ x: v, group: g, flag: v > 7.4 });
+    }
+  });
+  Story.chart.dots($("#c-dots"), { points: dpts }, { height: 260, margin: { left: 96, right: 20, top: 14, bottom: 32 }, label: "Fake beeswarm of establishment rates by peer group" });
+
+  /* ---- primitives ---- */
+  Story.reveal(document.body);
+  Story.countUp(document.querySelectorAll("[data-count]"));
+  Story.progressBar();
+  $("#flip-btn").addEventListener("click", function () {
+    var box = document.querySelector(".findings");
+    var kids = Array.prototype.slice.call(box.children);
+    Story.flip(kids, function () {
+      kids.slice().sort(function () { return rand() - .5; }).forEach(function (k) { box.appendChild(k); });
+    });
+  });
 })();
 </script>
-<script id="rs-header-js">
-(function(){
- var h=document.getElementById('rs-header');if(!h)return;
- var root=document.documentElement,doc=document;h.classList.add('rs-js');
- var mq=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):{matches:false};
- /* theme */
- var tb=doc.getElementById('rs-theme');
- function cur(){var t=root.getAttribute('data-theme');return t==='dark'||t==='light'?t:(mq.matches?'dark':'light');}
- function sync(){var d=cur()==='dark';tb.setAttribute('aria-pressed',d?'true':'false');tb.setAttribute('aria-label',d?'Switch to light theme':'Switch to dark theme');}
- if(tb){tb.addEventListener('click',function(){var n=cur()==='dark'?'light':'dark';root.setAttribute('data-theme',n);
-  try{localStorage.setItem('pc-theme',n);localStorage.setItem('ehs-ai-theme',n);}catch(e){}
-  sync();try{doc.dispatchEvent(new CustomEvent('rs-themechange',{detail:{theme:n}}));}catch(e){}});
-  sync();if(mq.addEventListener)mq.addEventListener('change',sync);}
- /* dropdowns */
- var menus=[].slice.call(h.querySelectorAll('.rs-menu'));
- function closeMenus(except){menus.forEach(function(m){if(m!==except&&m.open)m.open=false;});}
- menus.forEach(function(m){var s=m.querySelector('summary');s.setAttribute('aria-expanded','false');
-  s.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();m.open=!m.open;}});
-  m.addEventListener('toggle',function(){s.setAttribute('aria-expanded',m.open?'true':'false');if(m.open)closeMenus(m);});});
- /* mobile sheet */
- var mb=doc.getElementById('rs-menu-btn'),sheet=doc.getElementById('rs-sheet');
- function focusables(){return [mb].concat([].slice.call(sheet.querySelectorAll('a[href]')));}
- function setSheet(open){if(!sheet)return;sheet.hidden=!open;mb.setAttribute('aria-expanded',open?'true':'false');
-  mb.setAttribute('aria-label',open?'Close menu':'Open menu');root.classList.toggle('rs-lock',open);
-  if(open){var f=sheet.querySelector('a[href]');if(f)f.focus();}}
- if(mb&&sheet){mb.addEventListener('click',function(){setSheet(sheet.hidden);});
-  sheet.addEventListener('click',function(e){if(e.target.closest('a'))setSheet(false);});
-  window.addEventListener('resize',function(){if(!sheet.hidden&&innerWidth>860)setSheet(false);});}
- /* sections */
- var sb=doc.getElementById('rs-subbtn'),sl=doc.getElementById('rs-sublist'),nav=doc.getElementById('rs-sections');
- function setSub(open){if(!sb)return;sl.hidden=!open;sb.setAttribute('aria-expanded',open?'true':'false');}
- if(sb){sb.addEventListener('click',function(){setSub(sl.hidden);});sl.addEventListener('click',function(e){if(e.target.closest('a'))setSub(false);});}
- doc.addEventListener('click',function(e){var t=e.target;if(!t.closest)return;
-  if(!t.closest('.rs-menu'))closeMenus();if(sb&&!sl.hidden&&!t.closest('.rs-sub'))setSub(false);});
- doc.addEventListener('keydown',function(e){
-  if(e.key==='Escape'){var o=menus.filter(function(m){return m.open;})[0];
-   if(o){o.open=false;o.querySelector('summary').focus();return;}
-   if(sheet&&!sheet.hidden){setSheet(false);mb.focus();return;}
-   if(sb&&!sl.hidden){setSub(false);sb.focus();}return;}
-  if(e.key==='Tab'&&sheet&&!sheet.hidden){var f=focusables(),i=f.indexOf(doc.activeElement);
-   e.preventDefault();var n=f.length;f[i<0?0:(i+(e.shiftKey?n-1:1))%n].focus();}});
- var links=nav?[].slice.call(nav.querySelectorAll('a.rs-sec')):[],items=[];
- links.forEach(function(a){var el=doc.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));if(el)items.push({a:a,el:el,id:el.id});});
- var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,active=null;
- function off(){return h.offsetHeight;}
- function fades(){if(!nav)return;var m=nav.scrollWidth-nav.clientWidth;nav.classList.toggle('rs-fl',nav.scrollLeft>2);nav.classList.toggle('rs-fr',m>2&&nav.scrollLeft<m-2);}
- function spy(){if(!items.length)return;var y=off()+24,pick=null;
-  items.forEach(function(it){if(it.el.getBoundingClientRect().top<=y)pick=it;});
-  if(!pick)pick=items[0];if(innerHeight+scrollY>=doc.documentElement.scrollHeight-2)pick=items[items.length-1];
-  if(pick===active)return;active=pick;
-  [].slice.call(h.querySelectorAll('a.rs-sec')).forEach(function(a){var on=a.getAttribute('href')==='#'+pick.id;a.classList.toggle('rs-active',on);if(on)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');});
-  var now=doc.getElementById('rs-now');if(now)now.textContent=pick.a.textContent;
-  if(nav.scrollWidth>nav.clientWidth){var l=pick.a.offsetLeft-(nav.clientWidth-pick.a.offsetWidth)/2;
-   try{nav.scrollTo({left:l,behavior:reduce?'auto':'smooth'});}catch(e){nav.scrollLeft=l;}}}
- var bar=h.querySelector('.rs-progress'),ticking=false;
- function frame(){ticking=false;var max=doc.documentElement.scrollHeight-innerHeight;
-  if(bar)bar.style.transform='scaleX('+(max>0?Math.min(1,Math.max(0,scrollY/max)):0)+')';spy();}
- function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(frame);}}
- function pad(){root.style.scrollPaddingTop=(off()+12)+'px';fades();}
- if(items.length&&'IntersectionObserver' in window){var io=new IntersectionObserver(onScroll,{rootMargin:'-'+off()+'px 0px -50% 0px'});items.forEach(function(it){io.observe(it.el);});}
- if(nav)nav.addEventListener('scroll',fades,{passive:true});
- addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',function(){pad();onScroll();});
- pad();frame();
-})();
-</script></body>
+</body>
 </html>

@@ -1,0 +1,80 @@
+/* ============================================================
+   story.css  -  shared storytelling engine styles
+   Depends on tokens defined in tools/shared.css:
+   --paper --surface --surface-2 --ink --ink-2 --muted --rule
+   --rule-soft --accent --accent-2 --accent-ink --accent-wash
+   --warn --warn-wash --font-sans --font-mono
+   ============================================================ */
+
+/* ---------- orb ---------- */
+.st-orb{display:block;width:100%;height:100%;touch-action:manipulation}
+.st-orb-wrap{position:relative;display:block;line-height:0}
+
+/* ---------- scenes ---------- */
+.st-scene{position:relative;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:0 46px;align-items:start}
+.st-scene[data-side="left"]{grid-template-columns:minmax(0,.95fr) minmax(0,1.05fr)}
+.st-scene[data-side="left"] .st-stage{order:2}
+.st-scene[data-side="left"] .st-steps{order:1}
+.st-stage{position:sticky;top:0;height:100vh;height:100svh;display:flex;flex-direction:column;justify-content:center;min-width:0;padding:24px 0}
+.st-stage-inner{position:relative;width:100%;min-width:0;max-height:100%}
+.st-steps{min-width:0}
+.st-step{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:34px 0;opacity:.34;transition:opacity .45s ease}
+.st-step.is-active{opacity:1}
+.st-step:last-child{min-height:64vh}
+.st-step h3{font-size:clamp(1.18rem,2.4vw,1.6rem);margin-bottom:12px;letter-spacing:-.01em}
+.st-step p{font-size:1rem;color:var(--ink-2);max-width:46ch}
+.st-step .label{display:block;margin-bottom:10px}
+/* scroll progress rail drawn from the scene's --p (0..1) */
+.st-scene-rail{position:absolute;left:-18px;top:0;bottom:0;width:2px;background:var(--rule-soft)}
+.st-scene-rail::after{content:"";position:absolute;left:0;top:0;width:2px;height:calc(var(--p,0) * 100%);background:var(--accent)}
+@media(max-width:800px){
+  .st-scene,.st-scene[data-side="left"]{grid-template-columns:1fr;gap:0}
+  .st-scene .st-stage,.st-scene[data-side="left"] .st-stage{order:0;position:sticky;top:var(--st-top,58px);height:50vh;height:50svh;background:var(--paper);z-index:2;padding:12px 0;border-bottom:2px solid var(--rule-soft)}
+  .st-scene .st-steps,.st-scene[data-side="left"] .st-steps{order:1}
+  .st-step{min-height:80vh;padding:26px 0}
+  .st-scene-rail{display:none}
+}
+
+/* ---------- charts ---------- */
+.st-chart{display:block;width:100%;overflow:visible;font-family:var(--font-sans)}
+.st-chart text{font-family:var(--font-mono);font-size:12px;fill:var(--muted);font-variant-numeric:tabular-nums}
+.st-chart .st-axis-line{stroke:var(--rule-soft);stroke-width:1}
+.st-chart .st-grid{stroke:var(--rule-soft);stroke-width:1;stroke-dasharray:2 4}
+.st-chart .st-label-direct{fill:var(--ink);font-weight:700;font-size:12px}
+.st-chart .st-caption{fill:var(--muted);font-size:11px;letter-spacing:.08em;text-transform:uppercase}
+.st-chart .st-series-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+.st-chart .st-gap{fill:var(--accent);opacity:.14}
+.st-chart .st-bar{transition:none}
+.st-chart .st-region{fill:var(--warn);opacity:.12}
+.st-chart .st-region-edge{stroke:var(--warn);stroke-width:1;stroke-dasharray:4 4;fill:none}
+.st-chart .st-marker{stroke:var(--warn);stroke-width:2}
+.st-chart .st-node{stroke:var(--paper);stroke-width:1.5}
+.st-chart .st-link{stroke:var(--rule-soft);stroke-width:1.2;fill:none}
+.st-chart .st-link.is-hot{stroke:var(--accent);stroke-width:2.6}
+.st-chart .st-path-edge{stroke:var(--ink-2);fill:none;marker-end:url(#st-arrow)}
+.st-canvas{display:block;width:100%}
+.st-figure{margin:0}
+.st-figure figcaption{margin-top:10px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- reveal ---------- */
+.st-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.22,.7,.2,1),transform .6s cubic-bezier(.22,.7,.2,1)}
+.st-reveal.is-in{opacity:1;transform:none}
+
+/* ---------- progress bar ---------- */
+.st-progress{position:fixed;top:0;left:0;height:3px;width:100%;z-index:60;background:transparent;pointer-events:none}
+.st-progress i{display:block;height:100%;width:0;background:var(--accent);transform-origin:0 50%}
+
+/* ---------- presenter mode ---------- */
+.st-presenting .st-hide-on-present,.st-presenting header.banner,.st-presenting .footer,.st-presenting .skip{display:none!important}
+.st-presenting body,body.st-presenting{font-size:19px}
+.st-presenting .st-step{opacity:1;min-height:0}
+.st-present-dots{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:8px;z-index:70;padding:9px 13px;border:2px solid var(--rule);background:var(--surface)}
+.st-present-dots b{display:block;width:8px;height:8px;background:var(--rule-soft);border-radius:50%}
+.st-present-dots b.is-on{background:var(--accent)}
+.st-present-hint{position:fixed;right:18px;bottom:24px;z-index:70;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- reduced motion ---------- */
+@media (prefers-reduced-motion: reduce){
+  .st-reveal{opacity:1;transform:none;transition:none}
+  .st-step{opacity:1;transition:none}
+}

@@ -57,26 +57,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible,s
 /* long unbreakable strings (file paths, URLs, identifiers) must wrap, not overflow */
 code,.mono,.src,.f-src,.backlink{overflow-wrap:anywhere}
 @media print{
-  .topbar,.estate,.toggle,.skip,.hero-links,footer.footer{display:none!important}
+  .skip,.hero-links,footer.footer{display:none!important}
   body{background:#fff!important;color:#000!important}
   a{color:#000!important;text-decoration:underline}
   .wrap{max-width:none}
 }
-
-/* ============ topbar ============ */
-.topbar{position:sticky;top:0;z-index:40;background:var(--paper);border-bottom:2px solid var(--rule)}
-.topbar-inner{max-width:var(--maxw);margin:0 auto;padding:13px 30px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-.brand{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.8125rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--ink);text-decoration:none}
-.brand-mark{width:14px;height:14px;background:var(--accent);flex:none}
-.topnav{display:flex;align-items:center;gap:2px}
-.topnav a{text-decoration:none;padding:7px 11px;font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);transition:color .15s,background .15s}
-.topnav a:hover{color:var(--ink);background:var(--surface-2)}
-.toggle{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;flex:none;background:var(--paper);border:2px solid var(--rule);border-radius:0;color:var(--ink);cursor:pointer}
-.toggle:hover{background:var(--surface-2)}
-.icon-moon{display:none}
-:root[data-theme="dark"] .icon-sun{display:none}
-:root[data-theme="dark"] .icon-moon{display:block}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .icon-sun{display:none}:root:not([data-theme="light"]) .icon-moon{display:block}}
 
 /* ============ hero ============ */
 .hero{position:relative;padding:74px 0 56px;border-bottom:2px solid var(--rule);background-image:radial-gradient(var(--grid-dot) 1px,transparent 1px);background-size:22px 22px}
@@ -155,3 +140,15 @@ code,.mono,.src,.f-src,.backlink{overflow-wrap:anywhere}
 .footer-links{display:flex;flex-wrap:wrap;gap:18px;margin-top:14px}
 .footer-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--muted);display:inline-flex;align-items:center;min-height:24px}
 .footer-links a:hover{color:var(--accent)}
+
+/* ============ story entry (generated pages) ============ */
+.hero-orb-wrap{position:relative;width:clamp(96px,13vw,148px);aspect-ratio:1;margin:0 0 20px}
+.hero-orb-wrap.no-orb{display:none}
+.hero-orb{display:block;width:100%;height:100%}
+.btn-story{gap:11px}
+.btn-story .btn-arrow{font-family:var(--font-mono);font-weight:700}
+/* one reading-progress bar per page: the story engine's wins when present */
+body:has(.st-progress) .rs-header .rs-progress{display:none}
+/* presenter mode hides site chrome that the engine does not know about */
+.st-presenting .rs-header,.st-presenting .toc,.st-presenting .prog,.st-presenting .footer{display:none!important}
+.st-presenting .layout{grid-template-columns:minmax(0,1fr)}

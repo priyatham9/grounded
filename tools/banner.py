@@ -2,7 +2,7 @@
 
 Public API
 ----------
-build_header(current, sections)   -> header markup (str)
+build_header(current, sections, story_href=None)   -> header markup (str)
 HEADER_CSS, HEADER_JS, HEAD_THEME_SNIPPET -> full <style>/<script> elements
 apply_banner(html, current=None, sections=None, current_project=None,
              current_paper=None, is_hub=False) -> html with the header applied
@@ -115,6 +115,10 @@ HEADER_CSS = r"""<style id="rs-header-css">
 .rs-header .rs-item::marker{content:""}
 .rs-header .rs-item:hover,.rs-header .rs-menu[open]>.rs-item{background:var(--rs-surface-2);color:var(--rs-ink)}
 .rs-header .rs-item[aria-current="page"],.rs-header .rs-menu[data-current]>.rs-item{color:var(--rs-ink);box-shadow:inset 0 -3px 0 var(--rs-accent)}
+.rs-header .rs-story{color:var(--rs-accent);font-weight:700;box-shadow:inset 0 -3px 0 var(--rs-accent)}
+.rs-header .rs-story::before{content:"";display:block;width:7px;height:7px;background:var(--rs-accent);flex:none}
+.rs-header .rs-story:hover{background:var(--rs-accent);color:var(--rs-paper)}
+.rs-header .rs-story:hover::before{background:var(--rs-paper)}
 .rs-header .rs-caret{display:block;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid currentColor;transition:transform .15s}
 .rs-header .rs-menu[open] .rs-caret{transform:rotate(180deg)}
 .rs-header .rs-panel{display:block;position:absolute;top:calc(100% + 2px);right:0;width:340px;max-width:calc(100vw - 32px);margin:0;padding:0;background:var(--rs-surface);border:2px solid var(--rs-rule);box-shadow:6px 6px 0 var(--rs-rule);z-index:1}
@@ -259,8 +263,12 @@ def _current_from(current, current_project, current_paper, is_hub):
     return "hub" if is_hub else None
 
 
-def build_header(current=None, sections=None):
-    """Return the header markup. sections: list of (id, label) or None/[]."""
+def build_header(current=None, sections=None, story_href=None):
+    """Return the header markup. sections: list of (id, label) or None/[].
+
+    story_href, when given, adds one marked link in the primary row that takes
+    the reader to that page's narrative walkthrough.
+    """
     sections = list(sections or [])
     proj_cur = any(current == s for s, _, _ in PROJECTS)
     pap_cur = any(current == f for f, _, _ in PAPERS)
@@ -274,6 +282,7 @@ def build_header(current=None, sections=None):
     proj = opts(PROJECTS, lambda s: "https://priyatham9.github.io/%s/" % s)
     paps = opts(PAPERS, lambda f: HUB + f)
     prim = "".join('<a class="rs-item" href="%s"%s>%s</a>' % (u, aria(k == current), l) for k, l, u in PRIMARY)
+    story = ('<a class="rs-item rs-story" href="%s">Read the story</a>' % _E(story_href, quote=True)) if story_href else ""
     caret = '<span class="rs-caret" aria-hidden="true"></span>'
 
     def menu(label, body, cur):
@@ -284,16 +293,16 @@ def build_header(current=None, sections=None):
         '<div class="rs-bar"><div class="rs-row">'
         '<a class="rs-brand" href="%s"%s><span class="rs-mark" aria-hidden="true"></span>Grounded</a>'
         '<a class="rs-author" href="%s">Priyatham Chimmani&nbsp;&#8599;</a>'
-        '<nav class="rs-nav" aria-label="Research site">%s%s%s</nav>'
+        '<nav class="rs-nav" aria-label="Research site">%s%s%s%s</nav>'
         '<span class="rs-sep" aria-hidden="true"></span>'
         '<button class="rs-btn" id="rs-theme" type="button" aria-label="Toggle colour theme">%s%s</button>'
         '<button class="rs-btn rs-burger" id="rs-menu-btn" type="button" aria-expanded="false" aria-controls="rs-sheet" aria-label="Open menu"><i></i></button>'
         '</div></div>' % (HUB, ' aria-label="Grounded research hub"', PERSONAL, prim,
-                          menu("Projects", proj, proj_cur), menu("Papers", paps, pap_cur), _SUN, _MOON))
-    sheet = ('<div class="rs-sheet" id="rs-sheet" hidden>%s'
+                          menu("Projects", proj, proj_cur), menu("Papers", paps, pap_cur), story, _SUN, _MOON))
+    sheet = ('<div class="rs-sheet" id="rs-sheet" hidden>%s%s'
              '<span class="rs-group">Projects</span>%s<span class="rs-group">Papers</span>%s'
              '<a class="rs-sheet-author" href="%s">Priyatham Chimmani&nbsp;&#8599;</a></div>'
-             % (prim, proj, paps, PERSONAL))
+             % (prim, story, proj, paps, PERSONAL))
     row2 = ""
     if sections:
         secs = "".join('<a class="rs-sec" href="#%s">%s</a>' % (_E(i, quote=True), _E(l)) for i, l in sections)
@@ -432,7 +441,7 @@ def _strip_old_css(css):
 
 
 def apply_banner(html, current=None, sections=None, current_project=None,
-                 current_paper=None, is_hub=False):
+                 current_paper=None, is_hub=False, story_href=None):
     current = _current_from(current, current_project, current_paper, is_hub)
     if sections is None:
         sections = _detect_sections(html)
@@ -453,7 +462,7 @@ def apply_banner(html, current=None, sections=None, current_project=None,
         html = html.replace("</head>", head_bits + "</head>", 1)
     else:
         html = head_bits + html
-    header = build_header(current, sections)
+    header = build_header(current, sections, story_href=story_href)
     # keep a leading skip link ("<a class=\"skip\" ...>") as the first focusable element
     mb = re.search(r"<body\b[^>]*>(?:\s*<a\b[^>]*class=\"[^\"]*\bskip(?:-link)?\b[^\"]*\"[^>]*>.*?</a>)?", html, re.S)
     html = (html[:mb.end()] + header + html[mb.end():]) if mb else header + html
