@@ -150,7 +150,7 @@
     var d = opts.damping == null ? 2 * Math.sqrt(k) : opts.damping; // critical
     var prec = opts.precision == null ? 0.0008 : opts.precision;
     var x = from, v = opts.velocity || 0, target = to, stopped = false, un = null;
-    if (reduced() && !opts.force) {
+    if ((reduced() || document.hidden) && !opts.force) {
       cb(to, true);
       return { stop: function () { }, set: function (t) { cb(t, true); }, setTarget: function (t) { cb(t, true); }, get value() { return target; } };
     }
@@ -190,7 +190,8 @@
     opts = opts || {};
     var dur = (opts.duration == null ? 700 : opts.duration);
     var ease = typeof opts.ease === "function" ? opts.ease : (EASE[opts.ease] || EASE.out);
-    if (reduced() && !opts.force) { cb(to, true); if (opts.onDone) opts.onDone(); return { stop: function () { } }; }
+    // hidden tabs get no animation frames: land on the final state so nothing is left half drawn
+    if ((reduced() || document.hidden) && !opts.force) { cb(to, true); if (opts.onDone) opts.onDone(); return { stop: function () { } }; }
     var t0 = 0, un, stopped = false;
     un = tick(function (dt, now) {
       if (stopped) return false;
