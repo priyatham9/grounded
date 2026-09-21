@@ -85,57 +85,50 @@ button{font:inherit;color:inherit}
 .btn:hover svg{transform:translateX(3px)}
 
 
-.hero{padding:64px 0 48px;background-image:radial-gradient(var(--grid-dot) 1.2px,transparent 1.2px);background-size:22px 22px;border-bottom:2px solid var(--rule)}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:48px;align-items:end}
-.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:20px}
-.pulse{width:10px;height:10px;background:var(--accent);display:inline-block}
-.hero h1{font-size:clamp(3rem,9vw,7.5rem);line-height:.88;letter-spacing:-.02em}
-.hero-lede{margin:24px 0 0;font-size:clamp(1.05rem,1.8vw,1.3rem);line-height:1.45;max-width:44ch;color:var(--ink-2)}
-.claim{font-size:1rem;color:var(--ink-2);margin:0 0 8px;max-width:48ch}
-.hero-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
-.meter{border:2px solid var(--rule);background:var(--surface);padding:20px}
-.meter-n{font-family:var(--font-mono);font-weight:700;font-size:clamp(3rem,7vw,5rem);line-height:.9;color:var(--accent);display:block;margin:8px 0 14px;font-variant-numeric:tabular-nums}
-.meter-n small{font-size:.35em;color:var(--muted)}
-.bar{display:grid;grid-template-columns:repeat(5,1fr);gap:4px}
-.bar a{height:14px;border:2px solid var(--rule);background:var(--surface-2);display:block;position:relative}
-.bar a.done{background:var(--accent);border-color:var(--accent)}
-.bar a.cur{box-shadow:inset 0 0 0 2px var(--surface),0 0 0 2px var(--accent)}
-.meter-foot{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
-.linkbtn{background:none;border:0;padding:10px 0;min-height:44px;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--accent);cursor:pointer}
-@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:32px}}
+/* ============ start here: one straight read ============ */
+/* the engine's bottom bar is the only fixed chrome on this page */
+.rs-header{position:static!important}
+.rs-header .rs-sub{display:none!important}
 
-.path{padding:72px 0 96px}
-.route{list-style:none;margin:0;padding:0;position:relative}
-.route::before{content:'';position:absolute;left:35px;top:0;bottom:0;width:2px;background:var(--rule-soft)}
-.route .fillline{position:absolute;left:35px;top:0;width:2px;background:var(--accent);transition:height .6s ease}
-.step{display:grid;grid-template-columns:72px minmax(0,1fr);gap:24px;margin-bottom:28px;position:relative}
-.dot{width:72px;height:72px;border:2px solid var(--rule);background:var(--paper);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-weight:700;font-size:1.1rem;position:relative;z-index:1;transition:background .3s,color .3s}
-.step.done .dot{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
-.step.done .dot::after{content:'\2713';position:absolute;right:-8px;top:-8px;width:24px;height:24px;background:var(--ink);color:var(--paper);font-size:.8rem;display:flex;align-items:center;justify-content:center}
-.card{border:2px solid var(--rule);background:var(--surface);display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr);transition:box-shadow .25s,transform .25s}
-.step.cur .card{box-shadow:10px 10px 0 var(--accent-wash);transform:translate(-3px,-3px)}
-.card-fig{padding:24px;border-right:2px solid var(--rule);background:var(--surface-2)}
-.fig{font-family:var(--font-mono);font-weight:700;color:var(--accent);font-size:clamp(2.8rem,6vw,4.4rem);line-height:.92;letter-spacing:-.03em;display:block;margin-top:10px;font-variant-numeric:tabular-nums;word-break:break-word}
-.fig small{font-size:.3em;letter-spacing:0;display:block;color:var(--muted);font-weight:600;margin-top:10px}
-.card-body{padding:24px;display:flex;flex-direction:column;gap:14px}
-.card-body h2{font-size:clamp(1.4rem,3vw,2.2rem)}
-.card-body p{font-size:1.05rem;color:var(--ink-2);margin:0;max-width:62ch}
-.acts{display:flex;flex-wrap:wrap;gap:10px;margin-top:auto;align-items:center}
-.mark[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
-.caveat{border:2px solid var(--warn);background:var(--warn-wash);padding:10px 12px;font-size:.875rem}
+.hero{padding:0;background-image:radial-gradient(var(--grid-dot) 1.2px,transparent 1.2px);background-size:24px 24px;border-bottom:2px solid var(--rule)}
+.hero .st-hero{padding:clamp(40px,7vh,88px) 24px clamp(44px,7vh,80px)}
+.eyebrow{display:flex;align-items:center;gap:10px;margin-bottom:22px}
+.pulse{width:10px;height:10px;background:var(--accent);display:inline-block}
+.hero h1{font-size:clamp(3rem,8vw,6.4rem);line-height:.88;letter-spacing:-.02em}
+.thesis{margin:26px 0 0;font-size:clamp(1.3rem,2.4vw,2rem);line-height:1.22;letter-spacing:-.01em;max-width:24ch;color:var(--ink);font-weight:500;text-wrap:balance}
+.hero-lede{margin:20px 0 0;font-size:1.0625rem;line-height:1.55;max-width:50ch;color:var(--ink-2)}
+.hero-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.orbcap{display:block;margin-top:14px;text-align:center}
+
+/* five stops */
+.stop{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,60px) clamp(52px,8vh,104px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(26px,4vw,56px);align-items:center}
+.stop-copy p{font-size:1.0625rem;line-height:1.6;color:var(--ink-2);max-width:52ch;margin:18px 0 0}
+.stop .st-bignum{margin-top:4px}
+.stop-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.stop-fig{margin:0;border:2px solid var(--rule);background:var(--surface);padding:20px 20px 16px}
+.stop-fig figcaption{margin-top:12px;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.06em;color:var(--muted);line-height:1.5}
+.caveat{border:2px solid var(--warn);background:var(--warn-wash);padding:10px 12px;font-size:.9375rem;margin-top:18px;max-width:52ch}
 .caveat b{color:var(--warn);font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;display:block}
-.finish{border:2px solid var(--rule);background:var(--ink);color:var(--paper);padding:32px;margin-left:96px}
-.finish h2{font-size:clamp(1.6rem,4vw,3rem)}
-.finish p{opacity:.85;max-width:56ch;margin:12px 0 0}
-.finish .btn{border-color:var(--paper)}
-@media(max-width:720px){
- .route::before,.route .fillline{left:21px}
- .step{grid-template-columns:44px minmax(0,1fr);gap:12px}
- .dot{width:44px;height:44px;font-size:.85rem}
- .card{grid-template-columns:1fr}.card-fig{border-right:0;border-bottom:2px solid var(--rule)}
- .card-fig,.card-body{padding:18px}
- .finish{margin-left:0;padding:22px}
-}
+
+/* figures */
+.fg{display:block;width:100%;height:auto;font-family:var(--font-mono);font-variant-numeric:tabular-nums;overflow:visible}
+.fg .gl{stroke:var(--rule-soft);stroke-width:1.5}
+.fg .ax{fill:var(--muted);font-size:13px;letter-spacing:.03em}
+.fg .al{fill:var(--ink-2);font-size:13.5px}
+.fg .vn{fill:var(--ink);font-size:15px;font-weight:700}
+.fg .lg{fill:var(--ink-2);font-size:13px}
+.fg .cn{fill:var(--accent);font-size:13px;font-weight:700;letter-spacing:.03em}
+.fg .cal{stroke:var(--accent);stroke-width:2;stroke-dasharray:4 4}
+.fg .b-s{fill:var(--accent)}
+.fg .b-u{fill:var(--warn)}
+.fg .s-close{fill:var(--accent)}
+.fg .s-broader{fill:var(--accent-wash);stroke:var(--accent);stroke-width:1.5}
+.fg .s-partial{fill:var(--surface-2);stroke:var(--rule-soft);stroke-width:1.5}
+.fg .s-none{fill:var(--warn)}
+.fg .in{font-size:13px;font-weight:700}
+.fg .in-close,.fg .in-none{fill:var(--paper)}
+.fg .in-broader,.fg .in-partial{fill:var(--ink)}
+
 .footer{border-top:2px solid var(--rule);background:var(--ink);color:var(--paper);padding:64px 0 40px}
 .footer a{color:var(--paper)}
 .footer .label{color:var(--paper);opacity:.7}
@@ -147,22 +140,30 @@ button{font:inherit;color:inherit}
 .footer-links a span{opacity:.65;font-size:.625rem;letter-spacing:.1em;text-align:right}
 .footer :focus-visible{outline-color:var(--paper)}
 .foot-base{margin-top:56px;padding-top:18px;border-top:2px solid rgba(127,127,127,.4);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;opacity:.75}
+.st-bignum .unit{font-variant-numeric:normal;letter-spacing:-.02em;margin-left:.1em}
 @media(max-width:880px){.foot-grid{grid-template-columns:1fr;gap:32px}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important;animation:none!important}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 
-/* ============ guided path story layer ============ */
-.orbwrap{position:relative;width:100%;max-width:150px;aspect-ratio:1;margin:0 0 12px}
-.orbwrap canvas{display:block;width:100%;height:100%}
-.orbcap{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block}
-.hero-orbrow{display:flex;gap:20px;align-items:flex-start;flex-wrap:wrap}
-.storylink{display:inline-flex;align-items:center;min-height:44px;padding:12px 14px;border:2px solid var(--accent);color:var(--accent);text-decoration:none;font-family:var(--font-mono);font-size:.6875rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;transition:background .15s,color .15s}
-.storylink:hover,.storylink:focus-visible{background:var(--accent);color:var(--accent-ink)}
-:root.st-presenting .rs-header,:root.st-presenting .footer,:root.st-presenting .skip,:root.st-presenting .hide-present{display:none!important}
+/* pick your path */
+.paths{border-top:2px solid var(--rule);background:var(--surface);padding:clamp(48px,7vh,90px) 0 clamp(52px,8vh,96px)}
+.paths h2{font-size:clamp(1.8rem,4vw,3.2rem);margin-bottom:10px}
+.paths .claim{color:var(--ink-2);max-width:56ch;margin:0 0 38px}
+.pathgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0;border-top:2px solid var(--rule);border-left:2px solid var(--rule)}
+.pathcard{border-right:2px solid var(--rule);border-bottom:2px solid var(--rule);padding:26px 24px 28px;display:flex;flex-direction:column;gap:12px;background:var(--paper)}
+.pathcard h3{font-size:1.5rem;line-height:1.1}
+.pathcard p{margin:0;color:var(--ink-2);font-size:1rem;flex:1 1 auto}
+.pathcard .btn{align-self:flex-start}
 
-:root.st-presenting .step{margin-bottom:12px}
-.presbtn{position:fixed;right:16px;bottom:16px;z-index:80}
-@media(max-width:600px){.presbtn{display:none}}
-.step.cur .dot{box-shadow:0 0 0 3px var(--accent-wash)}
+@media(max-width:900px){
+ .stop{grid-template-columns:1fr;gap:24px}
+ .hero .st-hero-orb{order:1!important;width:min(62vw,300px)!important;justify-self:start!important}
+ .pathgrid{grid-template-columns:1fr}
+}
+@media(max-width:600px){
+ .hero .st-hero{padding-left:20px;padding-right:20px}
+ .stop-fig{padding:14px 12px 12px}
+ .stop-links .btn{width:100%;justify-content:center}
+}
 </style>
 <style id="story-engine-css">/*STORY_CSS_START*/
 /* ============================================================
@@ -539,78 +540,299 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 
 <main id="main">
 <section class="hero" id="top">
- <div class="wrap hero-grid">
+ <div class="wrap st-hero" id="heroWrap">
   <div>
-   <p class="claim">Safety numbers are only as good as the denominator and the citation underneath them.</p>
-   <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span class="label">Five minutes &middot; five figures</span></div>
+   <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span class="label">Five minutes &middot; five stops</span></div>
    <h1 class="display">Start here</h1>
-   <div class="hero-orbrow">
-    <div class="orbwrap"><canvas id="startOrb" width="300" height="300" role="img" aria-label="The system under review, moving from searching to a grounded state as you work through the five stops."></canvas></div>
-    <div>
-     <p class="hero-lede">Five stops, each one figure, one sentence, and one link into the source. The path ends on a benchmark item you can score yourself. Press P for presenter mode.</p>
-     <span class="orbcap" id="startOrbCap">Searching</span>
-    </div>
-   </div>
+   <p class="thesis">A safety number is only as good as the denominator under it and the source clause behind it.</p>
+   <p class="hero-lede">This programme tested both. Below are the five findings, in order, each with the figure it rests on and the file the figure was built from. Every stop has two doors: the five-minute story for a leader, and the project page for an analyst.</p>
    <div class="hero-links">
-    <a class="btn btn-primary" id="resume" href="#s1">Begin &darr;</a>
-    <a class="btn" href="./index.html">Back to overview</a>
+    <a class="btn btn-primary" href="#f1">Begin with finding 01 &darr;</a>
+    <a class="btn" href="./index.html">Back to the overview</a>
    </div>
   </div>
-  <div class="meter" aria-labelledby="meterLbl">
-   <span class="label" id="meterLbl">Your progress</span>
-   <span class="meter-n" id="meterN" aria-live="polite">0<small> of 5 stops</small></span>
-   <div class="bar" id="bar">
-    <a href="#s1" aria-label="Stop 1, The denominator"></a><a href="#s2" aria-label="Stop 2, Persistence"></a><a href="#s3" aria-label="Stop 3, The ontology derivation"></a><a href="#s4" aria-label="Stop 4, The cost model"></a><a href="#s5" aria-label="Stop 5, Try a benchmark item"></a>
-   </div>
-   <div class="meter-foot"><span class="label">Saved in this browser only</span><button class="linkbtn" type="button" id="reset">Reset</button></div>
+  <div class="st-hero-orb">
+   <canvas id="heroOrb" width="440" height="440" role="img" aria-label="The system under review, drawn as a field of moving points."></canvas>
+   <span class="label orbcap" id="heroOrbCap">Searching</span>
   </div>
  </div>
 </section>
 
-<section class="path" aria-label="The five stops">
+<section class="st-chapter" data-num="01" id="f1">
+ <h2>A single plausibility screen moves the 2019 national injury rate by 249 times.</h2>
+ <p>One keying error in the hours column can take over the denominator of a national rate.</p>
+</section>
+<div class="stop">
+ <div class="stop-copy">
+  <span class="st-bignum">249x<small>2019 screened rate against the rate as filed</small></span>
+  <p>Aggregate TRIR across 2.8M OSHA 300A filings was computed twice: once on the filings as submitted, once after a screen on hours per employee. In 2019 the two answers are 0.016 and 4.018. The screened series stays between 3.15 and 4.61 in every year; the unfiltered series does not.</p>
+  <p>A site flagged for implausible hours one year is flagged again the next 27.2% of the time, against 0.95% for a site never flagged. The noise sits with the same filers.</p>
+  <div class="stop-links">
+   <a class="btn btn-primary" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">Read the story &rarr;</a>
+   <a class="btn" href="https://priyatham9.github.io/ehs-osha-analysis/">Open the project page &rarr;</a>
+  </div>
+ </div>
+ <figure class="stop-fig">
+  <svg viewBox="0 0 560 320" class="fg" role="img" aria-labelledby="f1t f1d" preserveAspectRatio="xMidYMid meet">
+  <title id="f1t">Aggregate TRIR before and after the plausibility screen, 2016 to 2024</title>
+  <desc id="f1d">Screened TRIR stays between 3.15 and 4.61 across nine years. Unscreened TRIR collapses to 0.016 in 2019 and 0.280 in 2024.</desc>
+  <line class="gl" x1="44" x2="550" y1="274.0" y2="274.0"/>
+  <text class="ax" x="36" y="279.0" text-anchor="end">0</text>
+  <line class="gl" x1="44" x2="550" y1="224.4" y2="224.4"/>
+  <text class="ax" x="36" y="229.4" text-anchor="end">1</text>
+  <line class="gl" x1="44" x2="550" y1="174.8" y2="174.8"/>
+  <text class="ax" x="36" y="179.8" text-anchor="end">2</text>
+  <line class="gl" x1="44" x2="550" y1="125.2" y2="125.2"/>
+  <text class="ax" x="36" y="130.2" text-anchor="end">3</text>
+  <line class="gl" x1="44" x2="550" y1="75.6" y2="75.6"/>
+  <text class="ax" x="36" y="80.6" text-anchor="end">4</text>
+  <line class="gl" x1="44" x2="550" y1="26.0" y2="26.0"/>
+  <text class="ax" x="36" y="31.0" text-anchor="end">5</text>
+  <rect class="b-s" x="50.7" y="79.5" width="19.1" height="194.5"/>
+  <rect class="b-u" x="73.2" y="138.6" width="19.1" height="135.4"/>
+  <text class="ax" x="72.1" y="292" text-anchor="middle">16</text>
+  <rect class="b-s" x="107.0" y="75.7" width="19.1" height="198.3"/>
+  <rect class="b-u" x="129.5" y="143.4" width="19.1" height="130.6"/>
+  <text class="ax" x="128.3" y="292" text-anchor="middle">17</text>
+  <rect class="b-s" x="163.2" y="72.2" width="19.1" height="201.8"/>
+  <rect class="b-u" x="185.7" y="129.2" width="19.1" height="144.8"/>
+  <text class="ax" x="184.6" y="292" text-anchor="middle">18</text>
+  <rect class="b-s" x="219.4" y="74.7" width="19.1" height="199.3"/>
+  <rect class="b-u" x="241.9" y="273.2" width="19.1" height="1.5"/>
+  <text class="ax" x="240.8" y="292" text-anchor="middle">19</text>
+  <rect class="b-s" x="275.6" y="51.2" width="19.1" height="222.8"/>
+  <rect class="b-u" x="298.1" y="135.5" width="19.1" height="138.5"/>
+  <text class="ax" x="297.0" y="292" text-anchor="middle">20</text>
+  <rect class="b-s" x="331.9" y="57.3" width="19.1" height="216.7"/>
+  <rect class="b-u" x="354.3" y="155.7" width="19.1" height="118.3"/>
+  <text class="ax" x="353.2" y="292" text-anchor="middle">21</text>
+  <rect class="b-s" x="388.1" y="45.6" width="19.1" height="228.4"/>
+  <rect class="b-u" x="410.6" y="142.0" width="19.1" height="132.0"/>
+  <text class="ax" x="409.4" y="292" text-anchor="middle">22</text>
+  <rect class="b-s" x="444.3" y="117.9" width="19.1" height="156.1"/>
+  <rect class="b-u" x="466.8" y="205.6" width="19.1" height="68.4"/>
+  <text class="ax" x="465.7" y="292" text-anchor="middle">23</text>
+  <rect class="b-s" x="500.5" y="93.4" width="19.1" height="180.6"/>
+  <rect class="b-u" x="523.0" y="260.1" width="19.1" height="13.9"/>
+  <text class="ax" x="521.9" y="292" text-anchor="middle">24</text>
+  <line class="cal" x1="240.8" x2="240.8" y1="68.7" y2="20"/>
+  <text class="cn" x="240.8" y="14" text-anchor="middle">2019: 249x apart</text>
+  <rect class="b-s" x="44" y="300" width="13" height="13"/><text class="lg" x="63" y="311">Screened</text>
+  <rect class="b-u" x="148" y="300" width="13" height="13"/><text class="lg" x="167" y="311">Unscreened, as filed</text>
+  </svg>
+  <figcaption>Source: ehs-osha-analysis, outputs/tables/quality_by_year.csv. Persistence figures from outputs/tables/panel_transitions.csv and docs/PANEL.md.</figcaption>
+ </figure>
+</div>
+
+<section class="st-chapter" data-num="02" id="f2">
+ <h2>On the grounding benchmark, retrieval scores below the random floor.</h2>
+ <p>Picking the nearest text is worse than guessing when the nearest text is the adjacent clause.</p>
+</section>
+<div class="stop">
+ <div class="stop-copy">
+  <span class="st-bignum">27.0%<small>TF-IDF retrieval, against a 52.1% random floor</small></span>
+  <p>The benchmark holds 68 items. Every item carries a source clause and an anchor span, and abstention counts as correct when the corpus does not hold the answer. Three baselines have been run: a random floor at 52.1%, TF-IDF retrieval at 27.0%, and an oracle ceiling at 100%.</p>
+  <p>Retrieval falls below the floor because it substitutes a neighbouring clause that reads correct. That is the failure the benchmark was built to catch.</p>
+  <div class="caveat"><b>No language model evaluated</b>Baselines only. No model result should be read out of them.</div>
+  <div class="stop-links">
+   <a class="btn btn-primary" href="https://priyatham9.github.io/ehs-ai-grounding-eval/story.html">Read the story &rarr;</a>
+   <a class="btn" href="https://priyatham9.github.io/ehs-ai-grounding-eval/">Open the project page &rarr;</a>
+  </div>
+ </div>
+ <figure class="stop-fig">
+  <svg viewBox="0 0 560 300" class="fg" role="img" aria-labelledby="f2t f2d" preserveAspectRatio="xMidYMid meet">
+  <title id="f2t">Three non-language-model baselines on the 68 item grounding benchmark</title>
+  <desc id="f2d">Random floor scores 52.1 percent, TF-IDF retrieval scores 27.0 percent, the oracle ceiling scores 100 percent. No language model has been scored.</desc>
+  <rect class="b-s" x="150" y="34.4" width="184.4" height="40.0"/>
+  <text class="ax al" x="140" y="63.2" text-anchor="end">Random floor</text>
+  <text class="vn" x="342.4" y="63.2">52.1%</text>
+  <rect class="b-u" x="150" y="114.4" width="95.6" height="40.0"/>
+  <text class="ax al" x="140" y="143.2" text-anchor="end">TF-IDF retrieval</text>
+  <text class="vn" x="253.6" y="143.2">27.0%</text>
+  <rect class="b-s" x="150" y="194.4" width="354.0" height="40.0"/>
+  <text class="ax al" x="140" y="223.2" text-anchor="end">Oracle ceiling</text>
+  <text class="vn" x="512.0" y="223.2">100.0%</text>
+  <line class="cal" x1="334.4" x2="334.4" y1="34.4" y2="164.0"/>
+  <text class="cn" x="326.4" y="188.0" text-anchor="end">Retrieval sits below the floor</text>
+  <text class="ax" x="150" y="290">0</text><text class="ax" x="504.0" y="290" text-anchor="end">100% of 68 items</text>
+  </svg>
+  <figcaption>Source: ehs-ai-grounding-eval, results/baselines_*.json and corpus/items/. Scoring policy weights from the same run config.</figcaption>
+ </figure>
+</div>
+
+<section class="st-chapter" data-num="03" id="f3">
+ <h2>Only 31 of 80 human-factors mappings are close matches.</h2>
+ <p>Four established frameworks name the same 20 factors differently, and six pairs have no counterpart at all.</p>
+</section>
+<div class="stop">
+ <div class="stop-copy">
+  <span class="st-bignum">31<span class="unit"> / </span>80<small>close matches across four frameworks</small></span>
+  <p>Twenty performance-influencing factors were encoded in Turtle and crosswalked to SPAR-H, CREAM, HFACS and the HSE performance-influencing factors. Of the 80 factor-to-framework pairs, 31 are close, 23 are broader, 20 are partial and 6 have no counterpart.</p>
+  <p>HFACS carries no procedures category at the precondition level, so that factor maps upward to an organisational process instead. Each mapping records its strength and its reference, so a reviewer can see the judgment rather than infer it.</p>
+  <div class="stop-links">
+   <a class="btn btn-primary" href="https://priyatham9.github.io/ehs-human-factors-ontology/story.html">Read the story &rarr;</a>
+   <a class="btn" href="https://priyatham9.github.io/ehs-human-factors-ontology/">Open the project page &rarr;</a>
+  </div>
+ </div>
+ <figure class="stop-fig">
+  <svg viewBox="0 0 560 300" class="fg" role="img" aria-labelledby="f3t f3d" preserveAspectRatio="xMidYMid meet">
+  <title id="f3t">Match strength of 20 factors against four human factors frameworks</title>
+  <desc id="f3d">Across 80 factor to framework pairs, 31 are close matches, 23 broader, 20 partial and 6 have no counterpart.</desc>
+  <rect class="s-close" x="112.0" y="32.7" width="130.2" height="28.3"/>
+  <text class="in in-close" x="177.1" y="52.6" text-anchor="middle">6</text>
+  <rect class="s-broader" x="242.2" y="32.7" width="43.4" height="28.3"/>
+  <text class="in in-broader" x="263.9" y="52.6" text-anchor="middle">2</text>
+  <rect class="s-partial" x="285.6" y="32.7" width="151.9" height="28.3"/>
+  <text class="in in-partial" x="361.5" y="52.6" text-anchor="middle">7</text>
+  <rect class="s-none" x="437.5" y="32.7" width="108.5" height="28.3"/>
+  <text class="in in-none" x="491.8" y="52.6" text-anchor="middle">5</text>
+  <text class="ax al" x="102" y="53.1" text-anchor="end">SPAR-H</text>
+  <rect class="s-close" x="112.0" y="87.2" width="130.2" height="28.3"/>
+  <text class="in in-close" x="177.1" y="107.1" text-anchor="middle">6</text>
+  <rect class="s-broader" x="242.2" y="87.2" width="173.6" height="28.3"/>
+  <text class="in in-broader" x="329.0" y="107.1" text-anchor="middle">8</text>
+  <rect class="s-partial" x="415.8" y="87.2" width="130.2" height="28.3"/>
+  <text class="in in-partial" x="480.9" y="107.1" text-anchor="middle">6</text>
+  <text class="ax al" x="102" y="107.6" text-anchor="end">CREAM</text>
+  <rect class="s-close" x="112.0" y="141.7" width="130.2" height="28.3"/>
+  <text class="in in-close" x="177.1" y="161.6" text-anchor="middle">6</text>
+  <rect class="s-broader" x="242.2" y="141.7" width="173.6" height="28.3"/>
+  <text class="in in-broader" x="329.0" y="161.6" text-anchor="middle">8</text>
+  <rect class="s-partial" x="415.8" y="141.7" width="108.5" height="28.3"/>
+  <text class="in in-partial" x="470.0" y="161.6" text-anchor="middle">5</text>
+  <rect class="s-none" x="524.3" y="141.7" width="21.7" height="28.3"/>
+  <text class="ax al" x="102" y="162.1" text-anchor="end">HFACS</text>
+  <rect class="s-close" x="112.0" y="196.2" width="282.1" height="28.3"/>
+  <text class="in in-close" x="253.1" y="216.1" text-anchor="middle">13</text>
+  <rect class="s-broader" x="394.1" y="196.2" width="108.5" height="28.3"/>
+  <text class="in in-broader" x="448.4" y="216.1" text-anchor="middle">5</text>
+  <rect class="s-partial" x="502.6" y="196.2" width="43.4" height="28.3"/>
+  <text class="in in-partial" x="524.3" y="216.1" text-anchor="middle">2</text>
+  <text class="ax al" x="102" y="216.6" text-anchor="end">HSE PIFs</text>
+  <rect class="s-close" x="112" y="264" width="14" height="14"/>
+  <text class="ax" x="132" y="275">Close</text>
+  <rect class="s-broader" x="184.0" y="264" width="14" height="14"/>
+  <text class="ax" x="204.0" y="275">Broader</text>
+  <rect class="s-partial" x="271.2" y="264" width="14" height="14"/>
+  <text class="ax" x="291.2" y="275">Partial</text>
+  <rect class="s-none" x="358.4" y="264" width="14" height="14"/>
+  <text class="ax" x="378.4" y="275">No counterpart</text>
+  <text class="ax" x="112" y="250">20 factors per framework, 80 pairs in all</text>
+  </svg>
+  <figcaption>Source: ehs-human-factors-ontology, docs/crosswalk-data.json (80 cells, 96 recorded matches). Taxonomy adopted from IDHEAS-G, not new.</figcaption>
+ </figure>
+</div>
+
+<section class="st-chapter" data-num="04" id="f4">
+ <h2>The same path model needs 153 cases to pass a fit test and 6,884 to separate two coefficients.</h2>
+ <p>A model can clear every fit index it is asked about and still be far too small to answer the question it was built for.</p>
+</section>
+<div class="stop">
+ <div class="stop-copy">
+  <span class="st-bignum">6,884<small>cases to tell -0.25 from -0.20 at 80% power</small></span>
+  <p>Simulation studies sized the same safety-risk path model against five different claims. A test of close fit reaches 80% power at 153 cases. A single standardised coefficient reaches a standard error of 0.05 at 369 cases, and 0.025 at 1,459.</p>
+  <p>Telling two coefficients apart is the expensive claim. Separating 0.45 from 0.30 takes 770 cases; separating -0.25 from -0.20 takes 6,884. Sample sizes in this range are the ones practitioners are usually quoting on.</p>
+  <div class="caveat"><b>Synthetic data</b>Every number here comes from a known generating model. No real records were used.</div>
+  <div class="stop-links">
+   <a class="btn btn-primary" href="https://priyatham9.github.io/ehs-risk-sem/story.html">Read the story &rarr;</a>
+   <a class="btn" href="https://priyatham9.github.io/ehs-risk-sem/">Open the project page &rarr;</a>
+  </div>
+ </div>
+ <figure class="stop-fig">
+  <svg viewBox="0 0 560 300" class="fg" role="img" aria-labelledby="f4t f4d" preserveAspectRatio="xMidYMid meet">
+  <title id="f4t">Sample size required for five claims about the same path model</title>
+  <desc id="f4d">A global fit test needs 153 cases. A single coefficient precise to 0.05 needs 369. Separating a coefficient of minus 0.25 from minus 0.20 needs 6884.</desc>
+  <line class="gl" x1="176.0" x2="176.0" y1="22" y2="256"/>
+  <text class="ax" x="176.0" y="274" text-anchor="middle">100</text>
+  <line class="gl" x1="335.0" x2="335.0" y1="22" y2="256"/>
+  <text class="ax" x="335.0" y="274" text-anchor="middle">1,000</text>
+  <line class="gl" x1="494.0" x2="494.0" y1="22" y2="256"/>
+  <text class="ax" x="494.0" y="274" text-anchor="middle">10,000</text>
+  <rect class="b-s" x="176" y="31.4" width="29.4" height="23.4"/>
+  <text class="ax al" x="166" y="48.7" text-anchor="end">80% power for close fit</text>
+  <text class="vn" x="213.4" y="48.7">153</text>
+  <rect class="b-s" x="176" y="78.2" width="90.2" height="23.4"/>
+  <text class="ax al" x="166" y="95.5" text-anchor="end">SE = 0.05 on one path</text>
+  <text class="vn" x="274.2" y="95.5">369</text>
+  <rect class="b-s" x="176" y="125.0" width="141.0" height="23.4"/>
+  <text class="ax al" x="166" y="142.3" text-anchor="end">Separate 0.45 from 0.30</text>
+  <text class="vn" x="325.0" y="142.3">770</text>
+  <rect class="b-s" x="176" y="171.8" width="185.1" height="23.4"/>
+  <text class="ax al" x="166" y="189.1" text-anchor="end">SE = 0.025 on one path</text>
+  <text class="vn" x="369.1" y="189.1">1,459</text>
+  <rect class="b-u" x="176" y="218.6" width="292.2" height="23.4"/>
+  <text class="ax al" x="166" y="235.9" text-anchor="end">Separate -0.25 from -0.20</text>
+  <text class="vn" x="476.2" y="235.9">6,884</text>
+  <text class="ax" x="176" y="292">Cases required, log scale</text>
+  </svg>
+  <figcaption>Source: ehs-risk-sem, results/study01_requirements.csv. Bases listed in the same file: RMSEA power at df = 80, standardised regression SE at R squared 0.288 and VIF 1.28.</figcaption>
+ </figure>
+</div>
+
+<section class="st-chapter" data-num="05" id="f5">
+ <h2>Pricing the uncounted costs cuts the payback period from 3.41 years to 1.59.</h2>
+ <p>The control did not change. The accounting did.</p>
+</section>
+<div class="stop">
+ <div class="stop-copy">
+  <span class="st-bignum">1.59<span class="unit"> yr</span><small>payback once human-capital lines are priced</small></span>
+  <p>One $150,000 loading-station control was priced twice. The booked ledger counts downtime, spilled material and injury cost: three invoiced lines totalling $55,000 a year. It pays back in 3.41 years.</p>
+  <p>Lost work time, retraining after turnover, productivity loss and the effect on the crew add $63,000 a year that no invoice carries. On that ledger the same control pays back in 1.59 years. Which ledger a committee uses decides the answer.</p>
+  <div class="stop-links">
+   <a class="btn btn-primary" href="https://priyatham9.github.io/ehs-capitals-calculator/story.html">Read the story &rarr;</a>
+   <a class="btn" href="https://priyatham9.github.io/ehs-capitals-calculator/">Open the project page &rarr;</a>
+  </div>
+ </div>
+ <figure class="stop-fig">
+  <svg viewBox="0 0 560 290" class="fg" role="img" aria-labelledby="f5t f5d" preserveAspectRatio="xMidYMid meet">
+  <title id="f5t">Payback period for one loading station control under two accountings</title>
+  <desc id="f5d">The same 150,000 dollar control pays back in 3.41 years on the booked ledger and 1.59 years once human capital lines are priced.</desc>
+  <line class="gl" x1="210.0" x2="210.0" y1="34" y2="246"/>
+  <text class="ax" x="210.0" y="264" text-anchor="middle">0</text>
+  <line class="gl" x1="279.0" x2="279.0" y1="34" y2="246"/>
+  <text class="ax" x="279.0" y="264" text-anchor="middle">1</text>
+  <line class="gl" x1="348.0" x2="348.0" y1="34" y2="246"/>
+  <text class="ax" x="348.0" y="264" text-anchor="middle">2</text>
+  <line class="gl" x1="417.0" x2="417.0" y1="34" y2="246"/>
+  <text class="ax" x="417.0" y="264" text-anchor="middle">3</text>
+  <line class="gl" x1="486.0" x2="486.0" y1="34" y2="246"/>
+  <text class="ax" x="486.0" y="264" text-anchor="middle">4</text>
+  <rect class="b-u" x="210" y="57.3" width="235.3" height="46.6"/>
+  <text class="ax al" x="200" y="90.9" text-anchor="end">Booked ledger only</text>
+  <text class="vn" x="453.3" y="90.9">3.41 yr</text>
+  <rect class="b-s" x="210" y="163.3" width="109.7" height="46.6"/>
+  <text class="ax al" x="200" y="196.9" text-anchor="end">Human-capital lines priced</text>
+  <text class="vn" x="327.7" y="196.9">1.59 yr</text>
+  <text class="cn" x="210" y="22">Same control. Same station. Two accountings.</text>
+  <text class="ax" x="210" y="282">Years to payback</text>
+  </svg>
+  <figcaption>Source: ehs-capitals-calculator, the worked loading-station example in the calculator. JavaScript and Python implementations pinned to identical numbers by a test fixture.</figcaption>
+ </figure>
+</div>
+
+<section class="paths" id="pick">
  <div class="wrap">
-  <div class="route" id="route"><span class="fillline" id="fill" aria-hidden="true"></span>
-  <ol style="list-style:none;margin:0;padding:0">
-   <li class="step" id="s1" data-k="1"><span class="dot" aria-hidden="true">01</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 01</span><span class="fig">249x<small>one reporting year</small></span></div>
-    <div class="card-body"><h2 class="display">The denominator</h2>
-     <p>A plausibility screen on hours per employee moves the national TRIR 249 times over between the raw 2019 filing and the screened one, because a single keying error in the hours column can dominate the denominator of a national rate.</p>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-osha-analysis/explore.html">Explore the filings &rarr;</a><a class="storylink" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">Story: The denominator &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-   <li class="step" id="s2" data-k="2"><span class="dot" aria-hidden="true">02</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 02</span><span class="fig">27.2%<small>vs 0.95%</small></span></div>
-    <div class="card-body"><h2 class="display">Persistence</h2>
-     <p>An establishment flagged as implausible gets flagged again the next year 27.2% of the time, against 0.95% for one that was never flagged, so the same handful of filers likely account for a disproportionate share of the noise.</p>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-osha-analysis/PANEL.md">Read the persistence result &rarr;</a><a class="storylink" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">Story: The denominator &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-   <li class="step" id="s3" data-k="3"><span class="dot" aria-hidden="true">03</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 03</span><span class="fig">20<small>factor levels, one scenario</small></span></div>
-    <div class="card-body"><h2 class="display">The ontology derivation</h2>
-     <p>Twenty analyst-assigned factor levels feed the reactor-startup worked scenario, and every rule that fires on the way to the screening result is traced, so the judgment call is visible rather than buried in a free-text write-up.</p>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-human-factors-ontology/walkthrough.html">Follow the derivation &rarr;</a><a class="storylink" href="https://priyatham9.github.io/ehs-human-factors-ontology/story.html">Story: Why people err &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-   <li class="step" id="s4" data-k="4"><span class="dot" aria-hidden="true">04</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 04</span><span class="fig">$63,000<small>uncounted, one incident</small></span></div>
-    <div class="card-body"><h2 class="display">The cost model</h2>
-     <p>The published loading-station example books $55,000 in incident cost on the traditional ledger and carries $63,000 more that only the human-capital ledger counts, which can flip an investment from a fail to a pass depending on which ledger is used.</p>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-capitals-calculator/#story">Walk through the incident &rarr;</a><a class="storylink" href="https://priyatham9.github.io/ehs-capitals-calculator/story.html">Story: The capital case &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-   <li class="step" id="s5" data-k="5"><span class="dot" aria-hidden="true">05</span><article class="card">
-    <div class="card-fig"><span class="label">Stop 05</span><span class="fig">68<small>items, 0 scored by a model</small></span></div>
-    <div class="card-body"><h2 class="display">Try a benchmark item</h2>
-     <p>Three non-LLM baselines run on the 68-item benchmark (random floor 52.1%, TF-IDF 27.0%, oracle 100%), and no language model has been scored yet, so the fastest way to judge the apparatus is to read one item and grade an answer yourself.</p>
-     <div class="caveat"><b>No language model evaluated</b>Baselines only. No model result should be inferred from them.</div>
-     <div class="acts"><a class="btn" href="https://priyatham9.github.io/ehs-ai-grounding-eval/try.html">Try an item &rarr;</a><a class="btn" href="./index.html#try">Three items on the overview</a><a class="storylink" href="https://priyatham9.github.io/ehs-ai-grounding-eval/story.html">Story: The adjacent clause &rarr;</a><button class="btn mark" type="button" aria-pressed="false">Mark as read</button></div></div></article></li>
-  </ol></div>
-  <div class="finish" id="finish">
-   <span class="label" style="color:var(--paper)" id="finishLbl">When you are done</span>
-   <h2 class="display" id="finishH">Then read the drafts</h2>
-   <p>Both papers are drafts, not submitted. Every section states what it does not yet establish.</p>
-   <div class="hero-links"><a class="btn btn-primary" href="./paper.html">Bundled draft &rarr;</a><a class="btn" style="background:transparent;color:var(--paper)" href="./paper-osha.html">OSHA paper &rarr;</a></div>
-   <p style="margin-top:24px"><span class="label" style="color:var(--paper)">All six stories</span></p>
-   <div class="hero-links" style="margin-top:8px">
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">The denominator</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-ai-grounding-eval/story.html">The adjacent clause</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-human-factors-ontology/story.html">Why people err</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-risk-sem/story.html">Where the method breaks</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-capitals-calculator/story.html">The capital case</a>
-    <a class="btn" style="background:transparent;color:var(--paper);border-color:var(--paper)" href="https://priyatham9.github.io/ehs-benchmarks/story.html">Compared with whom</a>
+  <span class="label">Where to go next</span>
+  <h2 class="display">Pick your path</h2>
+  <p class="claim">Three ways through the same material. Take the one that matches what you have to decide.</p>
+  <div class="pathgrid">
+   <div class="pathcard">
+    <span class="label">Leader &middot; 30 minutes</span>
+    <h3>Read the six stories in order</h3>
+    <p>One argument across six sites, each a five-minute read with one figure and one action. Start with the denominator and follow the bar at the bottom of every page.</p>
+    <a class="btn btn-primary" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">Start the first story &rarr;</a>
+   </div>
+   <div class="pathcard">
+    <span class="label">Analyst &middot; the methods</span>
+    <h3>Open the project pages and tools</h3>
+    <p>Tables, pipelines and the interactive tools: the filing explorer, the benchmark item runner, the ontology walkthrough and crosswalk, the cost calculator and the MIT-licensed rate library.</p>
+    <a class="btn" href="./observatory.html">Open the Observatory &rarr;</a>
+   </div>
+   <div class="pathcard">
+    <span class="label">Reviewer &middot; the limits</span>
+    <h3>Read the drafts and the claim ledger</h3>
+    <p>Two unsubmitted drafts, a ledger that marks each claim tested, partly tested or not yet tested, and a plain list of what this programme has not established.</p>
+    <a class="btn" href="./paper.html">Open the bundled draft &rarr;</a>
    </div>
   </div>
  </div>
@@ -2884,7 +3106,8 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
   }
   function autoFindings() {
     var ch = els(".st-chapter");
-    if (/story\.html$/.test(location.pathname)) document.body.classList.add("st-story");
+    // story pages and the hub (itself a story) keep one fixed bar only: the wayfinder
+    if (/story\.html$/.test(location.pathname) || /\/grounded\/(docs\/)?(index\.html)?$/.test(location.pathname)) document.body.classList.add("st-story");
     if (ch.length < 2 || document.querySelector(".st-findings")) return;
     var nav = html("nav", "st-findings");
     nav.setAttribute("aria-label", "Findings in this story");
@@ -2938,62 +3161,23 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 /*STORY_JS_END*/</script>
 <script>
 (function () {
-  var root = document.documentElement, PK = 'grounded-start-progress';
-  function $(id) { return document.getElementById(id); }
-  var steps = [].slice.call(document.querySelectorAll('.step')), bars = [].slice.call($('bar').children);
-  var done = {};
-  try { done = JSON.parse(localStorage.getItem(PK) || '{}') || {}; } catch (e) { done = {}; }
-  function save() { try { localStorage.setItem(PK, JSON.stringify(done)); } catch (e) {} }
-  function render() {
-    var n = 0, next = -1;
-    steps.forEach(function (s, i) {
-      var d = !!done[i + 1]; if (d) n++; else if (next < 0) next = i;
-      s.classList.toggle('done', d);
-      var b = s.querySelector('.mark'); b.setAttribute('aria-pressed', d ? 'true' : 'false'); b.textContent = d ? 'Read ✓' : 'Mark as read';
-      bars[i].classList.toggle('done', d);
-    });
-    steps.forEach(function (s, i) { s.classList.toggle('cur', i === next); bars[i].classList.toggle('cur', i === next); });
-    $('meterN').innerHTML = n + '<small> of 5 stops</small>';
-    if (window.startOrbSet) window.startOrbSet(n);
-    var r = $('resume');
-    if (n === 0) { r.textContent = 'Begin ↓'; r.href = '#s1'; }
-    else if (next < 0) { r.textContent = 'Path complete: read the drafts'; r.href = '#finish'; }
-    else { r.textContent = 'Resume at stop 0' + (next + 1) + ' ↓'; r.href = '#s' + (next + 1); }
-    $('finishLbl').textContent = next < 0 ? 'All five stops read' : 'When you are done';
-    var last = next < 0 ? steps[steps.length - 1] : steps[next];
-    $('fill').style.height = (n === 0 ? 0 : (next < 0 ? $('route').offsetHeight : last.offsetTop + 36)) + 'px';
+  if (!window.Story) return;
+  var cv = document.getElementById('heroOrb'), wrap = document.getElementById('heroWrap');
+  if (wrap) { try { Story.field(wrap, { density: 0.9 }); } catch (e) {} }
+  if (!cv) return;
+  var o = Story.orb(cv, { density: 1200 }), cap = document.getElementById('heroOrbCap');
+  var SEQ = [['searching', 'Searching'], ['connecting', 'Connecting'], ['solving', 'Solving'], ['grounded', 'Grounded']];
+  var i = 0;
+  function step() {
+    o.setState(SEQ[i][0]);
+    if (cap) cap.textContent = SEQ[i][1];
+    i = (i + 1) % SEQ.length;
   }
-  steps.forEach(function (s, i) {
-    s.querySelector('.mark').addEventListener('click', function () { done[i + 1] = !done[i + 1]; save(); render(); });
-    s.querySelectorAll('a.btn').forEach(function (a) { a.addEventListener('click', function () { done[i + 1] = true; save(); render(); }); });
-  });
-  $('reset').addEventListener('click', function () { done = {}; save(); render(); });
-  window.addEventListener('resize', render);
-  render();
-
-  /* ---- orb: it settles as you work through the stops ---- */
-  (function () {
-    var cv = document.getElementById('startOrb'); if (!cv || !window.Story) return;
-    var o = Story.orb(cv, { density: 900 }), cap = document.getElementById('startOrbCap');
-    var LB = { searching: 'Searching', connecting: 'Connecting the stops', solving: 'Four of five read', grounded: 'Grounded: path complete' };
-    window.startOrbSet = function (n) {
-      var s = n === 0 ? 'searching' : n >= 5 ? 'grounded' : n >= 4 ? 'solving' : 'connecting';
-      o.setState(s); cap.textContent = LB[s];
-    };
-    window.startOrbSet(0);
-  })();
-
-  /* ---- presenter mode: P toggles, arrows step the stops ---- */
-  (function () {
-    if (!window.Story) return;
-    var pres = null, b = document.createElement('button');
-    b.type = 'button'; b.className = 'btn presbtn hide-present'; b.textContent = 'Presenter mode (P)';
-    b.addEventListener('click', function () {
-      if (pres) { pres.exit(); pres = null; }
-      else { pres = Story.present({ selector: '.step', onExit: function () { pres = null; } }); }
-    });
-    document.body.appendChild(b);
-  })();
+  step();
+  if (!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) {
+    var t = setInterval(function () { if (!document.hidden) step(); }, 5200);
+    addEventListener('pagehide', function () { clearInterval(t); });
+  }
 })();
 </script>
 <script id="rs-header-js">
