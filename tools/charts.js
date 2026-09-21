@@ -133,7 +133,11 @@
    ====================================================================== */
 (function () {
   var NS = 'http://www.w3.org/2000/svg';
-  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  // The system setting, or the story engine's own hook (?reduced=1), which marks
+  // the document element so a reviewer can force the reduced path on any machine.
+  var reduce = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+    || document.documentElement.classList.contains('st-reduced')
+    || /[?&]reduced=1\b/.test(location.search);
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
   function h(tag, attrs, kids) {

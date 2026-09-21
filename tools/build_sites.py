@@ -137,8 +137,8 @@ figcaption details.more>div{font-size:inherit;color:inherit}
 .tbl{margin:0 0 26px}
 .tbl-wrap{overflow:auto;max-height:540px;overscroll-behavior:contain;border:2px solid var(--rule);background:var(--surface)}
 table{border-collapse:separate;border-spacing:0;width:100%;font-family:var(--font-mono);font-size:.75rem}
-thead th{position:sticky;top:0;z-index:2;text-align:left;padding:11px 14px;background:var(--surface-2);box-shadow:inset 0 -2px 0 var(--rule);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;white-space:nowrap}
-td{padding:9px 14px;box-shadow:inset 0 -1px 0 var(--rule-soft);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
+thead th{position:sticky;top:0;z-index:2;text-align:left;padding:13px 16px;background:var(--surface-2);box-shadow:inset 0 -2px 0 var(--rule);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;white-space:nowrap}
+td{padding:13px 16px;line-height:1.45;box-shadow:inset 0 -1px 0 var(--rule-soft);font-variant-numeric:tabular-nums;white-space:nowrap;color:var(--ink-2)}
 tbody tr:nth-child(even) td{background:var(--surface-2)}
 tbody tr:hover td{background:var(--accent-wash);color:var(--ink)}
 td.t-first{color:var(--ink);font-weight:600}
@@ -159,6 +159,16 @@ tbody tr:last-child td{box-shadow:none}
 .fig-legend{display:flex;flex-wrap:wrap;gap:14px;margin-top:14px}
 .fig-legend span{display:inline-flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .fig-legend i{width:12px;height:3px;flex:none}
+/* One caption style for every table, figure and chart: sentence, then the file. */
+.fig figcaption,.tbl-cap,.trace-cap{border-top:1px solid var(--rule-soft);padding-top:12px}
+.chart .src,.fig figcaption .src,.tbl-cap .src,.trace-cap .src{font-weight:600}
+/* Phones: a figure or table scrolls inside its own frame, the page never does. */
+@media(max-width:700px){
+  .fig-scroll,.tbl-wrap,.trace{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .fig-scroll>svg{min-width:560px}
+  .fig-scroll,.tbl-wrap{scroll-snap-type:x proximity}
+  .fig,.chart{padding:16px}
+}
 
 /* ============ prose ============ */
 .prose{max-width:72ch}
@@ -239,12 +249,9 @@ SHELL = """<!doctype html>
       <span class="src">Source artifact: {num_src}</span>
     </div>
     <div class="hero-text">
-      <div class="hero-orb-wrap st-orb-wrap" data-state="idle">
-        <canvas class="st-orb hero-orb" id="hero-orb" width="320" height="320" role="img"
-                aria-label="Animated mark for the system under review"></canvas>
-      </div>
       <h1 class="display" data-st-reveal>{h1}</h1>
       <p class="hero-role" data-st-reveal>{lede}</p>
+      <p class="hero-not" data-st-reveal><span class="hn-k">What this does not establish</span>{nots}</p>
       <div class="hero-links" data-st-reveal>
         <a class="btn btn-primary btn-story" href="story.html">Read the story<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
         <a class="btn" href="#explore">{cta}</a>
@@ -254,6 +261,7 @@ SHELL = """<!doctype html>
     <div class="status">{status}</div>
   </div>
 </section>
+{doors}
 <main id="main">
 <div class="layout wrap">
 <aside class="toc" aria-label="On this page">
@@ -373,8 +381,11 @@ def renumber_and_toc(body, short):
     items = []
     for i, m in enumerate(re.finditer(r'<section class="section rv" id="([\w-]+)"', body)):
         sid = m.group(1)
-        lab = short.get(sid, sid)
-        items.append(f'<li><a href="#{sid}" data-short="{esc(lab)}"><span class="toc-n">{i+1:02d}</span>{esc(lab)}</a></li>')
+        # "Rail label|Strip label": the rail can spell it out, the one-line
+        # "On this page" strip in the banner takes the short form.
+        lab, _, nav = short.get(sid, sid).partition("|")
+        nav = nav or lab
+        items.append(f'<li><a href="#{sid}" data-short="{esc(nav)}"><span class="toc-n">{i+1:02d}</span>{esc(lab)}</a></li>')
     return body, "".join(items)
 
 
@@ -556,37 +567,61 @@ def _engine(name):
 STORY_CSS = _engine("story.css")
 STORY_JS = _engine("story.js")
 
-# Hero orb, scroll progress and staggered reveals, driven by the shared engine.
-# Every call is guarded, so the page behaves correctly when the engine is absent.
+# Scroll progress and staggered reveals, driven by the shared engine. Project
+# pages carry no orb: the orb belongs to the story pages and the hub. Every call
+# is guarded, so the page still reads correctly when the engine is absent.
 GLUE_JS = r"""
 (function () {
-  var S = window.Story, wrap = document.querySelector('.hero-orb-wrap');
-  if (!S) { if (wrap) wrap.classList.add('no-orb'); return; }
+  var S = window.Story;
+  if (!S) return;
   if (S.progressBar) { try { S.progressBar(); } catch (e) {} }
   if (S.reveal) { try { S.reveal(document); } catch (e) {} }
-  var cv = document.getElementById('hero-orb');
-  if (!wrap || !cv || !S.orb) { if (wrap) wrap.classList.add('no-orb'); return; }
-  var orb;
-  try { orb = S.orb(cv, { size: 320 }); } catch (e) { wrap.classList.add('no-orb'); return; }
-  function set(name) {
-    if (!orb || !orb.setState) return;
-    try { orb.setState(name); } catch (e) {}
-    wrap.setAttribute('data-state', name);
-  }
-  set('idle');
-  if (!('IntersectionObserver' in window)) return;
-  // the orb settles while the hero is on screen and works once reading starts
-  var hero = document.querySelector('.hero');
-  var last = document.querySelector('.prog') || document.querySelector('.footer');
-  var done = false;
-  if (hero) new IntersectionObserver(function (es) {
-    es.forEach(function (e) { if (!done) set(e.isIntersecting ? 'idle' : 'thinking'); });
-  }, { threshold: 0.15 }).observe(hero);
-  if (last) new IntersectionObserver(function (es) {
-    es.forEach(function (e) { if (e.isIntersecting) { done = true; set('grounded'); } });
-  }, { threshold: 0.05 }).observe(last);
 })();
 """
+
+
+# The three doors. Every project page opens the same way: the five-minute story
+# for a leader, this page for methods and tables, and the repo's own tool. The
+# tool entry names the file that exists in that repo's docs/ directory.
+DOORS = {
+    "ehs-osha-analysis": ("explore.html", "Denominator explorer",
+                          "Screen a site's hours and watch its TRIR move."),
+    "ehs-ai-grounding-eval": ("try.html", "Answer an item",
+                              "Take one benchmark question before you read the scores."),
+    "ehs-human-factors-ontology": ("walkthrough.html", "Derivation walkthrough",
+                                   "Step through one assessment rule by rule."),
+    "ehs-risk-sem": ("api/", "API reference",
+                     "Every estimator and study entry point, documented."),
+}
+DOOR_EXTRA = {
+    "ehs-human-factors-ontology": ("crosswalk.html", "Crosswalk browser"),
+}
+
+
+def doors(repo):
+    """One consistent three-door strip under the hero: story, this page, tool."""
+    href, name, note = DOORS[repo]
+    extra = DOOR_EXTRA.get(repo)
+    third = (f'<a class="door" href="{href}"><span class="door-k">Tool</span>'
+             f'<span class="door-n">{esc(name)}</span>'
+             f'<span class="door-w">{esc(note)}</span>'
+             f'<span class="door-go" aria-hidden="true">&rarr;</span></a>')
+    side = ""
+    if extra:
+        side = (f'<a class="door-also" href="{extra[0]}">Also: {esc(extra[1])}'
+                f'<span aria-hidden="true"> &rarr;</span></a>')
+    return (
+        '<nav class="doors" aria-label="Three ways into this project"><div class="wrap">'
+        '<div class="doors-grid">'
+        '<a class="door" href="story.html"><span class="door-k">Story</span>'
+        '<span class="door-n">5 minutes, for leaders</span>'
+        '<span class="door-w">The finding as a narrated sequence, no method detail.</span>'
+        '<span class="door-go" aria-hidden="true">&rarr;</span></a>'
+        '<span class="door door-here" aria-current="page"><span class="door-k">Project page</span>'
+        '<span class="door-n">Methods and tables</span>'
+        '<span class="door-w">You are here. Every number traced to a committed file.</span>'
+        '<span class="door-go" aria-hidden="true">&#9679;</span></span>'
+        + third + '</div>' + side + '</div></nav>')
 
 
 def chart(spec, takeaway, source):
@@ -697,7 +732,8 @@ def fig_lines(series, xlabels, ylo, yhi, yticks, caption, title,
         out.append(svg_text(L + pw + 10, y + 4, name, 10, "start", colour, "600"))
     out.append("</svg>")
     lg = legend(legend_items) if legend_items else ""
-    return (f'<figure class="fig"><div class="fig-scroll">{"".join(out)}</div>{lg}'
+    return (f'<figure class="fig"><h3 class="fig-title">{esc(title)}</h3>'
+            f'<div class="fig-scroll">{"".join(out)}</div>{lg}'
             f'<figcaption>{caption}<span class="src">Source artifact: {esc(source)}</span>'
             f'</figcaption></figure>')
 
@@ -736,7 +772,8 @@ def fig_stacked(rows, keys, colours, caption, title, source="", unit=""):
                             "var(--fig-mute)", "600"))
     out.append("</svg>")
     lg = legend(list(zip(keys, colours)))
-    return (f'<figure class="fig"><div class="fig-scroll">{"".join(out)}</div>{lg}'
+    return (f'<figure class="fig"><h3 class="fig-title">{esc(title)}</h3>'
+            f'<div class="fig-scroll">{"".join(out)}</div>{lg}'
             f'<figcaption>{caption}<span class="src">Source artifact: {esc(source)}</span>'
             f'</figcaption></figure>')
 
@@ -759,7 +796,8 @@ def fig_bars(rows, caption, title, source="", fmt_val=lambda v: f"{v:.1f}"):
         out.append(svg_text(L + pw + 12, y + barh * 0.66, fmt_val(v), 12, "start",
                             "var(--ink)", "700"))
     out.append("</svg>")
-    return (f'<figure class="fig"><div class="fig-scroll">{"".join(out)}</div>'
+    return (f'<figure class="fig"><h3 class="fig-title">{esc(title)}</h3>'
+            f'<div class="fig-scroll">{"".join(out)}</div>'
             f'<figcaption>{caption}<span class="src">Source artifact: {esc(source)}</span>'
             f'</figcaption></figure>')
 
@@ -1181,9 +1219,13 @@ def build_osha():
               f"that fail the plausibility screen. Correcting for them moves aggregate TRIR by "
               f"{min(ratios):.2f}x in one year and {max(ratios):.0f}x in another.",
         num_src="outputs/summary.json - quality.pooled", cta="Try the denominator",
-        toc={"explore": "Try it", "why": "Why this exists", "findings": "Findings",
-             "scope": "Does / does not", "byyear": "Year by year", "hours": "Where the hours are",
-             "figures": "Figures", "models": "Count models", "peers": "Peer benchmarking",
+        nots="Nothing here says a flagged filing is wrong, or that any establishment is unsafe. "
+             "The screen marks hours that cannot be reconciled with the headcount reported beside "
+             "them. It does not identify a cause, and it does not correct the record.",
+        toc={"explore": "Try it", "why": "Why this exists|Why", "findings": "Findings",
+             "scope": "Does / does not|Scope", "byyear": "Year by year|By year",
+             "hours": "Where the hours are|Hours",
+             "figures": "Figures", "models": "Count models|Models", "peers": "Peer benchmarking|Peers",
              "method": "Method", "run": "Run it"},
         status=status, body=body)
 
@@ -1484,10 +1526,13 @@ def build_sem():
               f"The estimates are nearly unbiased; the uncertainty reported around them is too narrow, "
               f"which reads as confidence.",
         num_src="results/study01_recovery.csv", cta="Drag the sample size",
-        toc={"explore": "Try it", "why": "Why this exists", "scope": "Does / does not",
-             "recovery": "Recovery", "sizing": "Sizing", "rare": "Rare events",
-             "zero": "Zero inflation", "misspec": "Misspecification", "meaning": "Meaning",
-             "run": "Run it"},
+        nots="No claim about real safety data. Every observation on this page is simulated from a "
+             "model this code wrote, so the results bound what the method can recover under ideal "
+             "conditions. They do not show that a real risk score is right or wrong.",
+        toc={"explore": "Try it", "why": "Why this exists|Why", "scope": "Does / does not|Scope",
+             "recovery": "Recovery", "sizing": "Sizing", "rare": "Rare events|Rare",
+             "zero": "Zero inflation|Zeroes", "misspec": "Misspecification|Misspec",
+             "meaning": "Meaning", "run": "Run it"},
         status=status, body=body)
 
 
@@ -1818,9 +1863,12 @@ def build_grounding():
                "floor. The items discriminate. No language model has been evaluated yet."
                if tf is not None and rf is not None else "corpus items. No language model has been evaluated yet."),
         num_src="results/baselines_summary.csv", cta="Browse the traps",
-        toc={"explore": "Try it", "status": "Status", "why": "Why this exists",
-             "scope": "Does / does not", "corpus": "The corpus", "sources": "Sources",
-             "scoring": "Scoring", "prereg": "Preregistration", "run": "Run it"},
+        nots="No language model has been scored. The numbers on this page come from three "
+             "non-LLM baselines, so they say the items discriminate. They say nothing yet about "
+             "how any assistant performs on safety-critical questions.",
+        toc={"explore": "Try it", "status": "Status", "why": "Why this exists|Why",
+             "scope": "Does / does not|Scope", "corpus": "The corpus|Corpus", "sources": "Sources",
+             "scoring": "Scoring", "prereg": "Preregistration|Prereg", "run": "Run it"},
         status=status, body=body)
 
 
@@ -2155,9 +2203,13 @@ def build_ontology():
         means=f"crosswalk alignments are close matches. The rest are broader, narrower or partial, "
               f"and {len(absences)} more rows assert that a framework has no counterpart at all.",
         num_src="crosswalk/crosswalk.csv", cta="Explore the factors",
-        toc={"explore": "Try it", "why": "Why this exists", "scope": "Does / does not",
-             "adopted": "Adopted taxonomy", "crosswalk": "Crosswalk", "trace": "Derivation trace",
-             "engine": "Guarantees", "gaps": "Gaps", "limits": "Honest limits", "run": "Run it"},
+        nots="The ontology does not predict error. Factor levels are assigned by an analyst, and "
+             "the rules turn those assignments into a banded conclusion with a trace. Nothing here "
+             "has been validated against observed incident outcomes.",
+        toc={"explore": "Try it", "why": "Why this exists|Why", "scope": "Does / does not|Scope",
+             "adopted": "Adopted taxonomy|Taxonomy", "crosswalk": "Crosswalk",
+             "trace": "Derivation trace|Trace",
+             "engine": "Guarantees", "gaps": "Gaps", "limits": "Honest limits|Limits", "run": "Run it"},
         status=status, body=body)
 
 
@@ -2242,7 +2294,28 @@ body{overflow-x:clip}
 .hero .hero-role{font-size:.98rem;margin-top:16px;max-width:56ch}
 .hero .status{grid-column:1/-1;margin-top:0;max-width:none}
 .hero .st-v{font-size:1.15rem}
+.hero-not{margin:18px 0 0;padding-left:18px;border-left:4px solid var(--rule);font-size:.9rem;line-height:1.55;color:var(--ink-2);max-width:56ch}
+.hn-k{display:block;font-family:var(--font-mono);font-size:.625rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
 @media(max-width:900px){.hero{padding:40px 0 40px}.hero-grid{grid-template-columns:1fr;gap:32px}}
+
+/* ---- three doors: story, this page, tool ---- */
+.doors{border-top:2px solid var(--rule);border-bottom:2px solid var(--rule);background:var(--surface-2)}
+.doors-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px;background:var(--rule-soft)}
+.door{position:relative;display:flex;flex-direction:column;gap:5px;min-height:118px;padding:20px 22px 40px;background:var(--surface);color:var(--ink);text-decoration:none;transition:background .15s}
+a.door:hover{background:var(--accent-wash)}
+.door-k{font-family:var(--font-mono);font-size:.625rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.door-n{font-family:var(--font-display);font-stretch:125%;font-weight:900;text-transform:uppercase;font-size:1rem;line-height:1.12;color:var(--ink)}
+.door-w{font-size:.8125rem;line-height:1.5;color:var(--ink-2);max-width:40ch}
+.door-go{position:absolute;right:18px;bottom:13px;font-size:1.15rem;color:var(--accent);transition:transform .2s}
+a.door:hover .door-go,a.door:focus-visible .door-go{transform:translateX(5px)}
+.door-here{background:var(--accent-wash);box-shadow:inset 0 3px 0 var(--accent);cursor:default}
+.door-here .door-k{color:var(--accent)}
+.door-here .door-go{color:var(--accent);font-size:.7rem;bottom:17px}
+.door-also{display:inline-block;margin:14px 0 2px;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);text-decoration:none;border-bottom:2px solid var(--rule-soft);padding-bottom:2px}
+.door-also:hover{color:var(--accent);border-bottom-color:var(--accent)}
+.doors .wrap{padding-block:26px}
+@media(max-width:860px){.doors-grid{grid-template-columns:1fr}.door{min-height:0;padding:16px 20px 16px}.door-go{position:static;align-self:flex-start;margin-top:2px}.door-here .door-go{display:none}}
+.st-presenting .doors{display:none!important}
 
 /* ---- layout + table of contents ---- */
 .layout{display:grid;grid-template-columns:200px minmax(0,1fr);gap:0 56px;align-items:start}
@@ -2560,7 +2633,8 @@ if __name__ == "__main__":
         page = SHELL.format(css=CSS, extra=EXTRA_CSS + SITE_CSS, storycss=STORY_CSS,
                             hub=HUB, personal=PERSONAL, gh=GH,
                             pageurl=pageurl, ldjson=ldjson, body=body, toc=tocl,
-                            programme=programme(spec["repo"]), **extra, **spec)
+                            programme=programme(spec["repo"]), doors=doors(spec["repo"]),
+                            **extra, **spec)
         page = trim_page(page)
         page = page.replace(
             "</body>",

@@ -4,17 +4,17 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Start here - Grounded - Priyatham Chimmani</title>
-<meta name="description" content="Five figures, five minutes: the denominator, persistence, the ontology derivation, the cost model, and the benchmark item you can try yourself." />
+<meta name="description" content="Six figures, six minutes: the denominator, the grounding baselines, the human-factors crosswalk, the sample sizes, the cost model, and the peer group that decides the verdict." />
 <link rel="canonical" href="https://priyatham9.github.io/grounded/start.html" />
 <meta property="og:title" content="Start here - Grounded - Priyatham Chimmani" />
-<meta property="og:description" content="Five figures, five minutes: the denominator, persistence, the ontology derivation, the cost model, and the benchmark item you can try yourself." />
+<meta property="og:description" content="Six figures, six minutes: the denominator, the grounding baselines, the human-factors crosswalk, the sample sizes, the cost model, and the peer group that decides the verdict." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://priyatham9.github.io/grounded/start.html" />
 <meta property="og:image" content="https://priyatham9.github.io/grounded/og.png" />
 <meta property="og:site_name" content="Grounded" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Start here - Grounded - Priyatham Chimmani" />
-<meta name="twitter:description" content="Five figures, five minutes: the denominator, persistence, the ontology derivation, the cost model, and the benchmark item you can try yourself." />
+<meta name="twitter:description" content="Six figures, six minutes: the denominator, the grounding baselines, the human-factors crosswalk, the sample sizes, the cost model, and the peer group that decides the verdict." />
 <meta name="twitter:image" content="https://priyatham9.github.io/grounded/og.png" />
 <script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","name":"Start here","url":"https://priyatham9.github.io/grounded/start.html","isPartOf":{"@type":"WebSite","name":"Grounded Reasoning for Safety-Critical AI","url":"https://priyatham9.github.io/grounded/"},"author":{"@type":"Person","name":"Priyatham Chimmani"}},{"@type":"Person","name":"Priyatham Chimmani","url":"https://priyatham9.github.io/","sameAs":["https://github.com/priyatham9","https://linkedin.com/in/priyatham9"]}]}</script>
 <meta name="theme-color" content="#F7F7F3" media="(prefers-color-scheme: light)" />
@@ -100,7 +100,7 @@ button{font:inherit;color:inherit}
 .hero-links{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
 .orbcap{display:block;margin-top:14px;text-align:center}
 
-/* five stops */
+/* six stops */
 .stop{max-width:1180px;margin:0 auto;padding:0 clamp(20px,5vw,60px) clamp(52px,8vh,104px);display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(26px,4vw,56px);align-items:center}
 .stop-copy p{font-size:1.0625rem;line-height:1.6;color:var(--ink-2);max-width:52ch;margin:18px 0 0}
 .stop .st-bignum{margin-top:4px}
@@ -164,6 +164,8 @@ button{font:inherit;color:inherit}
  .stop-fig{padding:14px 12px 12px}
  .stop-links .btn{width:100%;justify-content:center}
 }
+
+.st-bignum small{display:block;margin-top:.35em}
 </style>
 <style id="story-engine-css">/*STORY_CSS_START*/
 /* ============================================================
@@ -252,7 +254,8 @@ button{font:inherit;color:inherit}
 /* ---------- charts ---------- */
 .st-chart{display:block;width:100%;overflow:visible;font-family:var(--font-sans)}
 .st-chart.st-in-stage{height:min(66vh,720px);max-height:66vh}
-.st-chart text{font-family:var(--font-mono);fill:var(--muted);font-variant-numeric:tabular-nums}
+.st-chart text{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.st-chart text:not([fill]){fill:var(--muted)}
 .st-chart text:not([font-size]){font-size:14px}
 .st-chart .st-axis-line{stroke:var(--rule-soft);stroke-width:1.5}
 .st-chart .st-grid{stroke:var(--rule-soft);stroke-width:1;stroke-dasharray:2 4}
@@ -446,6 +449,20 @@ html{scroll-padding-top:16px}
 }
 .st-presenting .rs-header,.st-presenting .footer,.st-presenting .st-chapter,.st-presenting .st-findings{display:none!important}
 .st-presenting nav.pgm,.st-presenting .story-nav,.st-presenting .story-hero{display:none!important}
+
+/* forced reduced motion (testing hook ?reduced=1) mirrors the media query */
+.st-reduced *,.st-reduced *::before,.st-reduced *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+/* v1.2.5 phone: cap any stage figure, however deeply nested, so it fits the pinned half-screen stage; presenter on phones falls back to normal reading */
+@media(max-width:800px){
+  .st-stage-inner svg,.st-stage-inner canvas:not(.st-orb){max-height:40vh;max-height:40svh}
+  .st-presenting .st-step{min-height:80vh}
+}
+/* forced reduced motion gets the same end states as the media query */
+.st-reduced .st-reveal{opacity:1!important;transform:none!important;transition:none!important}
+.st-reduced .st-step{opacity:1!important;transition:none!important}
+.st-reduced .st-scene.st-flow .st-step > *{opacity:1!important;transform:none!important;transition:none!important}
+.st-reduced .st-stage-inner.st-layers > [data-show]{transition:none!important}
+.st-reduced .st-companion .st-companion-cap{transition:none!important}
 /*STORY_CSS_END*/
 <script id="rs-theme-init">try{var t=localStorage.getItem("pc-theme")||localStorage.getItem("ehs-ai-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script><style id="rs-header-css">
 .rs-header{
@@ -557,10 +574,10 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 <section class="hero" id="top">
  <div class="wrap st-hero" id="heroWrap">
   <div>
-   <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span class="label">Five minutes &middot; five stops</span></div>
+   <div class="eyebrow"><span class="pulse" aria-hidden="true"></span><span class="label">Six minutes &middot; six stops</span></div>
    <h1 class="display">Start here</h1>
-   <p class="thesis">A safety number is only as good as the denominator under it and the source clause behind it.</p>
-   <p class="hero-lede">This programme tested both. Below are the five findings, in order, each with the figure it rests on and the file the figure was built from. Every stop has two doors: the five-minute story for a leader, and the project page for an analyst.</p>
+   <p class="thesis">A safety number is only as good as the denominator under it, the source clause behind it, and the peer group it is ranked against.</p>
+   <p class="hero-lede">This programme tested all three. Below are the six findings, in order, each with the figure it rests on and the file the figure was built from. Every stop has two doors: the five-minute story for a leader, and the project page for an analyst.</p>
    <div class="hero-links">
     <a class="btn btn-primary" href="#f1">Begin with finding 01 &darr;</a>
     <a class="btn" href="./index.html">Back to the overview</a>
@@ -825,6 +842,41 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
  </figure>
 </div>
 
+<section class="st-chapter" data-num="06" id="f6">
+ <h2>The same 3.20 injury rate ranks at the 76th percentile of its industry and the 93rd among its own size band.</h2>
+ <p>The peer group, not the rate, decides whether a site looks safe.</p>
+</section>
+<div class="stop">
+ <div class="stop-copy">
+  <span class="st-bignum">p93<small>rank of a 3.20 TRIR among 250 to 499 employee sites in NAICS 3252</small></span>
+  <p>A site with 600,000 hours and 10 recordable cases reports a TRIR of 3.20. Against every establishment that filed a 300A, that is 8% below the all-filer aggregate of 3.49, which is the version that reaches the board deck.</p>
+  <p>Hold the industry and it ranks p76 among the 478 filers in NAICS 3252. Add the size band and it ranks p93 among 34 peers. Same rate, three verdicts.</p>
+  <p>Any group that small gets its n printed next to the percentile, not a headline.</p>
+  <div class="stop-links">
+   <a class="btn btn-primary" href="https://priyatham9.github.io/ehs-benchmarks/story.html">Read the story &rarr;</a>
+   <a class="btn" href="https://priyatham9.github.io/ehs-benchmarks/">Open the project page &rarr;</a>
+  </div>
+ </div>
+ <figure class="stop-fig">
+  <svg viewBox="0 0 560 300" class="fg" role="img" aria-labelledby="f6t f6d" preserveAspectRatio="xMidYMid meet">
+  <title id="f6t">Percentile rank of one TRIR of 3.20 against two peer groups</title>
+  <desc id="f6d">A TRIR of 3.20 ranks at the 76th percentile among the 478 establishments in NAICS 3252 and at the 93rd percentile among the 34 establishments in that industry with 250 to 499 employees.</desc>
+  <text class="cn" x="20" y="22" style="font-size:22px">One rate of 3.20. Two peer groups.</text>
+  <text class="al" x="20" y="66" style="font-size:21px">NAICS 3252, all sizes (n=478)</text>
+  <rect class="b-s" x="20" y="78" width="357.2" height="46"/>
+  <text class="vn" x="387" y="112" style="font-size:32px">p76</text>
+  <text class="al" x="20" y="166" style="font-size:21px">NAICS 3252, 250 to 499 employees (n=34)</text>
+  <rect class="b-u" x="20" y="178" width="437.1" height="46"/>
+  <text class="vn" x="467" y="212" style="font-size:32px">p93</text>
+  <line class="gl" x1="20" x2="490" y1="240" y2="240"/>
+  <text class="ax" x="20" y="262" style="font-size:21px">p0</text>
+  <text class="ax" x="490" y="262" text-anchor="end" style="font-size:21px">p100 of the peer group</text>
+  <text class="ax" x="20" y="291" style="font-size:21px">8% below the 3.49 all-filer aggregate.</text>
+  </svg>
+  <figcaption>Source: ehs-benchmarks, docs/data/benchmarks/32.json (keys 3252 and 3252|250-499) and the all-filer aggregate of 3.49 over 375,635 CY2025 filings. The 3.20 site is an illustrative input; every group it is compared against is real.</figcaption>
+ </figure>
+</div>
+
 <section class="paths" id="pick">
  <div class="wrap">
   <span class="label">Where to go next</span>
@@ -901,7 +953,10 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
      0. small utilities
      --------------------------------------------------------- */
   var mqReduce = global.matchMedia ? matchMedia("(prefers-reduced-motion: reduce)") : null;
-  function reduced() { return !!(mqReduce && mqReduce.matches); }
+  // ?reduced=1 forces the reduced-motion path so it can be tested without changing OS settings
+  var forceReduced = /[?&]reduced=1/.test(location.search);
+  if (forceReduced) document.documentElement.classList.add("st-reduced");
+  function reduced() { return forceReduced || !!(mqReduce && mqReduce.matches); }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function isEl(x) { return x && x.nodeType === 1; }

@@ -10,7 +10,10 @@
      0. small utilities
      --------------------------------------------------------- */
   var mqReduce = global.matchMedia ? matchMedia("(prefers-reduced-motion: reduce)") : null;
-  function reduced() { return !!(mqReduce && mqReduce.matches); }
+  // ?reduced=1 forces the reduced-motion path so it can be tested without changing OS settings
+  var forceReduced = /[?&]reduced=1/.test(location.search);
+  if (forceReduced) document.documentElement.classList.add("st-reduced");
+  function reduced() { return forceReduced || !!(mqReduce && mqReduce.matches); }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function isEl(x) { return x && x.nodeType === 1; }

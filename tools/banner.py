@@ -324,6 +324,17 @@ def _text(fragment):
 
 
 def _detect_sections(page):
+    # A page that ships its own table of contents names each section twice: a
+    # spelled-out label for the rail and a short one for this single-line strip.
+    short = re.findall(r'<a\b[^>]*href="#([^"]+)"[^>]*\bdata-short="([^"]*)"', page)
+    if short:
+        out = []
+        for href, label in short:
+            label = _html.unescape(label).strip()
+            if label and (href, label) not in out:
+                out.append((_html.unescape(href), label))
+        if out:
+            return out
     m = (re.search(r'<nav\b[^>]*\bid="(?:sectionNav|rs-sections)"[^>]*>(.*?)</nav>', page, re.S)
          or re.search(r'<nav\b[^>]*class="[^"]*\b(?:topnav|gbar-sections)\b[^"]*"[^>]*>(.*?)</nav>', page, re.S))
     if m:

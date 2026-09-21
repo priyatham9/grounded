@@ -381,15 +381,11 @@ button{font:inherit;color:inherit}
 @media print{.skip,.chat-foot{display:none}body{background:#fff!important;color:#000!important}.rv,.stage{opacity:1;transform:none}}
 
 /* ============ hub story additions ============ */
-.orbwrap{position:relative;width:100%;max-width:260px;aspect-ratio:1;margin:0 0 20px}
-.orbwrap canvas{display:block;width:100%;height:100%}
 .orbcap{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:block;margin-top:10px}
 .st-stage svg text.st-caption{fill:var(--muted);font-family:var(--font-mono);letter-spacing:.08em;text-transform:uppercase}
 .st-stage svg text.st-label-direct:not([fill]){fill:var(--ink)}
 .st-stage svg text.st-label-direct{font-family:var(--font-mono);font-weight:700}
 .st-stage svg text:not([fill]):not([class]){fill:var(--ink-2)}
-.hero-orbrow{display:flex;gap:22px;align-items:flex-start;flex-wrap:wrap}
-.hero-orbrow .orbwrap{max-width:168px;flex:none}
 
 .spine{border-top:2px solid var(--rule);background:var(--surface);padding:72px 0 0}
 .spine-head{display:grid;grid-template-columns:120px minmax(0,1fr);gap:24px;align-items:start;margin-bottom:24px}
@@ -398,24 +394,18 @@ button{font:inherit;color:inherit}
 .spine-stage{border:2px solid var(--rule);background:var(--paper);padding:20px;position:relative}
 .spine-stage .stagecap{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block;margin-top:12px;word-break:break-word}
 .spine-stage svg{display:block;width:100%;height:auto;overflow:visible}
-.spine-orb{position:absolute;right:14px;top:14px;width:84px;height:84px}
-.spine-orb canvas{width:100%;height:100%;display:block}
 .st-step .kicker{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;display:block;margin-bottom:10px}
 .st-step h3{font-family:var(--font-sans);font-stretch:112%;font-weight:800}
 .st-step .fignum{font-family:var(--font-mono);font-weight:700;font-size:clamp(1.6rem,3.4vw,2.6rem);color:var(--accent);display:block;margin:10px 0 0;font-variant-numeric:tabular-nums}
 @media(max-width:640px){.spine-head{grid-template-columns:1fr;gap:12px}.spine-head .num{width:64px}}
 
 .constell{border:2px solid var(--rule);background:var(--surface);margin-bottom:32px;padding:14px}
-.constell canvas{display:block;width:100%;height:230px}
 .constell p{margin:10px 4px 2px;font-size:.8125rem;color:var(--muted)}
 .node-story{display:block;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;text-decoration:none;color:var(--accent);border:2px solid var(--accent);padding:12px;min-height:44px;text-align:center;transition:background .15s,color .15s}
 .node-story:hover,.node-story:focus-visible{background:var(--accent);color:var(--accent-ink)}
 
-:root.st-presenting .rs-header,:root.st-presenting .footer,:root.st-presenting .skip,:root.st-presenting .hide-present{display:none!important}
+:root.st-presenting .rs-header,:root.st-presenting .footer,:root.st-presenting .skip{display:none!important}
 :root.st-presenting .st-step{opacity:1!important}
-
-.presbtn{position:fixed;right:16px;bottom:16px;z-index:80}
-@media(max-width:600px){.presbtn{display:none}}
 </style>
 <style id="story-engine-css">/*STORY_CSS_START*/
 /* ============================================================
@@ -504,7 +494,8 @@ button{font:inherit;color:inherit}
 /* ---------- charts ---------- */
 .st-chart{display:block;width:100%;overflow:visible;font-family:var(--font-sans)}
 .st-chart.st-in-stage{height:min(66vh,720px);max-height:66vh}
-.st-chart text{font-family:var(--font-mono);fill:var(--muted);font-variant-numeric:tabular-nums}
+.st-chart text{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
+.st-chart text:not([fill]){fill:var(--muted)}
 .st-chart text:not([font-size]){font-size:14px}
 .st-chart .st-axis-line{stroke:var(--rule-soft);stroke-width:1.5}
 .st-chart .st-grid{stroke:var(--rule-soft);stroke-width:1;stroke-dasharray:2 4}
@@ -698,6 +689,20 @@ html{scroll-padding-top:16px}
 }
 .st-presenting .rs-header,.st-presenting .footer,.st-presenting .st-chapter,.st-presenting .st-findings{display:none!important}
 .st-presenting nav.pgm,.st-presenting .story-nav,.st-presenting .story-hero{display:none!important}
+
+/* forced reduced motion (testing hook ?reduced=1) mirrors the media query */
+.st-reduced *,.st-reduced *::before,.st-reduced *::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
+/* v1.2.5 phone: cap any stage figure, however deeply nested, so it fits the pinned half-screen stage; presenter on phones falls back to normal reading */
+@media(max-width:800px){
+  .st-stage-inner svg,.st-stage-inner canvas:not(.st-orb){max-height:40vh;max-height:40svh}
+  .st-presenting .st-step{min-height:80vh}
+}
+/* forced reduced motion gets the same end states as the media query */
+.st-reduced .st-reveal{opacity:1!important;transform:none!important;transition:none!important}
+.st-reduced .st-step{opacity:1!important;transition:none!important}
+.st-reduced .st-scene.st-flow .st-step > *{opacity:1!important;transform:none!important;transition:none!important}
+.st-reduced .st-stage-inner.st-layers > [data-show]{transition:none!important}
+.st-reduced .st-companion .st-companion-cap{transition:none!important}
 /*STORY_CSS_END*/</style>
 <script id="rs-theme-init">try{var t=localStorage.getItem("pc-theme")||localStorage.getItem("ehs-ai-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script><style id="rs-header-css">
 .rs-header{
@@ -849,56 +854,45 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 .spine > .wrap{max-width:none;padding:0 clamp(20px,3.5vw,56px)}
 .spine-stage{padding:20px 20px 14px}
 .spine-stage svg{max-height:72vh}
-.spine-orb{position:absolute!important;right:22px;top:22px;width:132px;height:auto;text-align:center;z-index:3}
-.spine-orb canvas{width:132px;height:132px}
-.spine-orb .vcap{display:block;margin-top:6px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
-.spine-stage[data-state="wrong"] .spine-orb .vcap{color:var(--warn)}
-.spine-stage[data-state="grounded"] .spine-orb .vcap{color:var(--accent)}
 .spine-stage .stagecap{font-size:.6875rem;margin-top:14px}
 #spineFig{transition:opacity .34s cubic-bezier(.22,.7,.2,1),transform .34s cubic-bezier(.22,.7,.2,1)}
 #spineFig.is-swapping{opacity:0;transform:scale(.985)}
-@media(max-width:1100px){.spine-orb{width:96px}.spine-orb canvas{width:96px;height:96px}}
 
 /* chapter cards on the hub */
 .st-chapter{border-top:2px solid var(--rule);background:var(--surface)}
 .st-chapter .st-chapter-kicker{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:14px}
 
-/* instrument constellation */
+/* instrument diagram: six labelled nodes in three lanes, drawn once, no motion */
 .constell{border:2px solid var(--rule);background:var(--surface);margin-bottom:32px;padding:26px 26px 18px}
-.cmap{position:relative;width:100%;height:clamp(420px,52vh,560px)}
-.cmap .clinks{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.cmap .clinks line{stroke:var(--rule-soft);stroke-width:1.6}
-.cmap .clinks line.is-hot{stroke:var(--accent);stroke-width:2.6}
-.cnode{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;width:150px;text-align:center;opacity:0;transition:opacity .6s ease}
-.cnode.is-in{opacity:1}
-.cnode canvas{width:84px;height:84px;display:block}
-.cnode b{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.01em;color:var(--ink);font-weight:700;line-height:1.2}
-.cnode em{font-style:normal;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-.cnode.is-core canvas{width:104px;height:104px}
-.cnode.is-core b{color:var(--warn)}
-.clane{position:absolute;transform:translate(-50%,0);font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
-@media(max-width:860px){.cmap{height:auto;display:grid;grid-template-columns:1fr 1fr;gap:20px}.cmap .clinks,.cmap .clane{display:none}.cnode{position:static;transform:none;width:auto;opacity:1}}
+.cdiagram{display:block;width:100%;height:auto;overflow:visible;font-family:var(--font-mono)}
+.cdiagram .c-link{stroke:var(--rule-soft);stroke-width:2;fill:none}
+.cdiagram .c-link.is-hot{stroke:var(--accent);stroke-width:2.5}
+.cdiagram .c-box{fill:var(--paper);stroke:var(--accent);stroke-width:2.5}
+.cdiagram .c-box.is-sim{stroke:var(--ink-2);stroke-dasharray:7 5}
+.cdiagram .c-core{fill:var(--warn-wash);stroke:var(--warn);stroke-width:2.5}
+.cdiagram .c-name{fill:var(--ink);font-size:20px;font-weight:700}
+.cdiagram .c-role{fill:var(--muted);font-size:16px;letter-spacing:.1em}
+.cdiagram .c-lane{fill:var(--muted);font-size:17px;letter-spacing:.14em;font-weight:700}
+.cdiagram .c-coretext{fill:var(--warn);font-size:20px;font-weight:700}
+/* on phones the three lane cards below carry the same content at a readable size */
+@media(max-width:860px){.constell{display:none}}
 
 /* big next card + map hint */
-.nextcard{display:grid;grid-template-columns:minmax(0,1fr) 200px;gap:30px;align-items:center;border:2px solid var(--rule);background:var(--surface);padding:34px;margin-top:40px;text-decoration:none;color:inherit;transition:border-color .25s ease}
+.nextcard{display:block;border:2px solid var(--rule);background:var(--surface);padding:34px;margin-top:40px;text-decoration:none;color:inherit;transition:border-color .25s ease}
 .nextcard:hover{border-color:var(--accent)}
 .nextcard .nk{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:10px}
 .nextcard h3{font-size:clamp(1.6rem,3.4vw,2.6rem);line-height:1.04;letter-spacing:-.02em;margin:0 0 10px}
-.nextcard p{margin:0;color:var(--ink-2);font-size:1.0625rem;max-width:46ch}
-.nextcard canvas{width:100%;height:auto;aspect-ratio:1;display:block}
+.nextcard p{margin:0;color:var(--ink-2);font-size:1.0625rem;max-width:56ch}
 .nexthint{margin:12px 0 0;font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
-@media(max-width:760px){.nextcard{grid-template-columns:1fr}.nextcard canvas{width:150px}}
 
 @media(max-width:960px){
  .hero .st-hero{grid-template-columns:1fr;gap:26px;min-height:0}
  .hero .st-hero-orb{width:min(72vw,340px);justify-self:center;order:-1}
  .spine .st-scene{grid-template-columns:1fr;gap:0}
  .spine > .wrap{padding:0 20px}
- .spine-orb{width:76px}
- .spine-orb canvas{width:76px;height:76px}
- .spine-stage svg{max-height:42vh}
+ .spine-stage svg{max-height:52vh}
 }
-@media (prefers-reduced-motion:reduce){.cnode{opacity:1;transition:none}.reader{transition:none}}
+@media (prefers-reduced-motion:reduce){.reader{transition:none}}
 </style></head>
 <body>
 
@@ -1007,13 +1001,12 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 <!-- ============ SPINE: five acts as scroll scenes ============ -->
 <section class="spine" id="spine" aria-labelledby="spineH">
  <div class="wrap">
-  <div class="spine-head rv"><span class="num">00</span><div><h2 class="display" id="spineH">The argument in five moves</h2><p class="claim">Scroll. The panel on the left changes with each move, and the orb shows what the system is doing at that moment.</p></div></div>
+  <div class="spine-head rv"><span class="num">00</span><div><h2 class="display" id="spineH">Five moves run from a wrong answer to one question you can ask on Monday</h2><p class="claim">Each move states its finding and the number behind it. The figure on the left changes with the move.</p></div></div>
 
   <div class="st-scene" data-scene="spine">
    <div class="st-stage">
     <div class="st-stage-inner">
      <div class="spine-stage" id="spineStage" data-state="searching">
-      <div class="spine-orb"><canvas id="spineOrb" width="264" height="264" role="img" aria-label="Orb state for the current move"></canvas><span class="vcap" id="spineVerb">Searching</span></div>
       <div id="spineFig" class="st-chart" aria-live="polite"></div>
       <span class="stagecap" id="spineCap">Source: ehs-ai-grounding-eval, corpus/items/pressure_relief.json</span>
      </div>
@@ -1022,38 +1015,38 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
    <div class="st-steps">
     <div class="st-step" data-step="0" data-orb="searching" data-fig="ask">
      <span class="kicker">Move 01</span>
-     <h3>The wrong answer survives review</h3>
-     <p>An engineer asks about a rupture disk. The answer comes back about a spring-loaded relief valve: set pressure, blowdown, reseating. A rupture disk has none of those parameters. Nothing in the answer contradicts itself, so a reviewer checking internal consistency finds no tell.</p>
+     <h3>Zero parameters are shared by the device asked about and the device answered about</h3>
+     <p>A rupture disk question came back with set pressure, blowdown and reseating. Those are relief valve parameters; a rupture disk has none of them. Nothing in the answer contradicts itself, so a consistency check finds no tell.</p>
      <span class="fignum">0 <small style="font-size:.42em">shared parameters</small></span>
     </div>
     <div class="st-step" data-step="1" data-orb="wrong" data-fig="denom">
      <span class="kicker">Move 02</span>
-     <h3>The data meant to catch it moves 249x</h3>
-     <p>Across 2,801,064 real OSHA filings from 2016 to 2024, a plausibility screen on hours per employee turns a raw national series that swings from 0.016 to 2.92 into one that stays between 3.15 and 4.60. In reporting year 2019 the two rates sit 249.3 times apart.</p>
+     <h3>One plausibility screen on hours moves the 2019 national rate 249 times</h3>
+     <p>In reporting year 2019 the raw national TRIR is 0.016 and the screened one is 4.018, a ratio of 249.3. Across 2,801,064 real OSHA filings from 2016 to 2024 the raw series swings from 0.016 to 2.92 while the screened series stays between 3.15 and 4.60.</p>
      <span class="fignum">249<small style="font-size:.42em">x, 2019</small></span>
     </div>
     <div class="st-step" data-step="2" data-orb="connecting" data-fig="persist">
      <span class="kicker">Move 03</span>
-     <h3>The same filers keep doing it</h3>
-     <p>An establishment flagged for implausible hours one year is flagged again the next 27.2% of the time, against 0.95% for one never flagged. Odds ratio 39.1. A permutation null centred at 1.0 rules out independent keying errors as the main mechanism.</p>
+     <h3>A flagged site is flagged again 27.2 percent of the time, against 0.95 percent for the rest</h3>
+     <p>That is an odds ratio of 39.1. A permutation null centred at 1.0 rules out independent keying errors as the main mechanism. The bad hours sit with the same filers year after year, so the noise does not average out.</p>
      <span class="fignum">39.1<small style="font-size:.42em">odds ratio</small></span>
     </div>
     <div class="st-step" data-step="3" data-orb="solving" data-fig="instr">
      <span class="kicker">Move 04</span>
-     <h3>Six instruments, one failure each</h3>
-     <p>A data screen for the denominator, a benchmark for the citation, an ontology for the human-factors judgment, a simulation for the method's limits, a calculator for the money, and a rate library that refuses a bad denominator. One is empirical, two are apparatus, one is simulation, two are tools.</p>
+     <h3>Six repositories answer one failure each, in three lanes</h3>
+     <p>One is empirical, two are apparatus, one is simulation, two are tools. They bind the answer to a source, test the denominator under the rate, and price what the decision costs. Each one ships its own data and its own story page.</p>
      <span class="fignum">6<small style="font-size:.42em">repositories</small></span>
     </div>
     <div class="st-step" data-step="4" data-orb="listening" data-fig="honesty">
      <span class="kicker">Move 05</span>
-     <h3>What is not established, said on the page</h3>
-     <p>Fifteen headline claims sit in the ledger below. Nine are verified against files in the repositories, three are drafts, three have not been tested at all. No language model has been run through the benchmark. The SEM work is entirely synthetic. Both papers are unsubmitted.</p>
+     <h3>Three of the fifteen headline claims have not been tested at all</h3>
+     <p>Nine of the fifteen are verified against files in the repositories and three are drafts. No language model has been run through the benchmark, the SEM work is entirely synthetic, and both papers are unsubmitted. All of that is in the ledger below, not in a footnote.</p>
      <span class="fignum">9 / 3 / 3<small style="font-size:.42em">verified / draft / untested</small></span>
     </div>
     <div class="st-step" data-step="5" data-orb="grounded" data-fig="monday">
      <span class="kicker">Monday</span>
-     <h3>Screen the hours before you quote a rate</h3>
-     <p>Ask any vendor or internal report for the hours-per-employee screen behind the benchmark, and for the share of hours that screen removes. If there is no screen, the rate is not a rate. That one question is the whole of this programme applied to one meeting.</p>
+     <h3>One question separates a rate from a number: what is the hours screen?</h3>
+     <p>On this data the screen removes 96.68 percent of reported hours. Ask any vendor or internal report for its hours-per-employee screen and for the share of hours that screen removes. If there is no screen, the rate is not a rate.</p>
      <span class="fignum">1<small style="font-size:.42em">question</small></span>
     </div>
    </div>
@@ -1063,14 +1056,14 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 
 <!-- chapter card -->
 <section class="st-chapter" data-num="01" data-orb="wrong" data-orb-label="Chapter orb, state wrong" aria-labelledby="chh01">
- <h2 id="chh01">The failure</h2>
- <p>Two parameter spaces that do not intersect, and an answer that reads as competent anyway.</p>
+ <h2 id="chh01">A rupture disk question came back with relief valve parameters, and it read as competent</h2>
+ <p>Two parameter spaces that do not intersect, and nothing in the wording signals the swap.</p>
 </section>
 
 <!-- ============ 01 INCIDENT ============ -->
 <section class="section" id="failure">
  <div class="wrap">
-  <div class="head rv"><span class="num">01</span><div><h2 class="display">The failure</h2><p class="claim">Asked about a rupture disk. Answered about a spring-loaded relief valve. Fluent, well formatted, and inapplicable to the device in front of the engineer.</p></div></div>
+  <div class="head rv"><span class="num">01</span><div><h2 class="display">Asked about a rupture disk, answered about a relief valve</h2><p class="claim">Fluent, well formatted, and inapplicable to the device in front of the engineer. The two devices share no parameters, so every value in the answer is plausible for the device it was not about.</p></div></div>
 
   <div class="spaces rv" role="group" aria-label="Two parameter spaces that do not intersect">
    <div class="space a">
@@ -1110,14 +1103,14 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 
 <!-- chapter card -->
 <section class="st-chapter" data-num="02" data-orb="searching" data-orb-label="Chapter orb, state searching" aria-labelledby="chh02">
- <h2 id="chh02">The denominator</h2>
- <p>A plausibility screen on hours per employee moves the national rate by a factor of 249.</p>
+ <h2 id="chh02">A plausibility screen on hours moves the 2019 national rate by a factor of 249</h2>
+ <p>Any benchmark quoted off raw OSHA filings can be wrong by two orders of magnitude.</p>
 </section>
 
 <!-- ============ 02 DATA ============ -->
 <section class="section section-alt" id="data">
  <div class="wrap">
-  <div class="head rv"><span class="num">02</span><div><h2 class="display">The data is no better</h2><p class="claim">A plausibility screen on hours per employee turns a raw series that swings from 0.016 to 2.92 into one that stays between 3.15 and 4.60.</p></div></div>
+  <div class="head rv"><span class="num">02</span><div><h2 class="display">Screening hours turns a series that swings 0.016 to 2.92 into one that holds near four</h2><p class="claim">The screen is a plausibility test on hours per employee. It flags 2.07% of filings, and those filings carry 96.68% of all reported hours.</p></div></div>
 
   <div class="stats rv">
    <div><span class="label">Filings analysed</span><span class="v"><span class="cnt" data-v="2801064" data-d="0">2,801,064</span></span><p>Real public OSHA ITA data, 2016 to 2024.</p></div>
@@ -1161,14 +1154,14 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 
 <!-- chapter card -->
 <section class="st-chapter" data-num="03" data-orb="thinking" data-orb-label="Chapter orb, state thinking" aria-labelledby="chh03">
- <h2 id="chh03">Be the benchmark</h2>
- <p>Three real items from the 68-item corpus. Answer them before you read the trap.</p>
+ <h2 id="chh03">The trap is a clause that reads correct for the wrong device</h2>
+ <p>Three real items from the 68-item corpus. Answer them before you read how the baselines did.</p>
 </section>
 
 <!-- ============ 03 TRY ============ -->
 <section class="section" id="try">
  <div class="wrap">
-  <div class="head rv"><span class="num">03</span><div><h2 class="display">Be the benchmark</h2><p class="claim">Three real items from the 68-item corpus. Pick an answer, then see the co-hyponym trap and how the three non-LLM baselines scored the same item. Questions are verbatim; answer options are abridged from the corpus answer key.</p></div></div>
+  <div class="head rv"><span class="num">03</span><div><h2 class="display">TF-IDF retrieval scores 27.0 percent, below a 52.1 percent random floor</h2><p class="claim">Pick an answer on three real items from the 68-item corpus, then see the co-hyponym trap and how the three non-LLM baselines scored the same item. Questions are verbatim; answer options are abridged from the corpus answer key.</p></div></div>
 
   <div class="rv" style="border:2px solid var(--rule);border-bottom:0">
    <div class="tabs" role="tablist" aria-label="Benchmark items" id="tryTabs"></div>
@@ -1199,14 +1192,14 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 
 <!-- chapter card -->
 <section class="st-chapter" data-num="04" data-orb="listening" data-orb-label="Chapter orb, state listening" aria-labelledby="chh04">
- <h2 id="chh04">The claim ledger</h2>
- <p>Fifteen headline claims, each with the file that carries its evidence and how far it has been tested.</p>
+ <h2 id="chh04">Nine of fifteen headline claims are verified, three are drafts, three are untested</h2>
+ <p>Every claim carries the file that holds its evidence and how far it has been tested.</p>
 </section>
 
 <!-- ============ 04 LEDGER ============ -->
 <section class="section section-alt" id="ledger">
  <div class="wrap">
-  <div class="head rv"><span class="num">04</span><div><h2 class="display">Claim ledger</h2><p class="claim">Every headline claim in the programme, where its evidence lives, and how far it has been tested. Filter by status.</p></div></div>
+  <div class="head rv"><span class="num">04</span><div><h2 class="display">Fifteen claims, each with its evidence file and how far it was tested</h2><p class="claim">Nine verified, three draft, three not yet tested. Filter by status or search the text.</p></div></div>
   <div class="filters rv">
    <div class="seg" role="group" aria-label="Filter by status" id="ledFilter">
     <button type="button" data-f="all" aria-pressed="true">All<span class="c" data-c="all"></span></button>
@@ -1246,20 +1239,56 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 
 <!-- chapter card -->
 <section class="st-chapter" data-num="05" data-orb="connecting" data-orb-label="Chapter orb, state connecting" aria-labelledby="chh05">
- <h2 id="chh05">Six instruments</h2>
- <p>One empirical study, two pieces of apparatus, one simulation, two tools. Each answers one failure.</p>
+ <h2 id="chh05">Six repositories answer one failure each: one study, two apparatus, one simulation, two tools</h2>
+ <p>They sort into three lanes: bind the answer, test the denominator, price the decision.</p>
 </section>
 
 <!-- ============ 05 PROGRAMME ============ -->
 <section class="section" id="work">
  <div class="wrap">
-  <div class="head rv"><span class="num">05</span><div><h2 class="display">Six repositories</h2><p class="claim">One is empirical. Two are apparatus. One is simulation. Two are tools. The chips say which is which.</p></div></div>
+  <div class="head rv"><span class="num">05</span><div><h2 class="display">One empirical study, two apparatus, one simulation, two tools</h2><p class="claim">Six repositories in three lanes. The chips say which is which, and each card links to its own five-minute story.</p></div></div>
 
   <div class="constell rv">
-   <div class="cmap" id="cmap" role="img" aria-label="Six instruments drawn as orbs orbiting one failure, settling into three lanes: bind the answer, test the denominator, price the decision.">
-    <svg class="clinks" id="clinks" aria-hidden="true"></svg>
-   </div>
-   <p>Six instruments orbiting one failure. They settle into the three lanes below; each card links to its own story page.</p>
+   <svg class="cdiagram" viewBox="0 0 1000 560" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Six repositories in three lanes above one failure. Bind the answer: ehs-ai-grounding-eval with three baselines, ehs-human-factors-ontology with twenty factors. Test the denominator: ehs-osha-analysis with 2.8 million filings, ehs-benchmarks as an MIT licensed rate library. Price the decision: ehs-risk-sem with zero real records, ehs-capitals-calculator with two implementations.">
+    <text class="c-lane" x="170" y="28" text-anchor="middle">BIND THE ANSWER</text>
+    <text class="c-lane" x="500" y="28" text-anchor="middle">TEST THE DENOMINATOR</text>
+    <text class="c-lane" x="830" y="28" text-anchor="middle">PRICE THE DECISION</text>
+
+    <line class="c-link" x1="170" y1="150" x2="170" y2="190"/>
+    <line class="c-link" x1="500" y1="150" x2="500" y2="190"/>
+    <line class="c-link" x1="830" y1="150" x2="830" y2="190"/>
+    <line class="c-link is-hot" x1="170" y1="286" x2="170" y2="380"/>
+    <line class="c-link is-hot" x1="500" y1="286" x2="500" y2="380"/>
+    <line class="c-link is-hot" x1="830" y1="286" x2="830" y2="380"/>
+    <line class="c-link is-hot" x1="170" y1="380" x2="830" y2="380"/>
+    <line class="c-link is-hot" x1="500" y1="380" x2="500" y2="430"/>
+
+    <rect class="c-box" x="40" y="54" width="260" height="96"/>
+    <text class="c-name" x="170" y="96" text-anchor="middle">grounding-eval</text>
+    <text class="c-role" x="170" y="126" text-anchor="middle">3 BASELINES</text>
+    <rect class="c-box" x="40" y="190" width="260" height="96"/>
+    <text class="c-name" x="170" y="232" text-anchor="middle">ontology</text>
+    <text class="c-role" x="170" y="262" text-anchor="middle">20 FACTORS</text>
+
+    <rect class="c-box" x="370" y="54" width="260" height="96"/>
+    <text class="c-name" x="500" y="96" text-anchor="middle">osha-analysis</text>
+    <text class="c-role" x="500" y="126" text-anchor="middle">2.8M FILINGS</text>
+    <rect class="c-box" x="370" y="190" width="260" height="96"/>
+    <text class="c-name" x="500" y="232" text-anchor="middle">benchmarks</text>
+    <text class="c-role" x="500" y="262" text-anchor="middle">MIT RATE LIBRARY</text>
+
+    <rect class="c-box is-sim" x="700" y="54" width="260" height="96"/>
+    <text class="c-name" x="830" y="96" text-anchor="middle">risk-sem</text>
+    <text class="c-role" x="830" y="126" text-anchor="middle">0 REAL RECORDS</text>
+    <rect class="c-box" x="700" y="190" width="260" height="96"/>
+    <text class="c-name" x="830" y="232" text-anchor="middle">capitals-calculator</text>
+    <text class="c-role" x="830" y="262" text-anchor="middle">2 IMPLEMENTATIONS</text>
+
+    <rect class="c-core" x="290" y="430" width="420" height="90"/>
+    <text class="c-coretext" x="500" y="466" text-anchor="middle">ONE FAILURE</text>
+    <text class="c-role" x="500" y="497" text-anchor="middle">CHECKED AGAINST BAD DATA</text>
+   </svg>
+   <p>Six repositories, three lanes, one failure underneath them. The cards below carry the same six, each linking to its own story page.</p>
   </div>
 
   <div class="map">
@@ -1380,14 +1409,14 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 
 <!-- chapter card -->
 <section class="st-chapter" data-num="06" data-orb="grounded" data-orb-label="Chapter orb, state grounded" aria-labelledby="chh06">
- <h2 id="chh06">What is missing</h2>
+ <h2 id="chh06">No language model has been run through the benchmark yet</h2>
  <p>Four things a reader should know before citing anything on this page.</p>
 </section>
 
 <!-- ============ 06 OPEN ============ -->
 <section class="section" id="open">
  <div class="wrap">
-  <div class="head rv"><span class="num">06</span><div><h2 class="display">What is missing</h2><p class="claim">Honest status. Four things a reader should know before citing anything here.</p></div></div>
+  <div class="head rv"><span class="num">06</span><div><h2 class="display">Four things are not established, and they are listed here rather than buried</h2><p class="claim">No model result, one rejected manuscript verdict, an adopted taxonomy, and a simulation with no real data behind it.</p></div></div>
   <ul class="open-list rv">
    <li><span class="k">01</span><span>No language model has been run through the benchmark. Three non-LLM baselines exist (random floor 52.1%, TF-IDF 27.0%, oracle 100%); a real Anthropic Messages API adapter and a one-command run script now exist, but no model result should be inferred from the baselines.</span></li>
    <li><span class="k">02</span><span>Four of five internal reviewers would reject the bundled manuscript as it stands. The data-quality section is the only part with empirical findings.</span></li>
@@ -1397,12 +1426,9 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
   <p class="claim" style="margin-top:24px;font-size:.9375rem">Dated changes across all six repositories: <a href="./changelog.html">changelog</a> (<a href="./feed.xml">RSS feed</a>).</p>
 
   <a class="nextcard" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">
-   <div>
-    <span class="nk">Next &middot; 1 of 7</span>
-    <h3>The denominator</h3>
-    <p>Two point eight million real OSHA filings, and the hours screen that moves the national rate by a factor of 249. Five minutes.</p>
-   </div>
-   <canvas id="nextOrb" width="360" height="360" role="img" aria-label="Orb in its grounded state, pointing to the next story"></canvas>
+   <span class="nk">Next &middot; 1 of 7</span>
+   <h3>2.8 million filings, and the screen that moves the national rate 249 times</h3>
+   <p>The denominator, in full: what the hours screen flags, how much of the reported hours it removes, and why the same filers keep appearing. Five minutes.</p>
   </a>
   <p class="nexthint">Or press M for the site map.</p>
  </div>
@@ -1413,7 +1439,7 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 <footer class="footer">
  <div class="wrap">
   <span class="label">Next step</span>
-  <p class="display foot-big">Five figures.<br />Five minutes.</p>
+  <p class="display foot-big">Six figures.<br />Six minutes.</p>
   <div class="hero-links"><a class="btn btn-primary" href="./start.html">Take the guided path</a><a class="btn" href="https://priyatham9.github.io/ehs-osha-analysis/" style="background:transparent;color:var(--paper);border-color:var(--paper)">OSHA data quality &rarr;</a></div>
   <div class="foot-grid">
    <div>
@@ -1457,7 +1483,10 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
      0. small utilities
      --------------------------------------------------------- */
   var mqReduce = global.matchMedia ? matchMedia("(prefers-reduced-motion: reduce)") : null;
-  function reduced() { return !!(mqReduce && mqReduce.matches); }
+  // ?reduced=1 forces the reduced-motion path so it can be tested without changing OS settings
+  var forceReduced = /[?&]reduced=1/.test(location.search);
+  if (forceReduced) document.documentElement.classList.add("st-reduced");
+  function reduced() { return forceReduced || !!(mqReduce && mqReduce.matches); }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function isEl(x) { return x && x.nodeType === 1; }
@@ -3741,7 +3770,7 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 <script>
 (function () {
   var root = document.documentElement;
-  var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var REDUCE = window.matchMedia('(prefers-reduced-motion: reduce)').matches || /[?&]reduced=1/.test(location.search);
   function $(id) { return document.getElementById(id); }
 
   /* reveal + count-up */
@@ -4045,56 +4074,100 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
     run();
   })();
 
-  /* ---- spine: five moves as scroll scenes ---- */
+  /* ---- spine: five moves as scroll scenes ----
+     One figure per step. Phone gets a taller, narrower variant of each figure with
+     larger type and fewer secondary labels; it is re-rendered when the query changes. */
   (function () {
     var scene = document.querySelector('.st-scene[data-scene="spine"]'); if (!scene || !window.Story) return;
-    var fig = $('spineFig'), cap = $('spineCap'), NS = 'http://www.w3.org/2000/svg';
-    var orb = Story.orb($('spineOrb'), { density: 560 });
+    var fig = $('spineFig'), cap = $('spineCap');
+    var PMQ = window.matchMedia ? matchMedia('(max-width:800px)') : { matches: false, addEventListener: null };
+    var PHONE = !!PMQ.matches;
     /* Source: ehs-osha-analysis outputs/tables/quality_by_year.csv */
     var D = [[2016, 2.729, 3.921], [2017, 2.634, 3.998], [2018, 2.920, 4.069], [2019, 0.016, 4.018], [2020, 2.792, 4.491], [2021, 2.385, 4.368], [2022, 2.661, 4.605], [2023, 1.380, 3.147], [2024, 0.280, 3.642]];
     var VW = 960, VH = 640;
+    function dims() { VW = PHONE ? 560 : 960; VH = PHONE ? 720 : 640; }
     function svg(inner, label) {
+      // the engine's .st-chart text rule carries fill:var(--muted), and a CSS rule beats a
+      // presentation attribute, so a figure's own text colours have to be set inline
+      inner = inner.replace(/(<text\b[^>]*?)\sfill="([^"]*)"/g, '$1 style="fill:$2"');
       return '<svg viewBox="0 0 ' + VW + ' ' + VH + '" preserveAspectRatio="xMidYMid meet" role="img" aria-label="' + label + '">' + inner + '</svg>';
     }
-    function big(x, y, v, unit, sub, col) {
-      return '<text x="' + x + '" y="' + y + '" font-size="84" font-weight="700" letter-spacing="-3" fill="' + (col || 'var(--accent)') + '" font-family="var(--font-mono)">' + v +
-        (unit ? '<tspan font-size="34">' + unit + '</tspan>' : '') + '</text>' +
-        (sub ? '<text x="' + x + '" y="' + (y + 26) + '" font-size="13" fill="var(--muted)" letter-spacing="1.6">' + sub + '</text>' : '');
+    function big(x, y, v, unit, sub, col, size) {
+      var fs = size || (PHONE ? 96 : 84);
+      return '<text x="' + x + '" y="' + y + '" font-size="' + fs + '" font-weight="700" letter-spacing="-3" fill="' + (col || 'var(--accent)') + '" font-family="var(--font-mono)">' + v +
+        (unit ? '<tspan font-size="' + Math.round(fs * .4) + '">' + unit + '</tspan>' : '') + '</text>' +
+        (sub ? '<text x="' + x + '" y="' + (y + (PHONE ? 34 : 26)) + '" font-size="' + (PHONE ? 24 : 13) + '" fill="var(--muted)" letter-spacing="1.6">' + sub + '</text>' : '');
     }
     function denom() {
-      var L = 74, R = 30, T = 48, B = 74, pw = VW - L - R, ph = VH - T - B, mx = 5;
+      var L = PHONE ? 62 : 74, R = PHONE ? 22 : 30, T = PHONE ? 300 : 48, B = PHONE ? 86 : 74;
+      var pw = VW - L - R, ph = VH - T - B, mx = 5, fs = PHONE ? 24 : 14;
       function X(i) { return L + i * (pw / 8); } function Y(v) { return T + ph - (v / mx) * ph; }
-      var pu = '', ps = '', area = '';
+      var pu = '', ps = '';
       D.forEach(function (r, i) { pu += (i ? 'L' : 'M') + X(i) + ' ' + Y(r[1]); ps += (i ? 'L' : 'M') + X(i) + ' ' + Y(r[2]); });
-      area = ps + 'L' + X(8) + ' ' + Y(D[8][1]); for (var i = 8; i >= 0; i--) area += 'L' + X(i) + ' ' + Y(D[i][1]); area += 'Z';
-      var g = '';
-      for (var v = 0; v <= mx; v++) g += '<line class="st-grid" x1="' + L + '" x2="' + (VW - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '"/><text x="' + (L - 12) + '" y="' + (Y(v) + 5) + '" text-anchor="end">' + v.toFixed(1) + '</text>';
-      D.forEach(function (r, i) { g += '<text x="' + X(i) + '" y="' + (VH - B + 32) + '" text-anchor="middle"' + (r[0] === 2019 ? ' font-weight="700" fill="var(--ink)"' : '') + '>' + r[0] + '</text>'; });
+      var area = ps + 'L' + X(8) + ' ' + Y(D[8][1]); for (var i = 8; i >= 0; i--) area += 'L' + X(i) + ' ' + Y(D[i][1]); area += 'Z';
+      var g = '', vs = PHONE ? [0, 2, 4] : [0, 1, 2, 3, 4, 5];
+      vs.forEach(function (v) { g += '<line class="st-grid" x1="' + L + '" x2="' + (VW - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '"/><text x="' + (L - 12) + '" y="' + (Y(v) + 6) + '" text-anchor="end" font-size="' + fs + '">' + v.toFixed(1) + '</text>'; });
+      (PHONE ? [0, 3, 8] : [0, 1, 2, 3, 4, 5, 6, 7, 8]).forEach(function (i) {
+        var r = D[i];
+        var anc = PHONE && i === 8 ? 'end' : (PHONE && i === 0 ? 'start' : 'middle');
+        g += '<text x="' + X(i) + '" y="' + (VH - B + (PHONE ? 40 : 32)) + '" text-anchor="' + anc + '" font-size="' + fs + '"' + (r[0] === 2019 ? ' font-weight="700" fill="var(--ink)"' : '') + '>' + r[0] + '</text>';
+      });
+      var lbl = PHONE
+        ? '<text x="' + (X(3) + 14) + '" y="' + (Y(0.016) - 22) + '" fill="var(--warn)" font-size="26" font-weight="700" font-family="var(--font-mono)">raw 0.016</text>' +
+          '<text x="' + L + '" y="' + (Y(4.605) - 20) + '" fill="var(--accent)" font-size="26" font-weight="700" font-family="var(--font-mono)">screened 4.61</text>'
+        : '<path class="st-anno-line" stroke-width="2" d="M' + X(3) + ' ' + (Y(0.016) - 14) + ' L' + X(3) + ' ' + (Y(0.016) - 74) + ' L' + (X(3) + 64) + ' ' + (Y(0.016) - 74) + '"/>' +
+          '<text class="st-label-direct" x="' + (X(3) + 74) + '" y="' + (Y(0.016) - 68) + '" fill="var(--warn)">2019 raw 0.016</text>' +
+          '<text class="st-label-direct" x="' + X(6) + '" y="' + (Y(4.605) - 18) + '" fill="var(--accent)">screened 4.61</text>';
       return svg(g + '<path class="st-gap" d="' + area + '"/>' +
-        '<path class="st-series-line" id="lnS" stroke="var(--accent)" stroke-width="3.5" d="' + ps + '"/>' +
-        '<path class="st-series-line" id="lnU" stroke="var(--warn)" stroke-width="3.5" d="' + pu + '"/>' +
-        '<circle cx="' + X(3) + '" cy="' + Y(0.016) + '" r="8" fill="var(--warn)" stroke="var(--paper)" stroke-width="2.5"/>' +
-        '<path class="st-anno-line" stroke-width="2" d="M' + X(3) + ' ' + (Y(0.016) - 14) + ' L' + X(3) + ' ' + (Y(0.016) - 74) + ' L' + (X(3) + 64) + ' ' + (Y(0.016) - 74) + '"/>' +
-        '<text class="st-label-direct" x="' + (X(3) + 74) + '" y="' + (Y(0.016) - 68) + '" fill="var(--warn)">2019 raw 0.016</text>' +
-        '<text class="st-label-direct" x="' + X(6) + '" y="' + (Y(4.605) - 18) + '" fill="var(--accent)">screened 4.61</text>' +
-        '<text class="st-caption" x="' + L + '" y="26">National TRIR, raw filings against plausibility screened</text>' +
-        big(L + 8, T + 128, '249', 'x', 'RATIO BETWEEN THE TWO SERIES, 2019', 'var(--warn)'),
+        '<path class="st-series-line" id="lnS" stroke="var(--accent)" stroke-width="' + (PHONE ? 5 : 3.5) + '" d="' + ps + '"/>' +
+        '<path class="st-series-line" id="lnU" stroke="var(--warn)" stroke-width="' + (PHONE ? 5 : 3.5) + '" d="' + pu + '"/>' +
+        '<circle cx="' + X(3) + '" cy="' + Y(0.016) + '" r="' + (PHONE ? 10 : 8) + '" fill="var(--warn)" stroke="var(--paper)" stroke-width="2.5"/>' +
+        lbl +
+        (PHONE ? '<text x="' + L + '" y="36" font-size="24" fill="var(--muted)" font-family="var(--font-mono)">National TRIR</text>' : '<text class="st-caption" x="' + L + '" y="26">National TRIR, raw filings against plausibility screened</text>') +
+        big(PHONE ? L : L + 8, PHONE ? 150 : T + 128, '249', 'x', PHONE ? 'RAW VS SCREENED, 2019' : 'RATIO BETWEEN THE TWO SERIES, 2019', 'var(--warn)'),
         'Raw and screened national TRIR, 2016 to 2024. The raw series collapses to 0.016 in 2019 while the screened series stays near 4.');
     }
     function ask() {
-      var terms = ['Set pressure', 'Blowdown', 'Reseating'], disk = ['Burst pressure', 'Burst tolerance', 'Design range', 'Operating ratio'], o = '';
+      var disk = ['Burst pressure', 'Burst tolerance', 'Design range', 'Operating ratio'], valve = ['Set pressure', 'Blowdown', 'Reseating'], o = '';
+      if (PHONE) {
+        o += '<text x="28" y="38" font-size="24" fill="var(--muted)" font-family="var(--font-mono)">Asked: rupture disk</text>';
+        o += '<rect x="24" y="54" width="512" height="226" fill="none" stroke="var(--accent)" stroke-width="3"/>';
+        disk.forEach(function (t, i) { o += '<text x="52" y="' + (104 + i * 52) + '" fill="var(--accent)" font-size="26" font-weight="700">' + t + '</text>'; });
+        o += '<text x="280" y="368" text-anchor="middle" font-size="120" font-weight="700" fill="var(--ink)" font-family="var(--font-mono)">0</text>';
+        o += '<text x="280" y="406" text-anchor="middle" font-size="24" fill="var(--muted)" letter-spacing="1.6" font-family="var(--font-mono)">SHARED PARAMETERS</text>';
+        o += '<text x="28" y="458" font-size="24" fill="var(--muted)" font-family="var(--font-mono)">Answered: relief valve</text>';
+        o += '<rect x="24" y="476" width="512" height="174" fill="none" stroke="var(--warn)" stroke-width="3"/>';
+        valve.forEach(function (t, i) { o += '<text x="52" y="' + (526 + i * 52) + '" fill="var(--warn)" font-size="26" font-weight="700">' + t + '</text>'; });
+        o += '<text x="28" y="702" font-size="24" fill="var(--ink-2)">Nothing contradicts itself.</text>';
+        return svg(o, 'Two parameter spaces with no shared parameters. The answer names relief-valve parameters for a rupture disk question.');
+      }
       o += '<text x="34" y="34" class="st-caption">Asked about: rupture disk</text><text x="554" y="34" class="st-caption">Answered about: relief valve</text>';
       o += '<rect x="30" y="54" width="380" height="486" fill="none" stroke="var(--accent)" stroke-width="3"/>';
       o += '<rect x="550" y="54" width="380" height="486" fill="none" stroke="var(--warn)" stroke-width="3"/>';
       disk.forEach(function (t, i) { o += '<text x="58" y="' + (136 + i * 102) + '" fill="var(--accent)" font-size="21" font-weight="700">' + t + '</text>'; });
-      terms.forEach(function (t, i) { o += '<text x="578" y="' + (160 + i * 136) + '" fill="var(--warn)" font-size="21" font-weight="700">' + t + '</text><path class="st-region-edge" stroke-width="2.5" d="M412 ' + (154 + i * 136) + ' L548 ' + (154 + i * 136) + '"/>'; });
+      valve.forEach(function (t, i) { o += '<text x="578" y="' + (160 + i * 136) + '" fill="var(--warn)" font-size="21" font-weight="700">' + t + '</text><path class="st-region-edge" stroke-width="2.5" d="M412 ' + (154 + i * 136) + ' L548 ' + (154 + i * 136) + '"/>'; });
       o += '<text x="480" y="286" text-anchor="middle" font-size="110" font-weight="700" fill="var(--ink)" font-family="var(--font-mono)">0</text>';
       o += '<text x="480" y="320" text-anchor="middle" font-size="13" fill="var(--muted)" letter-spacing="1.6">SHARED PARAMETERS</text>';
       o += '<text x="480" y="600" text-anchor="middle" font-size="16" fill="var(--ink-2)">Nothing in the answer contradicts itself, so a consistency check finds no tell.</text>';
       return svg(o, 'Two parameter spaces with no shared parameters. The answer names relief-valve parameters for a rupture disk question.');
     }
     function persist() {
-      var a = 27.2, b = 0.95, BW = 880, o = '';
+      var a = 27.2, b = 0.95, o = '';
+      if (PHONE) {
+        var BW = 500;
+        o += '<text x="28" y="38" font-size="24" fill="var(--muted)" font-family="var(--font-mono)">Flagged again next year?</text>';
+        o += '<text x="28" y="98" font-size="24" fill="var(--ink)">Flagged last year</text>';
+        o += '<rect x="28" y="116" width="' + BW + '" height="86" fill="var(--surface-2)" stroke="var(--rule-soft)" stroke-width="2"/>';
+        o += '<rect x="28" y="116" width="' + (BW * a / 100) + '" height="86" fill="var(--warn)"/>';
+        o += big(28, 300, '27.2', '%', '5,776 OF 21,243 SITES', 'var(--warn)');
+        o += '<text x="28" y="400" font-size="24" fill="var(--ink)">Never flagged before</text>';
+        o += '<rect x="28" y="418" width="' + BW + '" height="86" fill="var(--surface-2)" stroke="var(--rule-soft)" stroke-width="2"/>';
+        o += '<rect x="28" y="418" width="' + (BW * b / 100) + '" height="86" fill="var(--ink-2)"/>';
+        o += big(28, 602, '0.95', '%', '13,394 OF 1,415,236 SITES', 'var(--ink)');
+        o += '<text x="28" y="690" font-size="36" font-weight="700" fill="var(--accent)" font-family="var(--font-mono)">Odds ratio 39.1</text>';
+        return svg(o, 'Probability of being flagged this year: 27.2 percent if flagged last year, 0.95 percent if not.');
+      }
+      var BW = 880;
       o += '<text x="40" y="30" class="st-caption">Probability of a flag this year, by last year status</text>';
       o += '<text x="40" y="82" font-size="17" fill="var(--ink)">Flagged last year</text>';
       o += '<rect x="40" y="96" width="' + BW + '" height="112" fill="var(--surface-2)" stroke="var(--rule-soft)" stroke-width="2"/>';
@@ -4111,6 +4184,19 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
     }
     function instr() {
       var lanes = [['Bind the answer', ['grounding-eval', 'ontology']], ['Test the denominator', ['osha-analysis', 'benchmarks']], ['Price the decision', ['risk-sem', 'capitals']]], o = '';
+      if (PHONE) {
+        o += '<text x="28" y="38" font-size="24" fill="var(--muted)" font-family="var(--font-mono)">Six repositories, three lanes</text>';
+        lanes.forEach(function (ln, i) {
+          var y = 92 + i * 200;
+          o += '<text x="28" y="' + y + '" font-size="25" font-weight="700" fill="var(--accent)" letter-spacing="1.4" font-family="var(--font-mono)">' + ln[0].toUpperCase() + '</text>';
+          ln[1].forEach(function (n, j) {
+            o += '<circle cx="46" cy="' + (y + 44 + j * 52) + '" r="12" fill="var(--accent)"/>';
+            o += '<text x="76" y="' + (y + 52 + j * 52) + '" font-size="26" fill="var(--ink)" font-weight="700">' + n + '</text>';
+          });
+        });
+        o += '<circle cx="46" cy="672" r="12" fill="var(--warn)"/><text x="76" y="681" font-size="26" fill="var(--warn)" font-weight="700">one failure</text>';
+        return svg(o, 'Six instruments in three lanes, all descending from one failure.');
+      }
       var cx = 480, cy = 576;
       lanes.forEach(function (ln, i) {
         var x = 170 + i * 310;
@@ -4127,7 +4213,20 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
       return svg(o, 'Six instruments in three lanes, all descending from one failure.');
     }
     function honesty() {
-      var o = '<text x="40" y="30" class="st-caption">15 headline claims in the ledger</text>', k = 0;
+      var o = '', k = 0;
+      if (PHONE) {
+        o += '<text x="28" y="38" font-size="24" fill="var(--muted)" font-family="var(--font-mono)">15 headline claims</text>';
+        [['9 verified', 9, 'var(--accent)', 0], ['3 draft', 3, 'var(--ink-2)', 1], ['3 not yet tested', 3, 'var(--warn)', 1]].forEach(function (s, r) {
+          var y = 90 + r * 190;
+          o += '<text x="28" y="' + y + '" font-size="30" font-weight="700" fill="' + s[2] + '">' + s[0] + '</text>';
+          for (var i = 0; i < s[1]; i++) {
+            o += '<rect x="' + (28 + (i % 5) * 104) + '" y="' + (y + 22) + '" width="88" height="80" fill="none" stroke="' + s[2] + '" stroke-width="5"' + (s[3] ? ' stroke-dasharray="8 6"' : '') + '/>';
+          }
+        });
+        o += '<text x="28" y="690" font-size="24" fill="var(--muted)">No language model run yet.</text>';
+        return svg(o, 'Fifteen claims: nine verified, three draft, three not yet tested.');
+      }
+      o += '<text x="40" y="30" class="st-caption">15 headline claims in the ledger</text>';
       o += '<text x="40" y="70" font-size="16" fill="var(--accent)" font-weight="700">9 verified</text>';
       o += '<text x="200" y="70" font-size="16" fill="var(--ink-2)" font-weight="700">3 draft</text>';
       o += '<text x="320" y="70" font-size="16" fill="var(--warn)" font-weight="700">3 not yet tested</text>';
@@ -4142,6 +4241,18 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
       return svg(o, 'Fifteen claims: nine verified, three draft, three not yet tested.');
     }
     function monday() {
+      if (PHONE) {
+        return svg('<text x="28" y="46" font-size="24" fill="var(--muted)" font-family="var(--font-mono)">Monday</text>' +
+          '<text x="28" y="140" font-size="40" font-weight="700" fill="var(--ink)">Ask for the</text>' +
+          '<text x="28" y="192" font-size="40" font-weight="700" fill="var(--ink)">hours screen,</text>' +
+          '<text x="28" y="244" font-size="40" font-weight="700" fill="var(--ink)">and the share</text>' +
+          '<text x="28" y="296" font-size="40" font-weight="700" fill="var(--accent)">it removes.</text>' +
+          big(28, 450, '96.68', '%', 'OF REPORTED HOURS REMOVED HERE', 'var(--warn)') +
+          '<line class="st-axis-line" x1="28" x2="530" y1="540" y2="540" stroke-width="2"/>' +
+          '<text x="28" y="604" font-size="28" fill="var(--ink-2)">If there is no screen,</text>' +
+          '<text x="28" y="646" font-size="28" fill="var(--ink-2)">the rate is not a rate.</text>',
+          'Monday action: ask for the hours screen and the share of hours it removes.');
+      }
       return svg('<text x="40" y="44" class="st-caption">Monday</text>' +
         '<text x="40" y="168" font-size="56" font-weight="700" fill="var(--ink)">Ask for the hours screen,</text>' +
         '<text x="40" y="236" font-size="56" font-weight="700" fill="var(--ink)">and the share of hours</text>' +
@@ -4153,8 +4264,9 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
     }
     var FIG = { ask: [ask, 'Source: ehs-ai-grounding-eval, corpus/items/pressure_relief.json'], denom: [denom, 'Source: ehs-osha-analysis, outputs/tables/quality_by_year.csv'], persist: [persist, 'Source: ehs-osha-analysis, outputs/tables/panel_transitions.csv and docs/PANEL.md'], instr: [instr, 'Source: the six repositories listed in section 05'], honesty: [honesty, 'Source: the claim ledger in section 04 of this page'], monday: [monday, 'Source: ehs-osha-analysis, outputs/summary.json (quality)'] };
     var shown = null;
-    function setFig(k) {
-      if (k === shown) return; shown = k;
+    function setFig(k, force) {
+      if (k === shown && !force) return; shown = k;
+      dims();
       fig.innerHTML = FIG[k][0](); cap.textContent = FIG[k][1];
       if (!REDUCE) { fig.classList.add('is-swapping'); requestAnimationFrame(function () { requestAnimationFrame(function () { fig.classList.remove('is-swapping'); }); }); }
       if (k === 'denom' && !REDUCE) {
@@ -4166,97 +4278,25 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
       }
     }
     var VERB = { searching: 'Searching', wrong: 'Wrong', connecting: 'Connecting', solving: 'Solving', listening: 'Listening', grounded: 'Grounded' };
-    var stageEl = $('spineStage'), verbEl = $('spineVerb');
-    Story.scenes(scene, {
-      orb: orb,
+    var sc = Story.scenes(scene, {
       onStep: function (i, el) {
         if (!el) return;
         setFig(el.getAttribute('data-fig'));
         var st = el.getAttribute('data-orb') || 'searching';
-        if (stageEl) stageEl.setAttribute('data-state', st);
-        if (verbEl) verbEl.textContent = VERB[st] || st;
+        if (sc && sc.companion) sc.companion.setState(st, VERB[st] || st);
       }
     });
-    setFig('ask');
-    var pres = null, pb = document.createElement('button');
-    pb.type = 'button'; pb.className = 'btn presbtn hide-present'; pb.textContent = 'Presenter mode (P)';
-    pb.addEventListener('click', function () {
-      if (pres) { pres.exit(); pres = null; }
-      else { pres = Story.present({ selector: '#spine .st-step', onExit: function () { pres = null; } }); }
-    });
-    document.body.appendChild(pb);
-  })();
-
-  /* ---- six instruments: an orb constellation that settles into the three lanes below ---- */
-  (function () {
-    var map = $('cmap'), links = $('clinks'); if (!map || !window.Story) return;
-    var LANES = ['Bind the answer', 'Test the denominator', 'Price the decision'];
-    var NODES = [
-      { n: 'grounding-eval', role: 'Apparatus', lane: 0, j: 0, state: 'searching' },
-      { n: 'ontology', role: 'Apparatus', lane: 0, j: 1, state: 'connecting' },
-      { n: 'osha-analysis', role: 'Empirical', lane: 1, j: 0, state: 'grounded' },
-      { n: 'benchmarks', role: 'Tool', lane: 1, j: 1, state: 'solving' },
-      { n: 'risk-sem', role: 'Simulation', lane: 2, j: 0, state: 'thinking' },
-      { n: 'capitals-calculator', role: 'Tool', lane: 2, j: 1, state: 'solving' }
-    ];
-    var NS = 'http://www.w3.org/2000/svg', orbs = [], core = null, built = false;
-    function node(cls, label, sub, state, dens) {
-      var d = document.createElement('div');
-      d.className = 'cnode' + (cls ? ' ' + cls : '');
-      var cv = document.createElement('canvas');
-      d.appendChild(cv);
-      var b = document.createElement('b'); b.textContent = label; d.appendChild(b);
-      if (sub) { var e = document.createElement('em'); e.textContent = sub; d.appendChild(e); }
-      map.appendChild(d);
-      orbs.push(Story.orb(cv, { state: state, density: dens, parallax: false, label: label + ', ' + state }));
-      return d;
-    }
-    function build() {
-      if (built) return; built = true;
-      LANES.forEach(function (t, i) {
-        var s = document.createElement('div'); s.className = 'clane'; s.textContent = t;
-        s.style.left = ((i * 2 + 1) / 6 * 100) + '%'; s.style.top = '0'; map.appendChild(s);
-      });
-      NODES.forEach(function (nd) {
-        nd.el = node('', nd.n, nd.role, nd.state, 190);
-        nd.el.style.left = ((nd.lane * 2 + 1) / 6 * 100) + '%';
-        nd.el.style.top = (nd.j === 0 ? 30 : 58) + '%';
-      });
-      core = node('is-core', 'one failure', 'the thing they answer', 'wrong', 260);
-      core.style.left = '50%'; core.style.top = '88%';
-      draw();
-      var seen = false;
-      Story.inView(map, function () {
-        if (seen) return; seen = true;
-        NODES.forEach(function (nd, i) { setTimeout(function () { nd.el.classList.add('is-in'); }, Story.reduced() ? 0 : 120 * i); });
-        setTimeout(function () { core.classList.add('is-in'); draw(); }, Story.reduced() ? 0 : 780);
-      }, { once: true, margin: '0px 0px -12% 0px' });
-    }
-    function draw() {
-      if (!core) return;
-      var r = map.getBoundingClientRect();
-      links.setAttribute('viewBox', '0 0 ' + Math.round(r.width) + ' ' + Math.round(r.height));
-      while (links.firstChild) links.removeChild(links.firstChild);
-      var cr = core.getBoundingClientRect();
-      var cx = cr.left - r.left + cr.width / 2, cy = cr.top - r.top + 52;
-      NODES.forEach(function (nd) {
-        var nr = nd.el.getBoundingClientRect();
-        var x = nr.left - r.left + nr.width / 2, y = nr.top - r.top + 42;
-        var ln = document.createElementNS(NS, 'line');
-        ln.setAttribute('x1', cx); ln.setAttribute('y1', cy); ln.setAttribute('x2', x); ln.setAttribute('y2', y);
-        if (nd.j === 0) ln.setAttribute('class', 'is-hot');
-        links.appendChild(ln);
-      });
-    }
-    build();
-    addEventListener('resize', function () { clearTimeout(map.__t); map.__t = setTimeout(draw, 120); });
-    document.addEventListener('rs-themechange', draw);
-  })();
-
-  /* next card orb */
-  (function () {
-    var cv = $('nextOrb'); if (!cv || !window.Story) return;
-    try { Story.orb(cv, { state: 'grounded', density: 620, parallax: false, label: 'Orb, grounded' }); } catch (e) { }
+    /* reduced motion: every step is in its final state at once, none left at opacity 0 */
+    if (REDUCE) sc.steps.forEach(function (s) { s.classList.add('is-entered'); });
+    var act = sc.steps[sc.index] || sc.steps[0];
+    if (act) {
+      setFig(act.getAttribute('data-fig') || 'ask');
+      var st0 = act.getAttribute('data-orb') || 'searching';
+      if (sc.companion) sc.companion.setState(st0, VERB[st0] || st0);
+    } else { setFig('ask'); }
+    function onMQ() { PHONE = !!PMQ.matches; if (shown) setFig(shown, true); }
+    if (PMQ.addEventListener) PMQ.addEventListener('change', onMQ);
+    else if (PMQ.addListener) PMQ.addListener(onMQ);
   })();
 
   /* programme status */
