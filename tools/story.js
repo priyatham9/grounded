@@ -816,6 +816,9 @@
     opts = opts || {};
     node = isEl(node) ? node : el(node);
     if (!node) return null;
+    // v1.2: inline orbs retired (one orb per view); keep the API as a no-op
+    node.hidden = true;
+    if (node) return { setState: function () { }, destroy: function () { }, state: null };
     node.classList.add("st-orb-inline");
     var cv = node.querySelector("canvas");
     if (!cv) { cv = document.createElement("canvas"); node.appendChild(cv); }
@@ -934,25 +937,10 @@
     while (node.firstChild) body.appendChild(node.firstChild);
     var num = node.getAttribute("data-num");
     if (num) { var nEl = html("div", "st-chapter-num"); nEl.textContent = num; body.insertBefore(nEl, body.firstChild); }
-    var orbHost = html("div", "st-chapter-orb");
-    var cv = document.createElement("canvas");
-    orbHost.appendChild(cv);
     node.appendChild(body);
-    node.appendChild(orbHost);
-    var f = field(node, { density: opts.density == null ? 0.9 : opts.density });
-    var target = node.getAttribute("data-orb") || "grounded";
-    var o = orb(cv, {
-      state: opts.from || "breathing", parallax: false,
-      label: node.getAttribute("data-orb-label") || ("Chapter orb, state " + target)
-    });
-    inView(node, function () {
-      if (reduced()) { o.setState(target); return; }
-      setTimeout(function () { o.setState(target); }, 420);
-    }, { once: true, margin: "0px 0px -30% 0px" });
-    var api = {
-      el: node, orb: o, field: f,
-      destroy: function () { o.destroy(); if (f) f.destroy(); node.__stChapter = null; }
-    };
+    if (num) body.firstChild.textContent = "Finding " + num;
+    if (!node.id) node.id = "finding-" + (num || Math.random().toString(36).slice(2, 6));
+    var api = { el: node, orb: null, field: null, destroy: function () { node.__stChapter = null; } };
     node.__stChapter = api;
     return api;
   }
@@ -2083,6 +2071,12 @@
     mapBtn.textContent = "Map (M)";
     mapBtn.setAttribute("aria-expanded", "false");
     btns.appendChild(mapBtn);
+    if (document.querySelector(".st-step")) {
+      var prBtn = document.createElement("button");
+      prBtn.type = "button"; prBtn.className = "st-way-btn st-way-present"; prBtn.textContent = "Present (P)";
+      prBtn.addEventListener("click", function () { if (presentState) presentState.exit(); else present(); });
+      btns.appendChild(prBtn);
+    }
     link("Next →", idx < WAY.path.length - 1 ? WAY.path[idx + 1] : WAY.end, "next");
     document.body.appendChild(bar);
     document.body.classList.add("st-has-way");
@@ -2233,7 +2227,24 @@
   function autoChapters() {
     els(".st-chapter").forEach(function (n) { try { chapter(n); } catch (e) { if (global.console) console.error(e); } });
   }
-  function boot() { autoChapters(); autoWayfinder(); }
+  function autoFindings() {
+    var ch = els(".st-chapter");
+    if (/story\.html$/.test(location.pathname)) document.body.classList.add("st-story");
+    if (ch.length < 2 || document.querySelector(".st-findings")) return;
+    var nav = html("nav", "st-findings");
+    nav.setAttribute("aria-label", "Findings in this story");
+    var h = html("div", "st-findings-h", nav); h.textContent = "The findings, in order";
+    var ol = html("ol", "", nav);
+    ch.forEach(function (c) {
+      var t = c.querySelector("h2,.st-chapter-title"), p = c.querySelector("p");
+      var li = html("li", "", ol), a = html("a", "", li);
+      a.href = "#" + c.id;
+      var b = html("b", "", a); b.textContent = t ? t.textContent : "";
+      if (p) { var sp = html("span", "", a); sp.textContent = p.textContent; }
+    });
+    ch[0].parentNode.insertBefore(nav, ch[0]);
+  }
+  function boot() { autoChapters(); autoFindings(); autoWayfinder(); }
   if (document.readyState === "loading") addEventListener("DOMContentLoaded", boot);
   else boot();
 
