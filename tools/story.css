@@ -293,3 +293,307 @@ html{scroll-padding-top:16px}
 .st-reduced .st-scene.st-flow .st-step > *{opacity:1!important;transform:none!important;transition:none!important}
 .st-reduced .st-stage-inner.st-layers > [data-show]{transition:none!important}
 .st-reduced .st-companion .st-companion-cap{transition:none!important}
+
+
+/* ---------- v1.3 print handout ---------- */
+.st-print-foot,.st-print-terms{display:none}
+@media print{
+  @page{size:A4;margin:14mm}
+:root{--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}
+  body{background:#fff!important;color:#000!important;padding-bottom:0!important;font-size:11pt}
+  .st-way,  .st-way-map,  .st-progress,  .st-present-dots,  .st-present-hint,  .st-notes,  .st-gloss-tip,  .st-companion,  .st-field,  .st-hero-orb,  .st-orb-wrap,  canvas.st-orb,  .st-orb,  .presbtn,  .skip,  header.banner,  .rs-header,  .footer,  nav.pgm,  .story-nav,  .st-scene-rail,  details{display:none!important}
+  *{box-shadow:none!important;text-shadow:none!important;transition:none!important;animation:none!important;filter:none!important}
+  .st-scene,  .st-scene[data-side="left"]{display:block!important;grid-template-columns:none!important;gap:0!important}
+  .st-stage,  .st-scene .st-stage,  .st-scene[data-side="left"] .st-stage{position:static!important;height:auto!important;min-height:0!important;max-height:none!important;order:0!important;padding:0!important;border:0!important;background:transparent!important;display:block!important}
+  .st-steps,  .st-scene[data-side="left"] .st-steps{order:0!important}
+  .st-stage-inner{position:static!important;min-height:0!important;display:block!important;height:auto!important}
+  .st-stage-inner.st-layers > [data-show]{display:none!important}
+  .st-stage-inner.st-layers > [data-show].is-shown{display:block!important;opacity:1!important;transform:none!important;pointer-events:auto}
+  .st-stage-inner svg,  .st-stage-inner canvas:not(.st-orb),  .st-stage-inner .st-figure{max-height:9cm!important;height:auto!important;width:100%!important;max-width:100%!important;margin:0 auto 8pt;break-inside:avoid;page-break-inside:avoid}
+  .st-chart.st-in-stage{height:auto!important;max-height:9cm!important}
+  .st-step{min-height:0!important;opacity:1!important;padding:0 0 9pt!important;display:block!important;break-inside:avoid;page-break-inside:avoid}
+  .st-step > *{opacity:1!important;transform:none!important}
+  .st-step h3{font-size:12.5pt!important;margin:0 0 3pt!important;color:#000}
+  .st-step p{font-size:10.5pt!important;color:#000!important;max-width:none!important;line-height:1.36}
+  .st-step .label,  .st-bignum small{color:#444!important}
+  .st-bignum{font-size:20pt!important;color:#000!important}
+  .st-chapter{min-height:0!important;padding:11pt 0 5pt!important;border-top:1pt solid #000!important;margin:0!important;max-width:none!important;break-after:avoid;page-break-after:avoid;break-inside:avoid}
+  .st-chapter h2,  .st-chapter .st-chapter-title{font-size:15pt!important;max-width:none!important;margin:0 0 3pt!important}
+  .st-chapter p{font-size:10.5pt!important;color:#000!important;max-width:none!important}
+  .st-chapter .st-chapter-num{color:#000!important;font-size:8.5pt!important;margin:0 0 4pt!important}
+  .st-hero{min-height:0!important;display:block!important;padding:0!important}
+  .st-hero h1{font-size:20pt!important;margin:0 0 6pt}
+  .st-hero p,  .hero-lede{font-size:11pt!important;color:#000!important;max-width:none!important}
+  .st-findings{padding:6pt 0 4pt!important;max-width:none!important;break-inside:avoid}
+  .st-findings ol{display:block!important;border:0!important;counter-reset:f}
+  .st-findings li{border:0!important;background:none!important;break-inside:avoid;page-break-inside:avoid}
+  .st-findings a{padding:0 0 4pt!important;color:#000!important;display:block!important}
+  .st-findings a::before{display:inline!important;margin:0 6pt 0 0!important;color:#000!important;font-size:9pt!important}
+  .st-findings b{display:inline!important;font-size:10.5pt!important}
+  .st-findings span{display:block!important;color:#222!important;font-size:9.5pt!important;padding-left:26pt}
+  .st-chart text,  svg text,  .st-chart .st-label-direct,  .st-chart .st-anno-text{fill:#000!important}
+  .st-chart .st-caption,  .st-chart .st-ref-text,  .st-figure figcaption{fill:#333!important;color:#333!important}
+  .st-chart .st-grid,  .st-chart .st-axis-line{stroke:#888!important}
+  .st-gloss{border-bottom:0!important;text-decoration:none!important}
+  a{color:#000!important;text-decoration:none!important}
+  a[href]::after{content:""!important}
+  .st-print-next a[href]::after,  a[rel="next"]::after,  figcaption a[href]::after{content:" (" attr(href) ")"!important;font-size:8pt;color:#333}
+  .st-print-terms{display:block!important;padding:9pt 0 0;margin-top:10pt;border-top:1pt solid #000;break-inside:auto}
+  .st-print-terms h2{font-size:12pt;margin:0 0 5pt}
+  .st-print-terms dl{margin:0;columns:2;column-gap:16pt}
+  .st-print-terms dt{font-weight:700;font-size:9pt;margin-top:4pt;break-after:avoid}
+  .st-print-terms dd{margin:0;font-size:9pt;color:#222;break-inside:avoid}
+  .st-print-foot{display:block!important;margin-top:9pt;padding-top:4pt;border-top:.5pt solid #777;font-size:8pt;color:#333;font-family:var(--font-mono)}
+}
+/* screen mirror of the handout rules, for previewing with ?print=1 */
+html.st-printing{--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}
+html.st-printing body{background:#fff!important;color:#000!important;padding-bottom:0!important;font-size:11pt}
+html.st-printing .st-way,html.st-printing .st-way-map,html.st-printing .st-progress,html.st-printing .st-present-dots,html.st-printing .st-present-hint,html.st-printing .st-notes,html.st-printing .st-gloss-tip,html.st-printing .st-companion,html.st-printing .st-field,html.st-printing .st-hero-orb,html.st-printing .st-orb-wrap,html.st-printing canvas.st-orb,html.st-printing .st-orb,html.st-printing .presbtn,html.st-printing .skip,html.st-printing header.banner,html.st-printing .rs-header,html.st-printing .footer,html.st-printing nav.pgm,html.st-printing .story-nav,html.st-printing .st-scene-rail,html.st-printing details{display:none!important}
+html.st-printing *{box-shadow:none!important;text-shadow:none!important;transition:none!important;animation:none!important;filter:none!important}
+html.st-printing .st-scene,html.st-printing .st-scene[data-side="left"]{display:block!important;grid-template-columns:none!important;gap:0!important}
+html.st-printing .st-stage,html.st-printing .st-scene .st-stage,html.st-printing .st-scene[data-side="left"] .st-stage{position:static!important;height:auto!important;min-height:0!important;max-height:none!important;order:0!important;padding:0!important;border:0!important;background:transparent!important;display:block!important}
+html.st-printing .st-steps,html.st-printing .st-scene[data-side="left"] .st-steps{order:0!important}
+html.st-printing .st-stage-inner{position:static!important;min-height:0!important;display:block!important;height:auto!important}
+html.st-printing .st-stage-inner.st-layers > [data-show]{display:none!important}
+html.st-printing .st-stage-inner.st-layers > [data-show].is-shown{display:block!important;opacity:1!important;transform:none!important;pointer-events:auto}
+html.st-printing .st-stage-inner svg,html.st-printing .st-stage-inner canvas:not(.st-orb),html.st-printing .st-stage-inner .st-figure{max-height:9cm!important;height:auto!important;width:100%!important;max-width:100%!important;margin:0 auto 8pt;break-inside:avoid;page-break-inside:avoid}
+html.st-printing .st-chart.st-in-stage{height:auto!important;max-height:9cm!important}
+html.st-printing .st-step{min-height:0!important;opacity:1!important;padding:0 0 9pt!important;display:block!important;break-inside:avoid;page-break-inside:avoid}
+html.st-printing .st-step > *{opacity:1!important;transform:none!important}
+html.st-printing .st-step h3{font-size:12.5pt!important;margin:0 0 3pt!important;color:#000}
+html.st-printing .st-step p{font-size:10.5pt!important;color:#000!important;max-width:none!important;line-height:1.36}
+html.st-printing .st-step .label,html.st-printing .st-bignum small{color:#444!important}
+html.st-printing .st-bignum{font-size:20pt!important;color:#000!important}
+html.st-printing .st-chapter{min-height:0!important;padding:11pt 0 5pt!important;border-top:1pt solid #000!important;margin:0!important;max-width:none!important;break-after:avoid;page-break-after:avoid;break-inside:avoid}
+html.st-printing .st-chapter h2,html.st-printing .st-chapter .st-chapter-title{font-size:15pt!important;max-width:none!important;margin:0 0 3pt!important}
+html.st-printing .st-chapter p{font-size:10.5pt!important;color:#000!important;max-width:none!important}
+html.st-printing .st-chapter .st-chapter-num{color:#000!important;font-size:8.5pt!important;margin:0 0 4pt!important}
+html.st-printing .st-hero{min-height:0!important;display:block!important;padding:0!important}
+html.st-printing .st-hero h1{font-size:20pt!important;margin:0 0 6pt}
+html.st-printing .st-hero p,html.st-printing .hero-lede{font-size:11pt!important;color:#000!important;max-width:none!important}
+html.st-printing .st-findings{padding:6pt 0 4pt!important;max-width:none!important;break-inside:avoid}
+html.st-printing .st-findings ol{display:block!important;border:0!important;counter-reset:f}
+html.st-printing .st-findings li{border:0!important;background:none!important;break-inside:avoid;page-break-inside:avoid}
+html.st-printing .st-findings a{padding:0 0 4pt!important;color:#000!important;display:block!important}
+html.st-printing .st-findings a::before{display:inline!important;margin:0 6pt 0 0!important;color:#000!important;font-size:9pt!important}
+html.st-printing .st-findings b{display:inline!important;font-size:10.5pt!important}
+html.st-printing .st-findings span{display:block!important;color:#222!important;font-size:9.5pt!important;padding-left:26pt}
+html.st-printing .st-chart text,html.st-printing svg text,html.st-printing .st-chart .st-label-direct,html.st-printing .st-chart .st-anno-text{fill:#000!important}
+html.st-printing .st-chart .st-caption,html.st-printing .st-chart .st-ref-text,html.st-printing .st-figure figcaption{fill:#333!important;color:#333!important}
+html.st-printing .st-chart .st-grid,html.st-printing .st-chart .st-axis-line{stroke:#888!important}
+html.st-printing .st-gloss{border-bottom:0!important;text-decoration:none!important}
+html.st-printing a{color:#000!important;text-decoration:none!important}
+html.st-printing a[href]::after{content:""!important}
+html.st-printing .st-print-next a[href]::after,html.st-printing a[rel="next"]::after,html.st-printing figcaption a[href]::after{content:" (" attr(href) ")"!important;font-size:8pt;color:#333}
+html.st-printing .st-print-terms{display:block!important;padding:9pt 0 0;margin-top:10pt;border-top:1pt solid #000;break-inside:auto}
+html.st-printing .st-print-terms h2{font-size:12pt;margin:0 0 5pt}
+html.st-printing .st-print-terms dl{margin:0;columns:2;column-gap:16pt}
+html.st-printing .st-print-terms dt{font-weight:700;font-size:9pt;margin-top:4pt;break-after:avoid}
+html.st-printing .st-print-terms dd{margin:0;font-size:9pt;color:#222;break-inside:avoid}
+html.st-printing .st-print-foot{display:block!important;margin-top:9pt;padding-top:4pt;border-top:.5pt solid #777;font-size:8pt;color:#333;font-family:var(--font-mono)}
+
+/* ---------- v1.3 speaker notes (presenter mode only) ---------- */
+.st-notes{position:fixed;left:22px;bottom:22px;z-index:78;max-width:46ch;padding:12px 15px 13px;background:var(--surface);border:2px solid var(--ink);color:var(--ink)}
+.st-notes.st-notes-right{left:auto;right:22px;bottom:54px}
+.st-notes-lab{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.2em;font-weight:700;color:var(--accent);margin-bottom:7px}
+.st-notes-body{font-size:1rem;line-height:1.45;color:var(--ink)}
+html:not(.st-presenting) .st-notes{display:none!important}
+@media(max-width:800px){.st-notes{max-width:calc(100vw - 32px);left:16px;right:16px;bottom:16px}.st-notes.st-notes-right{left:16px;right:16px;bottom:16px}}
+
+/* ---------- v1.3 glossary ---------- */
+abbr.st-gloss{border-bottom:1px dotted var(--muted);text-decoration:none;cursor:help;color:inherit}
+abbr.st-gloss:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.st-gloss-tip{position:absolute;left:0;top:0;z-index:95;max-width:34ch;padding:9px 11px;background:var(--surface);border:2px solid var(--rule);color:var(--ink);font-size:.8125rem;line-height:1.4;pointer-events:none}
+.st-gloss-tip[hidden]{display:none}
+.st-presenting abbr.st-gloss{border-bottom-color:transparent}
+
+/* print handout, second pass */
+@media print{
+  /* only the layout boxes go static; figures keep their own absolutely placed parts */
+  .st-stage,.st-stage-inner,.st-frame,.st-steps,.st-step,.st-hero,.st-hero > *{position:static!important}
+  .st-figure figcaption{margin:4pt 0 0!important;padding:0!important}
+  .st-steps{padding-top:8pt!important;min-height:0!important}
+  .st-scene,  .st-scene .st-steps,  .st-scene .st-stage{min-height:0!important}
+  button,  .btn,  [class*="btn"],  [class*="cta"]{background:none!important;background-color:transparent!important;color:#000!important;border-color:#000!important}
+  [style*="position:fixed"],  [style*="position: fixed"]{display:none!important}
+}
+html.st-printing .st-stage,html.st-printing .st-stage-inner,html.st-printing .st-frame,html.st-printing .st-steps,html.st-printing .st-step,html.st-printing .st-hero,html.st-printing .st-hero > *{position:static!important}
+html.st-printing .st-figure figcaption{margin:4pt 0 0!important;padding:0!important}
+html.st-printing .st-steps{padding-top:8pt!important;min-height:0!important}
+html.st-printing .st-scene,html.st-printing .st-scene .st-steps,html.st-printing .st-scene .st-stage{min-height:0!important}
+html.st-printing button,html.st-printing .btn,html.st-printing [class*="btn"],html.st-printing [class*="cta"]{background:none!important;background-color:transparent!important;color:#000!important;border-color:#000!important}
+html.st-printing [style*="position:fixed"],html.st-printing [style*="position: fixed"]{display:none!important}
+
+/* ============================================================
+   v1.3 UI refresh: surface system, dock, bento, step card,
+   spotlight, stage frame, word reveal, beam, ticker
+   ============================================================ */
+:root{
+  --st-radius:14px;--st-radius-sm:10px;
+  --st-hair-c:rgba(90,90,90,.22);
+  --st-glass:var(--surface);
+  --st-shadow:0 10px 40px -12px rgba(16,19,17,.18);
+  --st-ease:cubic-bezier(.2,.8,.2,1);
+  --st-hair:1px solid var(--st-hair-c);
+}
+@supports (color: color-mix(in srgb, red, blue)){
+  :root{--st-hair-c:color-mix(in srgb, var(--ink) 14%, transparent);--st-glass:color-mix(in srgb, var(--surface) 78%, transparent)}
+}
+html[data-theme="dark"]{--st-shadow:0 10px 40px -12px rgba(0,0,0,.45)}
+@media (prefers-color-scheme: dark){html:not([data-theme="light"]){--st-shadow:0 10px 40px -12px rgba(0,0,0,.45)}}
+
+/* ---------- 1. dock ---------- */
+body.st-has-way{padding-bottom:calc(var(--st-way-h,64px) + 22px)}
+.st-way{position:fixed;left:50%;right:auto;bottom:12px;transform:translateX(-50%);
+  width:min(720px,calc(100vw - 24px));border:var(--st-hair);border-top:var(--st-hair);border-radius:999px;
+  background:var(--st-glass);box-shadow:var(--st-shadow);overflow:hidden;z-index:75}
+@supports (backdrop-filter: blur(4px)){.st-way{backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2)}}
+.st-way-seg{position:absolute;top:0;left:16px;right:16px;height:3px;display:flex;gap:3px;padding:0;z-index:1}
+.st-way-seg i{height:3px;border-radius:2px;background:var(--rule-soft);opacity:.55}
+.st-way-seg i.is-done{background:var(--accent);opacity:.4}
+.st-way-seg i.is-now{background:transparent}
+.st-way-lamp{position:absolute;top:0;height:3px;border-radius:2px;background:var(--accent);z-index:2;
+  transition:left .5s var(--st-ease),width .5s var(--st-ease);box-shadow:0 0 12px 1px var(--accent)}
+.st-way-lamp::after{content:"";position:absolute;left:50%;top:2px;width:150%;height:26px;transform:translateX(-50%);
+  background:radial-gradient(60% 100% at 50% 0%,var(--accent),transparent 72%);opacity:.20;pointer-events:none}
+.st-way-row{padding:10px 8px 9px 18px;gap:10px;min-height:44px}
+.st-way-crumb{font-size:.6875rem;letter-spacing:.1em}
+.st-way-btns{gap:4px}
+.st-way a.st-way-btn,.st-way button.st-way-btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;
+  border:var(--st-hair);background:transparent;padding:7px 12px;transition:transform .18s var(--st-ease),border-color .18s,color .18s,background .18s}
+.st-way a.st-way-btn:hover,.st-way button.st-way-btn:hover{transform:translateY(-1px);border-color:var(--accent);background:var(--accent-wash)}
+.st-way .st-way-btn svg{width:13px;height:13px;flex:0 0 auto;display:block}
+.st-way .st-way-btn .st-way-lab{display:inline}
+@media(max-width:520px){.st-way .st-way-btn .st-way-lab{display:none}.st-way a.st-way-btn,.st-way button.st-way-btn{padding:8px 10px}.st-way-row{padding-left:14px}}
+.st-presenting .st-way,.st-presenting .st-way-lamp{display:none!important}
+
+/* ---------- 2. spotlight ---------- */
+.st-spot{position:relative;isolation:isolate}
+.st-spot::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:0;opacity:0;
+  transition:opacity .3s var(--st-ease);
+  background:radial-gradient(220px circle at var(--mx,50%) var(--my,0%),var(--accent-wash),transparent 72%)}
+@supports (color: color-mix(in srgb, red, blue)){
+  .st-spot::before{background:radial-gradient(220px circle at var(--mx,50%) var(--my,0%),color-mix(in srgb,var(--accent) 12%,transparent),transparent 72%)}
+}
+.st-spot.is-spot::before{opacity:1}
+.st-spot.is-spot{border-color:var(--accent)}
+.st-spot > *{position:relative;z-index:1}
+
+/* ---------- 3. findings bento ---------- */
+.st-findings ol{border:0!important;gap:12px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.st-findings li{border:var(--st-hair)!important;border-radius:var(--st-radius);background:var(--surface);overflow:hidden;
+  transition:transform .22s var(--st-ease),box-shadow .22s var(--st-ease),border-color .22s}
+.st-findings li:hover{box-shadow:var(--st-shadow)}
+.st-findings li.st-bento-lead{grid-column:span 2}
+@media(max-width:900px){.st-findings li.st-bento-lead{grid-column:span 1}}
+.st-findings a{padding:18px 20px 20px;position:relative}
+.st-findings a:hover{background:transparent}
+.st-findings a::before{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:22px;
+  border:var(--st-hair);border-radius:999px;font-size:.6875rem;color:var(--accent);margin-bottom:12px}
+.st-findings b{font-size:1.2rem}
+.st-find-key{position:absolute;top:16px;right:18px;font-family:var(--font-mono);font-style:normal;font-weight:700;
+  font-size:1.35rem;letter-spacing:-.02em;color:var(--accent);opacity:.9}
+
+/* ---------- 5. stage frame ---------- */
+@media(min-width:801px){
+  .st-stage-inner.st-frame{--fp:min(calc(var(--p,0) * 4),1);
+    border:var(--st-hair);border-radius:var(--st-radius);background:var(--surface);padding:16px 18px;
+    box-shadow:var(--st-shadow);transform-origin:50% 0;will-change:transform;
+    transform:perspective(1200px) rotateX(calc((1 - var(--fp)) * 10deg)) scale(calc(.96 + .04 * var(--fp))) translateY(calc((1 - var(--fp)) * 24px))}
+  .st-stage-inner.st-frame::before{content:"";position:absolute;left:1px;right:1px;top:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--st-hair-c),transparent);pointer-events:none}
+}
+.st-presenting .st-stage-inner.st-frame,.st-reduced .st-stage-inner.st-frame{transform:none!important;box-shadow:none}
+@media (prefers-reduced-motion: reduce){.st-stage-inner.st-frame{transform:none!important}}
+
+/* ---------- 6. active step card ---------- */
+.st-step{border:1px solid transparent;border-radius:var(--st-radius);padding:22px 24px;
+  transition:opacity .45s ease,background .35s var(--st-ease),border-color .35s var(--st-ease)}
+.st-step.is-active{background:var(--st-glass);border:var(--st-hair)}
+@supports (backdrop-filter: blur(4px)){.st-step.is-active{backdrop-filter:blur(14px) saturate(1.15);-webkit-backdrop-filter:blur(14px) saturate(1.15)}}
+.st-presenting .st-step.is-active{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;padding:28px 30px;background:var(--surface)}
+
+/* ---------- 4. word reveal ---------- */
+.st-w{display:inline-block;opacity:0;transform:translateY(.36em);transition:opacity .5s var(--st-ease),transform .5s var(--st-ease),color .3s linear}
+.st-words.is-in .st-w{opacity:1;transform:none}
+.st-chapter h2.st-words .st-w{opacity:1;transform:none;color:var(--muted)}
+.st-chapter h2.st-words .st-w.is-lit{color:var(--ink)}
+.st-reduced .st-w,.st-printing .st-w{opacity:1!important;transform:none!important;color:inherit!important;transition:none!important}
+@media (prefers-reduced-motion: reduce){.st-w{opacity:1!important;transform:none!important;transition:none!important}}
+
+/* ---------- 7. beam ---------- */
+.st-beam-base{fill:none;stroke:var(--rule-soft);stroke-width:1.5}
+.st-beam-run{fill:none;stroke-width:2.4;stroke-linecap:round}
+
+/* ---------- 8. number ticker ---------- */
+.st-tick{display:inline-flex;align-items:baseline;overflow:hidden;vertical-align:baseline}
+.st-tick-col{display:inline-block;overflow:hidden;height:1em;line-height:1}
+.st-tick-col i{display:block;font-style:normal;transition:transform .9s var(--st-ease)}
+
+/* ---------- 9. surfaces ---------- */
+.st-way-map{background:var(--paper)}
+.st-map-card{border:var(--st-hair);border-radius:var(--st-radius);background:var(--surface)}
+.st-map-card.is-now{border-color:var(--accent)}
+.st-map-card a{border-left:2px solid var(--st-hair-c);border-radius:0 var(--st-radius-sm) var(--st-radius-sm) 0}
+.st-way-map .st-way-btn,.st-map-extra .st-way-btn{border:var(--st-hair);border-radius:999px;transition:transform .18s var(--st-ease),border-color .18s}
+.st-way-map .st-way-btn:hover,.st-map-extra .st-way-btn:hover{transform:translateY(-1px);border-color:var(--accent)}
+.st-gloss-tip{border:var(--st-hair);border-radius:var(--st-radius-sm);background:var(--st-glass);box-shadow:var(--st-shadow)}
+@supports (backdrop-filter: blur(4px)){.st-gloss-tip,.st-notes,.st-present-dots{backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2)}}
+.st-notes{border:var(--st-hair);border-radius:var(--st-radius);background:var(--st-glass);box-shadow:var(--st-shadow)}
+.st-present-dots{border:var(--st-hair);border-radius:999px;background:var(--st-glass);box-shadow:var(--st-shadow);padding:10px 14px}
+.st-present-dots b{transition:background .3s var(--st-ease),transform .3s var(--st-ease)}
+.st-present-dots b.is-on{transform:scale(1.25)}
+.st-present-hint{opacity:.8}
+
+/* ---------- 10. hero background ---------- */
+.st-hero{isolation:isolate}
+.st-hero::before{content:"";position:absolute;inset:-10% -4%;z-index:-2;pointer-events:none;
+  background-image:radial-gradient(var(--st-hair-c) 1px,transparent 1px);background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 75%);
+  mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 75%)}
+.st-hero::after{content:"";position:absolute;right:6%;top:18%;width:46%;height:56%;z-index:-3;pointer-events:none;
+  background:radial-gradient(closest-side,var(--accent),transparent 70%);opacity:.12;filter:blur(28px);
+  animation:st-aurora 18s ease-in-out infinite alternate}
+@keyframes st-aurora{from{transform:translate3d(-3%,2%,0) scale(1)}to{transform:translate3d(4%,-3%,0) scale(1.08)}}
+.st-reduced .st-hero::after{animation:none}
+@media (prefers-reduced-motion: reduce){.st-hero::after{animation:none}}
+@keyframes st-beam-run{from{stroke-dashoffset:calc(var(--len,200) * 1px)}to{stroke-dashoffset:0}}
+.st-tick-col i span{display:block;height:1em;line-height:1}
+.st-reduced .st-tick-col i{transition:none!important}
+@media (prefers-reduced-motion: reduce){.st-tick-col i{transition:none!important}.st-way-lamp{transition:none}}
+
+/* print handout: neutralise the v1.3 surfaces */
+@media print{
+  .st-hero::before,  .st-hero::after,  .st-way-lamp,  .st-spot::before{display:none!important;content:none!important}
+  .st-stage-inner.st-frame{border:0!important;box-shadow:none!important;padding:0!important;transform:none!important;background:none!important}
+  .st-step,  .st-step.is-active{background:none!important;border:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-radius:0!important;padding:0 0 9pt!important}
+  .st-findings li{border:.5pt solid #999!important;border-radius:0!important;box-shadow:none!important;background:none!important}
+  .st-findings a::before{border:0!important;min-width:0!important;height:auto!important}
+  .st-find-key{position:static!important;color:#000!important;font-size:10pt!important}
+  .st-w{opacity:1!important;transform:none!important;color:#000!important}
+  .st-beam-run{display:none!important}
+  .st-tick-col{height:auto!important;overflow:visible!important}
+}
+html.st-printing .st-hero::before,html.st-printing .st-hero::after,html.st-printing .st-way-lamp,html.st-printing .st-spot::before{display:none!important;content:none!important}
+html.st-printing .st-stage-inner.st-frame{border:0!important;box-shadow:none!important;padding:0!important;transform:none!important;background:none!important}
+html.st-printing .st-step,html.st-printing .st-step.is-active{background:none!important;border:0!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;border-radius:0!important;padding:0 0 9pt!important}
+html.st-printing .st-findings li{border:.5pt solid #999!important;border-radius:0!important;box-shadow:none!important;background:none!important}
+html.st-printing .st-findings a::before{border:0!important;min-width:0!important;height:auto!important}
+html.st-printing .st-find-key{position:static!important;color:#000!important;font-size:10pt!important}
+html.st-printing .st-w{opacity:1!important;transform:none!important;color:#000!important}
+html.st-printing .st-beam-run{display:none!important}
+html.st-printing .st-tick-col{height:auto!important;overflow:visible!important}
+@media print{.st-tick-col{height:1em!important;overflow:hidden!important}}
+html.st-printing .st-tick-col{height:1em!important;overflow:hidden!important}
+.st-presenting .st-stage-inner.st-frame{border:0!important;background:none!important;padding:0!important;box-shadow:none!important}
+.st-way-map .st-way-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;background:var(--surface);color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.1}
+.st-way-map .st-way-btn:hover,.st-way-map .st-way-btn:focus-visible{color:var(--accent);border-color:var(--accent)}
+
+@media print{
+  [class*="stat"],  [class*="kpi"],  [class*="metric"],  [class*="tile"]{background:none!important;background-color:transparent!important;color:#000!important;border-color:#999!important}
+}
+html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printing [class*="metric"],html.st-printing [class*="tile"]{background:none!important;background-color:transparent!important;color:#000!important;border-color:#999!important}
+
+/* print tokens must beat page theme blocks (:root[data-theme], prefers-color-scheme) */
+html.st-printing:root,html.st-printing:root[data-theme="dark"],html.st-printing:root[data-theme="light"],html.st-printing:root:not([data-theme="light"]){--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}
+@media print{:root,:root[data-theme="dark"],:root[data-theme="light"],:root:not([data-theme="light"]){--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}}

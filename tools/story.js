@@ -13,7 +13,10 @@
   // ?reduced=1 forces the reduced-motion path so it can be tested without changing OS settings
   var forceReduced = /[?&]reduced=1/.test(location.search);
   if (forceReduced) document.documentElement.classList.add("st-reduced");
-  function reduced() { return forceReduced || !!(mqReduce && mqReduce.matches); }
+  // while a handout is being prepared every tween and spring lands immediately,
+  // so the paper shows the final state of each figure
+  var printing = false;
+  function reduced() { return forceReduced || printing || !!(mqReduce && mqReduce.matches); }
   function clamp(v, a, b) { return v < a ? a : v > b ? b : v; }
   function lerp(a, b, t) { return a + (b - a) * t; }
   function isEl(x) { return x && x.nodeType === 1; }
@@ -248,7 +251,15 @@
         if (grp) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         n.textContent = pre + s + post;
       }
-      var run = function () { tween(opts.from == null ? 0 : opts.from, target, function (v) { paint(v); }, { duration: opts.duration || 1100 }); };
+      // data-st-ticker: digits roll into place instead of counting by value
+      var isTick = opts.ticker || (n.hasAttribute && n.hasAttribute("data-st-ticker"));
+      var run = isTick
+        ? function () {
+          var s = Math.abs(target) >= 1000 && dec === 0 ? Math.round(target).toString() : target.toFixed(dec);
+          if (grp) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+          tickerPaint(n, pre + s + post, !reduced());
+        }
+        : function () { tween(opts.from == null ? 0 : opts.from, target, function (v) { paint(v); }, { duration: opts.duration || 1100 }); };
       if (opts.now) run(); else inView(n, run, { once: true });
     });
   }
@@ -675,10 +686,16 @@
       }
     }
 
-    // reduced motion: one static, representative frame, no loop
+    // reduced motion: one calm, static frame. Most states have a moment in their
+    // cycle that reads as broken glass when frozen, so only wrong and the two
+    // lattice states keep their own shape; everything else rests as breathing.
     function renderStatic() {
       blend = 1;
-      paint(state === "solving" ? 1.05 : 1.2);
+      var realState = state, realFrom = fromState;
+      if (state !== "wrong" && state !== "grounded" && state !== "resolved") { state = "breathing"; }
+      fromState = state;
+      paint(1.2);
+      state = realState; fromState = realFrom;
     }
 
     function step(dt) {
@@ -980,6 +997,19 @@
       });
     }
 
+    /* stage frame: the figure sits on a lifted card that eases flat as the
+       scene enters. Skipped when the page already draws its own box. */
+    if (inner && stage && opts.frame !== false && stage.getAttribute("data-st-frame") !== "off"
+      && inner.getAttribute("data-st-frame") !== "off" && !reduced()
+      && !(global.matchMedia && matchMedia("(max-width:800px)").matches)) {
+      var boxed = Array.prototype.slice.call(inner.children).some(function (n) {
+        if (n.classList && (n.classList.contains("st-field") || n.classList.contains("st-companion"))) return false;
+        var cs = getComputedStyle(n);
+        return cs.borderTopStyle !== "none" && parseFloat(cs.borderTopWidth) > 0;
+      });
+      if (!boxed) inner.classList.add("st-frame");
+    }
+
     // layered stage children driven by [data-show="0 1 2"]
     var layers = inner ? els("[data-show]", inner).filter(function (n) { return n.parentNode === inner; }) : [];
     if (layers.length && inner) inner.classList.add("st-layers");
@@ -1018,7 +1048,8 @@
         // pick the entry closest to the middle band of the viewport
         var best = null, bestD = Infinity;
         es.forEach(function (e) { if (e.isIntersecting) { var d = Math.abs(e.boundingClientRect.top + e.boundingClientRect.height / 2 - innerHeight * bandMid); if (d < bestD) { bestD = d; best = e; } } });
-        if (best && !presentState) setActive(steps.indexOf(best.target));
+        // presenter mode and the print handout drive steps directly; scroll must not fight them
+        if (best && !presentState && !printing) setActive(steps.indexOf(best.target));
       }, { rootMargin: narrow ? "-56% 0px -24% 0px" : "-45% 0px -45% 0px", threshold: 0 });
       steps.forEach(function (s) { ioStep.observe(s); });
     } else { steps.forEach(function (s) { s.classList.add("is-entered"); }); setActive(0); }
@@ -1883,19 +1914,58 @@
       document.body.appendChild(dots);
     }
     var hint = html("div", "st-present-hint");
-    hint.textContent = "arrows step  ·  esc exits";
+    hint.textContent = "arrows step  ·  N notes  ·  esc exits";
     document.body.appendChild(hint);
+
+    /* ---- speaker notes: data-note on a step (or its chapter) ---- */
+    var notesOn = false;
+    try { notesOn = sessionStorage.getItem("st-notes") === "1"; } catch (e) { }
+    if (/[?&]notes=1/.test(location.search)) notesOn = true;
+    var noteBox = html("div", "st-notes");
+    noteBox.setAttribute("aria-live", "polite");
+    var noteLab = html("div", "st-notes-lab", noteBox);
+    noteLab.textContent = "SAY";
+    var noteBody = html("div", "st-notes-body", noteBox);
+    noteBox.hidden = true;
+    document.body.appendChild(noteBox);
+    function noteText(node) {
+      if (!node || !node.getAttribute) return "";
+      var n = node.getAttribute("data-note");
+      if (!n && node.closest) { var c = node.closest("[data-note]"); if (c) n = c.getAttribute("data-note"); }
+      return (n || "").trim();
+    }
+    function paintNote() {
+      var node = steps[i], txt = noteText(node);
+      noteBody.textContent = txt;
+      noteBox.hidden = !(notesOn && txt);
+      // keep the card off the figure: it sits on the steps column side
+      var sc = node && node.closest ? node.closest(".st-scene") : null;
+      var figureRight = !!(sc && sc.getAttribute("data-side") === "left");
+      noteBox.classList.toggle("st-notes-right", !figureRight);
+    }
+    function toggleNotes() {
+      notesOn = !notesOn;
+      try { sessionStorage.setItem("st-notes", notesOn ? "1" : "0"); } catch (e) { }
+      paintNote();
+    }
     function go(n) {
       i = clamp(n, 0, steps.length - 1);
       if (dots) Array.prototype.forEach.call(dots.children, function (b, j) { b.classList.toggle("is-on", j === i); });
       // instant jump: the figure still animates, and a smooth scroll can stall between steps on some displays
       if (steps[i]) { var r = steps[i].getBoundingClientRect(); global.scrollTo({ top: r.top + global.pageYOffset - (global.innerHeight - r.height) / 2, behavior: "instant" }); }
       if (steps[i] && steps[i].__stActivate) { var cur = steps[i]; cur.__stActivate(); setTimeout(function () { if (steps[i] === cur) cur.__stActivate(); }, 150); }
+      paintNote();
       if (opts.onStep) opts.onStep(i, steps[i]);
     }
     function key(e) {
       // capture phase + stop: pages may carry their own arrow handlers, the presenter must be the only one acting
       if (e.key === "Escape") { e.stopImmediatePropagation(); exit(); return; }
+      if (e.key === "n" || e.key === "N") {
+        var t = e.target;
+        if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+        if (e.metaKey || e.ctrlKey || e.altKey) return;
+        e.preventDefault(); e.stopImmediatePropagation(); toggleNotes(); return;
+      }
       if (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === " " || e.key === "PageDown") { e.preventDefault(); e.stopImmediatePropagation(); go(i + 1); }
       else if (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") { e.preventDefault(); e.stopImmediatePropagation(); go(i - 1); }
     }
@@ -1905,12 +1975,17 @@
       removeEventListener("keydown", key, true);
       if (dots) dots.remove();
       hint.remove();
+      noteBox.remove();
       presentState = null;
       if (opts.onExit) opts.onExit();
     }
     addEventListener("keydown", key, true);
     go(0);
-    presentState = { go: go, exit: exit, get index() { return i; }, steps: steps };
+    paintNote();
+    presentState = {
+      go: go, exit: exit, get index() { return i; }, steps: steps,
+      get notes() { return notesOn; }, toggleNotes: toggleNotes
+    };
     return presentState;
   }
   function autoPresent(opts) {
@@ -2068,36 +2143,81 @@
     ttl.textContent = " · " + here.title + (door !== "story" ? " · " + DOOR_LABEL[door] : "");
 
     var btns = html("div", "st-way-btns", row);
-    function link(text, target, rel) {
+    // inline icons, drawn once per button (no icon font, no sprite sheet)
+    var ICON = {
+      prev: "M14.5 5 L8 12 L14.5 19",
+      next: "M9.5 5 L16 12 L9.5 19",
+      map: "M4 4h6v6H4z M14 4h6v6h-6z M4 14h6v6H4z M14 14h6v6h-6z",
+      play: "M7 4.5 L19 12 L7 19.5 Z"
+    };
+    function deco(node, name, text) {
+      var svg = mk("svg", { viewBox: "0 0 24 24", "aria-hidden": "true", fill: "none" });
+      mk("path", {
+        d: ICON[name], stroke: "currentColor", "stroke-width": 2,
+        "stroke-linecap": "round", "stroke-linejoin": "round",
+        fill: name === "play" || name === "map" ? "currentColor" : "none"
+      }, svg);
+      var lab = html("span", "st-way-lab");
+      lab.textContent = text;
+      if (name === "next") { node.appendChild(lab); node.appendChild(svg); }
+      else { node.appendChild(svg); node.appendChild(lab); }
+      if (!node.getAttribute("aria-label")) node.setAttribute("aria-label", text);
+      return node;
+    }
+    function link(text, target, rel, icon) {
       var a = document.createElement("a");
       a.className = "st-way-btn";
-      a.textContent = text;
+      deco(a, icon, text);
       if (target) { a.href = U(target.url); a.title = target.title; if (rel) a.rel = rel; }
       else a.setAttribute("aria-disabled", "true");
       btns.appendChild(a);
       return a;
     }
-    link("← Prev", idx > 0 ? WAY.path[idx - 1] : null, "prev");
+    var prevBtn = link("Prev", idx > 0 ? WAY.path[idx - 1] : null, "prev", "prev");
     var mapBtn = document.createElement("button");
     mapBtn.type = "button"; mapBtn.className = "st-way-btn";
-    mapBtn.textContent = "Map (M)";
+    deco(mapBtn, "map", "Map");
+    mapBtn.title = "Site map (M)";
     mapBtn.setAttribute("aria-expanded", "false");
     btns.appendChild(mapBtn);
     if (document.querySelector(".st-step")) {
       var prBtn = document.createElement("button");
-      prBtn.type = "button"; prBtn.className = "st-way-btn st-way-present"; prBtn.textContent = "Present (P)";
+      prBtn.type = "button"; prBtn.className = "st-way-btn st-way-present";
+      deco(prBtn, "play", "Present");
+      prBtn.title = "Presenter mode (P)";
       prBtn.addEventListener("click", function () { if (presentState) presentState.exit(); else present(); });
       btns.appendChild(prBtn);
     }
-    link("Next →", idx < WAY.path.length - 1 ? WAY.path[idx + 1] : WAY.end, "next");
+    var nextBtn = link("Next", idx < WAY.path.length - 1 ? WAY.path[idx + 1] : WAY.end, "next", "next");
     document.body.appendChild(bar);
     document.body.classList.add("st-has-way");
 
+    /* the lit segment: a short glowing bar that slides along the progress row */
+    var lamp = html("i", "st-way-lamp", bar);
+    function lampTo(n) {
+      var s = seg.children[clamp(n, 0, seg.children.length - 1)];
+      if (!s) return;
+      var br = bar.getBoundingClientRect(), r = s.getBoundingClientRect();
+      if (!br.width) return;
+      lamp.style.left = (r.left - br.left).toFixed(1) + "px";
+      lamp.style.width = r.width.toFixed(1) + "px";
+    }
     function measure() {
-      document.documentElement.style.setProperty("--st-way-h", Math.round(bar.getBoundingClientRect().height || 60) + "px");
+      document.documentElement.style.setProperty("--st-way-h", Math.round(bar.getBoundingClientRect().height || 64) + "px");
+      lampTo(idx);
     }
     measure();
     addEventListener("resize", measure);
+    // hovering Prev or Next previews where the light would move
+    function peek(btn, to) {
+      if (!btn) return;
+      btn.addEventListener("pointerenter", function () { lampTo(to); });
+      btn.addEventListener("focus", function () { lampTo(to); });
+      btn.addEventListener("pointerleave", function () { lampTo(idx); });
+      btn.addEventListener("blur", function () { lampTo(idx); });
+    }
+    peek(prevBtn, idx - 1);
+    peek(nextBtn, idx + 1);
 
     /* ---- map overlay ---- */
     var map = html("div", "st-way-map");
@@ -2168,6 +2288,11 @@
     card(WAY.hub);
     WAY.projects.forEach(card);
     var extra = html("div", "st-map-extra", map);
+    var printBtn = document.createElement("button");
+    printBtn.type = "button"; printBtn.className = "st-way-btn st-way-print";
+    printBtn.textContent = "Print handout";
+    printBtn.addEventListener("click", function () { close(); setTimeout(printHandout, 120); });
+    extra.appendChild(printBtn);
     WAY.extras.forEach(function (e) {
       var a = document.createElement("a");
       a.className = "st-way-btn"; a.href = U(e.url); a.textContent = e.label;
@@ -2248,16 +2373,444 @@
     nav.setAttribute("aria-label", "Findings in this story");
     var h = html("div", "st-findings-h", nav); h.textContent = "The findings, in order";
     var ol = html("ol", "", nav);
-    ch.forEach(function (c) {
+    ch.forEach(function (c, i) {
       var t = c.querySelector("h2,.st-chapter-title"), p = c.querySelector("p");
       var li = html("li", "", ol), a = html("a", "", li);
       a.href = "#" + c.id;
       var b = html("b", "", a); b.textContent = t ? t.textContent : "";
       if (p) { var sp = html("span", "", a); sp.textContent = p.textContent; }
+      // optional headline number for the card, e.g. data-key="249x"
+      var kk = c.getAttribute("data-key");
+      if (kk) { var em = html("em", "st-find-key", a); em.textContent = kk; }
+      // bento: the first card is wide when there are five or six findings
+      if (i === 0 && ch.length >= 5 && ch.length <= 6) li.classList.add("st-bento-lead");
     });
     ch[0].parentNode.insertBefore(nav, ch[0]);
   }
-  function boot() { autoChapters(); autoFindings(); autoWayfinder(); }
+  /* ---------------------------------------------------------
+     8b2. surface components: spotlight, word reveal, beam, ticker
+     --------------------------------------------------------- */
+
+  /* Story.spotlight(rootOrSelector, selector?)
+     Pointer-following accent wash inside cards. One listener per root. */
+  var SPOT_SEL = ".st-findings li,.st-card,[data-st-spotlight],.doors > *,.st-map-card";
+  function spotlight(root, sel) {
+    var host = root == null ? document : (isEl(root) || root.nodeType === 9 ? root : el(root));
+    if (!host) return;
+    sel = sel || SPOT_SEL;
+    els(sel, host.nodeType === 9 ? document : host).forEach(function (n) { n.classList.add("st-spot"); });
+    if (host.__stSpot) return;
+    host.__stSpot = 1;
+    if (reduced()) return;                       // static hairline only
+    var pending = 0, cur = null;
+    host.addEventListener("pointermove", function (e) {
+      if (e.pointerType === "touch") return;
+      var c = e.target && e.target.closest ? e.target.closest(".st-spot") : null;
+      if (cur && cur !== c) { cur.classList.remove("is-spot"); cur = null; }
+      if (!c) return;
+      cur = c;
+      if (pending) return;
+      var cx = e.clientX, cy = e.clientY;
+      pending = requestAnimationFrame(function () {
+        pending = 0;
+        var r = c.getBoundingClientRect();
+        if (!r.width) return;
+        c.style.setProperty("--mx", ((cx - r.left) / r.width * 100).toFixed(1) + "%");
+        c.style.setProperty("--my", ((cy - r.top) / r.height * 100).toFixed(1) + "%");
+        c.classList.add("is-spot");
+      });
+    }, { passive: true });
+    host.addEventListener("pointerleave", function () { if (cur) { cur.classList.remove("is-spot"); cur = null; } }, { passive: true });
+  }
+
+  /* Story.words(el) - split into word spans that fade in on entry.
+     Element children (an annotated term, say) travel as one word. */
+  function words(node) {
+    node = isEl(node) ? node : el(node);
+    if (!node || node.__stWords) return null;
+    var full = (node.textContent || "").replace(/\s+/g, " ").trim();
+    if (!full || full.length > 400) return null;
+    node.__stWords = 1;
+    var kids = Array.prototype.slice.call(node.childNodes);
+    var frag = document.createDocumentFragment(), k = 0;
+    function wordSpan() {
+      var s = document.createElement("span");
+      s.className = "st-w";
+      s.setAttribute("aria-hidden", "true");
+      s.style.transitionDelay = Math.min(k * 28, 700) + "ms";   // long paragraphs never crawl
+      s.style.setProperty("--i", k);
+      k++;
+      return s;
+    }
+    kids.forEach(function (n) {
+      if (n.nodeType === 3) {
+        n.nodeValue.split(/(\s+)/).forEach(function (p) {
+          if (!p) return;
+          if (/^\s+$/.test(p)) { frag.appendChild(document.createTextNode(" ")); return; }
+          var s = wordSpan(); s.textContent = p; frag.appendChild(s);
+        });
+      } else {
+        var w = wordSpan(); w.appendChild(n); frag.appendChild(w);
+      }
+    });
+    while (node.firstChild) node.removeChild(node.firstChild);
+    node.appendChild(frag);
+    node.classList.add("st-words");
+    if (!node.getAttribute("aria-label")) node.setAttribute("aria-label", full);
+    var ws = els(".st-w", node);
+    inView(node, function () { node.classList.add("is-in"); }, { once: true, margin: "0px 0px -8% 0px" });
+    if (/^H[1-3]$/.test(node.tagName) && node.closest(".st-chapter") && !reduced()) litOnScroll(node, ws);
+    return ws;
+  }
+  // heading words brighten as the heading crosses the middle of the viewport
+  function litOnScroll(node, ws) {
+    var on = false, queued = 0;
+    function paint() {
+      queued = 0;
+      var r = node.getBoundingClientRect();
+      var p = clamp((innerHeight * 0.88 - r.top) / (innerHeight * 0.42), 0, 1);
+      var kk = Math.round(p * ws.length);
+      for (var i = 0; i < ws.length; i++) ws[i].classList.toggle("is-lit", i < kk);
+    }
+    function onScroll() { if (on && !queued) queued = requestAnimationFrame(paint); }
+    if (global.IntersectionObserver) {
+      new IntersectionObserver(function (es) { on = es[0].isIntersecting; if (on) paint(); }, { rootMargin: "20% 0px" }).observe(node);
+    } else { on = true; }
+    addEventListener("scroll", onScroll, { passive: true });
+    paint();
+  }
+  function autoWords() {
+    els(".st-hero h1 + p, .st-hero .st-thesis, .st-chapter h2, [data-st-words]").forEach(function (n) {
+      try { words(n); } catch (e) { if (global.console) console.error(e); }
+    });
+  }
+
+  /* Story.beam(svg, [{from:[x,y], to:[x,y], curve?}|{d}], {color, baseColor})
+     Connector paths with one short light segment travelling along each. */
+  function beam(svgNode, segs, opts) {
+    opts = opts || {};
+    var svg = isEl(svgNode) ? svgNode : el(svgNode);
+    if (!svg) return { destroy: function () { } };
+    var g = mk("g", { class: "st-beam" }, svg), runs = [];
+    (segs || []).forEach(function (s, i) {
+      var d = s.d;
+      if (!d && s.from && s.to) {
+        var x0 = s.from[0], y0 = s.from[1], x1 = s.to[0], y1 = s.to[1];
+        var c = s.curve == null ? 0.18 : s.curve;
+        var mx = (x0 + x1) / 2, my = (y0 + y1) / 2, dx = x1 - x0, dy = y1 - y0;
+        d = "M" + x0 + "," + y0 + "Q" + (mx - dy * c) + "," + (my + dx * c) + " " + x1 + "," + y1;
+      }
+      if (!d) return;
+      mk("path", { class: "st-beam-base", d: d, stroke: opts.baseColor ? (tok(opts.baseColor) || opts.baseColor) : null }, g);
+      if (reduced()) return;
+      var p = mk("path", { class: "st-beam-run", d: d, stroke: opts.color ? (tok(opts.color) || opts.color) : tok("accent") }, g);
+      var len = p.getTotalLength ? p.getTotalLength() : 240;
+      var seg = Math.max(14, len * 0.16);
+      p.setAttribute("stroke-dasharray", seg.toFixed(1) + " " + (len + seg).toFixed(1));
+      p.style.setProperty("--len", (len + seg).toFixed(1));
+      p.style.animation = "st-beam-run 2.4s linear infinite";
+      p.style.animationDelay = (i * 0.35).toFixed(2) + "s";
+      runs.push(p);
+    });
+    return {
+      el: g,
+      destroy: function () { if (g.parentNode) g.parentNode.removeChild(g); runs.length = 0; }
+    };
+  }
+
+  /* per-digit roll used by countUp when the node carries data-st-ticker */
+  function tickerPaint(node, text, animate) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+    var box = html("span", "st-tick", node), di = 0, cols = [];
+    text.split("").forEach(function (ch) {
+      if (/\d/.test(ch)) {
+        var col = html("span", "st-tick-col", box);
+        var strip = document.createElement("i");
+        for (var d = 0; d <= 9; d++) { var s = document.createElement("span"); s.textContent = String(d); strip.appendChild(s); }
+        col.appendChild(strip);
+        strip.style.transform = "translateY(" + (animate ? 0 : -parseInt(ch, 10)) + "em)";
+        strip.style.transitionDelay = (di * 55) + "ms";
+        cols.push([strip, parseInt(ch, 10)]);
+        di++;
+      } else {
+        var t = document.createElement("span");
+        t.textContent = ch; box.appendChild(t);
+      }
+    });
+    node.setAttribute("aria-label", text);
+    if (animate) requestAnimationFrame(function () {
+      cols.forEach(function (c) { c[0].style.transform = "translateY(-" + c[1] + "em)"; });
+    });
+  }
+
+  /* ---------------------------------------------------------
+     8c. glossary  -  plain-language definitions, annotated in place
+     --------------------------------------------------------- */
+  var glossary = {
+    "TRIR": "Recordable injuries per 200,000 hours worked. The standard yearly injury rate, so sites of different sizes can be compared.",
+    "DART": "Rate of injuries that cost days away from work, restricted duty, or a job transfer. A severity-weighted cousin of TRIR.",
+    "LTIR": "Rate of injuries that kept someone away from work at least one full day. Narrower than DART.",
+    "NAICS": "The federal industry code. It says what a site makes or does, and decides which peers it is compared against.",
+    "OSHA Form 300A": "The yearly summary of injury counts and hours that larger employers post and file. One row per site.",
+    "ITA": "The federal portal where employers submit their yearly injury summary. The public file of those submissions is the data used here.",
+    "establishment": "One physical site, not the whole company. Rates are calculated per site because hazards are local.",
+    "plausibility screen": "A rule that drops records whose hours or counts cannot be true, such as more hours than workers could have worked.",
+    "odds ratio": "How much more likely an outcome is in one group than another. One means no difference.",
+    "permutation test": "Shuffle the labels thousands of times to see how often chance alone produces the result you observed.",
+    "kappa": "Agreement between two raters after removing the agreement you would expect by luck. One is perfect, zero is chance.",
+    "Poisson": "A count model that assumes the average and the spread of the counts are the same.",
+    "negative binomial (NB2)": "A count model for data more spread out than a Poisson allows. Used when a few sites carry many injuries.",
+    "ZINB": "A count model with two parts: whether a site can report any injury at all, and how many it then reports.",
+    "TF-IDF": "A way to score words by how often they appear here and how rare they are elsewhere. Used to match text.",
+    "BM25": "A text ranking formula that scores documents against a query. A strong search baseline with no machine learning.",
+    "co-hyponym": "A sibling term under the same parent, such as two clauses in the same section. Easy for a system to confuse.",
+    "grounding": "Tying an answer to the exact source passage it came from, so a reader can check it.",
+    "retrieval": "Finding the passages most likely to answer a question before anything is written.",
+    "oracle baseline": "A score computed with the right answer handed over. It shows the ceiling a real system could reach.",
+    "PIF (performance influencing factor)": "A condition that makes error more or less likely, such as time pressure, poor labels, or fatigue.",
+    "IDHEAS-G": "A federal human-reliability framework built around how people take in and act on information.",
+    "SPAR-H": "A simple human-error method from the nuclear industry that adjusts a base error rate by a few conditions.",
+    "CREAM": "A human-error method that scores the working context first and predicts likely control of the task.",
+    "HFACS": "A classification of accident causes in four layers, from the act itself up to management decisions.",
+    "macrocognitive function": "A broad mental task such as noticing, understanding, deciding, or acting. Errors are sorted by which one failed.",
+    "ontology": "A written structure of terms and how they relate, so the same word means the same thing everywhere.",
+    "crosswalk": "A mapping that says which term in one framework corresponds to which term in another.",
+    "SEM (structural equation model)": "A model that estimates relations among things you cannot measure directly, such as safety climate, from things you can.",
+    "latent variable": "Something you cannot measure directly, estimated from several questions or indicators that stand in for it.",
+    "CFI": "A fit score for a model. Above about .95 means the model reproduces the data pattern well.",
+    "RMSEA": "A fit score where lower is better. Below about .06 is usually treated as close fit.",
+    "coverage (of an interval)": "How often a stated 95 percent interval really contains the true value when the method is repeated.",
+    "bootstrap": "Resample your own data many times to see how much an estimate would move if the sample changed.",
+    "confounder": "A third factor that drives both things you are comparing, and can fake a relation between them.",
+    "AUC": "How well a score separates two groups. One is perfect, .5 is a coin flip.",
+    "base rate": "How common the outcome is to begin with. A rare outcome makes most positive flags wrong.",
+    "Monte Carlo": "Run the model thousands of times with random inputs to see the range of outcomes, not one number.",
+    "tornado chart": "A sorted bar chart showing which assumption moves the result most. The widest bar matters most.",
+    "payback period": "How long until the savings from an investment equal what it cost.",
+    "percentile (p76 style)": "Your position in a ranked list. At the 76th percentile, 76 out of 100 peers are below you.",
+    "peer group": "The set of sites you are compared against, chosen by industry code and size band."
+  };
+  // extra surface forms; the key stays the display term
+  var GLOSS_ALT = {
+    "OSHA Form 300A": ["OSHA Form 300A", "Form 300A", "300A"],
+    "negative binomial (NB2)": ["negative binomial", "NB2"],
+    "PIF (performance influencing factor)": ["performance influencing factor", "PIFs", "PIF"],
+    "SEM (structural equation model)": ["structural equation model", "SEM"],
+    "coverage (of an interval)": ["coverage"],
+    "percentile (p76 style)": ["percentile"],
+    "odds ratio": ["odds ratio", "odds ratios"],
+    "permutation test": ["permutation test", "permutation tests"],
+    "co-hyponym": ["co-hyponym", "co-hyponyms"],
+    "establishment": ["establishment", "establishments"],
+    "confounder": ["confounder", "confounders"],
+    "plausibility screen": ["plausibility screen", "plausibility screens"],
+    "latent variable": ["latent variable", "latent variables"],
+    "tornado chart": ["tornado chart", "tornado charts"],
+    "macrocognitive function": ["macrocognitive function", "macrocognitive functions"],
+    "peer group": ["peer group", "peer groups"],
+    "oracle baseline": ["oracle baseline"],
+    "ontology": ["ontology", "ontologies"]
+  };
+  var GLOSS_SKIP = "a,abbr,code,pre,kbd,samp,button,svg,canvas,figure,figcaption,script,style,textarea,input,select,label,h1,h2,h3,h4,h5,h6,[data-no-gloss],.st-way,.st-way-map,.st-gloss-tip,.st-print-terms";
+  var glossUsed = [];
+  function reEsc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); }
+  function glossEntries() {
+    var out = [];
+    Object.keys(glossary).forEach(function (key) {
+      (GLOSS_ALT[key] || [key]).forEach(function (form) {
+        var acronym = /^[A-Z0-9][A-Z0-9-]*$/.test(form);
+        out.push({
+          key: key, form: form, len: form.length,
+          re: new RegExp("\\b" + reEsc(form) + "\\b", acronym ? "g" : "gi")
+        });
+      });
+    });
+    out.sort(function (a, b) { return b.len - a.len; });
+    return out;
+  }
+  function glossSkip(node) {
+    var p = node.parentElement;
+    while (p && p !== document.body) {
+      if (p.matches && p.matches(GLOSS_SKIP)) return true;
+      // never touch an element that carries its own inline handler
+      var at = p.attributes;
+      for (var i = 0; i < at.length; i++) if (at[i].name.indexOf("on") === 0 && at[i].name.length > 2) return true;
+      p = p.parentElement;
+    }
+    return false;
+  }
+  function autoGloss() {
+    if (global.STORY_NO_GLOSSARY) return;
+    if (document.querySelector("abbr.st-gloss")) return;
+    var entries = glossEntries();
+    var conts = els(".st-step p, .st-chapter p, .st-hero p, .hero-lede, .st-findings span, main p");
+    if (!conts.length) return;
+    var seen = new Map();                     // section element -> {term:true}
+    var usedKeys = {};
+    conts.forEach(function (cont) {
+      var sect = (cont.closest && cont.closest(".st-scene,.st-chapter,.st-hero,.st-findings,main")) || document.body;
+      if (!seen.has(sect)) seen.set(sect, {});
+      var done = seen.get(sect);
+      var nodes = [], tw = document.createTreeWalker(cont, NodeFilter.SHOW_TEXT, null);
+      var n; while ((n = tw.nextNode())) nodes.push(n);
+      nodes.forEach(function (tn) {
+        if (!tn.nodeValue || tn.nodeValue.length < 3) return;
+        if (glossSkip(tn)) return;
+        var text = tn.nodeValue, hits = [];
+        entries.forEach(function (en) {
+          if (done[en.key]) return;
+          en.re.lastIndex = 0;
+          var m = en.re.exec(text);
+          if (!m) return;
+          hits.push({ key: en.key, start: m.index, end: m.index + m[0].length });
+        });
+        if (!hits.length) return;
+        hits.sort(function (a, b) { return a.start - b.start || (b.end - b.start) - (a.end - a.start); });
+        var frag = document.createDocumentFragment(), pos = 0, any = false;
+        hits.forEach(function (h) {
+          if (h.start < pos || done[h.key]) return;
+          done[h.key] = true; any = true;
+          if (usedKeys[h.key] == null) { usedKeys[h.key] = 1; glossUsed.push(h.key); }
+          if (h.start > pos) frag.appendChild(document.createTextNode(text.slice(pos, h.start)));
+          var ab = document.createElement("abbr");
+          ab.className = "st-gloss";
+          ab.setAttribute("tabindex", "0");
+          ab.setAttribute("data-gloss", glossary[h.key]);
+          ab.setAttribute("title", "");
+          ab.textContent = text.slice(h.start, h.end);
+          frag.appendChild(ab);
+          pos = h.end;
+        });
+        if (!any) return;
+        if (pos < text.length) frag.appendChild(document.createTextNode(text.slice(pos)));
+        tn.parentNode.replaceChild(frag, tn);
+      });
+    });
+    if (glossUsed.length) glossTipWire();
+  }
+  /* one shared tooltip for every annotated term */
+  var glossTip = null, glossCur = null;
+  function glossTipEl() {
+    if (glossTip) return glossTip;
+    glossTip = html("div", "st-gloss-tip");
+    glossTip.id = "st-gloss-tip";
+    glossTip.setAttribute("role", "tooltip");
+    glossTip.hidden = true;
+    document.body.appendChild(glossTip);
+    return glossTip;
+  }
+  function glossShow(ab) {
+    if (!ab || printing) return;
+    var t = glossTipEl();
+    t.textContent = ab.getAttribute("data-gloss") || "";
+    t.hidden = false;
+    t.style.left = "0px"; t.style.top = "0px";
+    var r = ab.getBoundingClientRect(), tr = t.getBoundingClientRect();
+    var sx = global.pageXOffset || 0, sy = global.pageYOffset || 0;
+    var left = clamp(r.left + r.width / 2 - tr.width / 2, 8, Math.max(8, innerWidth - tr.width - 8));
+    var top = r.top - tr.height - 10;
+    if (top < 4) top = r.bottom + 10;                 // no room above: sit under the term
+    t.style.left = (left + sx).toFixed(0) + "px";
+    t.style.top = (top + sy).toFixed(0) + "px";
+    if (glossCur && glossCur !== ab) glossCur.removeAttribute("aria-describedby");
+    ab.setAttribute("aria-describedby", "st-gloss-tip");
+    glossCur = ab;
+  }
+  function glossHide() {
+    if (glossTip) glossTip.hidden = true;
+    if (glossCur) { glossCur.removeAttribute("aria-describedby"); glossCur = null; }
+  }
+  function glossTipWire() {
+    function target(e) { var t = e.target; return t && t.closest ? t.closest("abbr.st-gloss") : null; }
+    document.addEventListener("pointerover", function (e) { var a = target(e); if (a && e.pointerType !== "touch") glossShow(a); });
+    document.addEventListener("pointerout", function (e) { if (target(e) && e.pointerType !== "touch") glossHide(); });
+    document.addEventListener("focusin", function (e) { var a = target(e); if (a) glossShow(a); else glossHide(); });
+    document.addEventListener("focusout", function (e) { if (target(e)) glossHide(); });
+    document.addEventListener("click", function (e) {
+      var a = target(e);
+      if (!a) { glossHide(); return; }
+      e.preventDefault();
+      if (glossCur === a && glossTip && !glossTip.hidden) glossHide(); else glossShow(a);
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape") glossHide(); });
+    addEventListener("scroll", glossHide, { passive: true });
+    addEventListener("resize", glossHide);
+  }
+
+  /* ---------------------------------------------------------
+     8d. print handout
+     --------------------------------------------------------- */
+  var printSaved = null, printExtra = [];
+  function printPrepare() {
+    if (printSaved) return;
+    if (presentState) presentState.exit(); // presenter layout and handout layout must never combine
+    printing = true;
+    glossHide();
+    document.documentElement.classList.add("st-printing");
+    printSaved = [];
+    els(".st-scene").forEach(function (sc) {
+      var list = els(".st-step", sc);
+      if (!list.length) return;
+      var at = -1;
+      list.forEach(function (s, j) { if (s.classList.contains("is-active")) at = j; });
+      printSaved.push({ steps: list, idx: at });
+      var lastStep = list[list.length - 1];
+      if (lastStep.__stActivate) lastStep.__stActivate();
+    });
+    // pages register their scenes after the engine boots: re-assert the final steps a few times
+    // so every figure prints in its last state
+    [0, 150, 600, 1500].forEach(function (ms) {
+      setTimeout(function () {
+        if (!printSaved) return;
+        els(".st-scene").forEach(function (sc) {
+          var list = els(".st-step", sc), lastStep = list[list.length - 1];
+          if (lastStep && lastStep.__stActivate) lastStep.__stActivate();
+        });
+      }, ms);
+    });
+    if (glossUsed.length) {
+      var box = html("div", "st-print-terms");
+      var h = document.createElement("h2"); h.textContent = "Terms used on this page"; box.appendChild(h);
+      var dl = document.createElement("dl"); box.appendChild(dl);
+      glossUsed.slice().sort().forEach(function (k) {
+        var dt = document.createElement("dt"); dt.textContent = k;
+        var dd = document.createElement("dd"); dd.textContent = glossary[k] || "";
+        dl.appendChild(dt); dl.appendChild(dd);
+      });
+      document.body.appendChild(box); printExtra.push(box);
+    }
+    var foot = html("div", "st-print-foot");
+    foot.textContent = (document.title || "") + "  ·  " + location.origin + location.pathname;
+    document.body.appendChild(foot); printExtra.push(foot);
+  }
+  function printRestore() {
+    if (!printSaved) return;
+    printExtra.forEach(function (n) { n.remove(); }); printExtra = [];
+    printSaved.forEach(function (s) {
+      if (s.idx >= 0 && s.steps[s.idx] && s.steps[s.idx].__stActivate) s.steps[s.idx].__stActivate();
+    });
+    printSaved = null; printing = false;
+    document.documentElement.classList.remove("st-printing");
+  }
+  function printHandout() {
+    printPrepare();
+    setTimeout(function () {
+      try { global.print(); } catch (e) { }
+      setTimeout(printRestore, 300);
+    }, 80);
+  }
+  addEventListener("beforeprint", printPrepare);
+  addEventListener("afterprint", printRestore);
+
+  function boot() {
+    autoChapters(); autoFindings();
+    try { autoGloss(); } catch (e) { if (global.console) console.error(e); }
+    try { autoWords(); } catch (e) { if (global.console) console.error(e); }
+    autoWayfinder();
+    try { spotlight(document); } catch (e) { if (global.console) console.error(e); }
+    // ?print=1 previews the handout layout on screen; reload or call Story._printRestore() to leave it
+    if (/[?&]print=1/.test(location.search)) printPrepare();
+  }
   if (document.readyState === "loading") addEventListener("DOMContentLoaded", boot);
   else boot();
 
@@ -2265,7 +2818,7 @@
      9. export
      --------------------------------------------------------- */
   var Story = {
-    version: "1.1.0",
+    version: "1.3.0",
     orb: orb,
     orbInline: orbInline,
     companion: companion,
@@ -2284,6 +2837,15 @@
     progressBar: progressBar,
     present: present,
     autoPresent: autoPresent,
+    glossary: glossary,
+    annotate: autoGloss,
+    spotlight: spotlight,
+    words: words,
+    beam: beam,
+    print: printHandout,
+    _printPrepare: printPrepare,
+    _printRestore: printRestore,
+    get printing() { return printing; },
     theme: Theme,
     reduced: reduced,
     tick: tick,

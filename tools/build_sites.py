@@ -2574,6 +2574,29 @@ a.door:hover .door-go,a.door:focus-visible .door-go{transform:translateX(5px)}
 .prog-card:hover .prog-arrow,.prog-card:focus-visible .prog-arrow{transform:translateX(6px)}
 @media(max-width:900px){.prog-grid{grid-template-columns:1fr 1fr}.prog-next{grid-column:1/-1;grid-row:auto;min-height:150px}}
 @media(max-width:480px){.prog-grid{grid-template-columns:1fr}.prog{padding:52px 0}}
+
+/* ============ round 6 surfaces: same family as the story pages ============ */
+:root{--sf-radius:14px;--sf-radius-sm:10px;--sf-hair:1px solid rgba(127,127,127,.28)}
+@supports (color:color-mix(in srgb,red 10%,blue)){:root{--sf-hair:1px solid color-mix(in srgb,var(--ink) 14%,transparent)}}
+.status,.findings,.fig,.chart,.tbl-wrap,.scope,.opener,.defs,.notice,.trace,.doors{border:var(--sf-hair)!important;border-radius:var(--sf-radius);overflow:hidden}
+.tbl-wrap{overflow:auto}
+.notice{border-color:color-mix(in srgb,var(--warn) 55%,transparent)!important}
+.st-cell,.finding,.project,.scope-col+.scope-col{border-left:var(--sf-hair)!important}
+.st-cell:first-child,.finding:first-child,.project:first-child{border-left:0!important}
+.projects{border:var(--sf-hair)!important;border-radius:var(--sf-radius);overflow:hidden}
+.doors{display:grid;gap:12px;border:0!important;overflow:visible;border-radius:0}
+.door{border:var(--sf-hair)!important;border-radius:var(--sf-radius);transition:transform .2s cubic-bezier(.2,.8,.2,1),border-color .2s}
+a.door:hover{transform:translateY(-2px)}
+.btn{border:var(--sf-hair);border-radius:999px;margin:0 8px 8px 0;padding:12px 20px;transition:transform .2s cubic-bezier(.2,.8,.2,1),background .15s}
+.btn:hover{transform:translateY(-1px)}
+.btn-primary{border-color:var(--accent)}
+.chip{border-radius:999px;border:var(--sf-hair)}
+.hero{border-bottom:var(--sf-hair)}
+.hero-not{border-left:3px solid color-mix(in srgb,var(--ink) 30%,transparent);border-radius:2px}
+.pull{border-left-width:3px}
+.section-alt,.prog{border-top:var(--sf-hair)}
+.fig,.chart{padding:24px}
+@media print{.status,.findings,.fig,.chart,.tbl-wrap,.scope,.opener,.defs,.notice,.door{border:1px solid #999!important;border-radius:6px}}
 """
 
 
