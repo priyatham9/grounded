@@ -134,7 +134,7 @@
 /* ---------- presenter mode ---------- */
 .st-presenting .st-hide-on-present,.st-presenting header.banner,.st-presenting .footer,.st-presenting .skip{display:none!important}
 .st-presenting body,body.st-presenting{font-size:19px}
-.st-presenting .st-step{opacity:1;min-height:0}
+.st-presenting .st-step{min-height:100vh;min-height:100svh}
 .st-presenting .st-scene.st-flow .st-step > *{opacity:1;transform:none}
 .st-present-dots{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:8px;z-index:70;padding:9px 13px;border:2px solid var(--rule);background:var(--surface)}
 .st-present-dots b{display:block;width:8px;height:8px;background:var(--rule-soft);border-radius:50%}
@@ -263,3 +263,18 @@ html{scroll-padding-top:16px}
   body.st-story .st-stage-inner svg,body.st-story .st-stage-inner canvas:not(.st-orb){max-height:calc(100vh - var(--st-way-h,60px) - 230px);max-height:calc(100svh - var(--st-way-h,60px) - 230px);width:auto;max-width:100%;margin-inline:auto}
   body.st-story .st-stage-inner svg.st-chart{width:100%}
 }
+
+/* v1.2.3 phone: no Present button, label gets the room */
+@media(max-width:800px){.st-way-present{display:none!important}}
+
+/* v1.2.4 presenter: same pinned-figure mechanics as reading mode, one step per screen, no chrome */
+@media(min-width:801px){
+  .st-presenting .st-scene .st-stage,.st-presenting .st-scene[data-side="left"] .st-stage{position:sticky!important;top:0!important;height:100vh!important;height:100svh!important;padding:24px 0!important}
+  .st-presenting .st-scene .st-step{min-height:100vh!important;min-height:100svh!important;display:flex;flex-direction:column;justify-content:center}
+  .st-presenting .st-scene .st-step:not(.is-active){opacity:.08!important}
+  .st-presenting .st-scene .st-step.is-active{opacity:1!important}
+  .st-presenting .st-step h3{font-size:clamp(2rem,3vw,2.8rem)}
+  .st-presenting .st-step p{font-size:1.35rem;line-height:1.5}
+}
+.st-presenting .rs-header,.st-presenting .footer,.st-presenting .st-chapter,.st-presenting .st-findings{display:none!important}
+.st-presenting nav.pgm,.st-presenting .story-nav,.st-presenting .story-hero{display:none!important}
