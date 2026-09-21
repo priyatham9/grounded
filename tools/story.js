@@ -761,6 +761,203 @@
   }
 
   /* ---------------------------------------------------------
+     4b. companion orb, inline orb, chapter card, ambient field
+     --------------------------------------------------------- */
+  var ORB_VERB = {
+    breathing: "IDLE", working: "THINKING", searching: "SEARCHING", solving: "SOLVING",
+    connecting: "CONNECTING", listening: "LISTENING", wrong: "WRONG",
+    grounded: "GROUNDED", resolved: "RESOLVED"
+  };
+
+  /* Story.companion(hostEl, {state, caption, size, label})
+     A docked orb with a live mono verb caption. Used by Story.scenes. */
+  function companion(host, opts) {
+    opts = opts || {};
+    host = isEl(host) ? host : el(host);
+    if (!host) return null;
+    var box = html("div", "st-companion");
+    var orbHost = html("div", "st-companion-orb", box);
+    var cap = html("span", "st-companion-cap", box);
+    var cv = document.createElement("canvas");
+    orbHost.appendChild(cv);
+    if (opts.size) box.style.setProperty("--st-comp", typeof opts.size === "number" ? opts.size + "px" : opts.size);
+    host.insertBefore(box, host.firstChild);
+    var state = ORB_ALIAS[opts.state] || "breathing";
+    var o = orb(cv, {
+      state: state, parallax: false, density: opts.density,
+      label: opts.label || "Orb showing the state of the system under review"
+    });
+    cap.textContent = (opts.caption || ORB_VERB[state] || state).toUpperCase();
+    box.setAttribute("data-state", state);
+    var timer = null, api;
+    function setState(name, label) {
+      var canon = ORB_ALIAS[name] || "breathing";
+      var text = String(label || ORB_VERB[canon] || canon).toUpperCase();
+      if (canon === state && text === cap.textContent) return api;
+      state = canon;
+      o.setState(canon);
+      box.setAttribute("data-state", canon);
+      if (reduced()) { cap.textContent = text; return api; }
+      cap.classList.add("is-fading");
+      clearTimeout(timer);
+      timer = setTimeout(function () { cap.textContent = text; cap.classList.remove("is-fading"); }, 180);
+      return api;
+    }
+    api = {
+      orb: o, el: box, setState: setState,
+      get state() { return state; },
+      destroy: function () { clearTimeout(timer); o.destroy(); box.remove(); }
+    };
+    return api;
+  }
+
+  /* Story.orbInline(el, {state}) - a 20px orb that sits in running text */
+  function orbInline(node, opts) {
+    opts = opts || {};
+    node = isEl(node) ? node : el(node);
+    if (!node) return null;
+    node.classList.add("st-orb-inline");
+    var cv = node.querySelector("canvas");
+    if (!cv) { cv = document.createElement("canvas"); node.appendChild(cv); }
+    return orb(cv, {
+      state: opts.state || node.getAttribute("data-orb") || "working",
+      density: opts.density || 72, parallax: false,
+      label: opts.label || node.getAttribute("aria-label") || "Inline orb"
+    });
+  }
+
+  /* Story.field(canvasOrHost, {density}) - ambient monochrome dot field */
+  function field(node, opts) {
+    opts = opts || {};
+    var host = isEl(node) ? node : el(node);
+    if (!host) return null;
+    var canvas = host.tagName.toLowerCase() === "canvas" ? host : html("canvas", "st-field");
+    canvas.classList.add("st-field");
+    canvas.setAttribute("aria-hidden", "true");
+    if (host !== canvas) {
+      if (getComputedStyle(host).position === "static") host.style.position = "relative";
+      host.insertBefore(canvas, host.firstChild);
+    }
+    var ctx = canvas.getContext("2d");
+    var W = 0, H = 0, DPR = 1, pts = [], visible = false, un = null, ro = null, io = null, destroyed = false;
+    var par = 0, lastY = global.scrollY || 0, pxT = 0, pyT = 0, px = 0, py = 0;
+
+    function build() {
+      var n = clamp(Math.round((W * H) / 10000 * (opts.density == null ? 1.1 : opts.density)), 20, 420);
+      pts = [];
+      for (var i = 0; i < n; i++) {
+        var z = 0.25 + hashD(i, 4.21) * 0.75;
+        pts.push({
+          x: hashD(i, 1.13) * W, y: hashD(i, 2.27) * H, z: z,
+          vx: (hashD(i, 3.31) - 0.5) * 8, vy: (hashD(i, 5.57) - 0.5) * 5,
+          r: 0.6 + z * 1.6
+        });
+      }
+    }
+    function paintField() {
+      ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      var c = Theme.rgb("ink");
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        var x = p.x + px * p.z, y = p.y + (py + par) * p.z;
+        if (y < -8) y += H + 16; else if (y > H + 8) y -= H + 16;
+        ctx.fillStyle = rgba(c, (0.05 + 0.2 * p.z).toFixed(3));
+        ctx.beginPath(); ctx.arc(x, y, p.r, 0, 6.2832); ctx.fill();
+      }
+    }
+    function step(dt) {
+      if (destroyed) return false;
+      if (!visible) return;
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        p.x += p.vx * p.z * dt; p.y += p.vy * p.z * dt;
+        if (p.x < -6) p.x = W + 6; else if (p.x > W + 6) p.x = -6;
+        if (p.y < -6) p.y = H + 6; else if (p.y > H + 6) p.y = -6;
+      }
+      var k = 1 - Math.pow(0.02, dt);
+      par = lerp(par, 0, k);
+      px = lerp(px, pxT, k); py = lerp(py, pyT, k);
+      paintField();
+    }
+    function resize() {
+      var r = canvas.getBoundingClientRect();
+      var w = Math.max(1, Math.round(r.width || 600)), h = Math.max(1, Math.round(r.height || 400));
+      DPR = Math.min(global.devicePixelRatio || 1, 2);
+      if (w === W && h === H) return;
+      W = w; H = h;
+      canvas.width = Math.round(W * DPR); canvas.height = Math.round(H * DPR);
+      build(); paintField();
+    }
+    function onScroll() {
+      var y = global.scrollY || 0, dv = y - lastY; lastY = y;
+      if (!reduced()) par = clamp(par - dv * 0.28, -70, 70);
+    }
+    function onPointer(e) {
+      var r = canvas.getBoundingClientRect();
+      if (!r.width) return;
+      pxT = clamp((e.clientX - (r.left + r.width / 2)) / r.width, -1, 1) * 16;
+      pyT = clamp((e.clientY - (r.top + r.height / 2)) / Math.max(1, r.height), -1, 1) * 10;
+    }
+    function start() { if (!un && !destroyed && !reduced()) un = tick(step); }
+    function stop() { if (un) { un(); un = null; } }
+    if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); } else addEventListener("resize", resize);
+    if (global.IntersectionObserver) {
+      io = new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); else stop(); }, { rootMargin: "80px" });
+      io.observe(canvas);
+    } else { visible = true; start(); }
+    addEventListener("scroll", onScroll, { passive: true });
+    if (opts.pointer !== false) addEventListener("pointermove", onPointer, { passive: true });
+    var unTheme = Theme.onChange(paintField);
+    resize();
+    return {
+      el: canvas,
+      destroy: function () {
+        destroyed = true; stop();
+        if (ro) ro.disconnect(); else removeEventListener("resize", resize);
+        if (io) io.disconnect();
+        removeEventListener("scroll", onScroll); removeEventListener("pointermove", onPointer);
+        unTheme(); canvas.remove();
+      }
+    };
+  }
+
+  /* Story.chapter(el) - full-viewport chapter card.
+     Markup: <section class="st-chapter" data-num="02" data-orb="searching">
+               <h2>Title</h2><p>One line.</p></section>                     */
+  function chapter(node, opts) {
+    opts = opts || {};
+    node = isEl(node) ? node : el(node);
+    if (!node) return null;
+    if (node.__stChapter) return node.__stChapter;
+    var body = html("div", "st-chapter-body");
+    while (node.firstChild) body.appendChild(node.firstChild);
+    var num = node.getAttribute("data-num");
+    if (num) { var nEl = html("div", "st-chapter-num"); nEl.textContent = num; body.insertBefore(nEl, body.firstChild); }
+    var orbHost = html("div", "st-chapter-orb");
+    var cv = document.createElement("canvas");
+    orbHost.appendChild(cv);
+    node.appendChild(body);
+    node.appendChild(orbHost);
+    var f = field(node, { density: opts.density == null ? 0.9 : opts.density });
+    var target = node.getAttribute("data-orb") || "grounded";
+    var o = orb(cv, {
+      state: opts.from || "breathing", parallax: false,
+      label: node.getAttribute("data-orb-label") || ("Chapter orb, state " + target)
+    });
+    inView(node, function () {
+      if (reduced()) { o.setState(target); return; }
+      setTimeout(function () { o.setState(target); }, 420);
+    }, { once: true, margin: "0px 0px -30% 0px" });
+    var api = {
+      el: node, orb: o, field: f,
+      destroy: function () { o.destroy(); if (f) f.destroy(); node.__stChapter = null; }
+    };
+    node.__stChapter = api;
+    return api;
+  }
+
+  /* ---------------------------------------------------------
      5. scenes  (sticky stage + scroll steps)
      --------------------------------------------------------- */
   function scenes(root, opts) {
@@ -769,18 +966,53 @@
     if (!scene) return { destroy: function () { } };
     var steps = els(".st-step", scene);
     var stage = el(".st-stage", scene);
+    var inner = el(".st-stage-inner", scene) || stage;
     var active = -1, ioStep = null, unScroll = null;
+
+    // staggered step-text entrance is opt-in via this class, so pages that
+    // never run scenes() still render their step text normally
+    scene.classList.add("st-flow");
+    // text enters when the step reaches the viewport, not when it goes active,
+    // so the column ahead of the reader is never blank
+    steps.forEach(function (s) {
+      inView(s, function () { s.classList.add("is-entered"); }, { once: true, margin: "0px 0px -6% 0px" });
+    });
+
+    // docked companion orb, unless the stage already has one
+    var comp = null;
+    if (opts.companion !== false && stage && !el(".st-orb-wrap", stage) && !el("canvas.st-orb", stage) && !el(".st-companion", stage)) {
+      comp = companion(stage, {
+        size: opts.companionSize,
+        state: (steps[0] && steps[0].getAttribute("data-orb")) || "breathing",
+        caption: steps[0] && steps[0].getAttribute("data-orb-label")
+      });
+    }
+
+    // layered stage children driven by [data-show="0 1 2"]
+    var layers = inner ? els("[data-show]", inner).filter(function (n) { return n.parentNode === inner; }) : [];
+    if (layers.length && inner) inner.classList.add("st-layers");
+    function showLayers(i) {
+      layers.forEach(function (n) {
+        var list = (n.getAttribute("data-show") || "").split(/[\s,]+/).filter(Boolean);
+        n.classList.toggle("is-shown", list.indexOf(String(i)) >= 0);
+      });
+    }
 
     function setActive(i, dir) {
       if (i === active) return;
       var prev = active; active = i;
-      steps.forEach(function (s, j) { s.classList.toggle("is-active", j === i); });
+      steps.forEach(function (s, j) {
+        s.classList.toggle("is-active", j === i);
+        if (j === i) s.classList.add("is-entered");
+      });
       var node = steps[i];
       if (node) {
         var orbState = node.getAttribute("data-orb");
         if (orbState && opts.orb && opts.orb.setState) opts.orb.setState(orbState);
+        if (comp) comp.setState(orbState || "breathing", node.getAttribute("data-orb-label"));
         scene.setAttribute("data-step", node.getAttribute("data-step") || String(i));
       }
+      showLayers(i);
       if (opts.onStep) opts.onStep(i, node, i > prev ? 1 : -1);
     }
 
@@ -794,7 +1026,7 @@
         if (best) setActive(steps.indexOf(best.target));
       }, { rootMargin: narrow ? "-68% 0px -12% 0px" : "-45% 0px -45% 0px", threshold: 0 });
       steps.forEach(function (s) { ioStep.observe(s); });
-    } else { setActive(0); }
+    } else { steps.forEach(function (s) { s.classList.add("is-entered"); }); setActive(0); }
 
     function onScroll() {
       var r = scene.getBoundingClientRect();
@@ -818,11 +1050,12 @@
     else if (active < 0) setActive(0);
 
     return {
-      steps: steps, stage: stage, scene: scene,
+      steps: steps, stage: stage, scene: scene, companion: comp,
       get index() { return active; },
       go: function (i) { if (steps[i]) steps[i].scrollIntoView({ behavior: reduced() ? "auto" : "smooth", block: "center" }); },
       destroy: function () {
         if (ioStep) ioStep.disconnect();
+        if (comp) comp.destroy();
         removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll);
       }
     };
@@ -845,19 +1078,37 @@
     var W = opts.width || 700, H = opts.height || Math.round(W * (opts.aspect || defAspect || 0.58));
     var api = {
       svg: svg, host: host, m: m,
+      tipHost: (host === svg ? (host.parentNode || host) : host),
       get w() { return W - m.left - m.right; },
       get h() { return H - m.top - m.bottom; },
       W: W, H: H,
       clear: function () { while (svg.firstChild) svg.removeChild(svg.firstChild); },
+      fit: function () {
+        // a stage chart is sized by CSS; match the viewBox to the real box so
+        // the drawing fills it instead of being letterboxed
+        if (!svg.classList.contains("st-in-stage")) return false;
+        var r = svg.getBoundingClientRect();
+        if (!r.width || !r.height) return false;
+        var want = clamp(Math.round(W * (r.height / r.width)), 180, 1400);
+        if (Math.abs(want - H) < 3) return false;
+        H = want; return true;
+      },
       frame: function () {
+        api.fit();
         svg.setAttribute("viewBox", "0 0 " + W + " " + H);
         svg.setAttribute("preserveAspectRatio", "xMidYMid meet");
         if (opts.height && host !== svg) svg.setAttribute("height", opts.height);
+        // a chart that lives on a scene stage fills the stage by default
+        if (opts.fill !== false && host.closest && host.closest(".st-stage-inner")) svg.classList.add("st-in-stage");
         var g = mk("g", { transform: "translate(" + m.left + "," + m.top + ")" }, svg);
         return g;
       },
       setLabel: function (s) { svg.setAttribute("aria-label", s); }
     };
+    if (global.ResizeObserver) {
+      api._ro = new ResizeObserver(function () { if (api.fit() && api._redraw) api._redraw(); });
+      api._ro.observe(svg);
+    }
     return api;
   }
   // x/y axes with 12px mono type (styled by story.css)
@@ -900,6 +1151,85 @@
     if (reduced()) { cb(1, true); return { stop: function () { } }; }
     var s = spring(0, 1, function (v, done) { cb(clamp(v, 0, 1.0001), done); }, { stiffness: opts.stiffness || 120, damping: opts.damping });
     return s;
+  }
+
+  /* ---- tooltips, callouts, reference lines (shared by all charts) ---- */
+  function tipFor(b) {
+    var host = b.tipHost;
+    if (!host || !host.appendChild) return null;
+    if (!host.__stTip) {
+      if (host.classList) host.classList.add("st-tiphost");
+      var t = html("div", "st-tip", host);
+      t.setAttribute("aria-hidden", "true");
+      host.__stTip = t;
+    }
+    return host.__stTip;
+  }
+  function hideTip(b) { var t = b.tipHost && b.tipHost.__stTip; if (t) t.classList.remove("is-on"); }
+  function showTipAt(b, text, clientX, clientY) {
+    var t = tipFor(b); if (!t) return;
+    var hr = b.tipHost.getBoundingClientRect();
+    t.textContent = text;
+    t.style.left = clamp(clientX - hr.left, 10, Math.max(10, hr.width - 10)).toFixed(1) + "px";
+    t.style.top = (clientY - hr.top).toFixed(1) + "px";
+    t.classList.add("is-on");
+  }
+  // invisible, keyboard-focusable hit target that reveals the exact value
+  function addHit(b, g, shape, attrs, text) {
+    if (text == null || text === "") return null;
+    var a = {}; for (var k in attrs) a[k] = attrs[k];
+    a["class"] = "st-hit";
+    var n = mk(shape, a, g);
+    n.setAttribute("tabindex", "0");
+    n.setAttribute("role", "img");
+    n.setAttribute("aria-label", String(text).replace(/\n/g, ", "));
+    function show() { var r = n.getBoundingClientRect(); showTipAt(b, text, r.left + r.width / 2, r.top); }
+    function hide() { hideTip(b); }
+    n.addEventListener("pointerenter", show);
+    n.addEventListener("pointerleave", hide);
+    n.addEventListener("focus", show);
+    n.addEventListener("blur", hide);
+    return n;
+  }
+  /* opts.annotations: [{x, y, text, dx, dy}] in data units, dx/dy in px */
+  function drawAnnotations(b, g, xs, ys, anns, t) {
+    if (!anns || !anns.length) return;
+    var a = clamp((t - 0.5) / 0.5, 0, 1);
+    if (a <= 0.01) return;
+    anns.forEach(function (an) {
+      if (an.x == null || an.y == null) return;
+      var px = xs(an.x), py = ys(an.y);
+      var dx = an.dx == null ? 54 : an.dx, dy = an.dy == null ? -48 : an.dy;
+      var tx = px + dx * a, ty = py + dy * a;
+      var elbow = dx >= 0 ? 10 : -10;
+      var col = an.color ? (tok(an.color) || an.color) : tok("accent");
+      mk("line", { class: "st-anno-line", x1: px, y1: py, x2: tx, y2: ty, opacity: a.toFixed(2) }, g);
+      mk("line", { class: "st-anno-line", x1: tx, y1: ty, x2: tx + elbow, y2: ty, opacity: a.toFixed(2) }, g);
+      mk("circle", { class: "st-anno-dot st-glow", cx: px, cy: py, r: (5 * a).toFixed(2), fill: col }, g);
+      var ax = tx + elbow + (dx >= 0 ? 6 : -6), anchor = dx >= 0 ? "start" : "end";
+      var txt = mk("text", { class: "st-anno-text", x: ax, y: ty + 5, "text-anchor": anchor, opacity: a.toFixed(2) }, g);
+      String(an.text).split("\n").forEach(function (ln, i) {
+        var ts = mk("tspan", { x: ax, dy: i ? 17 : 0 }, txt);
+        if (i) ts.setAttribute("class", "st-anno-sub");
+        ts.textContent = ln;
+      });
+    });
+  }
+  /* opts.refLines: [{y|x, label?, color?}] */
+  function drawRefLines(b, g, xs, ys, refs, t) {
+    if (!refs || !refs.length) return;
+    refs.forEach(function (r) {
+      var col = r.color ? (tok(r.color) || r.color) : tok("ink-2");
+      if (r.y != null && ys) {
+        var y = ys(r.y);
+        mk("line", { class: "st-ref-line", x1: 0, x2: (b.w * t).toFixed(1), y1: y, y2: y, stroke: col }, g);
+        if (r.label && t > .6) { var n1 = mk("text", { class: "st-ref-text", x: 2, y: y - 8, fill: col }, g); n1.textContent = r.label; }
+      } else if (r.x != null && xs) {
+        var x = xs(r.x);
+        mk("line", { class: "st-ref-line", x1: x, x2: x, y1: (b.h * (1 - t)).toFixed(1), y2: b.h, stroke: col }, g);
+        if (r.label && t > .6) { var n2 = mk("text", { class: "st-ref-text", x: x + 6, y: 12, fill: col }, g); n2.textContent = r.label; }
+      }
+    });
   }
 
   /* ---------------------------------------------------------
@@ -949,9 +1279,21 @@
           lab.setAttribute("opacity", ((t - .6) / .4).toFixed(2));
         }
       });
+      drawRefLines(b, g, xs, ys, opts.refLines, t);
+      drawAnnotations(b, g, xs, ys, opts.annotations, t);
+      if (t > .95 && opts.tips !== false) {
+        cur.series.forEach(function (s) {
+          s.points.forEach(function (p) {
+            var txt = opts.tipFmt ? opts.tipFmt(p, s) :
+              (s.name ? s.name + "\n" : "") + (opts.xlabel || "x") + " " + fmt(p[0], 0) + "\n" + (opts.ylabel || "y") + " " + fmt(p[1]);
+            addHit(b, g, "circle", { cx: xs(p[0]).toFixed(2), cy: ys(p[1]).toFixed(2), r: 10 }, txt);
+          });
+        });
+      }
     }
     function run() { if (anim) anim.stop(); anim = transition(function (t) { render(clamp(t, 0, 1)); }); }
     un = Theme.onChange(function () { render(1); });
+    b._redraw = function () { render(1); };
     if (first) { first = false; inView(b.svg, run, { once: true }); render(0.0001); }
     return {
       update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); },
@@ -975,10 +1317,17 @@
         var v = lerp(from[i] == null ? 0 : from[i], d.value, t);
         var x = i * (w / cur.length) + (w / cur.length - bw) / 2;
         var y = ys(v), hh = Math.max(0, h - y);
-        mk("rect", { class: "st-bar", x: x, y: y, width: bw, height: hh, fill: d.color ? (tok(d.color) || d.color) : tok("accent") }, g);
+        var rect = mk("rect", { class: "st-bar", x: x, y: y, width: bw, height: hh, fill: d.color ? (tok(d.color) || d.color) : tok("accent") }, g);
+        if (d.glow) rect.setAttribute("class", "st-bar st-glow");
         var lab = mk("text", { class: "st-label-direct", x: x + bw / 2, y: y - 7, "text-anchor": "middle" }, g);
         lab.textContent = (opts.valueFmt || fmt)(v);
+        if (t > .95 && opts.tips !== false) {
+          addHit(b, g, "rect", { x: i * (w / cur.length), y: 0, width: w / cur.length, height: h },
+            opts.tipFmt ? opts.tipFmt(d) : d.label + "\n" + (opts.valueFmt || fmt)(d.value) + (opts.unit ? " " + opts.unit : ""));
+        }
       });
+      drawRefLines(b, g, null, ys, opts.refLines, t);
+      if (opts.annotations) drawAnnotations(b, g, function (i) { return (i + .5) * (w / cur.length); }, ys, opts.annotations, t);
     }
     function run() {
       var from = prev.slice();
@@ -987,6 +1336,7 @@
       prev = cur.map(function (d) { return d.value; });
     }
     un = Theme.onChange(function () { render(1, prev); });
+    b._redraw = function () { render(1, prev); };
     render(0, prev);
     inView(b.svg, run, { once: true });
     return {
@@ -1043,6 +1393,7 @@
     }
     function run() { if (anim) anim.stop(); anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 70 }); }
     un = Theme.onChange(function () { render(1); });
+    b._redraw = function () { render(1); };
     render(0.001); inView(b.svg, run, { once: true });
     return { update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); }, el: b.svg, destroy: function () { if (anim) anim.stop(); un(); b.clear(); } };
   };
@@ -1073,14 +1424,22 @@
         var e = clamp((t - (i / Math.max(1, pts.length)) * 0.4) / 0.6, 0, 1);
         var c = mk("circle", { cx: xs(p.x), cy: ys(p.y), r: (p.r || 5) * e, fill: p.color ? (tok(p.color) || p.color) : tok("accent") }, g);
         c.setAttribute("opacity", (0.85 * e).toFixed(2));
+        if (p.glow) c.setAttribute("class", "st-glow");
         if (p.label && e > .9) {
           var tx = mk("text", { class: "st-label-direct", x: xs(p.x) + 9, y: ys(p.y) + 4 }, g);
           tx.textContent = p.label;
         }
+        if (t > .95 && opts.tips !== false) {
+          addHit(b, g, "circle", { cx: xs(p.x), cy: ys(p.y), r: Math.max(11, (p.r || 5) + 6) },
+            opts.tipFmt ? opts.tipFmt(p) : (p.label ? p.label + "\n" : "") + (opts.xlabel || "x") + " " + fmt(p.x) + "\n" + (opts.ylabel || "y") + " " + fmt(p.y));
+        }
       });
+      drawRefLines(b, g, xs, ys, opts.refLines, t);
+      drawAnnotations(b, g, xs, ys, opts.annotations, t);
     }
     function run() { if (anim) anim.stop(); anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 90 }); }
     un = Theme.onChange(function () { render(1); });
+    b._redraw = function () { render(1); };
     render(0.001); inView(b.svg, run, { once: true });
     return { update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); }, el: b.svg, destroy: function () { if (anim) anim.stop(); un(); b.clear(); } };
   };
@@ -1126,9 +1485,20 @@
         var ct = mk("text", { class: "st-caption", x: w, y: -4, "text-anchor": "end" }, g);
         ct.textContent = take + " / " + B.order.length + " draws";
       }
+      drawRefLines(b, g, xs, ys, opts.refLines, t);
+      drawAnnotations(b, g, xs, ys, opts.annotations, t);
+      if (t > .95 && opts.tips !== false) {
+        var step = (B.d[1] - B.d[0]) / B.n;
+        full.forEach(function (c, i) {
+          if (!c) return;
+          addHit(b, g, "rect", { x: i * bw, y: 0, width: bw, height: h },
+            fmt(B.d[0] + i * step) + " to " + fmt(B.d[0] + (i + 1) * step) + "\n" + c + " of " + B.order.length + " draws");
+        });
+      }
     }
     function run() { if (anim) anim.stop(); anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 26 }); }
     un = Theme.onChange(function () { render(1); });
+    b._redraw = function () { render(1); };
     render(0); inView(b.svg, run, { once: true });
     return { update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); }, el: b.svg, destroy: function () { if (anim) anim.stop(); un(); b.clear(); } };
   };
@@ -1169,7 +1539,13 @@
         lt.textContent = d.label;
         var vt = mk("text", { x: x1 + 6, y: y + bh / 2 + 4 }, g);
         vt.textContent = (opts.xfmt ? opts.xfmt(d.high) : fmt(d.high));
+        if (t > .95 && opts.tips !== false) {
+          var f = opts.xfmt || fmt;
+          addHit(b, g, "rect", { x: 0, y: row * rowH, width: w, height: rowH },
+            opts.tipFmt ? opts.tipFmt(d) : d.label + "\nlow " + f(d.low) + "\nhigh " + f(d.high) + "\nswing " + f(Math.abs(d.high - d.low)));
+        }
       });
+      drawRefLines(b, g, xs, null, opts.refLines, t);
     }
     function run(toSorted) {
       order = toSorted === false ? cur.map(function (d, i) { return i; }) : sorted();
@@ -1177,6 +1553,7 @@
       anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 55 });
     }
     un = Theme.onChange(function () { render(1); });
+    b._redraw = function () { render(1); };
     render(0); inView(b.svg, function () { run(true); }, { once: true });
     return {
       update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(o && o.sorted === false ? false : true); },
@@ -1249,6 +1626,7 @@
     }
     init(data);
     un = Theme.onChange(render);
+    b._redraw = function () { init(cur); sim(120); render(); };
     sim(60); render();
     inView(b.svg, settle, { once: true });
     return {
@@ -1322,6 +1700,7 @@
       prev = {}; cur.edges.forEach(function (e) { prev[e.from + ">" + e.to] = e.coef; });
     }
     un = Theme.onChange(function () { render(1, prev); });
+    b._redraw = function () { render(1, prev); };
     render(0, {}); inView(b.svg, run, { once: true });
     return { update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); }, el: b.svg, destroy: function () { if (anim) anim.stop(); un(); b.clear(); } };
   };
@@ -1381,7 +1760,7 @@
       ctx.strokeStyle = tok("rule-soft"); ctx.lineWidth = 1;
       ctx.beginPath(); ctx.moveTo(m.left, H - m.bottom); ctx.lineTo(W - m.right, H - m.bottom); ctx.stroke();
       ctx.fillStyle = tok("muted");
-      ctx.font = "12px " + (getComputedStyle(document.documentElement).getPropertyValue("--font-mono") || "monospace");
+      ctx.font = "14px " + (getComputedStyle(document.documentElement).getPropertyValue("--font-mono") || "monospace");
       ctx.textAlign = "center";
       ticks(laid.xd[0], laid.xd[1], 5).forEach(function (v) {
         var x = m.left + (v - laid.xd[0]) / (laid.xd[1] - laid.xd[0]) * pw;
@@ -1402,6 +1781,61 @@
         ctx.beginPath(); ctx.arc(d.x, d.y, d.r, 0, 6.2832); ctx.fill();
       }
       ctx.globalAlpha = 1;
+      // reference lines
+      var sx = function (v) { return m.left + (v - laid.xd[0]) / (laid.xd[1] - laid.xd[0]) * pw; };
+      (opts.refLines || []).forEach(function (r) {
+        if (r.x == null) return;
+        ctx.save();
+        ctx.strokeStyle = r.color ? (tok(r.color) || r.color) : tok("ink-2");
+        ctx.lineWidth = 1.5; ctx.setLineDash([6, 5]);
+        ctx.beginPath(); ctx.moveTo(sx(r.x), m.top); ctx.lineTo(sx(r.x), H - m.bottom); ctx.stroke();
+        ctx.restore();
+        if (r.label) {
+          ctx.fillStyle = r.color ? (tok(r.color) || r.color) : tok("ink-2");
+          ctx.textAlign = "left"; ctx.fillText(r.label, sx(r.x) + 6, m.top + 12);
+        }
+      });
+      // callouts with leader lines
+      (opts.annotations || []).forEach(function (an) {
+        if (an.x == null) return;
+        var gi = an.group == null ? 0 : Math.max(0, laid.groups.indexOf(an.group));
+        var px = sx(an.x);
+        var py = an.y != null ? (m.top + an.y * ph) : (m.top + gi * laid.bandH + laid.bandH / 2);
+        var tx = px + (an.dx == null ? 54 : an.dx), ty = py + (an.dy == null ? -48 : an.dy);
+        ctx.save();
+        ctx.strokeStyle = tok("ink-2"); ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(tx, ty); ctx.lineTo(tx + (an.dx >= 0 || an.dx == null ? 10 : -10), ty); ctx.stroke();
+        ctx.fillStyle = an.color ? (tok(an.color) || an.color) : tok("accent");
+        ctx.beginPath(); ctx.arc(px, py, 5, 0, 6.2832); ctx.fill();
+        ctx.restore();
+        var right = (an.dx == null || an.dx >= 0);
+        ctx.textAlign = right ? "left" : "right";
+        var lx = tx + (right ? 16 : -16);
+        String(an.text).split("\n").forEach(function (ln, i) {
+          ctx.fillStyle = i ? tok("muted") : tok("ink");
+          ctx.fillText(ln, lx, ty + 5 + i * 17);
+        });
+        ctx.textAlign = "center";
+      });
+    }
+    // hover / focus: nearest dot inside 8px
+    var tipBox = { tipHost: (host === canvas ? (canvas.parentNode || canvas) : host) };
+    function nearest(cx, cy) {
+      var best = null, bd = 81;
+      for (var i = 0; i < laid.length; i++) {
+        var dx = laid[i].x - cx, dy = laid[i].y - cy, d2 = dx * dx + dy * dy;
+        if (d2 < bd) { bd = d2; best = laid[i]; }
+      }
+      return best;
+    }
+    function onHover(e) {
+      var r = canvas.getBoundingClientRect();
+      var d = nearest((e.clientX - r.left) * (W / Math.max(1, r.width)), (e.clientY - r.top) * (H / Math.max(1, r.height)));
+      if (!d) { hideTip(tipBox); return; }
+      var txt = opts.tipFmt ? opts.tipFmt(d.p) :
+        (d.p.label ? d.p.label + "\n" : "") + (d.p.group != null && d.p.group !== "" ? d.p.group + "\n" : "") +
+        (opts.xlabel || "value") + " " + fmt(d.p.x) + (d.p.flag ? "\nflagged" : "");
+      showTipAt(tipBox, txt, r.left + d.x * (r.width / Math.max(1, W)), r.top + d.y * (r.height / Math.max(1, H)));
     }
     function resize() {
       var r = canvas.getBoundingClientRect();
@@ -1420,12 +1854,17 @@
     }
     un = Theme.onChange(function () { render(1); });
     if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); } else addEventListener("resize", resize);
+    function offHover() { hideTip(tipBox); }
+    if (opts.tips !== false) {
+      canvas.addEventListener("pointermove", onHover);
+      canvas.addEventListener("pointerleave", offHover);
+    }
     resize(); render(0);
     inView(canvas, run, { once: true });
     return {
       update: function (d, o) { if (d) cur = d; if (o) Object.assign(opts, o); run(); },
       el: canvas,
-      destroy: function () { if (anim) anim.stop(); un(); if (ro) ro.disconnect(); else removeEventListener("resize", resize); ctx.clearRect(0, 0, canvas.width, canvas.height); }
+      destroy: function () { if (anim) anim.stop(); un(); if (ro) ro.disconnect(); else removeEventListener("resize", resize); canvas.removeEventListener("pointermove", onHover); canvas.removeEventListener("pointerleave", offHover); ctx.clearRect(0, 0, canvas.width, canvas.height); }
     };
   };
 
@@ -1489,11 +1928,327 @@
   }
 
   /* ---------------------------------------------------------
+     8b. wayfinder  -  one navigation model, site map lives here
+     --------------------------------------------------------- */
+  var BASE = "https://priyatham9.github.io/";
+  function U(p) { return /^https?:/.test(p) ? p : BASE + p; }
+
+  var WAY = {
+    site: "GROUNDED",
+    // one linear path through the whole research site
+    path: [
+      { key: "hub", title: "The argument", url: "grounded/" },
+      { key: "osha", title: "The denominator", url: "ehs-osha-analysis/story.html" },
+      { key: "grounding", title: "The adjacent clause", url: "ehs-ai-grounding-eval/story.html" },
+      { key: "ontology", title: "Why people err", url: "ehs-human-factors-ontology/story.html" },
+      { key: "sem", title: "Where the method breaks", url: "ehs-risk-sem/story.html" },
+      { key: "capitals", title: "The capital case", url: "ehs-capitals-calculator/story.html" },
+      { key: "benchmarks", title: "Compared with whom", url: "ehs-benchmarks/story.html" }
+    ],
+    end: { title: "What is missing", url: "grounded/#open" },
+    hub: {
+      key: "hub", repo: "grounded", name: "Grounded", sub: "The hub",
+      doors: [
+        { kind: "story", label: "The argument", url: "grounded/", note: "Hub story, 10 min" },
+        { kind: "project", label: "Start here", url: "grounded/start.html", note: "Guided 5 minute path" },
+        { kind: "tool", label: "Observatory", url: "grounded/observatory.html", note: "Status of every repo" }
+      ]
+    },
+    projects: [
+      {
+        key: "osha", repo: "ehs-osha-analysis", name: "OSHA 300A screen", sub: "The denominator",
+        doors: [
+          { kind: "story", label: "Story", url: "ehs-osha-analysis/story.html", note: "5 min, for leaders" },
+          { kind: "project", label: "Project page", url: "ehs-osha-analysis/", note: "Methods and tables, for analysts" },
+          { kind: "tool", label: "Explore", url: "ehs-osha-analysis/explore.html", note: "Filings, hours, flags" }
+        ]
+      },
+      {
+        key: "grounding", repo: "ehs-ai-grounding-eval", name: "Grounding eval", sub: "The adjacent clause",
+        doors: [
+          { kind: "story", label: "Story", url: "ehs-ai-grounding-eval/story.html", note: "5 min, for leaders" },
+          { kind: "project", label: "Project page", url: "ehs-ai-grounding-eval/", note: "Corpus card, preregistration" },
+          { kind: "tool", label: "Try an item", url: "ehs-ai-grounding-eval/try.html", note: "Answer before the model does" }
+        ]
+      },
+      {
+        key: "ontology", repo: "ehs-human-factors-ontology", name: "Human factors ontology", sub: "Why people err",
+        doors: [
+          { kind: "story", label: "Story", url: "ehs-human-factors-ontology/story.html", note: "5 min, for leaders" },
+          { kind: "project", label: "Project page", url: "ehs-human-factors-ontology/", note: "Provenance and compatibility" },
+          {
+            kind: "tool", label: "Walkthrough", url: "ehs-human-factors-ontology/walkthrough.html", note: "Rule derivation, edge by edge",
+            alt: { label: "Crosswalk", url: "ehs-human-factors-ontology/crosswalk.html" }
+          }
+        ]
+      },
+      {
+        key: "sem", repo: "ehs-risk-sem", name: "Risk SEM", sub: "Where the method breaks",
+        doors: [
+          { kind: "story", label: "Story", url: "ehs-risk-sem/story.html", note: "5 min, for leaders" },
+          { kind: "project", label: "Project page", url: "ehs-risk-sem/", note: "Simulation studies, synthetic data" },
+          { kind: "tool", label: "API reference", url: "ehs-risk-sem/api/", note: "Estimator and diagnostics" }
+        ]
+      },
+      {
+        key: "capitals", repo: "ehs-capitals-calculator", name: "Capitals calculator", sub: "The capital case",
+        doors: [
+          { kind: "story", label: "Story", url: "ehs-capitals-calculator/story.html", note: "5 min, for leaders" },
+          { kind: "project", label: "Project page", url: "ehs-capitals-calculator/", note: "Model and assumptions" },
+          { kind: "tool", label: "Calculator", url: "ehs-capitals-calculator/#calculator", note: "Run one investment" }
+        ]
+      },
+      {
+        key: "benchmarks", repo: "ehs-benchmarks", name: "Peer benchmarks", sub: "Compared with whom",
+        doors: [
+          { kind: "story", label: "Story", url: "ehs-benchmarks/story.html", note: "5 min, for leaders" },
+          { kind: "project", label: "Method", url: "ehs-benchmarks/#view-method", note: "Peer groups and sources" },
+          { kind: "tool", label: "Benchmark app", url: "ehs-benchmarks/#view-benchmark", note: "Pick a NAICS and size band" }
+        ]
+      }
+    ],
+    extras: [
+      { label: "Paper: grounding", url: "grounded/paper.html" },
+      { label: "Paper: OSHA", url: "grounded/paper-osha.html" },
+      { label: "Observatory", url: "grounded/observatory.html" },
+      { label: "Start here", url: "grounded/start.html" },
+      { label: "Changelog", url: "grounded/changelog.html" },
+      { label: "Benchmark API", url: "ehs-osha-benchmark-api/" },
+      { label: "GitHub", url: "https://github.com/priyatham9" }
+    ]
+  };
+  var REPO_KEY = {
+    "grounded": "hub", "ehs-osha-analysis": "osha", "ehs-ai-grounding-eval": "grounding",
+    "ehs-human-factors-ontology": "ontology", "ehs-risk-sem": "sem",
+    "ehs-capitals-calculator": "capitals", "ehs-benchmarks": "benchmarks",
+    "ehs-osha-benchmark-api": "benchmarks"
+  };
+  var DOOR_LABEL = { story: "Story", project: "Project page", tool: "Tool" };
+
+  function detectCurrent() {
+    var parts = location.pathname.split("/").filter(Boolean);
+    var key = null, file = parts.length ? parts[parts.length - 1] : "";
+    for (var i = 0; i < parts.length; i++) if (REPO_KEY[parts[i]]) key = REPO_KEY[parts[i]];
+    if (!key) return null;
+    if (!/\.html?$/.test(file)) file = "";
+    var door = "project";
+    if (file === "story.html" || (key === "hub" && (file === "" || file === "index.html"))) door = "story";
+    else if (/^(explore|try|walkthrough|crosswalk|observatory|start|changelog)\.html$/.test(file) || /api/.test(location.pathname)) door = "tool";
+    return { key: key, door: door };
+  }
+
+  var wayState = null;
+  function wayfinder(opts) {
+    opts = opts || {};
+    if (wayState) return wayState;
+    var cur = opts.current || detectCurrent() || { key: "hub", door: "story" };
+    if (typeof cur === "string") cur = { key: cur, door: opts.door || "story" };
+    var key = cur.key || "hub", door = cur.door || opts.door || "story";
+    var idx = 0;
+    WAY.path.forEach(function (p, i) { if (p.key === key) idx = i; });
+    var here = WAY.path[idx];
+
+    /* ---- fixed bottom bar ---- */
+    var bar = html("nav", "st-way");
+    bar.setAttribute("aria-label", "Site path");
+    var seg = html("div", "st-way-seg", bar);
+    WAY.path.forEach(function (p, i) {
+      var s = html("i", null, seg);
+      if (i < idx) s.className = "is-done";
+      else if (i === idx) s.className = "is-now";
+    });
+    var row = html("div", "st-way-row", bar);
+    var crumb = html("div", "st-way-crumb", row);
+    var site = html("span", "st-way-site", crumb);
+    site.textContent = WAY.site + " · ";
+    var b = document.createElement("b");
+    b.textContent = (idx + 1) + " of " + WAY.path.length;
+    crumb.appendChild(b);
+    var ttl = html("span", "st-way-title", crumb);
+    ttl.textContent = " · " + here.title + (door !== "story" ? " · " + DOOR_LABEL[door] : "");
+
+    var btns = html("div", "st-way-btns", row);
+    function link(text, target, rel) {
+      var a = document.createElement("a");
+      a.className = "st-way-btn";
+      a.textContent = text;
+      if (target) { a.href = U(target.url); a.title = target.title; if (rel) a.rel = rel; }
+      else a.setAttribute("aria-disabled", "true");
+      btns.appendChild(a);
+      return a;
+    }
+    link("← Prev", idx > 0 ? WAY.path[idx - 1] : null, "prev");
+    var mapBtn = document.createElement("button");
+    mapBtn.type = "button"; mapBtn.className = "st-way-btn";
+    mapBtn.textContent = "Map (M)";
+    mapBtn.setAttribute("aria-expanded", "false");
+    btns.appendChild(mapBtn);
+    link("Next →", idx < WAY.path.length - 1 ? WAY.path[idx + 1] : WAY.end, "next");
+    document.body.appendChild(bar);
+    document.body.classList.add("st-has-way");
+
+    function measure() {
+      document.documentElement.style.setProperty("--st-way-h", Math.round(bar.getBoundingClientRect().height || 60) + "px");
+    }
+    measure();
+    addEventListener("resize", measure);
+
+    /* ---- map overlay ---- */
+    var map = html("div", "st-way-map");
+    map.setAttribute("role", "dialog");
+    map.setAttribute("aria-modal", "true");
+    map.setAttribute("aria-label", "Site map");
+    var head = html("div", "st-map-head", map);
+    var h2 = document.createElement("h2");
+    h2.textContent = "Where everything is";
+    head.appendChild(h2);
+    var closeBtn = document.createElement("button");
+    closeBtn.type = "button"; closeBtn.className = "st-way-btn";
+    closeBtn.textContent = "Close (Esc)";
+    head.appendChild(closeBtn);
+    var hint = html("div", "st-map-hint", head);
+    hint.textContent = "Every project has three doors: story, project page, tool";
+
+    // constellation (hidden under 800px by CSS; the card list below is the
+    // plain-list fallback and is always present)
+    var wrap = html("div", "st-map-wrap", map);
+    var svg = mk("svg", { class: "st-map-svg", viewBox: "0 0 820 430", role: "img", "aria-label": "Site map as a constellation: the hub at the centre, six projects around it" }, wrap);
+    var cx = 410, cy = 215, rx = 310, ry = 150;
+    var placed = WAY.projects.map(function (p, i) {
+      var a = -Math.PI / 2 + (i / WAY.projects.length) * 6.2832;
+      return { p: p, x: cx + Math.cos(a) * rx, y: cy + Math.sin(a) * ry };
+    });
+    placed.forEach(function (n) {
+      mk("line", { class: "st-map-spoke" + (n.p.key === key ? " is-now" : ""), x1: cx, y1: cy, x2: n.x, y2: n.y }, svg);
+    });
+    var hubG = mk("g", null, svg);
+    mk("circle", { class: "st-map-node" + (key === "hub" ? " is-now" : ""), cx: cx, cy: cy, r: 44 }, hubG);
+    var hubT = mk("text", { class: "st-map-name", x: cx, y: cy + 5, "text-anchor": "middle" }, hubG);
+    hubT.textContent = "HUB";
+    placed.forEach(function (n) {
+      var a = mk("a", { href: U(n.p.doors[0].url) }, svg);
+      mk("circle", { class: "st-map-node" + (n.p.key === key ? " is-now" : ""), cx: n.x, cy: n.y, r: 30 }, a);
+      var t = mk("text", { class: "st-map-name", x: n.x, y: n.y + (n.y < cy ? -56 : 50), "text-anchor": "middle" }, a);
+      t.textContent = n.p.name;
+      var s = mk("text", { x: n.x, y: n.y + (n.y < cy ? -39 : 67), "text-anchor": "middle" }, a);
+      s.textContent = n.p.sub;
+      var num = mk("text", { class: "st-map-name", x: n.x, y: n.y + 5, "text-anchor": "middle" }, a);
+      num.textContent = String(WAY.path.map(function (q) { return q.key; }).indexOf(n.p.key) + 1);
+    });
+
+    var list = html("div", "st-map-list", map);
+    function card(node) {
+      var c = html("div", "st-map-card" + (node.key === key ? " is-now" : ""), list);
+      var t = document.createElement("h3"); t.textContent = node.name; c.appendChild(t);
+      var s = html("p", "st-map-sub", c); s.textContent = node.sub;
+      var ul = document.createElement("ul"); c.appendChild(ul);
+      node.doors.forEach(function (d) {
+        var li = document.createElement("li");
+        var a = document.createElement("a");
+        a.href = U(d.url);
+        a.appendChild(document.createTextNode(d.label));
+        var sp = document.createElement("span"); sp.textContent = d.note; a.appendChild(sp);
+        if (node.key === key && d.kind === door) a.setAttribute("aria-current", "page");
+        li.appendChild(a);
+        if (d.alt) {
+          var a2 = document.createElement("a");
+          a2.href = U(d.alt.url); a2.textContent = d.alt.label;
+          a2.style.marginTop = "6px";
+          li.appendChild(a2);
+        }
+        ul.appendChild(li);
+      });
+    }
+    card(WAY.hub);
+    WAY.projects.forEach(card);
+    var extra = html("div", "st-map-extra", map);
+    WAY.extras.forEach(function (e) {
+      var a = document.createElement("a");
+      a.className = "st-way-btn"; a.href = U(e.url); a.textContent = e.label;
+      extra.appendChild(a);
+    });
+    document.body.appendChild(map);
+
+    /* ---- open / close with a focus trap ---- */
+    var lastFocus = null, isOpen = false;
+    function focusables() {
+      return els("a[href],button:not([disabled])", map).filter(function (n) { return n.offsetParent !== null || n.getClientRects().length; });
+    }
+    function open() {
+      if (isOpen) return;
+      isOpen = true;
+      lastFocus = document.activeElement;
+      map.classList.add("is-open");
+      mapBtn.setAttribute("aria-expanded", "true");
+      document.documentElement.style.overflow = "hidden";
+      closeBtn.focus();
+      addEventListener("keydown", trap, true);
+    }
+    function close() {
+      if (!isOpen) return;
+      isOpen = false;
+      map.classList.remove("is-open");
+      mapBtn.setAttribute("aria-expanded", "false");
+      document.documentElement.style.overflow = "";
+      removeEventListener("keydown", trap, true);
+      if (lastFocus && lastFocus.focus) lastFocus.focus();
+    }
+    function trap(e) {
+      if (e.key === "Escape") { e.preventDefault(); close(); return; }
+      if (e.key !== "Tab") return;
+      var f = focusables();
+      if (!f.length) return;
+      var first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+    mapBtn.addEventListener("click", function () { isOpen ? close() : open(); });
+    closeBtn.addEventListener("click", close);
+    function key2(e) {
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var t = e.target;
+      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if ((e.key === "m" || e.key === "M") && !isOpen) { e.preventDefault(); open(); }
+    }
+    addEventListener("keydown", key2);
+
+    wayState = {
+      el: bar, map: map, open: open, close: close,
+      get index() { return idx; },
+      data: WAY,
+      destroy: function () {
+        close(); removeEventListener("keydown", key2); removeEventListener("resize", measure);
+        bar.remove(); map.remove();
+        document.body.classList.remove("st-has-way");
+        wayState = null;
+      }
+    };
+    return wayState;
+  }
+  function autoWayfinder() {
+    if (global.STORY_NO_WAYFINDER) return;
+    if (document.querySelector(".st-way")) return;
+    try { wayfinder(); } catch (e) { if (global.console) console.error(e); }
+  }
+  function autoChapters() {
+    els(".st-chapter").forEach(function (n) { try { chapter(n); } catch (e) { if (global.console) console.error(e); } });
+  }
+  function boot() { autoChapters(); autoWayfinder(); }
+  if (document.readyState === "loading") addEventListener("DOMContentLoaded", boot);
+  else boot();
+
+  /* ---------------------------------------------------------
      9. export
      --------------------------------------------------------- */
   var Story = {
-    version: "1.0.0",
+    version: "1.1.0",
     orb: orb,
+    orbInline: orbInline,
+    companion: companion,
+    chapter: chapter,
+    field: field,
+    wayfinder: wayfinder,
+    sitemap: WAY,
     scenes: scenes,
     chart: chart,
     spring: spring,
