@@ -1,5 +1,5 @@
 /* ============================================================
-   story.css  -  shared storytelling engine styles  (v1.1)
+   story.css  -  shared storytelling engine styles  (v1.4)
    Depends on tokens defined in tools/shared.css:
    --paper --surface --surface-2 --ink --ink-2 --muted --rule
    --rule-soft --accent --accent-2 --accent-ink --accent-wash
@@ -597,3 +597,23 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
 /* print tokens must beat page theme blocks (:root[data-theme], prefers-color-scheme) */
 html.st-printing:root,html.st-printing:root[data-theme="dark"],html.st-printing:root[data-theme="light"],html.st-printing:root:not([data-theme="light"]){--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}
 @media print{:root,:root[data-theme="dark"],:root[data-theme="light"],:root:not([data-theme="light"]){--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}}
+
+/* ---------- v1.4 dock: phone safe areas, calmer motion, visible focus ---------- */
+/* the dock clears the iPhone home indicator; the page's end clears the dock */
+.st-way{bottom:calc(12px + env(safe-area-inset-bottom, 0px))}
+body.st-has-way{padding-bottom:calc(var(--st-way-h,64px) + 22px + env(safe-area-inset-bottom, 0px))}
+/* the pill clips its children, so the focus ring sits inside the button, not outside it */
+.st-way .st-way-btn:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
+/* tap targets on phones: at least 40px tall */
+@media(max-width:520px){.st-way a.st-way-btn,.st-way button.st-way-btn{min-height:40px;min-width:40px;justify-content:center}}
+/* reduced motion: no lift on hover, no sliding lamp */
+@media (prefers-reduced-motion: reduce){.st-way a.st-way-btn,.st-way button.st-way-btn,.st-way-map .st-way-btn{transition:none!important}.st-way a.st-way-btn:hover,.st-way button.st-way-btn:hover,.st-way-map .st-way-btn:hover{transform:none!important}}
+.st-reduced .st-way a.st-way-btn:hover,.st-reduced .st-way button.st-way-btn:hover{transform:none!important}
+/* an open site map owns the screen: the dock underneath is inert to the eye too */
+html:has(.st-way-map.is-open) .st-way{visibility:hidden}
+/* phones: the headline comes first and the orb follows it, smaller; the dotted backdrop
+   never pokes past the viewport edge (it caused sideways scroll at 390px) */
+@media(max-width:900px){
+  .st-hero .st-hero-orb{order:0;width:min(56vw,260px)}
+  .st-hero::before{left:0;right:0}
+}

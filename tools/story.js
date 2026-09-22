@@ -1961,8 +1961,7 @@
       // capture phase + stop: pages may carry their own arrow handlers, the presenter must be the only one acting
       if (e.key === "Escape") { e.stopImmediatePropagation(); exit(); return; }
       if (e.key === "n" || e.key === "N") {
-        var t = e.target;
-        if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+        if (isTyping(e.target)) return;
         if (e.metaKey || e.ctrlKey || e.altKey) return;
         e.preventDefault(); e.stopImmediatePropagation(); toggleNotes(); return;
       }
@@ -1988,12 +1987,17 @@
     };
     return presentState;
   }
+  // a key press that belongs to a form control never triggers a page shortcut
+  function isTyping(t) {
+    return !!(t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable));
+  }
   function autoPresent(opts) {
     // P toggles, ?present=1 starts in presenter mode
     addEventListener("keydown", function (e) {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      var t = e.target;
-      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey || e.defaultPrevented) return;
+      if (isTyping(e.target)) return;
+      // the site map is a modal: P must not start a presentation behind it
+      if (document.querySelector(".st-way-map.is-open")) return;
       if (e.key === "p" || e.key === "P") { if (presentState) presentState.exit(); else present(opts); }
     });
     if (/[?&]present=1/.test(location.search)) {
@@ -2100,15 +2104,23 @@
   };
   var DOOR_LABEL = { story: "Story", project: "Project page", tool: "Tool" };
 
+  // The page's own address. Preview hosts, localhost and file:// serve the page
+  // under a different path, so the canonical link (when present) wins.
+  function pagePath() {
+    var path = location.pathname, canon = document.querySelector('link[rel="canonical"]');
+    if (canon && canon.href) { try { path = new URL(canon.href).pathname; } catch (e) { } }
+    return path;
+  }
   function detectCurrent() {
-    var parts = location.pathname.split("/").filter(Boolean);
+    var path = pagePath();
+    var parts = path.split("/").filter(Boolean);
     var key = null, file = parts.length ? parts[parts.length - 1] : "";
     for (var i = 0; i < parts.length; i++) if (REPO_KEY[parts[i]]) key = REPO_KEY[parts[i]];
     if (!key) return null;
     if (!/\.html?$/.test(file)) file = "";
     var door = "project";
     if (file === "story.html" || (key === "hub" && (file === "" || file === "index.html"))) door = "story";
-    else if (/^(explore|try|walkthrough|crosswalk|observatory|start|changelog)\.html$/.test(file) || /api/.test(location.pathname)) door = "tool";
+    else if (/^(explore|try|walkthrough|crosswalk|observatory|start|changelog)\.html$/.test(file) || /\/api(\/|$)/.test(path)) door = "tool";
     return { key: key, door: door };
   }
 
@@ -2203,11 +2215,16 @@
       lamp.style.width = r.width.toFixed(1) + "px";
     }
     function measure() {
-      document.documentElement.style.setProperty("--st-way-h", Math.round(bar.getBoundingClientRect().height || 64) + "px");
+      var h = Math.round(bar.getBoundingClientRect().height || 64);
+      document.documentElement.style.setProperty("--st-way-h", h + "px");
+      // keyboard focus, find-in-page and anchor jumps scroll content clear of the floating dock
+      document.documentElement.style.scrollPaddingBottom = (h + 28) + "px";
       lampTo(idx);
     }
     measure();
     addEventListener("resize", measure);
+    // the bar's height settles once webfonts load; the lamp and the padding follow it
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure, function () { });
     // hovering Prev or Next previews where the light would move
     function peek(btn, to) {
       if (!btn) return;
@@ -2337,8 +2354,9 @@
     closeBtn.addEventListener("click", close);
     function key2(e) {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      var t = e.target;
-      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if (isTyping(e.target) || e.defaultPrevented) return;
+      // presenter mode hides the map; opening it there would only lock the page's scroll
+      if (presentState) return;
       if ((e.key === "m" || e.key === "M") && !isOpen) { e.preventDefault(); open(); }
     }
     addEventListener("keydown", key2);
@@ -2367,7 +2385,8 @@
   function autoFindings() {
     var ch = els(".st-chapter");
     // story pages and the hub (itself a story) keep one fixed bar only: the wayfinder
-    if (/story\.html$/.test(location.pathname) || /\/grounded\/(docs\/)?(index\.html)?$/.test(location.pathname)) document.body.classList.add("st-story");
+    var pp = pagePath();
+    if (/story\.html$/.test(pp) || /story\.html$/.test(location.pathname) || /\/grounded\/(docs\/)?(index\.html)?$/.test(pp)) document.body.classList.add("st-story");
     if (ch.length < 2 || document.querySelector(".st-findings")) return;
     var nav = html("nav", "st-findings");
     nav.setAttribute("aria-label", "Findings in this story");
@@ -2818,7 +2837,7 @@
      9. export
      --------------------------------------------------------- */
   var Story = {
-    version: "1.3.0",
+    version: "1.4.0",
     orb: orb,
     orbInline: orbInline,
     companion: companion,

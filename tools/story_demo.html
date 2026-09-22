@@ -160,7 +160,7 @@ body:has(.st-progress) .rs-header .rs-progress{display:none}
 /*SHARED_CSS_END*/
 /*STORY_CSS_START*/
 /* ============================================================
-   story.css  -  shared storytelling engine styles  (v1.1)
+   story.css  -  shared storytelling engine styles  (v1.4)
    Depends on tokens defined in tools/shared.css:
    --paper --surface --surface-2 --ink --ink-2 --muted --rule
    --rule-soft --accent --accent-2 --accent-ink --accent-wash
@@ -570,14 +570,15 @@ abbr.st-gloss:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
 /* print handout, second pass */
 @media print{
-  .st-stage *,  .st-steps *,  .st-hero *{position:static!important}
+  /* only the layout boxes go static; figures keep their own absolutely placed parts */
+  .st-stage,.st-stage-inner,.st-frame,.st-steps,.st-step,.st-hero,.st-hero > *{position:static!important}
   .st-figure figcaption{margin:4pt 0 0!important;padding:0!important}
   .st-steps{padding-top:8pt!important;min-height:0!important}
   .st-scene,  .st-scene .st-steps,  .st-scene .st-stage{min-height:0!important}
   button,  .btn,  [class*="btn"],  [class*="cta"]{background:none!important;background-color:transparent!important;color:#000!important;border-color:#000!important}
   [style*="position:fixed"],  [style*="position: fixed"]{display:none!important}
 }
-html.st-printing .st-stage *,html.st-printing .st-steps *,html.st-printing .st-hero *{position:static!important}
+html.st-printing .st-stage,html.st-printing .st-stage-inner,html.st-printing .st-frame,html.st-printing .st-steps,html.st-printing .st-step,html.st-printing .st-hero,html.st-printing .st-hero > *{position:static!important}
 html.st-printing .st-figure figcaption{margin:4pt 0 0!important;padding:0!important}
 html.st-printing .st-steps{padding-top:8pt!important;min-height:0!important}
 html.st-printing .st-scene,html.st-printing .st-scene .st-steps,html.st-printing .st-scene .st-stage{min-height:0!important}
@@ -753,6 +754,30 @@ html.st-printing .st-tick-col{height:1em!important;overflow:hidden!important}
   [class*="stat"],  [class*="kpi"],  [class*="metric"],  [class*="tile"]{background:none!important;background-color:transparent!important;color:#000!important;border-color:#999!important}
 }
 html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printing [class*="metric"],html.st-printing [class*="tile"]{background:none!important;background-color:transparent!important;color:#000!important;border-color:#999!important}
+
+/* print tokens must beat page theme blocks (:root[data-theme], prefers-color-scheme) */
+html.st-printing:root,html.st-printing:root[data-theme="dark"],html.st-printing:root[data-theme="light"],html.st-printing:root:not([data-theme="light"]){--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}
+@media print{:root,:root[data-theme="dark"],:root[data-theme="light"],:root:not([data-theme="light"]){--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}}
+
+/* ---------- v1.4 dock: phone safe areas, calmer motion, visible focus ---------- */
+/* the dock clears the iPhone home indicator; the page's end clears the dock */
+.st-way{bottom:calc(12px + env(safe-area-inset-bottom, 0px))}
+body.st-has-way{padding-bottom:calc(var(--st-way-h,64px) + 22px + env(safe-area-inset-bottom, 0px))}
+/* the pill clips its children, so the focus ring sits inside the button, not outside it */
+.st-way .st-way-btn:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
+/* tap targets on phones: at least 40px tall */
+@media(max-width:520px){.st-way a.st-way-btn,.st-way button.st-way-btn{min-height:40px;min-width:40px;justify-content:center}}
+/* reduced motion: no lift on hover, no sliding lamp */
+@media (prefers-reduced-motion: reduce){.st-way a.st-way-btn,.st-way button.st-way-btn,.st-way-map .st-way-btn{transition:none!important}.st-way a.st-way-btn:hover,.st-way button.st-way-btn:hover,.st-way-map .st-way-btn:hover{transform:none!important}}
+.st-reduced .st-way a.st-way-btn:hover,.st-reduced .st-way button.st-way-btn:hover{transform:none!important}
+/* an open site map owns the screen: the dock underneath is inert to the eye too */
+html:has(.st-way-map.is-open) .st-way{visibility:hidden}
+/* phones: the headline comes first and the orb follows it, smaller; the dotted backdrop
+   never pokes past the viewport edge (it caused sideways scroll at 390px) */
+@media(max-width:900px){
+  .st-hero .st-hero-orb{order:0;width:min(56vw,260px)}
+  .st-hero::before{left:0;right:0}
+}
 /*STORY_CSS_END*/
 
 /* ---- demo-only chrome ---- */
@@ -2914,8 +2939,7 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
       // capture phase + stop: pages may carry their own arrow handlers, the presenter must be the only one acting
       if (e.key === "Escape") { e.stopImmediatePropagation(); exit(); return; }
       if (e.key === "n" || e.key === "N") {
-        var t = e.target;
-        if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+        if (isTyping(e.target)) return;
         if (e.metaKey || e.ctrlKey || e.altKey) return;
         e.preventDefault(); e.stopImmediatePropagation(); toggleNotes(); return;
       }
@@ -2941,12 +2965,17 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
     };
     return presentState;
   }
+  // a key press that belongs to a form control never triggers a page shortcut
+  function isTyping(t) {
+    return !!(t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.tagName === "SELECT" || t.isContentEditable));
+  }
   function autoPresent(opts) {
     // P toggles, ?present=1 starts in presenter mode
     addEventListener("keydown", function (e) {
-      if (e.metaKey || e.ctrlKey || e.altKey) return;
-      var t = e.target;
-      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if (e.metaKey || e.ctrlKey || e.altKey || e.defaultPrevented) return;
+      if (isTyping(e.target)) return;
+      // the site map is a modal: P must not start a presentation behind it
+      if (document.querySelector(".st-way-map.is-open")) return;
       if (e.key === "p" || e.key === "P") { if (presentState) presentState.exit(); else present(opts); }
     });
     if (/[?&]present=1/.test(location.search)) {
@@ -3053,15 +3082,23 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
   };
   var DOOR_LABEL = { story: "Story", project: "Project page", tool: "Tool" };
 
+  // The page's own address. Preview hosts, localhost and file:// serve the page
+  // under a different path, so the canonical link (when present) wins.
+  function pagePath() {
+    var path = location.pathname, canon = document.querySelector('link[rel="canonical"]');
+    if (canon && canon.href) { try { path = new URL(canon.href).pathname; } catch (e) { } }
+    return path;
+  }
   function detectCurrent() {
-    var parts = location.pathname.split("/").filter(Boolean);
+    var path = pagePath();
+    var parts = path.split("/").filter(Boolean);
     var key = null, file = parts.length ? parts[parts.length - 1] : "";
     for (var i = 0; i < parts.length; i++) if (REPO_KEY[parts[i]]) key = REPO_KEY[parts[i]];
     if (!key) return null;
     if (!/\.html?$/.test(file)) file = "";
     var door = "project";
     if (file === "story.html" || (key === "hub" && (file === "" || file === "index.html"))) door = "story";
-    else if (/^(explore|try|walkthrough|crosswalk|observatory|start|changelog)\.html$/.test(file) || /api/.test(location.pathname)) door = "tool";
+    else if (/^(explore|try|walkthrough|crosswalk|observatory|start|changelog)\.html$/.test(file) || /\/api(\/|$)/.test(path)) door = "tool";
     return { key: key, door: door };
   }
 
@@ -3156,11 +3193,16 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
       lamp.style.width = r.width.toFixed(1) + "px";
     }
     function measure() {
-      document.documentElement.style.setProperty("--st-way-h", Math.round(bar.getBoundingClientRect().height || 64) + "px");
+      var h = Math.round(bar.getBoundingClientRect().height || 64);
+      document.documentElement.style.setProperty("--st-way-h", h + "px");
+      // keyboard focus, find-in-page and anchor jumps scroll content clear of the floating dock
+      document.documentElement.style.scrollPaddingBottom = (h + 28) + "px";
       lampTo(idx);
     }
     measure();
     addEventListener("resize", measure);
+    // the bar's height settles once webfonts load; the lamp and the padding follow it
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure, function () { });
     // hovering Prev or Next previews where the light would move
     function peek(btn, to) {
       if (!btn) return;
@@ -3290,8 +3332,9 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
     closeBtn.addEventListener("click", close);
     function key2(e) {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      var t = e.target;
-      if (t && (t.tagName === "INPUT" || t.tagName === "TEXTAREA" || t.isContentEditable)) return;
+      if (isTyping(e.target) || e.defaultPrevented) return;
+      // presenter mode hides the map; opening it there would only lock the page's scroll
+      if (presentState) return;
       if ((e.key === "m" || e.key === "M") && !isOpen) { e.preventDefault(); open(); }
     }
     addEventListener("keydown", key2);
@@ -3320,7 +3363,8 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
   function autoFindings() {
     var ch = els(".st-chapter");
     // story pages and the hub (itself a story) keep one fixed bar only: the wayfinder
-    if (/story\.html$/.test(location.pathname) || /\/grounded\/(docs\/)?(index\.html)?$/.test(location.pathname)) document.body.classList.add("st-story");
+    var pp = pagePath();
+    if (/story\.html$/.test(pp) || /story\.html$/.test(location.pathname) || /\/grounded\/(docs\/)?(index\.html)?$/.test(pp)) document.body.classList.add("st-story");
     if (ch.length < 2 || document.querySelector(".st-findings")) return;
     var nav = html("nav", "st-findings");
     nav.setAttribute("aria-label", "Findings in this story");
@@ -3696,6 +3740,7 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
   var printSaved = null, printExtra = [];
   function printPrepare() {
     if (printSaved) return;
+    if (presentState) presentState.exit(); // presenter layout and handout layout must never combine
     printing = true;
     glossHide();
     document.documentElement.classList.add("st-printing");
@@ -3709,14 +3754,17 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
       var lastStep = list[list.length - 1];
       if (lastStep.__stActivate) lastStep.__stActivate();
     });
-    // a step observer callback queued before this call can still land: re-assert once
-    setTimeout(function () {
-      if (!printSaved) return;
-      printSaved.forEach(function (s) {
-        var lastStep = s.steps[s.steps.length - 1];
-        if (lastStep.__stActivate) lastStep.__stActivate();
-      });
-    }, 0);
+    // pages register their scenes after the engine boots: re-assert the final steps a few times
+    // so every figure prints in its last state
+    [0, 150, 600, 1500].forEach(function (ms) {
+      setTimeout(function () {
+        if (!printSaved) return;
+        els(".st-scene").forEach(function (sc) {
+          var list = els(".st-step", sc), lastStep = list[list.length - 1];
+          if (lastStep && lastStep.__stActivate) lastStep.__stActivate();
+        });
+      }, ms);
+    });
     if (glossUsed.length) {
       var box = html("div", "st-print-terms");
       var h = document.createElement("h2"); h.textContent = "Terms used on this page"; box.appendChild(h);
@@ -3767,7 +3815,7 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
      9. export
      --------------------------------------------------------- */
   var Story = {
-    version: "1.3.0",
+    version: "1.4.0",
     orb: orb,
     orbInline: orbInline,
     companion: companion,
