@@ -1014,6 +1014,31 @@ html.st-printing .pathcard .label{color:#444!important}
 html.st-printing .st-find-key{display:inline!important;margin:0 0 0 6pt!important}
 html.st-printing .st-findings li{break-inside:avoid;page-break-inside:avoid}
 html.st-printing .label{color:#444!important}
+</style><style id="st-route-css">
+.route{padding:56px 0;border-top:2px solid var(--rule)}
+.route h2{margin:6px 0 8px}
+.route .claim{max-width:62ch;color:var(--muted);margin:0 0 20px}
+.rt-prog{position:sticky;top:0;z-index:5;background:var(--paper);padding:10px 0;border-bottom:2px solid var(--rule);margin-bottom:18px}
+.rt-prog-row{display:flex;justify-content:space-between;gap:12px;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink)}
+.rt-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:8px}
+.rt-bar span{height:8px;border:2px solid var(--rule);background:var(--surface)}
+.rt-bar span.on{background:var(--accent);border-color:var(--accent)}
+.rt-steps{list-style:none;margin:0;padding:0;display:grid;gap:14px}
+.rt-step{display:grid;grid-template-columns:auto 1fr auto;gap:8px 18px;align-items:start;border:2px solid var(--rule);background:var(--surface);padding:18px}
+.rt-num{font-family:var(--font-mono);font-weight:700;font-size:1.1rem;width:2.4em;height:2.4em;display:grid;place-items:center;border:2px solid var(--rule)}
+.rt-step.on .rt-num{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.rt-step h3{margin:0 0 4px;font-size:1.15rem;line-height:1.25}
+.rt-step p{margin:0 0 8px;color:var(--ink)}
+.rt-meta{font-family:var(--font-mono);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.rt-big{font-family:var(--font-mono);font-weight:700;font-size:clamp(1.6rem,4vw,2.2rem);color:var(--accent);text-align:right;white-space:nowrap}
+.rt-big small{display:block;font-size:.65rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:400;white-space:normal;max-width:14ch;margin-left:auto}
+.rt-links{display:flex;flex-wrap:wrap;gap:8px 16px;font-family:var(--font-mono);font-size:.75rem}
+.rt-links a{color:var(--ink)}
+.rt-start{margin:0 0 22px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn:focus-visible,.rt-links a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+@media (max-width:640px){.rt-step{grid-template-columns:auto 1fr}.rt-big{grid-column:1/-1;text-align:left}.rt-big small{margin-left:0;max-width:none}}
+@media (prefers-reduced-motion:no-preference){.rt-bar span,.rt-num{transition:background .3s,border-color .3s}}
+@media print{.rt-prog{position:static}}
 </style></head>
 <body>
 <a class="skip" href="#main">Skip to content</a><header class="rs-header" id="rs-header"><div class="rs-bar"><div class="rs-row"><a class="rs-brand" href="https://priyatham9.github.io/grounded/" aria-label="Grounded research hub"><span class="rs-mark" aria-hidden="true"></span>Grounded</a><a class="rs-author" href="https://priyatham9.github.io/">Priyatham Chimmani&nbsp;&#8599;</a><nav class="rs-nav" aria-label="Research site"><a class="rs-item" href="https://priyatham9.github.io/grounded/">Overview</a><a class="rs-item" href="https://priyatham9.github.io/grounded/start.html" aria-current="page">Start here</a><a class="rs-item" href="https://priyatham9.github.io/grounded/observatory.html">Observatory</a><details class="rs-menu"><summary class="rs-item" aria-haspopup="true">Projects<span class="rs-caret" aria-hidden="true"></span></summary><div class="rs-panel"><a class="rs-opt" href="https://priyatham9.github.io/ehs-osha-analysis/"><span class="rs-t">OSHA data quality</span><span class="rs-n">2.8M real filings</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-ai-grounding-eval/"><span class="rs-t">Grounding benchmark</span><span class="rs-n">first baselines</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-human-factors-ontology/"><span class="rs-t">Human factors ontology</span><span class="rs-n">derivation traces</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-risk-sem/"><span class="rs-t">SEM for safety risk</span><span class="rs-n">simulation studies</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-capitals-calculator/"><span class="rs-t">Cost-benefit calculator</span><span class="rs-n">interactive tool</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-benchmarks/"><span class="rs-t">OSHA benchmarks</span><span class="rs-n">TRIR/DART library</span></a></div></details><details class="rs-menu"><summary class="rs-item" aria-haspopup="true">Papers<span class="rs-caret" aria-hidden="true"></span></summary><div class="rs-panel"><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper.html"><span class="rs-t">Grounded reasoning for safety-critical AI</span><span class="rs-n">bundled draft</span></a><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper-osha.html"><span class="rs-t">The hours denominator</span><span class="rs-n">standalone OSHA paper</span></a></div></details></nav><span class="rs-sep" aria-hidden="true"></span><button class="rs-btn" id="rs-theme" type="button" aria-label="Toggle colour theme"><svg class="rs-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="rs-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button><button class="rs-btn rs-burger" id="rs-menu-btn" type="button" aria-expanded="false" aria-controls="rs-sheet" aria-label="Open menu"><i></i></button></div></div><div class="rs-sheet" id="rs-sheet" hidden><a class="rs-item" href="https://priyatham9.github.io/grounded/">Overview</a><a class="rs-item" href="https://priyatham9.github.io/grounded/start.html" aria-current="page">Start here</a><a class="rs-item" href="https://priyatham9.github.io/grounded/observatory.html">Observatory</a><span class="rs-group">Projects</span><a class="rs-opt" href="https://priyatham9.github.io/ehs-osha-analysis/"><span class="rs-t">OSHA data quality</span><span class="rs-n">2.8M real filings</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-ai-grounding-eval/"><span class="rs-t">Grounding benchmark</span><span class="rs-n">first baselines</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-human-factors-ontology/"><span class="rs-t">Human factors ontology</span><span class="rs-n">derivation traces</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-risk-sem/"><span class="rs-t">SEM for safety risk</span><span class="rs-n">simulation studies</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-capitals-calculator/"><span class="rs-t">Cost-benefit calculator</span><span class="rs-n">interactive tool</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-benchmarks/"><span class="rs-t">OSHA benchmarks</span><span class="rs-n">TRIR/DART library</span></a><span class="rs-group">Papers</span><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper.html"><span class="rs-t">Grounded reasoning for safety-critical AI</span><span class="rs-n">bundled draft</span></a><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper-osha.html"><span class="rs-t">The hours denominator</span><span class="rs-n">standalone OSHA paper</span></a><a class="rs-sheet-author" href="https://priyatham9.github.io/">Priyatham Chimmani&nbsp;&#8599;</a></div><span class="rs-progress" aria-hidden="true"></span></header>
@@ -1035,6 +1060,61 @@ html.st-printing .label{color:#444!important}
    <canvas id="heroOrb" width="440" height="440" role="img" aria-label="The system under review, drawn as a field of moving points."></canvas>
    <span class="label orbcap" id="heroOrbCap">Searching</span>
   </div>
+ </div>
+</section>
+
+<section class="route" id="route" aria-labelledby="routeH">
+ <div class="wrap">
+  <span class="label">The 5-minute route</span>
+  <h2 class="display" id="routeH">Five steps, about a minute each</h2>
+  <p class="claim">Six project stories folded into five stops. Each step gives one plain takeaway and the one number it rests on; every number is the one shown on the <a href="./index.html#brief">programme overview</a>.</p>
+  <div class="rt-start"><a class="btn btn-primary" href="https://priyatham9.github.io/ehs-osha-analysis/story.html">Start here: story 1 &rarr;</a><span class="rt-meta">Or read the five steps below first</span></div>
+  <div class="rt-prog" role="group" aria-label="Route progress">
+   <div class="rt-prog-row"><span id="rtNow" aria-live="polite">Step 0 of 5</span><span id="rtLeft">About 5 minutes left</span></div>
+   <div class="rt-bar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+  </div>
+  <ol class="rt-steps">
+  <li class="rt-step" data-rt="1">
+   <span class="rt-num" aria-hidden="true">1</span>
+   <div><span class="rt-meta">Step 1 of 5 &middot; about 1 minute &middot; OSHA data quality</span>
+    <h3>Check the hours under the rate</h3>
+    <p><strong>Takeaway:</strong> One plausibility screen on hours moves the 2019 national injury rate 249 times. Ask what screen sits under yours.</p>
+    <div class="rt-links"><a href="https://priyatham9.github.io/ehs-osha-analysis/story.html">Read the OSHA data quality story &rarr;</a><a href="#f1">See the figure below &darr;</a></div></div>
+   <div class="rt-big">249&times;<small>raw vs screened 2019 national rate</small></div>
+  </li>
+  <li class="rt-step" data-rt="2">
+   <span class="rt-num" aria-hidden="true">2</span>
+   <div><span class="rt-meta">Step 2 of 5 &middot; about 1 minute &middot; Grounding benchmark</span>
+    <h3>Ask where an AI answer comes from</h3>
+    <p><strong>Takeaway:</strong> Keyword retrieval finds the right clause 27.0 percent of the time, below a 52.1 percent random guess. No language model has been scored yet.</p>
+    <div class="rt-links"><a href="https://priyatham9.github.io/ehs-ai-grounding-eval/story.html">Read the Grounding benchmark story &rarr;</a><a href="#f2">See the figure below &darr;</a></div></div>
+   <div class="rt-big">27.0%<small>keyword retrieval, 68 items</small></div>
+  </li>
+  <li class="rt-step" data-rt="3">
+   <span class="rt-num" aria-hidden="true">3</span>
+   <div><span class="rt-meta">Step 3 of 5 &middot; about 1 minute &middot; Human factors ontology</span>
+    <h3>Check the words mean the same thing</h3>
+    <p><strong>Takeaway:</strong> Only 31 of 80 mappings to four established frameworks are close matches, so labels that look alike often are not.</p>
+    <div class="rt-links"><a href="https://priyatham9.github.io/ehs-human-factors-ontology/story.html">Read the Human factors ontology story &rarr;</a><a href="#f3">See the figure below &darr;</a></div></div>
+   <div class="rt-big">31/80<small>close matches</small></div>
+  </li>
+  <li class="rt-step" data-rt="4">
+   <span class="rt-num" aria-hidden="true">4</span>
+   <div><span class="rt-meta">Step 4 of 5 &middot; about 1 minute &middot; SEM for safety risk</span>
+    <h3>Discount the confidence interval</h3>
+    <p><strong>Takeaway:</strong> In these synthetic path models the textbook 95 percent interval holds only 82 times in 100.</p>
+    <div class="rt-links"><a href="https://priyatham9.github.io/ehs-risk-sem/story.html">Read the SEM for safety risk story &rarr;</a><a href="#f4">See the figure below &darr;</a></div></div>
+   <div class="rt-big">82/100<small>synthetic simulation</small></div>
+  </li>
+  <li class="rt-step" data-rt="5">
+   <span class="rt-num" aria-hidden="true">5</span>
+   <div><span class="rt-meta">Step 5 of 5 &middot; about 1 minute &middot; Cost-benefit calculator + OSHA benchmarks</span>
+    <h3>Price the control, then pick the peers</h3>
+    <p><strong>Takeaway:</strong> Pricing four unbooked cost lines cuts payback on the same $150,000 control from 3.41 to 1.59 years. Then the same 3.20 rate ranks p76 by industry and p93 against 34 same-size peers.</p>
+    <div class="rt-links"><a href="https://priyatham9.github.io/ehs-capitals-calculator/story.html">Read the Cost-benefit calculator story &rarr;</a><a href="https://priyatham9.github.io/ehs-benchmarks/story.html">Benchmarks story &rarr;</a><a href="#f5">Calculator figure &darr;</a><a href="#f6">Benchmarks figure &darr;</a></div></div>
+   <div class="rt-big">1.59 yr<small>payback, worked example</small></div>
+  </li>
+  </ol>
  </div>
 </section>
 
@@ -4741,5 +4821,12 @@ html.st-printing .label{color:#444!important}
  addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',function(){pad();onScroll();});
  pad();frame();
 })();
-</script></body>
+</script><script id="st-route-js">(function(){try{
+var steps=[].slice.call(document.querySelectorAll('.rt-step'));var bars=[].slice.call(document.querySelectorAll('.rt-bar span'));
+var now=document.getElementById('rtNow'),left=document.getElementById('rtLeft');if(!steps.length||!now)return;var max=0;
+function set(n){if(n<=max)return;max=n;steps.forEach(function(el,i){el.classList.toggle('on',i<n)});bars.forEach(function(b,i){b.classList.toggle('on',i<n)});
+now.textContent='Step '+n+' of 5';var m=5-n;left.textContent=m?('About '+m+' minute'+(m>1?'s':'')+' left'):'Route complete';}
+if(!('IntersectionObserver' in window)){set(5);return;}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)set(+e.target.getAttribute('data-rt'))})},{rootMargin:'0px 0px -35% 0px',threshold:0.4});
+steps.forEach(function(el){io.observe(el)});}catch(e){}})();</script></body>
 </html>
