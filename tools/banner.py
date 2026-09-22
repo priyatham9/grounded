@@ -472,10 +472,16 @@ def apply_banner(html, current=None, sections=None, current_project=None,
     if "</head>" in html:
         html = html.replace("</head>", head_bits + "</head>", 1)
     else:
-        html = head_bits + html
+        mh = re.search(r"<head\b[^>]*>", html) or re.search(r"<html\b[^>]*>", html)
+        html = (html[:mh.end()] + head_bits + html[mh.end():]) if mh else head_bits + html
     header = build_header(current, sections, story_href=story_href)
     # keep a leading skip link ("<a class=\"skip\" ...>") as the first focusable element
     mb = re.search(r"<body\b[^>]*>(?:\s*<a\b[^>]*class=\"[^\"]*\bskip(?:-link)?\b[^\"]*\"[^>]*>.*?</a>)?", html, re.S)
+    if not mb:
+        # no <body> tag: never put the header before <html>/<head>. Insert it where the
+        # implied body starts: after </head>, else after <html ...>, else after the doctype.
+        mb = (re.search(r"</head\s*>", html, re.I) or re.search(r"<html\b[^>]*>", html, re.I)
+              or re.search(r"<!doctype[^>]*>", html, re.I))
     html = (html[:mb.end()] + header + html[mb.end():]) if mb else header + html
     idx = html.rfind("</body>")
     html = (html[:idx] + HEADER_JS + html[idx:]) if idx >= 0 else html + HEADER_JS
