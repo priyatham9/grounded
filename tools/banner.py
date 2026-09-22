@@ -194,11 +194,15 @@ HEADER_JS = r"""<script id="rs-header-js">
  /* theme */
  var tb=doc.getElementById('rs-theme');
  function cur(){var t=root.getAttribute('data-theme');return t==='dark'||t==='light'?t:(mq.matches?'dark':'light');}
- function sync(){var d=cur()==='dark';tb.setAttribute('aria-pressed',d?'true':'false');tb.setAttribute('aria-label',d?'Switch to light theme':'Switch to dark theme');}
+ /* a toggle button keeps one name ("Dark theme") and reports its state with aria-pressed;
+    the tooltip says the action. A changing name on a pressed toggle reads as a contradiction. */
+ function sync(){var d=cur()==='dark';tb.setAttribute('aria-pressed',d?'true':'false');tb.setAttribute('aria-label','Dark theme');tb.title=d?'Switch to light theme':'Switch to dark theme';}
  if(tb){tb.addEventListener('click',function(){var n=cur()==='dark'?'light':'dark';root.setAttribute('data-theme',n);
   try{localStorage.setItem('pc-theme',n);localStorage.setItem('ehs-ai-theme',n);}catch(e){}
   sync();try{doc.dispatchEvent(new CustomEvent('rs-themechange',{detail:{theme:n}}));}catch(e){}});
-  sync();if(mq.addEventListener)mq.addEventListener('change',sync);}
+  sync();if(mq.addEventListener)mq.addEventListener('change',sync);
+  /* other code (the story engine's theme API, a page script) may set data-theme too */
+  if(window.MutationObserver)new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['data-theme']});}
  /* dropdowns */
  var menus=[].slice.call(h.querySelectorAll('.rs-menu'));
  function closeMenus(except){menus.forEach(function(m){if(m!==except&&m.open)m.open=false;});}
@@ -295,7 +299,7 @@ def build_header(current=None, sections=None, story_href=None):
         '<a class="rs-author" href="%s">Priyatham Chimmani&nbsp;&#8599;</a>'
         '<nav class="rs-nav" aria-label="Research site">%s%s%s%s</nav>'
         '<span class="rs-sep" aria-hidden="true"></span>'
-        '<button class="rs-btn" id="rs-theme" type="button" aria-label="Toggle colour theme">%s%s</button>'
+        '<button class="rs-btn" id="rs-theme" type="button" aria-label="Dark theme" aria-pressed="false" title="Switch colour theme">%s%s</button>'
         '<button class="rs-btn rs-burger" id="rs-menu-btn" type="button" aria-expanded="false" aria-controls="rs-sheet" aria-label="Open menu"><i></i></button>'
         '</div></div>' % (HUB, ' aria-label="Grounded research hub"', PERSONAL, prim,
                           menu("Projects", proj, proj_cur), menu("Papers", paps, pap_cur), story, _SUN, _MOON))
