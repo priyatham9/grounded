@@ -1,5 +1,5 @@
 /* ============================================================
-   story.css  -  shared storytelling engine styles  (v1.1)
+   story.css  -  shared storytelling engine styles  (v1.4)
    Depends on tokens defined in tools/shared.css:
    --paper --surface --surface-2 --ink --ink-2 --muted --rule
    --rule-soft --accent --accent-2 --accent-ink --accent-wash
@@ -597,3 +597,59 @@ html.st-printing [class*="stat"],html.st-printing [class*="kpi"],html.st-printin
 /* print tokens must beat page theme blocks (:root[data-theme], prefers-color-scheme) */
 html.st-printing:root,html.st-printing:root[data-theme="dark"],html.st-printing:root[data-theme="light"],html.st-printing:root:not([data-theme="light"]){--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}
 @media print{:root,:root[data-theme="dark"],:root[data-theme="light"],:root:not([data-theme="light"]){--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#1a1a1a;--muted:#444;--rule:#000;--rule-soft:#b8b8b8;--accent:#000;--accent-2:#000;--accent-ink:#fff;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;background:#fff;color:#000}}
+
+/* ---------- v1.4 dock: phone safe areas, calmer motion, visible focus ---------- */
+/* the dock clears the iPhone home indicator; the page's end clears the dock */
+.st-way{bottom:calc(12px + env(safe-area-inset-bottom, 0px))}
+body.st-has-way{padding-bottom:calc(var(--st-way-h,64px) + 22px + env(safe-area-inset-bottom, 0px))}
+/* the pill clips its children, so the focus ring sits inside the button, not outside it */
+.st-way .st-way-btn:focus-visible{outline:2px solid var(--accent);outline-offset:-4px}
+/* tap targets on phones: at least 40px tall */
+@media(max-width:520px){.st-way a.st-way-btn,.st-way button.st-way-btn{min-height:40px;min-width:40px;justify-content:center}}
+/* reduced motion: no lift on hover, no sliding lamp */
+@media (prefers-reduced-motion: reduce){.st-way a.st-way-btn,.st-way button.st-way-btn,.st-way-map .st-way-btn{transition:none!important}.st-way a.st-way-btn:hover,.st-way button.st-way-btn:hover,.st-way-map .st-way-btn:hover{transform:none!important}}
+.st-reduced .st-way a.st-way-btn:hover,.st-reduced .st-way button.st-way-btn:hover{transform:none!important}
+/* an open site map owns the screen: the dock underneath is inert to the eye too */
+html:has(.st-way-map.is-open) .st-way{visibility:hidden}
+/* phones: the headline comes first and the orb follows it, smaller; the dotted backdrop
+   never pokes past the viewport edge (it caused sideways scroll at 390px) */
+@media(max-width:900px){
+  .st-hero .st-hero-orb{order:0;width:min(56vw,260px)}
+  .st-hero::before{left:0;right:0}
+}
+
+/* ---------- v1.4 motion primitives ---------- */
+/* particles: the canvas takes its container's width; height is set by the engine */
+canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
+/* kinetic type: words rise line by line; the key word gets an accent underline once the line lands */
+.st-kinetic .st-kw{display:inline-block;opacity:0;transform:translateY(.42em);
+  transition:opacity .6s var(--st-ease,cubic-bezier(.2,.7,.2,1)),transform .75s var(--st-ease,cubic-bezier(.2,.7,.2,1));
+  transition-delay:calc(var(--l,0) * 110ms)}
+.st-kinetic.is-in .st-kw{opacity:1;transform:none}
+.st-kinetic .st-kkey{font-style:inherit;background-image:linear-gradient(var(--accent),var(--accent));background-repeat:no-repeat;
+  background-position:0 92%;background-size:0% .09em;transition:background-size .8s cubic-bezier(.65,0,.35,1) .55s;color:inherit}
+.st-kinetic.is-in .st-kkey{background-size:100% .09em}
+.st-kinetic mark.st-kkey{background-color:transparent}
+.st-reduced .st-kinetic .st-kw,.st-printing .st-kinetic .st-kw{opacity:1!important;transform:none!important;transition:none!important}
+.st-reduced .st-kinetic .st-kkey,.st-printing .st-kinetic .st-kkey{background-size:100% .09em!important;transition:none!important}
+@media (prefers-reduced-motion: reduce){
+  .st-kinetic .st-kw{opacity:1!important;transform:none!important;transition:none!important}
+  .st-kinetic .st-kkey{background-size:100% .09em!important;transition:none!important}
+}
+@media print{.st-kinetic .st-kw{opacity:1!important;transform:none!important}}
+/* view transitions: a short, even cross-fade; none at all under reduced motion */
+::view-transition-old(root),::view-transition-new(root){animation-duration:.42s;animation-timing-function:cubic-bezier(.65,0,.35,1)}
+@media (prefers-reduced-motion: reduce){::view-transition-group(*),::view-transition-old(*),::view-transition-new(*){animation:none!important}}
+/* scroll-driven reveal and parallax, CSS only, where the browser supports view timelines.
+   Elsewhere (and under reduced motion) the element simply sits in its final place. */
+@supports (animation-timeline: view()){
+  @media (prefers-reduced-motion: no-preference){
+    [data-st-scrollfade]{animation:st-sd-fade linear both;animation-timeline:view();animation-range:entry 0% cover 28%}
+    [data-st-parallax]{animation:st-sd-par linear both;animation-timeline:view();animation-range:cover 0% cover 100%}
+  }
+}
+@keyframes st-sd-fade{from{opacity:0;transform:translateY(24px) scale(.985)}to{opacity:1;transform:none}}
+@keyframes st-sd-par{from{transform:translateY(calc(var(--st-par, 24px) * 1))}to{transform:translateY(calc(var(--st-par, 24px) * -1))}}
+.st-reduced [data-st-scrollfade],.st-reduced [data-st-parallax],.st-printing [data-st-scrollfade],.st-printing [data-st-parallax]{animation:none!important;opacity:1!important;transform:none!important}
+/* cross-page transitions: same-origin navigations across the programme cross-fade where supported; instant elsewhere */
+@media (prefers-reduced-motion: no-preference){@view-transition{navigation:auto}}
