@@ -4827,6 +4827,6 @@ var now=document.getElementById('rtNow'),left=document.getElementById('rtLeft');
 function set(n){if(n<=max)return;max=n;steps.forEach(function(el,i){el.classList.toggle('on',i<n)});bars.forEach(function(b,i){b.classList.toggle('on',i<n)});
 now.textContent='Step '+n+' of 5';var m=5-n;left.textContent=m?('About '+m+' minute'+(m>1?'s':'')+' left'):'Route complete';}
 if(!('IntersectionObserver' in window)){set(5);return;}
-var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)set(+e.target.getAttribute('data-rt'))})},{rootMargin:'0px 0px -35% 0px',threshold:0.4});
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)set(+e.target.getAttribute('data-rt'))})},{rootMargin:'0px 0px -40% 0px',threshold:0});
 steps.forEach(function(el){io.observe(el)});}catch(e){}})();</script></body>
 </html>
