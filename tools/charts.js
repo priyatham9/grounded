@@ -130,7 +130,21 @@
       || document.documentElement.classList.contains('st-reduced') || /[?&]reduced=1\b/.test(location.search);
   }
   function drawLine(fig, path, i) {
-    if (fig.__drawn || reducedNow() || !('IntersectionObserver' in window) || !path.getTotalLength) return;
+    if (fig.__drawn || reducedNow() || !path.getTotalLength) return;
+    // with the story engine's GSAP layer on a desktop, the line is scrubbed to scroll
+    var G = window.gsap, ST = window.ScrollTrigger;
+    if (G && ST && window.matchMedia && matchMedia('(min-width: 900px)').matches) {
+      requestAnimationFrame(function () {
+        var L = 0; try { L = path.getTotalLength(); } catch (e) { }
+        if (!L) return;
+        fig.__drawn = 1;
+        G.fromTo(path, { strokeDasharray: L + ' ' + L, strokeDashoffset: L },
+          { strokeDashoffset: 0, ease: 'none', delay: i * 0.08,
+            scrollTrigger: { trigger: fig, start: 'top 80%', end: 'center 45%', scrub: 0.6 } });
+      });
+      return;
+    }
+    if (!('IntersectionObserver' in window)) return;
     requestAnimationFrame(function () {
       var len = 0; try { len = path.getTotalLength(); } catch (e) { }
       if (!len) return;

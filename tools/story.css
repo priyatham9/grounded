@@ -662,3 +662,15 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
 .st-reduced [data-st-stagger]>*,.st-reduced [data-st-scrub]{opacity:1!important;transform:none!important}
 @media print{[data-st-stagger]>*,[data-st-scrub],[data-st-hover],.doors>a,.st-findings li{opacity:1!important;transform:none!important}[data-st-draw] *{stroke-dashoffset:0!important}}
 html.st-printing [data-st-stagger]>*,html.st-printing [data-st-scrub],html.st-printing [data-st-hover],html.st-printing .st-findings li{opacity:1!important;transform:none!important}
+
+/* ---------- v2.0 motion layer (GSAP; see story.js header) ---------- */
+/* split lines keep their descenders inside the mask */
+[data-m-split] .word,[data-m-split] [class*="-mask"]{padding-bottom:.08em;margin-bottom:-.08em}
+[data-m-split]{font-kerning:none}
+.m-desk [data-m-pin]{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
+[data-m-progress]{display:block;height:3px;border-radius:3px;background:var(--accent);transform-origin:0 50%}
+html:not(.m-desk) [data-m-progress]{transform:none}
+[data-m-spring]{will-change:transform}
+.m-desk [data-m-hero]{overflow:clip}
+@media (prefers-reduced-motion: reduce){[data-m-step],[data-m-hero-part],[data-m-reveal]{opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important;clip-path:none!important}}
+.st-reduced [data-m-step],.st-reduced [data-m-hero-part],.st-printing [data-m-step]{opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important;clip-path:none!important}

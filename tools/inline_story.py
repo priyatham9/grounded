@@ -27,6 +27,29 @@ PAIRS = [
 ]
 
 
+# Motion layer (story.js section 9): GSAP core + plugins from cdnjs, pinned.
+# All four are free since GSAP 3.13. They load before the engine script.
+GSAP_VERSION = "3.15.0"
+GSAP_TAGS = "".join(
+    f'<script id="gsap-{n.lower().replace(".min.js", "")}" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/{GSAP_VERSION}/{n}"></script>\n'
+    for n in ("gsap.min.js", "ScrollTrigger.min.js", "SplitText.min.js", "Flip.min.js")
+)
+
+
+def ensure_gsap(text: str) -> tuple[str, str]:
+    """Put the GSAP tags right before the script that holds the engine (idempotent)."""
+    import re
+    j = text.find("/*STORY_JS_START*/")
+    if j < 0:
+        return text, "no engine"
+    i = text.rfind("<script", 0, j)
+    if 'id="gsap-gsap"' in text:
+        # keep the pinned version current
+        new = re.sub(r'(<script id="gsap-[^"]+" src="[^"]*/gsap/)[\d.]+/', r"\g<1>" + GSAP_VERSION + "/", text)
+        return new, "gsap ok" if new == text else "gsap version"
+    return text[:i] + GSAP_TAGS + text[i:], "gsap added"
+
+
 def sanitize(kind: str, src: str) -> str:
     """Keep inlined source from terminating its own host tag."""
     if kind == "js":
@@ -76,6 +99,8 @@ def run(paths, check=False) -> int:
             notes.append(f"{kind} {status}")
             if status in ("unterminated marker", "duplicate markers"):
                 failures += 1
+        text, gs = ensure_gsap(text)
+        notes.append(gs)
         changed = text != original
         if changed and not check:
             page.write_text(text, encoding="utf-8")

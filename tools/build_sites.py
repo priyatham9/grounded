@@ -24,6 +24,7 @@ import sys as _sys
 import os as _os
 _sys.path.insert(0, _os.path.dirname(_os.path.abspath(__file__)))
 from banner import apply_banner
+from inline_story import GSAP_TAGS
 import html
 import io
 import json
@@ -240,22 +241,22 @@ SHELL = """<!doctype html>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
-<section class="hero" id="top">
+<section class="hero" id="top" data-m-hero>
   <div class="wrap hero-grid">
     <div class="hero-fig">
-      <div class="hero-eyebrow" data-st-reveal><span class="pulse"></span><span class="label">{kicker}</span></div>
-      <p class="hero-big" data-st-reveal style="--k:{num_k}" aria-label="{num}{unit_plain}"><span class="hero-num" data-to="{num_to}" data-dec="{num_dec}" data-group="{num_group}" aria-hidden="true">{num}</span><span class="hero-unit" aria-hidden="true">{unit}</span></p>
-      <p class="hero-means" data-st-reveal><span class="hm-k">What this means</span>{means}</p>
+      <div class="hero-eyebrow" data-m-hero-part="text"><span class="pulse"></span><span class="label">{kicker}</span></div>
+      <p class="hero-big" data-m-hero-part="visual" style="--k:{num_k}" aria-label="{num}{unit_plain}"><span class="hero-num" data-to="{num_to}" data-dec="{num_dec}" data-group="{num_group}" aria-hidden="true">{num}</span><span class="hero-unit" aria-hidden="true">{unit}</span></p>
+      <p class="hero-means" data-m-hero-part="text"><span class="hm-k">What this means</span>{means}</p>
       <span class="src">Source artifact: {num_src}</span>
     </div>
-    <div class="hero-text">
-      <h1 class="display" data-st-reveal>{h1}</h1>
-      <p class="hero-role" data-st-reveal>{lede}</p>
-      <p class="hero-not" data-st-reveal><span class="hn-k">What this does not establish</span>{nots}</p>
-      <div class="hero-links" data-st-reveal>
-        <a class="btn btn-primary btn-story" href="story.html">Read the story<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
-        <a class="btn" href="#explore">{cta}</a>
-        <a class="btn" href="{gh}/{repo}">Repository</a>
+    <div class="hero-text" data-m-hero-copy>
+      <h1 class="display" data-m-split="chars">{h1}</h1>
+      <p class="hero-role" data-m-hero-part="text">{lede}</p>
+      <p class="hero-not" data-m-hero-part="text"><span class="hn-k">What this does not establish</span>{nots}</p>
+      <div class="hero-links" data-m-hero-part="text">
+        <a data-m-spring class="btn btn-primary btn-story" href="story.html">Read the story<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>
+        <a data-m-spring class="btn" href="#explore">{cta}</a>
+        <a data-m-spring class="btn" href="{gh}/{repo}">Repository</a>
       </div>
     </div>
     <div class="status">{status}</div>
@@ -2663,7 +2664,7 @@ if __name__ == "__main__":
         page = trim_page(page)
         page = page.replace(
             "</body>",
-            '<script id="story-js">/*STORY_JS_START*/' + STORY_JS + "/*STORY_JS_END*/</script>\n"
+            GSAP_TAGS + '<script id="story-js">/*STORY_JS_START*/' + STORY_JS + "/*STORY_JS_END*/</script>\n"
             + "<script>" + CHARTS_JS + "</script>\n"
             + '<script id="story-glue">' + GLUE_JS + "</script>\n</body>", 1)
         page = apply_banner(page, current_project=spec["repo"], story_href="story.html")
