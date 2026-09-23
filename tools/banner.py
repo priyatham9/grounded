@@ -331,6 +331,10 @@ def _text(fragment):
 def _detect_sections(page):
     # A page that ships its own table of contents names each section twice: a
     # spelled-out label for the rail and a short one for this single-line strip.
+    # A page with its own contents rail (<aside class="toc">) gets no second strip:
+    # two stacked section navs read as a duplicated breadcrumb and eat phone height.
+    if re.search(r'<aside\b[^>]*class="[^"]*\btoc\b', page):
+        return []
     short = re.findall(r'<a\b[^>]*href="#([^"]+)"[^>]*\bdata-short="([^"]*)"', page)
     if short:
         out = []

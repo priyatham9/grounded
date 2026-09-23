@@ -445,6 +445,33 @@ def fmt(v):
     return f"{f:.4g}"
 
 
+
+def count_model_wins(tdir):
+    """Both count-model fits side by side, so the page matches the story's 15/15 and 20/10."""
+    sel = list(csv.DictReader(io.open(tdir / "count_model_selection_summary.csv", encoding="utf-8")))
+    cov = list(csv.DictReader(io.open(tdir / "count_model_covariates.csv", encoding="utf-8")))
+    n_sel = int(float(sel[0]["n_industries_fitted"])) if sel else 0
+    n_cov = len({r["naics3"] for r in cov})
+    wins_cov = {}
+    for r in cov:
+        if r["is_best_by_aic"] == "True":
+            wins_cov[r["model"]] = wins_cov.get(r["model"], 0) + 1
+    names = {"poisson": "Poisson", "nb2": "Negative binomial (NB2)",
+             "zip": "Zero-inflated Poisson", "zinb": "Zero-inflated NB"}
+    trs = "".join(
+        f'<tr><td class="t-first">{names.get(r["model"], esc(r["model"]))}</td>'
+        f'<td>{int(float(r["n_industries_best_by_aic"]))} of {n_sel}</td>'
+        f'<td>{wins_cov.get(r["model"], 0)} of {n_cov}</td></tr>' for r in sel)
+    return ('<figure class="tbl"><div class="tbl-wrap"><table><thead><tr><th>model</th>'
+            '<th>wins on AIC, intercept only</th>'
+            '<th>wins on AIC, with size band, NAICS-4 effects and log-hours offset</th>'
+            f'</tr></thead><tbody>{trs}</tbody></table></div>'
+            '<figcaption class="tbl-cap">Which count model wins on AIC across the thirty largest '
+            'three-digit NAICS industries, 2024 recordable counts, fitted two ways. The story quotes '
+            'both columns.'
+            '<span class="src">Source artifacts: outputs/tables/count_model_selection_summary.csv, '
+            'outputs/tables/count_model_covariates.csv</span></figcaption></figure>')
+
 def table(path, caption, source=None, limit=14, cols=None, rename=None, pct=None):
     """Render a committed CSV as an HTML table. The caption names the artifact."""
     path = Path(path)
@@ -664,10 +691,29 @@ def trim_page(page):
                   lambda m: m.group(1) + '<details class="more"><summary>Read on</summary><div>' + m.group(2) + '</div></details>' + m.group(3),
                   page, flags=re.S)
     # method / notes columns collapse whole
-    page = re.sub(r'(<div class="cols">.*?</div></div>)',
-                  r'<details class="more"><summary>Method, limits and notes</summary><div>\1</div></details>',
-                  page, flags=re.S)
+    page = _wrap_balanced_div(page, '<div class="cols">',
+                              '<details class="more"><summary>Method, limits and notes</summary><div>',
+                              '</div></details>')
     return page
+
+
+def _wrap_balanced_div(page, opener, before, after):
+    """Wrap every element that starts with `opener` (a div) through its matching </div>."""
+    out, i = [], 0
+    tag = re.compile(r'<div\b|</div>')
+    while True:
+        j = page.find(opener, i)
+        if j < 0:
+            out.append(page[i:])
+            return "".join(out)
+        depth, k = 0, j
+        for m in tag.finditer(page, j):
+            depth += 1 if m.group() != '</div>' else -1
+            if depth == 0:
+                k = m.end()
+                break
+        out.append(page[i:j] + before + page[j:k] + after)
+        i = k
 
 
 def legend(items):
@@ -878,7 +924,7 @@ def build_osha():
         cell("Filings", f'{q["n_filings"]:,}'),
         cell("Years", f"{y0}-{y1}"),
         cell("Flagged", f'{q["implausible_share"]*100:.2f}%'),
-        cell("Of all hours", f'{q["hours_share_implausible"]*100:.1f}%', True),
+        cell("Of all hours", f'{q["hours_share_implausible"]*100:.2f}%', True),
     ])
 
     lead = opener(
@@ -889,7 +935,7 @@ def build_osha():
          f"through {y1}, downloaded from the OSHA Injury Tracking Application by a script in this "
          f"repository. The rate everyone quotes has hours worked in its denominator.",
          f"Only {q['implausible_share']*100:.2f}% of filings report hours that cannot be right. "
-         f"Those filings carry {q['hours_share_implausible']*100:.1f}% of every hour in the "
+         f"Those filings carry {q['hours_share_implausible']*100:.2f}% of every hour in the "
          f"dataset. Pooled aggregate TRIR reads {q['aggregate_trir_unscreened']:.3f} before the "
          f"screen and {q['aggregate_trir_screened']:.3f} after it.",
          f"A ratio of {q['ratio_screened_to_unscreened']:.1f}x would still be manageable if it "
@@ -910,14 +956,14 @@ def build_osha():
     findings = f'''<div class="findings">
       <div class="finding">
         <div class="f-num">{max(ratios):.0f}<span class="f-unit">&times;</span></div>
-        <div class="f-title">Worst-year divergence</div>
+        <div class="f-title">Screen effect runs {min(ratios):.2f}x to {max(ratios):.0f}x by year</div>
         <p class="f-body">Aggregate TRIR computed with and without the plausibility screen differs by {min(ratios):.2f}x in {int(float(best["label"]))} and {max(ratios):.0f}x in {int(float(worst["label"]))}. A correction that varies by two orders of magnitude between adjacent years is not a portable constant.</p>
         <div class="f-src">summary.json - quality.by_year</div>
       </div>
       <div class="finding">
-        <div class="f-num">{q["hours_share_implausible"]*100:.1f}<span class="f-unit">%</span></div>
+        <div class="f-num">{q["hours_share_implausible"]*100:.2f}<span class="f-unit">%</span></div>
         <div class="f-title">Hours concentrated in flagged filings</div>
-        <p class="f-body">{q["implausible_share"]*100:.2f}% of filings fail the hours-per-employee screen, and they carry {q["hours_share_implausible"]*100:.1f}% of every hour reported. Aggregate TRIR reads {q["aggregate_trir_unscreened"]:.3f} unscreened against {q["aggregate_trir_screened"]:.3f} screened.</p>
+        <p class="f-body">{q["implausible_share"]*100:.2f}% of filings fail the hours-per-employee screen, and they carry {q["hours_share_implausible"]*100:.2f}% of every hour reported. Aggregate TRIR reads {q["aggregate_trir_unscreened"]:.3f} unscreened against {q["aggregate_trir_screened"]:.3f} screened.</p>
         <div class="f-src">summary.json - quality.pooled</div>
       </div>
       <div class="finding">
@@ -1146,7 +1192,7 @@ def build_osha():
     sens = s["quality"]
     osha_scope = scope(
         [f"Which filings report hours that cannot be right: {q['implausible_share']*100:.2f}% of "
-         f"{q['n_filings']:,} filings, carrying {q['hours_share_implausible']*100:.1f}% of all hours.",
+         f"{q['n_filings']:,} filings, carrying {q['hours_share_implausible']*100:.2f}% of all hours.",
          f"That the screened-to-unscreened correction is not a constant. It runs {min(ratios):.2f}x "
          f"to {max(ratios):.0f}x depending on the year.",
          f"That the result does not hinge on where the window is drawn: across the sensitivity grid "
@@ -1184,11 +1230,7 @@ def build_osha():
                   lede="Two interactive charts from summary.json. The pipeline's static figures "
                        "sit underneath.")
         + section("models", "06", "Count models",
-                  table(out / "tables" / "count_model_selection_summary.csv",
-                        "Which count model wins on AIC, across the thirty largest three-digit "
-                        "NAICS industries fitted for the model year.",
-                        source="outputs/tables/count_model_selection_summary.csv", limit=6,
-                        pct=["share_best_by_aic"])
+                  count_model_wins(out / "tables")
                   + '<div class="prose"><p>Poisson, negative binomial, zero-inflated Poisson and '
                     "zero-inflated negative binomial were fitted per industry and compared by "
                     "likelihood ratio and AIC. Boundary-corrected p-values are reported because the "
@@ -1212,12 +1254,12 @@ def build_osha():
              "establishment filings, over 2.8 million real public records.",
         kicker="Empirical analysis - real public data",
         h1="The hours column decides every benchmark built on it",
-        lede=f"A reproducible pipeline over {q['n_filings']:,} filings, CY{y0}-{y1}. "
+        lede=f"A reproducible pipeline over {q['n_filings']:,} filings, calendar years {y0} to {y1}. "
              f"{q['implausible_share']*100:.2f}% of filings carry "
-             f"{q['hours_share_implausible']*100:.1f}% of all hours, and the correction ranges "
+             f"{q['hours_share_implausible']*100:.2f}% of all hours, and the correction ranges "
              f"{min(ratios):.2f}x to {max(ratios):.0f}x by year. It cannot be published as a "
              f"constant.",
-        num=f"{q['hours_share_implausible']*100:.1f}", num_dec=1, unit="%",
+        num=f"{q['hours_share_implausible']*100:.2f}", num_dec=2, unit="%",
         means=f"of every reported hour sits in the {q['implausible_share']*100:.2f}% of filings "
               f"that fail the plausibility screen. Correcting for them moves aggregate TRIR by "
               f"{min(ratios):.2f}x in one year and {max(ratios):.0f}x in another.",
@@ -1290,6 +1332,7 @@ def build_sem():
         "data at any point.</p>")
 
     disc = read_csv(res / "study02_discrimination.csv")
+    burden = read_csv(res / "study02_alert_burden.csv")
     disc.sort(key=lambda r: float(r["target_base_rate"]), reverse=True)
     rec_chart = chart(
         {"type": "line", "title": "95% interval coverage by sample size", "x": [f"n={n:,}" for n in ns],
@@ -1309,7 +1352,11 @@ def build_sem():
                      "tip": [f'AUC {float(r["auc"]):.3f}, ECE {float(r["ece"]):.4f}, '
                              f'{float(r["alerts_per_true_event_at_top_5pct"]):.1f} alerts per true event' for r in disc]}]},
         f"AUC holds near {statistics.median(float(r['auc']) for r in disc):.2f} at every base rate; "
-        f"alerts per true event climb to {max(float(r['alerts_per_true_event_at_top_5pct']) for r in disc):.0f} at the rarest.",
+        f"alerts per true event climb to {max(float(r['alerts_per_true_event_at_top_5pct']) for r in disc):.0f} at the rarest "
+        f"({min(float(r['target_base_rate']) for r in disc)*100:g}% base rate, top 5% of scores flagged). "
+        f"The story's {float(burden[0]['alerts_per_true_event']):.0f} comes from a different study: a fixed screen at "
+        f"{float(burden[0]['sensitivity'])*100:.0f}% sensitivity and {float(burden[0]['specificity'])*100:.0f}% specificity, "
+        f"at {float(burden[0]['base_rate_per_shift'])*1e5:.1f} events per 100,000 worker-shifts (results/study02_alert_burden.csv).",
         "results/study02_discrimination.csv")
 
     cov_fig = rec_chart + cal_chart + fig_lines(

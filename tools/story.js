@@ -3588,8 +3588,9 @@
       var at = s.getAttribute("data-m-step");
       var pos = at && !isNaN(parseFloat(at)) ? parseFloat(at) : i;
       tl.fromTo(s, mFrom(s), { autoAlpha: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)", clipPath: "inset(0 0 0% 0)", duration: 0.6, ease: M_EASE.soft }, pos);
-      // a step can dim the one before it, so the eye follows the newest line
-      if (s.hasAttribute("data-m-dim") && steps[i - 1]) tl.to(steps[i - 1], { opacity: 0.35, duration: 0.4 }, pos);
+      // data-m-dim used to fade the previous step to 0.35, which left explanatory text below
+      // AA contrast and read as a half-finished reveal. The newest line now leads by its
+      // entrance alone; earlier lines stay fully legible.
     });
     // scrubbed builds nested in a pinned chapter ride its timeline, not their own trigger
     mSel(sec, "[data-m-draw]").forEach(function (d) { mDraw(d, tl, mNum(d.getAttribute("data-m-at"), 0)); });

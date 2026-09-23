@@ -390,7 +390,7 @@
       clear(box);
       if (!row) { clear($('.ox-pcts', pr)); msg.textContent = 'No filings for this industry and size band in the pooled table.'; meta.textContent = ''; return; }
       var n = row[0], pub = row[1], ps = row.slice(2, 8), agg = row[8];
-      meta.textContent = 'n = ' + n.toLocaleString() + ' establishments' + (pub ? '' : ' - below the publishable threshold, read with care') + (agg != null ? ' - aggregate TRIR ' + agg.toFixed(2) : '');
+      meta.textContent = 'n = ' + n.toLocaleString() + ' establishment-year filings' + (pub ? '' : ', below the publishable threshold, read with care') + (agg != null ? '. Aggregate TRIR ' + agg.toFixed(2) : '');
       var mx = Math.max(ps[5], +inp.value || 0) * 1.1 || 1;
       var row2 = $('.ox-pcts', pr); clear(row2);
       KEYS.forEach(function (k, i) {
