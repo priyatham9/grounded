@@ -5,6 +5,9 @@
    --rule-soft --accent --accent-2 --accent-ink --accent-wash
    --warn --warn-wash --font-sans --font-mono
    ============================================================ */
+/* shared motion tokens (v1.4): out-eases for entrances, shorter in-eases for exits, inOut for scrubbed moves */
+:root{--ease-out:cubic-bezier(.22,1,.36,1);--ease-p1o:cubic-bezier(.25,.46,.45,.94);--ease-p2o:cubic-bezier(.215,.61,.355,1);--ease-p3o:cubic-bezier(.165,.84,.44,1);--ease-p4o:cubic-bezier(.23,1,.32,1);--ease-io:cubic-bezier(.65,0,.35,1);--ease-back:cubic-bezier(.34,1.56,.64,1);--d-fast:150ms;--d-base:300ms;--d-slow:600ms;--d-hero:1000ms}
+
 
 /* ---------- orb ---------- */
 .st-orb{display:block;width:100%;height:100%;touch-action:manipulation}
@@ -125,7 +128,7 @@
 .st-tip.is-on{opacity:1}
 
 /* ---------- reveal ---------- */
-.st-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.22,.7,.2,1),transform .6s cubic-bezier(.22,.7,.2,1)}
+.st-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
 .st-reveal.is-in{opacity:1;transform:none}
 
 /* ---------- progress bar ---------- */
@@ -653,3 +656,9 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
 .st-reduced [data-st-scrollfade],.st-reduced [data-st-parallax],.st-printing [data-st-scrollfade],.st-printing [data-st-parallax]{animation:none!important;opacity:1!important;transform:none!important}
 /* cross-page transitions: same-origin navigations across the programme cross-fade where supported; instant elsewhere */
 @media (prefers-reduced-motion: no-preference){@view-transition{navigation:auto}}
+/* v1.4 motion kit: trail / draw / scrub / hover land their final state for print and reduced motion */
+[data-st-scrub].st-scrub-rise{transform:translateY(calc((1 - min(1, var(--st-scrub,1) * 2.2)) * 32px));opacity:calc(.25 + min(1, var(--st-scrub,1) * 2.2) * .75)}
+@media (prefers-reduced-motion:reduce){[data-st-stagger]>*,[data-st-scrub]{opacity:1!important;transform:none!important}}
+.st-reduced [data-st-stagger]>*,.st-reduced [data-st-scrub]{opacity:1!important;transform:none!important}
+@media print{[data-st-stagger]>*,[data-st-scrub],[data-st-hover],.doors>a,.st-findings li{opacity:1!important;transform:none!important}[data-st-draw] *{stroke-dashoffset:0!important}}
+html.st-printing [data-st-stagger]>*,html.st-printing [data-st-scrub],html.st-printing [data-st-hover],html.st-printing .st-findings li{opacity:1!important;transform:none!important}

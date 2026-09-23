@@ -93,7 +93,8 @@
       spec.series.forEach(function (s, si) {
         var d = '';
         s.values.forEach(function (v, i) { if (v == null) return; d += (d ? ' L' : 'M') + (PAD.l + step * i).toFixed(1) + ' ' + ny(v).toFixed(1); });
-        el('path', { d: d, fill: 'none', stroke: COL[si % 4], 'stroke-width': 2.5, 'stroke-linejoin': 'round' }, svg);
+        var ln = el('path', { d: d, fill: 'none', stroke: COL[si % 4], 'stroke-width': 2.5, 'stroke-linejoin': 'round', class: 'chart-line' }, svg);
+        drawLine(fig, ln, si);
         s.values.forEach(function (v, i) {
           if (v == null) return;
           var c = el('circle', { cx: PAD.l + step * i, cy: ny(v), r: 4.5, fill: 'var(--fig-paper)', stroke: COL[si % 4], 'stroke-width': 2.5, class: 'chart-pt' }, svg);
@@ -113,11 +114,36 @@
     var slot2 = fig.querySelector('.chart-slot');
     var prev = fig.querySelector(':scope > .chart-body');
     if (slot2) slot2.replaceWith(body); else if (prev) prev.replaceWith(body); else fig.appendChild(body);
+    var oldLg = body.nextElementSibling;
+    while (oldLg && oldLg.classList.contains('fig-legend')) { var nx2 = oldLg.nextElementSibling; oldLg.remove(); oldLg = nx2; }
     if (spec.series.length > 1) {
       var lg = document.createElement('div'); lg.className = 'fig-legend';
       spec.series.forEach(function (s, i) { var sp = document.createElement('span'); sp.innerHTML = '<i style="background:' + COL[i % 4] + '"></i>' + s.name; lg.appendChild(sp); });
       body.after(lg);
     }
+  }
+
+  // anime-style SVG line draw: each series strokes itself in the first time
+  // the figure scrolls into view; theme re-renders and reduced motion land drawn.
+  function reducedNow() {
+    return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)
+      || document.documentElement.classList.contains('st-reduced') || /[?&]reduced=1\b/.test(location.search);
+  }
+  function drawLine(fig, path, i) {
+    if (fig.__drawn || reducedNow() || !('IntersectionObserver' in window) || !path.getTotalLength) return;
+    requestAnimationFrame(function () {
+      var len = 0; try { len = path.getTotalLength(); } catch (e) { }
+      if (!len) return;
+      path.style.strokeDasharray = len; path.style.strokeDashoffset = len;
+      var io = new IntersectionObserver(function (es) {
+        if (!es[0].isIntersecting) return;
+        io.disconnect(); fig.__drawn = 1;
+        path.style.transition = 'stroke-dashoffset 1.3s cubic-bezier(.2,.8,.2,1) ' + (i * 160) + 'ms';
+        path.style.strokeDashoffset = 0;
+        setTimeout(function () { path.style.strokeDasharray = ''; path.style.strokeDashoffset = ''; path.style.transition = ''; }, 1600 + i * 160);
+      }, { threshold: 0.25 });
+      io.observe(fig);
+    });
   }
 
   window.GCharts = { init: function () { document.querySelectorAll('figure.chart[data-chart]').forEach(render); } };
@@ -196,7 +222,14 @@
     if (reduce || !('IntersectionObserver' in window)) { els.forEach(function (e) { e.classList.add('in'); }); return; }
     els = els.filter(function (e) { if (e.getBoundingClientRect().top < window.innerHeight) { e.classList.add('in'); return false; } return true; });
     var io = new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
+      // GSAP-style batch stagger: items entering in the same frame cascade 70ms apart
+      var k = 0;
+      es.forEach(function (e) {
+        if (!e.isIntersecting) return;
+        var t = e.target; t.style.transitionDelay = (Math.min(k++, 6) * 70) + 'ms';
+        t.classList.add('in'); io.unobserve(t);
+        setTimeout(function () { t.style.transitionDelay = ''; }, 1400);
+      });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.02 });
     els.forEach(function (e) { io.observe(e); });
   }

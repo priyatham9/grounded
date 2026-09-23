@@ -1,4 +1,7 @@
 
+/* shared motion tokens (v1.4): out-eases for entrances, shorter in-eases for exits, inOut for scrubbed moves */
+:root{--ease-out:cubic-bezier(.22,1,.36,1);--ease-p1o:cubic-bezier(.25,.46,.45,.94);--ease-p2o:cubic-bezier(.215,.61,.355,1);--ease-p3o:cubic-bezier(.165,.84,.44,1);--ease-p4o:cubic-bezier(.23,1,.32,1);--ease-io:cubic-bezier(.65,0,.35,1);--ease-back:cubic-bezier(.34,1.56,.64,1);--d-fast:150ms;--d-base:300ms;--d-slow:600ms;--d-hero:1000ms}
+
 /* ============ tokens ============ */
 :root {
  color-scheme:light;

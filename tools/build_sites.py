@@ -564,8 +564,10 @@ def _engine(name):
         return ""
 
 
-STORY_CSS = _engine("story.css")
-STORY_JS = _engine("story.js")
+# Same padding and escaping as tools/inline_story.py, so re-inlining a freshly
+# built page is a no-op instead of a churned diff.
+STORY_CSS = "\n" + _engine("story.css").strip("\n").replace("</style", "<\\/style") + "\n"
+STORY_JS = "\n" + _engine("story.js").strip("\n").replace("</script", "<\\/script") + "\n"
 
 # Scroll progress and staggered reveals, driven by the shared engine. Project
 # pages carry no orb: the orb belongs to the story pages and the hub. Every call
@@ -2273,7 +2275,7 @@ SITE_CSS = r"""
 body{overflow-x:clip}
 .src{display:block;margin-top:14px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 /* ---- reveals ---- */
-.js .rv{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.js .rv{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out,cubic-bezier(.22,1,.36,1)),transform .7s var(--ease-out,cubic-bezier(.22,1,.36,1))}
 .js .rv.in{opacity:1;transform:none}
 @media (prefers-reduced-motion:reduce){.js .rv{opacity:1;transform:none;transition:none}}
 @media print{.js .rv{opacity:1;transform:none}}
