@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://priyatham9.github.io/grounded/</loc>
-    <lastmod>2026-09-09</lastmod>
+    <lastmod>2026-09-22</lastmod>
   </url>
   <url>
     <loc>https://priyatham9.github.io/grounded/paper.html</loc>
@@ -19,5 +19,9 @@
   <url>
     <loc>https://priyatham9.github.io/grounded/observatory.html</loc>
     <lastmod>2026-09-14</lastmod>
+  </url>
+  <url>
+    <loc>https://priyatham9.github.io/grounded/changelog.html</loc>
+    <lastmod>2026-09-22</lastmod>
   </url>
 </urlset>

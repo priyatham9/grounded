@@ -3,6 +3,15 @@
 All notable changes to this project are documented here. The format follows
 Keep a Changelog and this project uses semantic versioning.
 
+## [Unreleased]
+
+### Added
+- Hub: story-arc labels on each chapter, a scroll-drawn narrative thread on wide screens, word-mask heading reveals, constellation line draw, and a closing "so what" section with three questions for a VP of EHS
+
+### Fixed
+- Changelog regenerated through 2026-09-20 with linkable day anchors; RSS feed now uses RFC 822 dates, an atom:self link, and anchors that resolve
+- Broken PANEL.md link on the hub; horizontal overflow on start.html at phone width; changelog added to the sitemap
+
 ## [0.1.0] - 2026-09-09
 
 ### Added

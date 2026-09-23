@@ -4,17 +4,17 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Changelog - Grounded</title>
-<meta name="description" content="Dated changes across the six repositories that make up the Grounded research programme, drawn from each repo's CHANGELOG.md and commit history." />
+<meta name="description" content="Dated changes across the seven repositories that make up the Grounded research programme, drawn from each repo's CHANGELOG.md and commit history." />
 <link rel="canonical" href="https://priyatham9.github.io/grounded/changelog.html" />
 <meta property="og:title" content="Changelog - Grounded" />
-<meta property="og:description" content="Dated changes across the six repositories that make up the Grounded research programme." />
+<meta property="og:description" content="Dated changes across the seven repositories that make up the Grounded research programme." />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="https://priyatham9.github.io/grounded/changelog.html" />
 <meta property="og:image" content="https://priyatham9.github.io/grounded/og.png" />
 <meta property="og:site_name" content="Grounded" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="Changelog - Grounded" />
-<meta name="twitter:description" content="Dated changes across the six repositories that make up the Grounded research programme." />
+<meta name="twitter:description" content="Dated changes across the seven repositories that make up the Grounded research programme." />
 <meta name="twitter:image" content="https://priyatham9.github.io/grounded/og.png" />
 <meta name="theme-color" content="#F7F7F3" media="(prefers-color-scheme: light)" />
 <meta name="theme-color" content="#0A0C10" media="(prefers-color-scheme: dark)" />
@@ -79,6 +79,7 @@ img,svg{max-width:100%}
 
 .day{padding:34px 0;border-bottom:2px solid var(--rule-soft)}
 .day-date{font-family:var(--font-mono);font-size:.9375rem;font-weight:700;color:var(--accent);letter-spacing:.04em}
+.day-date a{color:inherit;text-decoration:none}.day-date a:hover{text-decoration:underline}.day-count{color:var(--muted,#777);font-weight:400;margin-left:8px;font-size:.8rem}.day{scroll-margin-top:80px}
 .day ul{list-style:none;margin:16px 0 0;padding:0;display:flex;flex-direction:column;gap:10px}
 .day li{display:grid;grid-template-columns:180px 1fr;gap:12px;padding:10px 0;border-top:1px solid var(--rule-soft);font-size:.9375rem;line-height:1.4}
 .day li:first-child{border-top:0}
@@ -206,6 +207,9 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
    --rule-soft --accent --accent-2 --accent-ink --accent-wash
    --warn --warn-wash --font-sans --font-mono
    ============================================================ */
+/* shared motion tokens (v1.4): out-eases for entrances, shorter in-eases for exits, inOut for scrubbed moves */
+:root{--ease-out:cubic-bezier(.22,1,.36,1);--ease-p1o:cubic-bezier(.25,.46,.45,.94);--ease-p2o:cubic-bezier(.215,.61,.355,1);--ease-p3o:cubic-bezier(.165,.84,.44,1);--ease-p4o:cubic-bezier(.23,1,.32,1);--ease-io:cubic-bezier(.65,0,.35,1);--ease-back:cubic-bezier(.34,1.56,.64,1);--d-fast:150ms;--d-base:300ms;--d-slow:600ms;--d-hero:1000ms}
+
 
 /* ---------- orb ---------- */
 .st-orb{display:block;width:100%;height:100%;touch-action:manipulation}
@@ -326,7 +330,7 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 .st-tip.is-on{opacity:1}
 
 /* ---------- reveal ---------- */
-.st-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.22,.7,.2,1),transform .6s cubic-bezier(.22,.7,.2,1)}
+.st-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
 .st-reveal.is-in{opacity:1;transform:none}
 
 /* ---------- progress bar ---------- */
@@ -872,137 +876,258 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     <div class="page-orb-wrap st-orb-wrap" data-state="idle"><canvas class="st-orb page-orb" id="page-orb" width="240" height="240" role="img" aria-label="Animated mark for the system under review: it breathes while the page is idle and settles once you reach the end."></canvas></div>
     <span class="label">Programme changelog</span>
     <h1 class="display">What changed, and when</h1>
-    <p>Dated entries across the six repositories that make up this programme, built from each repo's <code>CHANGELOG.md</code> and commit history since 2026-09-01. Newest first.</p>
+    <p>Dated entries across the seven repositories that make up this programme, built from each repo's <code>CHANGELOG.md</code> and commit history since 2026-09-01. Newest first.</p>
     <a class="feed-link" href="./feed.xml">RSS feed <span>&rarr;</span></a>
   </div>
 </section>
 
 <div class="wrap">
-<div class="day"><div class="day-date">2026-09-10</div><ul>
-<li><span class="repo-tag">grounded</span><span>Update generator to include API reference link for ehs-risk-sem</span></li>
-<li><span class="repo-tag">grounded</span><span>Reading paths by audience and why-it-matters lines</span></li>
-<li><span class="repo-tag">grounded</span><span>Lint, CI, coverage and community files</span></li>
+<div class="day" id="d-2026-09-20"><div class="day-date"><a href="#d-2026-09-20">2026-09-20</a> <span class="day-count">62 changes</span></div><ul>
+<li><span class="repo-tag">grounded</span><span>Speaker notes, print handout, glossary, refreshed surfaces and floating navigation dock</span></li>
+<li><span class="repo-tag">grounded</span><span>Findings stated in every heading, phone figure variants, reduced-motion states, project page doors, cleanup</span></li>
+<li><span class="repo-tag">grounded</span><span>Presenter mode: pinned figure, one step per screen, reliable arrow keys; phone layout fixes</span></li>
+<li><span class="repo-tag">grounded</span><span>Start page redesign, single navigation bar on hub, figure label fixes</span></li>
+<li><span class="repo-tag">grounded</span><span>Story fixes: readable figure numbers, orb placement, figures fit the stage, no hero orb on project pages</span></li>
+<li><span class="repo-tag">grounded</span><span>Calmer story pages: findings list, one orb per view, single navigation bar</span></li>
+<li><span class="repo-tag">grounded</span><span>Hub: full-stage figures, reader paths, chapter cards, orb constellation</span></li>
+<li><span class="repo-tag">grounded</span><span>Story engine 1.1: navigation bar, site map, companion orbs</span></li>
+<li><span class="repo-tag">grounded</span><span>Rebuild hub as scroll story; add story engine and tools</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Speaker notes, print handout, glossary, refreshed surfaces and floating navigation dock</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Findings stated in every heading, phone figure variants, reduced-motion states, project page doors, cleanup</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Presenter mode: pinned figure, one step per screen, reliable arrow keys; phone layout fixes</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Start page redesign, single navigation bar on hub, figure label fixes</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Story fixes: readable figure numbers, orb placement, figures fit the stage, no hero orb on project pages</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Calmer story pages: findings list, one orb per view, single navigation bar</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Story page: full-stage visuals, chapter cards, site navigation</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Site navigation bar, site map and larger story visuals</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Add scroll story page and story engine to site</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Project page: refreshed surfaces and floating navigation dock</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Findings stated in every heading, phone figure variants, reduced-motion states, project page doors, cleanup</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Presenter mode: pinned figure, one step per screen, reliable arrow keys; phone layout fixes</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Start page redesign, single navigation bar on hub, figure label fixes</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Story fixes: readable figure numbers, orb placement, figures fit the stage, no hero orb on project pages</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Calmer story pages: findings list, one orb per view, single navigation bar</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Story page: full-stage visuals, chapter cards, site navigation</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Site navigation bar, site map and larger story visuals</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Add scroll story page and story engine to site</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Speaker notes, print handout, glossary, refreshed surfaces and floating navigation dock</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Findings stated in every heading, phone figure variants, reduced-motion states, project page doors, cleanup</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Presenter mode: pinned figure, one step per screen, reliable arrow keys; phone layout fixes</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Start page redesign, single navigation bar on hub, figure label fixes</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Story fixes: readable figure numbers, orb placement, figures fit the stage, no hero orb on project pages</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Calmer story pages: findings list, one orb per view, single navigation bar</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Story page: full-stage visuals, chapter cards, site navigation</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Site navigation bar, site map and larger story visuals</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Add scroll story page and story engine to site</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Speaker notes, print handout, glossary, refreshed surfaces and floating navigation dock</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Findings stated in every heading, phone figure variants, reduced-motion states, project page doors, cleanup</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Presenter mode: pinned figure, one step per screen, reliable arrow keys; phone layout fixes</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Start page redesign, single navigation bar on hub, figure label fixes</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Story fixes: readable figure numbers, orb placement, figures fit the stage, no hero orb on project pages</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Calmer story pages: findings list, one orb per view, single navigation bar</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Story page: full-stage visuals, chapter cards, reveal fix</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Site navigation bar, site map and larger story visuals</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Add scroll story page and story engine to site</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Speaker notes, print handout, glossary, refreshed surfaces and floating navigation dock</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Findings stated in every heading, phone figure variants, reduced-motion states, project page doors, cleanup</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Presenter mode: pinned figure, one step per screen, reliable arrow keys; phone layout fixes</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Start page redesign, single navigation bar on hub, figure label fixes</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Story fixes: readable figure numbers, orb placement, figures fit the stage, no hero orb on project pages</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Calmer story pages: findings list, one orb per view, single navigation bar</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Story page: full-stage visuals, chapter cards, site navigation</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Add scroll story page and story engine to site</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Speaker notes, print handout, glossary, refreshed surfaces and floating navigation dock</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Findings stated in every heading, phone figure variants, reduced-motion states, project page doors, cleanup</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Presenter mode: pinned figure, one step per screen, reliable arrow keys; phone layout fixes</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Start page redesign, single navigation bar on hub, figure label fixes</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Story fixes: readable figure numbers, orb placement, figures fit the stage, no hero orb on project pages</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Calmer story pages: findings list, one orb per view, single navigation bar</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Story page: full-stage visuals, chapter cards, reveal fix</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Story page: full-stage visuals, chapter cards, site navigation</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Add peer-group story page</span></li>
+</ul></div>
+<div class="day" id="d-2026-09-14"><div class="day-date"><a href="#d-2026-09-14">2026-09-14</a> <span class="day-count">7 changes</span></div><ul>
+<li><span class="repo-tag">grounded</span><span>Site redesign: story-led hub, Observatory metrics page, unified header</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Site redesign: interactive findings, unified research header, README header</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Site redesign: interactive findings, unified research header, README header</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Site redesign: interactive findings, unified research header, README header</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Site redesign: interactive findings, unified research header, README header</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Site redesign: interactive findings, unified research header, README header</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>README: consistent programme header</span></li>
+</ul></div>
+<div class="day" id="d-2026-09-11"><div class="day-date"><a href="#d-2026-09-11">2026-09-11</a> <span class="day-count">3 changes</span></div><ul>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Lint: unused imports and a dead variable</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Lint: unused imports, empty f-strings, dead variables</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Lint: unused imports</span></li>
+</ul></div>
+<div class="day" id="d-2026-09-10"><div class="day-date"><a href="#d-2026-09-10">2026-09-10</a> <span class="day-count">63 changes</span></div><ul>
+<li><span class="repo-tag">grounded</span><span>Generator: crosswalk hero link</span></li>
+<li><span class="repo-tag">grounded</span><span>Hub hero around one journey; Start here page</span></li>
+<li><span class="repo-tag">grounded</span><span>README: three-sentence opening</span></li>
+<li><span class="repo-tag">grounded</span><span>Design QA fixes</span></li>
+<li><span class="repo-tag">grounded</span><span>Status feed: release tags now recorded</span></li>
+<li><span class="repo-tag">grounded</span><span>Generator: banner nav contrast</span></li>
+<li><span class="repo-tag">grounded</span><span>Generator: tap-target fixes in banner and footer CSS</span></li>
+<li><span class="repo-tag">grounded</span><span>Add programme status feed and changelog page</span></li>
 <li><span class="repo-tag">grounded</span><span>Generator: companion-page hero links for four repos</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Lint, coverage and community files</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Add API reference documentation for ehs_risk_sem</span></li>
-<li><span class="repo-tag">ehs-osha-analysis</span><span>Lint, coverage and community files</span></li>
+<li><span class="repo-tag">grounded</span><span>Lint, CI, coverage and community files</span></li>
+<li><span class="repo-tag">grounded</span><span>Reading paths by audience and why-it-matters lines</span></li>
+<li><span class="repo-tag">grounded</span><span>Update generator to include API reference link for ehs-risk-sem</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Figures: one visual system with direct labels and 2019/2024 callouts (fig04 unchanged pending covariate refit)</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>README: three-sentence opening</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>ruff.toml: valid top-level form with a [lint] table</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Shared banner: nav links use ink-2 for contrast</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Shared skin: 44px banner toggle and 24px footer links</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Design QA fixes</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Link the companion page from the hero</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Lint, coverage and community files</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Interactive denominator explorer</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Fix CI fixture-pipeline job discovery command</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Add REPRODUCIBILITY.md and DATASHEET.md, extend CI pipeline</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>README: three-sentence opening</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>ruff.toml: valid top-level form with a [lint] table</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Shared banner: nav links use ink-2 for contrast</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Design QA fixes</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Shared skin: 44px banner toggle and 24px footer links</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Lint, coverage and community files</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Add API reference documentation for ehs_risk_sem</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Baselines scatter with the unscored region</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>README: three-sentence opening</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>ruff.toml: valid top-level form with a [lint] table</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Baseline results regenerated with the BM25 row</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Shared banner: nav links use ink-2 for contrast</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Shared skin: 44px banner toggle and 24px footer links</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Design QA fixes</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Link the companion page from the hero</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Lint, coverage and community files</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Try-an-item page for the benchmark</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>README: current test count</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Add corpus card and statistics table</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Add BM25 retrieval baseline</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Link the crosswalk grid from the hero</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Crosswalk heat grid page</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>README: three-sentence opening</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>ruff.toml in valid form; drop an unused test import</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Shared banner: nav links use ink-2 for contrast</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Design QA fixes</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Shared skin: 44px banner toggle and 24px footer links</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Lint, coverage and community files</span></li>
 <li><span class="repo-tag">ehs-human-factors-ontology</span><span>Link the companion page from the hero</span></li>
 <li><span class="repo-tag">ehs-human-factors-ontology</span><span>Derivation walk-through page</span></li>
 <li><span class="repo-tag">ehs-human-factors-ontology</span><span>Add JSON-LD and OWL/XML exports for tool interoperability.</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Monte Carlo panel: state that the browser run is a uniform-draw approximation of the Python module</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Tornado and Monte Carlo charts on the visual system</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>README: three-sentence opening</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>ruff.toml: valid top-level form with a [lint] table</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Design QA fixes</span></li>
 <li><span class="repo-tag">ehs-capitals-calculator</span><span>Lint, coverage and community files</span></li>
 <li><span class="repo-tag">ehs-capitals-calculator</span><span>Guided three-step story on the shared skin with shareable state</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Try-an-item page for the benchmark</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>README: current test count</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Lint, coverage and community files</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Link the companion page from the hero</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Add corpus card and statistics table</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Add BM25 retrieval baseline</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>CI: install, test and build; drop the docs diff step since index.html has no generator</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Add build drift analysis and CI workflow</span></li>
 </ul></div>
-<div class="day"><div class="day-date">2026-09-09</div><ul>
+<div class="day" id="d-2026-09-09"><div class="day-date"><a href="#d-2026-09-09">2026-09-09</a> <span class="day-count">23 changes</span></div><ul>
 <li><span class="repo-tag">grounded</span><span>Sync build_sites.py: grounding-eval copy reflects baselines and the real adapter</span></li>
-<li><span class="repo-tag">grounded</span><span>Share metadata, JSON-LD, sitemap, og image, accessibility basics</span></li>
 <li><span class="repo-tag">grounded</span><span>Say where the benchmark stands now that a real adapter exists</span></li>
-<li><span class="repo-tag">grounded</span><span>Establishment persistence panel analysis, CI, pipeline wiring, project docs</span></li>
 <li><span class="repo-tag">grounded</span><span>Build the OSHA paper five-minute path from its own headings</span></li>
+<li><span class="repo-tag">grounded</span><span>Share metadata, JSON-LD, sitemap, og image, accessibility basics</span></li>
 <li><span class="repo-tag">grounded</span><span>Align figures across surfaces with generated outputs</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Share metadata, JSON-LD, sitemap, og image, accessibility basics</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Establishment persistence panel analysis, CI, pipeline wiring, project docs</span></li>
-<li><span class="repo-tag">ehs-osha-analysis</span><span>Use RandomState for the committed fixture so generation reproduces across NumPy versions</span></li>
+<li><span class="repo-tag">grounded</span><span>Establishment persistence panel analysis, CI, pipeline wiring, project docs</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Commit generated outputs so clones can read tables and rebuild the site</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Share metadata, JSON-LD, sitemap, og image, accessibility basics</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Use RandomState for the committed fixture so generation reproduces across NumPy versions</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Make NAICS prefix missing value and fixture comparison version-independent</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Establishment persistence panel analysis, CI, pipeline wiring, project docs</span></li>
-<li><span class="repo-tag">ehs-osha-analysis</span><span>Commit generated outputs so clones can read tables and rebuild the site</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Share metadata, JSON-LD, sitemap, og image, accessibility basics</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Establishment persistence panel analysis, CI, pipeline wiring, project docs</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Send temperature only to models that accept sampling parameters</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Regenerate docs/index.html: baselines exist, no LM scored yet</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>One-command baseline run script with a published results folder</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Share metadata, JSON-LD, sitemap, og image, accessibility basics</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Anthropic Messages API adapter with grounded and ungrounded arms, dry run, tests</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Establishment persistence panel analysis, CI, pipeline wiring, project docs</span></li>
 <li><span class="repo-tag">ehs-human-factors-ontology</span><span>Share metadata, JSON-LD, sitemap, og image, accessibility basics</span></li>
 <li><span class="repo-tag">ehs-human-factors-ontology</span><span>Establishment persistence panel analysis, CI, pipeline wiring, project docs</span></li>
 <li><span class="repo-tag">ehs-capitals-calculator</span><span>Share metadata, JSON-LD, sitemap, og image, accessibility basics</span></li>
 <li><span class="repo-tag">ehs-capitals-calculator</span><span>Establishment persistence panel analysis, CI, pipeline wiring, project docs</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Share metadata, JSON-LD, sitemap, og image, accessibility basics</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Send temperature only to models that accept sampling parameters</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Regenerate docs/index.html: baselines exist, no LM scored yet</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>One-command baseline run script with a published results folder</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Establishment persistence panel analysis, CI, pipeline wiring, project docs</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Anthropic Messages API adapter with grounded and ungrounded arms, dry run, tests</span></li>
 </ul></div>
-<div class="day"><div class="day-date">2026-09-08</div><ul>
+<div class="day" id="d-2026-09-08"><div class="day-date"><a href="#d-2026-09-08">2026-09-08</a> <span class="day-count">6 changes</span></div><ul>
 <li><span class="repo-tag">grounded</span><span>Skip Jekyll for the docs site</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Skip Jekyll for the docs site</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Skip Jekyll for the docs site</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Skip Jekyll for the docs site</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Skip Jekyll for the docs site</span></li>
 <li><span class="repo-tag">ehs-human-factors-ontology</span><span>Skip Jekyll for the docs site</span></li>
 <li><span class="repo-tag">ehs-capitals-calculator</span><span>Skip Jekyll for the docs site</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Skip Jekyll for the docs site</span></li>
 </ul></div>
-<div class="day"><div class="day-date">2026-09-07</div><ul>
-<li><span class="repo-tag">grounded</span><span>Site switcher on paper pages</span></li>
+<div class="day" id="d-2026-09-07"><div class="day-date"><a href="#d-2026-09-07">2026-09-07</a> <span class="day-count">14 changes</span></div><ul>
 <li><span class="repo-tag">grounded</span><span>One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar</span></li>
+<li><span class="repo-tag">grounded</span><span>Site switcher on paper pages</span></li>
 <li><span class="repo-tag">grounded</span><span>Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher</span></li>
 <li><span class="repo-tag">ehs-human-factors-ontology</span><span>One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar</span></li>
 <li><span class="repo-tag">ehs-human-factors-ontology</span><span>Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher</span></li>
 <li><span class="repo-tag">ehs-capitals-calculator</span><span>One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar</span></li>
 <li><span class="repo-tag">ehs-capitals-calculator</span><span>Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Add superseded-panel note pointing to ehs-osha-analysis</span></li>
 </ul></div>
-<div class="day"><div class="day-date">2026-09-06</div><ul>
-<li><span class="repo-tag">grounded</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
+<div class="day" id="d-2026-09-06"><div class="day-date"><a href="#d-2026-09-06">2026-09-06</a> <span class="day-count">36 changes</span></div><ul>
 <li><span class="repo-tag">grounded</span><span>Render standalone OSHA data-quality paper</span></li>
-<li><span class="repo-tag">grounded</span><span>Rename research site to Grounded; remove unverified citation</span></li>
-<li><span class="repo-tag">grounded</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
-<li><span class="repo-tag">grounded</span><span>QA fixes: link targets, navigation consistency, mobile collapse</span></li>
 <li><span class="repo-tag">grounded</span><span>Publish standalone OSHA data-quality paper; link from hub</span></li>
+<li><span class="repo-tag">grounded</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
+<li><span class="repo-tag">grounded</span><span>QA fixes: link targets, navigation consistency, mobile collapse</span></li>
 <li><span class="repo-tag">grounded</span><span>Allow search indexing</span></li>
 <li><span class="repo-tag">grounded</span><span>Add programme navigation: project switcher and previous/next links</span></li>
 <li><span class="repo-tag">grounded</span><span>Add navigation link to personal site</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Rename research site to Grounded; remove unverified citation</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Allow search indexing</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Add programme navigation: previous/next links</span></li>
+<li><span class="repo-tag">grounded</span><span>Rename research site to Grounded; remove unverified citation</span></li>
+<li><span class="repo-tag">grounded</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
-<li><span class="repo-tag">ehs-osha-analysis</span><span>Rename research site to Grounded; remove unverified citation</span></li>
-<li><span class="repo-tag">ehs-osha-analysis</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Allow search indexing</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Add programme navigation: previous/next links</span></li>
-<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
-<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Rename research site to Grounded; remove unverified citation</span></li>
-<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
-<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Allow search indexing</span></li>
-<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Add programme navigation: previous/next links</span></li>
-<li><span class="repo-tag">ehs-capitals-calculator</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
-<li><span class="repo-tag">ehs-capitals-calculator</span><span>Rename research site to Grounded; remove unverified citation</span></li>
-<li><span class="repo-tag">ehs-capitals-calculator</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
-<li><span class="repo-tag">ehs-capitals-calculator</span><span>QA fixes: link targets, navigation consistency, mobile collapse</span></li>
-<li><span class="repo-tag">ehs-capitals-calculator</span><span>Add programme navigation: project switcher and previous/next links</span></li>
-<li><span class="repo-tag">ehs-capitals-calculator</span><span>Add OSHA benchmarks to programme navigation</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Rename research site to Grounded; remove unverified citation</span></li>
+<li><span class="repo-tag">ehs-osha-analysis</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Allow search indexing</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Add programme navigation: previous/next links</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Rename research site to Grounded; remove unverified citation</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
 <li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Rename research site to Grounded; remove unverified citation</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
 <li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Allow search indexing</span></li>
 <li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Add programme navigation: previous/next links</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Rename research site to Grounded; remove unverified citation</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Allow search indexing</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Add programme navigation: previous/next links</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Rename research site to Grounded; remove unverified citation</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Add OSHA benchmarks to programme navigation</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Unified banner navigation across the programme; engagement improvements</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>QA fixes: link targets, navigation consistency, mobile collapse</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Add programme navigation: project switcher and previous/next links</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Rename research site to Grounded; remove unverified citation</span></li>
+<li><span class="repo-tag">ehs-capitals-calculator</span><span>Refine site storytelling and UI, add cross-repo navigation</span></li>
+<li><span class="repo-tag">ehs-benchmarks</span><span>Join the Grounded programme navigation; allow indexing; canonical URLs</span></li>
 </ul></div>
-<div class="day"><div class="day-date">2026-09-05</div><ul>
-<li><span class="repo-tag">grounded</span><span>Correct superseded and untraceable figures; cite current pipeline outputs</span></li>
+<div class="day" id="d-2026-09-05"><div class="day-date"><a href="#d-2026-09-05">2026-09-05</a> <span class="day-count">6 changes</span></div><ul>
 <li><span class="repo-tag">grounded</span><span>Add site generator used to build the per-repo docs sites</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>Add static site under docs/ generated from committed outputs</span></li>
+<li><span class="repo-tag">grounded</span><span>Correct superseded and untraceable figures; cite current pipeline outputs</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>Add static site under docs/ generated from committed outputs</span></li>
-<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Add static site under docs/ generated from committed outputs</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>Add static site under docs/ generated from committed outputs</span></li>
 <li><span class="repo-tag">ehs-ai-grounding-eval</span><span>Add static site under docs/ generated from committed outputs</span></li>
+<li><span class="repo-tag">ehs-human-factors-ontology</span><span>Add static site under docs/ generated from committed outputs</span></li>
 </ul></div>
-<div class="day"><div class="day-date">2026-09-04</div><ul>
+<div class="day" id="d-2026-09-04"><div class="day-date"><a href="#d-2026-09-04">2026-09-04</a> <span class="day-count">7 changes</span></div><ul>
 <li><span class="repo-tag">grounded</span><span>Replace em dashes with hyphens</span></li>
 <li><span class="repo-tag">grounded</span><span>Landing site for the grounded EHS AI research programme</span></li>
-<li><span class="repo-tag">ehs-risk-sem</span><span>ehs-risk-sem: initial commit</span></li>
 <li><span class="repo-tag">ehs-osha-analysis</span><span>ehs-osha-analysis: initial commit</span></li>
+<li><span class="repo-tag">ehs-risk-sem</span><span>ehs-risk-sem: initial commit</span></li>
+<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>ehs-ai-grounding-eval: initial commit</span></li>
 <li><span class="repo-tag">ehs-human-factors-ontology</span><span>ehs-human-factors-ontology: initial commit</span></li>
 <li><span class="repo-tag">ehs-capitals-calculator</span><span>ehs-capitals-calculator: initial commit</span></li>
-<li><span class="repo-tag">ehs-ai-grounding-eval</span><span>ehs-ai-grounding-eval: initial commit</span></li>
 </ul></div>
 </div>
 
@@ -1251,8 +1376,12 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
      3. motion primitives: spring, tween, flip, countUp, reveal
      --------------------------------------------------------- */
   // Critically damped by default: no overshoot on data.
+  // react-spring style named configs (tension/friction, mass 1); damping ratio
+  // near 1 for data, lower only for delight moments
+  var SPRING = { "default": [170, 26], gentle: [120, 14], wobbly: [180, 12], stiff: [210, 20], slow: [280, 60], molasses: [280, 120], snappy: [500, 30] };
   function spring(from, to, cb, opts) {
     opts = opts || {};
+    if (opts.config && SPRING[opts.config] && opts.stiffness == null) { opts.stiffness = SPRING[opts.config][0]; opts.damping = SPRING[opts.config][1]; }
     var k = opts.stiffness == null ? 170 : opts.stiffness;
     var d = opts.damping == null ? 2 * Math.sqrt(k) : opts.damping; // critical
     var prec = opts.precision == null ? 0.0008 : opts.precision;
@@ -1290,6 +1419,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
   }
   var EASE = {
     out: function (t) { return 1 - Math.pow(1 - t, 3); },
+    expo: function (t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); },
     inOut: function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; },
     linear: function (t) { return t; }
   };
@@ -1360,7 +1490,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
           if (grp) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           tickerPaint(n, pre + s + post, !reduced());
         }
-        : function () { tween(opts.from == null ? 0 : opts.from, target, function (v) { paint(v); }, { duration: opts.duration || 1100 }); };
+        : function () { tween(opts.from == null ? 0 : opts.from, target, function (v) { paint(v); }, { duration: opts.duration || 1400, ease: "expo" }); };
       if (opts.now) run(); else inView(n, run, { once: true });
     });
   }
@@ -1370,14 +1500,14 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     var sel = opts.selector || "[data-st-reveal]";
     if (!root || root.nodeType === 9) root = document.body;
     var nodes = isEl(root) ? (root.matches && root.matches(sel) ? [root] : els(sel, root)) : Array.prototype.slice.call(root);
-    var step = opts.stagger == null ? 70 : opts.stagger;
+    var step = opts.stagger == null ? 60 : opts.stagger;
     nodes.forEach(function (n) { n.classList.add("st-reveal"); });
     var groups = new Map();
     nodes.forEach(function (n) {
       var p = n.parentNode;
       if (!groups.has(p)) groups.set(p, 0);
       var i = groups.get(p); groups.set(p, i + 1);
-      inView(n, function () { setTimeout(function () { n.classList.add("is-in"); }, reduced() ? 0 : i * step); }, { once: true, margin: "0px 0px -8% 0px" });
+      inView(n, function () { setTimeout(function () { n.classList.add("is-in"); }, reduced() ? 0 : Math.min(i, 10) * step); }, { once: true, margin: "0px 0px -8% 0px" });
     });
     return nodes;
   }
@@ -3922,6 +4052,152 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
   addEventListener("beforeprint", printPrepare);
   addEventListener("afterprint", printRestore);
 
+
+  /* ---------------------------------------------------------
+     8b. motion kit (v1.4): stagger, trail, draw, scrub, hover
+     Ideas from anime.js (stagger grids, line drawing), react-spring
+     (trails), GSAP (scrubbed scroll timelines, batch reveals) and
+     motion.dev (whileInView, spring gestures). Vanilla, no deps.
+     Every effect lands its final state under reduced motion / print.
+     --------------------------------------------------------- */
+  // stagger(step, {from:'first'|'last'|'center'|index, grid:[cols,rows], start}) -> fn(i, n)
+  function stagger(step, o) {
+    o = o || {}; step = step == null ? 60 : step;
+    return function (i, n) {
+      var from = o.from == null ? 0 : o.from, d;
+      if (o.grid) {
+        var c = o.grid[0], r = o.grid[1];
+        var fi = from === "center" ? [(c - 1) / 2, (r - 1) / 2] : from === "last" ? [c - 1, r - 1] : [(from | 0) % c, Math.floor((from | 0) / c)];
+        d = Math.hypot(i % c - fi[0], Math.floor(i / c) - fi[1]);
+      } else {
+        var f = from === "center" ? (n - 1) / 2 : from === "last" ? n - 1 : from === "first" ? 0 : +from;
+        d = Math.abs(i - f);
+      }
+      return (o.start || 0) + d * step;
+    };
+  }
+  // trail: children spring in one after another when the container enters view
+  function trail(root, opts) {
+    opts = opts || {};
+    var kids = opts.items ? Array.prototype.slice.call(opts.items) : Array.prototype.slice.call(root.children);
+    if (!kids.length || root.__stTrail) return;
+    root.__stTrail = 1;
+    var fromAttr = root.getAttribute && root.getAttribute("data-st-stagger");
+    var base = typeof opts.delay === "function" ? opts.delay : stagger(opts.step || 60, { from: fromAttr && fromAttr !== "" ? fromAttr : "first" });
+    // cap the cascade so a long list never takes more than ~0.6s to settle
+    var del = function (i, n) { return base(Math.min(i, 10), Math.min(n, 11)); };
+    if (reduced()) return;
+    var dy = opts.y == null ? 24 : opts.y;
+    kids.forEach(function (k) { k.style.opacity = "0"; k.style.transform = "translateY(" + dy + "px)"; });
+    function land(k) { k.style.opacity = ""; k.style.transform = ""; }
+    inView(root, function () {
+      kids.forEach(function (k, i) {
+        setTimeout(function () {
+          spring(0, 1, function (v, done) {
+            if (done) return land(k);
+            k.style.opacity = clamp(v * 1.4, 0, 1).toFixed(3);
+            k.style.transform = "translateY(" + ((1 - v) * dy).toFixed(2) + "px)";
+          }, { config: opts.config || "default", stiffness: opts.stiffness, damping: opts.damping });
+        }, document.hidden ? 0 : del(i, kids.length));
+      });
+      // safety net: a background tab or dropped frames must never leave items hidden
+      setTimeout(function () { kids.forEach(land); }, del(kids.length - 1, kids.length) + 2200);
+    }, { once: true, margin: "0px 0px -8% 0px" });
+  }
+  // draw: strokes of an SVG (or [data-st-draw] svgs in root) draw themselves in view
+  function draw(node, opts) {
+    opts = opts || {};
+    var list = isEl(node) && node.tagName.toLowerCase() === "svg" ? [node] : els("svg[data-st-draw], [data-st-draw] svg", node || document);
+    list.forEach(function (svg) {
+      if (svg.__stDraw) return; svg.__stDraw = 1;
+      if (reduced()) return;
+      var paths = els("path,line,polyline,circle,rect,ellipse,polygon", svg).filter(function (p) {
+        var st = getComputedStyle(p);
+        return st.stroke && st.stroke !== "none" && (st.fill === "none" || p.tagName === "line" || p.tagName === "polyline") && p.getTotalLength;
+      });
+      var lens = paths.map(function (p) { var l = 0; try { l = p.getTotalLength(); } catch (e) { } return l; });
+      paths.forEach(function (p, i) { if (lens[i]) { p.style.strokeDasharray = lens[i]; p.style.strokeDashoffset = lens[i]; } });
+      var del = stagger(opts.step || 150);
+      inView(svg, function () {
+        paths.forEach(function (p, i) {
+          if (!lens[i]) return;
+          tween(lens[i], 0, function (v, done) {
+            p.style.strokeDashoffset = done ? "" : v.toFixed(1);
+            if (done) p.style.strokeDasharray = "";
+          }, { duration: opts.duration || 1600, delay: del(Math.min(i, 8), paths.length), ease: "inOut" });
+        });
+      }, { once: true });
+    });
+  }
+  // scrub: GSAP-style scroll-linked progress. Writes --st-scrub (0..1) as the element
+  // travels from entering the bottom of the viewport to leaving the top. One shared
+  // scroll listener, only for elements currently on screen.
+  var scrubSet = [], scrubOn = [], scrubBound = false, scrubQueued = false;
+  function scrubPaint() {
+    scrubQueued = false;
+    var vh = innerHeight;
+    scrubOn.forEach(function (n) {
+      var r = n.getBoundingClientRect();
+      var p = reduced() ? 1 : clamp((vh - r.top) / (vh + r.height), 0, 1);
+      n.style.setProperty("--st-scrub", p.toFixed(4));
+    });
+  }
+  function scrubQueue() { if (!scrubQueued) { scrubQueued = true; requestAnimationFrame(scrubPaint); } }
+  function scrub(node) {
+    if (!node || node.__stScrub) return; node.__stScrub = 1;
+    scrubSet.push(node);
+    node.style.setProperty("--st-scrub", reduced() ? "1" : "0");
+    if (!global.IntersectionObserver) { scrubOn.push(node); }
+    else new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var i = scrubOn.indexOf(e.target);
+        if (e.isIntersecting && i < 0) scrubOn.push(e.target);
+        else if (!e.isIntersecting && i >= 0) scrubOn.splice(i, 1);
+      });
+      scrubQueue();
+    }).observe(node);
+    if (!scrubBound) { scrubBound = true; addEventListener("scroll", scrubQueue, { passive: true }); addEventListener("resize", scrubQueue); }
+    scrubQueue();
+  }
+  // hover: motion.dev-style spring gesture - lift, slight tilt toward the pointer,
+  // press dip. Transform only (no layout shift); off for touch and reduced motion.
+  function hover(node, opts) {
+    opts = opts || {};
+    if (!node || node.__stHover) return; node.__stHover = 1;
+    if (reduced() || (global.matchMedia && matchMedia("(hover: none)").matches)) return;
+    var lift = opts.lift == null ? 2 : opts.lift, tilt = opts.tilt == null ? 3 : opts.tilt;
+    var st = { y: 0, rx: 0, ry: 0, s: 1 }, sp = {};
+    function paint() { node.style.transform = (st.y || st.rx || st.ry || st.s !== 1) ? "perspective(700px) translateY(" + st.y.toFixed(2) + "px) rotateX(" + st.rx.toFixed(2) + "deg) rotateY(" + st.ry.toFixed(2) + "deg) scale(" + st.s.toFixed(4) + ")" : ""; }
+    function to(k, v) {
+      if (sp[k]) sp[k].setTarget(v);
+      else sp[k] = spring(st[k], v, function (x, done) { st[k] = x; paint(); if (done) sp[k] = null; }, { config: "stiff", force: true });
+    }
+    var queued = false, lx = 0, ly = 0;
+    node.addEventListener("pointerenter", function (e) { if (e.pointerType === "touch") return; to("y", -lift); });
+    node.addEventListener("pointermove", function (e) {
+      if (e.pointerType === "touch") return;
+      lx = e.clientX; ly = e.clientY;
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () {
+        queued = false;
+        var r = node.getBoundingClientRect();
+        to("ry", ((lx - r.left) / r.width - 0.5) * 2 * tilt);
+        to("rx", -((ly - r.top) / r.height - 0.5) * 2 * tilt);
+      });
+    });
+    node.addEventListener("pointerleave", function () { to("y", 0); to("rx", 0); to("ry", 0); to("s", 1); });
+    node.addEventListener("pointerdown", function () { to("s", 0.97); });
+    node.addEventListener("pointerup", function () { to("s", 1); });
+  }
+  function autoMotion() {
+    els("[data-st-stagger]").forEach(function (n) { trail(n); });
+    draw(document);
+    els("[data-st-scrub]").forEach(scrub);
+    els("[data-st-count]").forEach(function (n) { countUp(n); });
+    els("[data-st-hover], .doors > a, .st-findings li").forEach(function (n) { hover(n); });
+    if (document.body && document.body.hasAttribute("data-st-progress")) progressBar();
+  }
+
   function boot() {
     autoChapters(); autoFindings();
     try { autoGloss(); } catch (e) { if (global.console) console.error(e); }
@@ -3929,6 +4205,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     try { autoKinetic(); } catch (e) { if (global.console) console.error(e); }
     autoWayfinder();
     try { spotlight(document); } catch (e) { if (global.console) console.error(e); }
+    try { autoMotion(); } catch (e) { if (global.console) console.error(e); }
     // ?print=1 previews the handout layout on screen; reload or call Story._printRestore() to leave it
     if (/[?&]print=1/.test(location.search)) printPrepare();
   }
@@ -4334,6 +4611,8 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     scenes: scenes,
     chart: chart,
     spring: spring,
+    springs: SPRING,
+    ease: EASE,
     tween: tween,
     flip: flip,
     countUp: countUp,

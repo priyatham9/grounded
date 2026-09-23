@@ -413,6 +413,9 @@ button{font:inherit;color:inherit}
    --rule-soft --accent --accent-2 --accent-ink --accent-wash
    --warn --warn-wash --font-sans --font-mono
    ============================================================ */
+/* shared motion tokens (v1.4): out-eases for entrances, shorter in-eases for exits, inOut for scrubbed moves */
+:root{--ease-out:cubic-bezier(.22,1,.36,1);--ease-p1o:cubic-bezier(.25,.46,.45,.94);--ease-p2o:cubic-bezier(.215,.61,.355,1);--ease-p3o:cubic-bezier(.165,.84,.44,1);--ease-p4o:cubic-bezier(.23,1,.32,1);--ease-io:cubic-bezier(.65,0,.35,1);--ease-back:cubic-bezier(.34,1.56,.64,1);--d-fast:150ms;--d-base:300ms;--d-slow:600ms;--d-hero:1000ms}
+
 
 /* ---------- orb ---------- */
 .st-orb{display:block;width:100%;height:100%;touch-action:manipulation}
@@ -533,7 +536,7 @@ button{font:inherit;color:inherit}
 .st-tip.is-on{opacity:1}
 
 /* ---------- reveal ---------- */
-.st-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.22,.7,.2,1),transform .6s cubic-bezier(.22,.7,.2,1)}
+.st-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
 .st-reveal.is-in{opacity:1;transform:none}
 
 /* ---------- progress bar ---------- */
@@ -2383,7 +2386,7 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
    <div class="paths-body">
     <ol class="steps" role="tabpanel" id="pp-0" aria-labelledby="pt-0">
      <li data-st-spotlight><p>A raw OSHA benchmark can move 249x on a single plausibility screen, so any injury-rate benchmark you buy needs to state its screen.</p><a href="#data">The chart &rarr;</a></li>
-     <li data-st-spotlight><p>A site flagged for implausible hours one year is 39.1 times more likely to be flagged again the next (27.2% vs 0.95%).</p><a href="https://priyatham9.github.io/ehs-osha-analysis/docs/PANEL.md">The persistence finding &rarr;</a></li>
+     <li data-st-spotlight><p>A site flagged for implausible hours one year is 39.1 times more likely to be flagged again the next (27.2% vs 0.95%).</p><a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PANEL.md">The persistence finding &rarr;</a></li>
      <li data-st-spotlight><p>The capitals calculator prices a safety investment both ways: booked cost only, and booked cost plus the human-capital cost that rarely gets charged.</p><a href="https://priyatham9.github.io/ehs-capitals-calculator/">Open the calculator &rarr;</a></li>
     </ol>
     <ol class="steps" role="tabpanel" id="pp-1" aria-labelledby="pt-1" hidden>
@@ -2459,6 +2462,16 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
    <li data-st-spotlight><span class="k">04</span><span>The SEM work is entirely synthetic. Hand-set path weights cannot be read causally, and no real injury data has been analysed with it.</span></li>
   </ul>
   <p class="claim" style="margin-top:24px;font-size:.9375rem">Dated changes across all six repositories: <a href="./changelog.html">changelog</a> (<a href="./feed.xml">RSS feed</a>).</p>
+
+  <div class="sowhat" id="sowhat" aria-labelledby="sowhatH">
+   <span class="label">So what, for a VP of EHS</span>
+   <h3 class="display" id="sowhatH">Three questions to put to your own reports this quarter</h3>
+   <ol class="sw-list">
+    <li class="sw-card" data-st-spotlight><span class="sw-n">01</span><h4>What is the hours screen?</h4><p>On the OSHA data it removes 96.68 percent of reported hours. A rate without a stated screen is not comparable to anything.</p><a href="#data">Evidence: the denominator &rarr;</a></li>
+    <li class="sw-card" data-st-spotlight><span class="sw-n">02</span><h4>Which sites were flagged last year?</h4><p>A flagged site is flagged again 27.2 percent of the time, against 0.95 percent for the rest. Start the data cleanup there.</p><a href="#spine">Evidence: persistence &rarr;</a></li>
+    <li class="sw-card" data-st-spotlight><span class="sw-n">03</span><h4>Does the AI answer cite the clause for this device?</h4><p>Word overlap picks the wrong device: TF-IDF scores 27.0 percent, below a 52.1 percent random floor. Fluency is not evidence.</p><a href="#try">Evidence: try the benchmark &rarr;</a></li>
+   </ol>
+  </div>
 
   <a class="nextcard" data-st-spotlight href="https://priyatham9.github.io/ehs-osha-analysis/story.html">
    <span class="nk">Next &middot; 1 of 7</span>
@@ -2658,8 +2671,12 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
      3. motion primitives: spring, tween, flip, countUp, reveal
      --------------------------------------------------------- */
   // Critically damped by default: no overshoot on data.
+  // react-spring style named configs (tension/friction, mass 1); damping ratio
+  // near 1 for data, lower only for delight moments
+  var SPRING = { "default": [170, 26], gentle: [120, 14], wobbly: [180, 12], stiff: [210, 20], slow: [280, 60], molasses: [280, 120], snappy: [500, 30] };
   function spring(from, to, cb, opts) {
     opts = opts || {};
+    if (opts.config && SPRING[opts.config] && opts.stiffness == null) { opts.stiffness = SPRING[opts.config][0]; opts.damping = SPRING[opts.config][1]; }
     var k = opts.stiffness == null ? 170 : opts.stiffness;
     var d = opts.damping == null ? 2 * Math.sqrt(k) : opts.damping; // critical
     var prec = opts.precision == null ? 0.0008 : opts.precision;
@@ -2697,6 +2714,7 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
   }
   var EASE = {
     out: function (t) { return 1 - Math.pow(1 - t, 3); },
+    expo: function (t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); },
     inOut: function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; },
     linear: function (t) { return t; }
   };
@@ -2767,7 +2785,7 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
           if (grp) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           tickerPaint(n, pre + s + post, !reduced());
         }
-        : function () { tween(opts.from == null ? 0 : opts.from, target, function (v) { paint(v); }, { duration: opts.duration || 1100 }); };
+        : function () { tween(opts.from == null ? 0 : opts.from, target, function (v) { paint(v); }, { duration: opts.duration || 1400, ease: "expo" }); };
       if (opts.now) run(); else inView(n, run, { once: true });
     });
   }
@@ -2777,14 +2795,14 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
     var sel = opts.selector || "[data-st-reveal]";
     if (!root || root.nodeType === 9) root = document.body;
     var nodes = isEl(root) ? (root.matches && root.matches(sel) ? [root] : els(sel, root)) : Array.prototype.slice.call(root);
-    var step = opts.stagger == null ? 70 : opts.stagger;
+    var step = opts.stagger == null ? 60 : opts.stagger;
     nodes.forEach(function (n) { n.classList.add("st-reveal"); });
     var groups = new Map();
     nodes.forEach(function (n) {
       var p = n.parentNode;
       if (!groups.has(p)) groups.set(p, 0);
       var i = groups.get(p); groups.set(p, i + 1);
-      inView(n, function () { setTimeout(function () { n.classList.add("is-in"); }, reduced() ? 0 : i * step); }, { once: true, margin: "0px 0px -8% 0px" });
+      inView(n, function () { setTimeout(function () { n.classList.add("is-in"); }, reduced() ? 0 : Math.min(i, 10) * step); }, { once: true, margin: "0px 0px -8% 0px" });
     });
     return nodes;
   }
@@ -5329,6 +5347,152 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
   addEventListener("beforeprint", printPrepare);
   addEventListener("afterprint", printRestore);
 
+
+  /* ---------------------------------------------------------
+     8b. motion kit (v1.4): stagger, trail, draw, scrub, hover
+     Ideas from anime.js (stagger grids, line drawing), react-spring
+     (trails), GSAP (scrubbed scroll timelines, batch reveals) and
+     motion.dev (whileInView, spring gestures). Vanilla, no deps.
+     Every effect lands its final state under reduced motion / print.
+     --------------------------------------------------------- */
+  // stagger(step, {from:'first'|'last'|'center'|index, grid:[cols,rows], start}) -> fn(i, n)
+  function stagger(step, o) {
+    o = o || {}; step = step == null ? 60 : step;
+    return function (i, n) {
+      var from = o.from == null ? 0 : o.from, d;
+      if (o.grid) {
+        var c = o.grid[0], r = o.grid[1];
+        var fi = from === "center" ? [(c - 1) / 2, (r - 1) / 2] : from === "last" ? [c - 1, r - 1] : [(from | 0) % c, Math.floor((from | 0) / c)];
+        d = Math.hypot(i % c - fi[0], Math.floor(i / c) - fi[1]);
+      } else {
+        var f = from === "center" ? (n - 1) / 2 : from === "last" ? n - 1 : from === "first" ? 0 : +from;
+        d = Math.abs(i - f);
+      }
+      return (o.start || 0) + d * step;
+    };
+  }
+  // trail: children spring in one after another when the container enters view
+  function trail(root, opts) {
+    opts = opts || {};
+    var kids = opts.items ? Array.prototype.slice.call(opts.items) : Array.prototype.slice.call(root.children);
+    if (!kids.length || root.__stTrail) return;
+    root.__stTrail = 1;
+    var fromAttr = root.getAttribute && root.getAttribute("data-st-stagger");
+    var base = typeof opts.delay === "function" ? opts.delay : stagger(opts.step || 60, { from: fromAttr && fromAttr !== "" ? fromAttr : "first" });
+    // cap the cascade so a long list never takes more than ~0.6s to settle
+    var del = function (i, n) { return base(Math.min(i, 10), Math.min(n, 11)); };
+    if (reduced()) return;
+    var dy = opts.y == null ? 24 : opts.y;
+    kids.forEach(function (k) { k.style.opacity = "0"; k.style.transform = "translateY(" + dy + "px)"; });
+    function land(k) { k.style.opacity = ""; k.style.transform = ""; }
+    inView(root, function () {
+      kids.forEach(function (k, i) {
+        setTimeout(function () {
+          spring(0, 1, function (v, done) {
+            if (done) return land(k);
+            k.style.opacity = clamp(v * 1.4, 0, 1).toFixed(3);
+            k.style.transform = "translateY(" + ((1 - v) * dy).toFixed(2) + "px)";
+          }, { config: opts.config || "default", stiffness: opts.stiffness, damping: opts.damping });
+        }, document.hidden ? 0 : del(i, kids.length));
+      });
+      // safety net: a background tab or dropped frames must never leave items hidden
+      setTimeout(function () { kids.forEach(land); }, del(kids.length - 1, kids.length) + 2200);
+    }, { once: true, margin: "0px 0px -8% 0px" });
+  }
+  // draw: strokes of an SVG (or [data-st-draw] svgs in root) draw themselves in view
+  function draw(node, opts) {
+    opts = opts || {};
+    var list = isEl(node) && node.tagName.toLowerCase() === "svg" ? [node] : els("svg[data-st-draw], [data-st-draw] svg", node || document);
+    list.forEach(function (svg) {
+      if (svg.__stDraw) return; svg.__stDraw = 1;
+      if (reduced()) return;
+      var paths = els("path,line,polyline,circle,rect,ellipse,polygon", svg).filter(function (p) {
+        var st = getComputedStyle(p);
+        return st.stroke && st.stroke !== "none" && (st.fill === "none" || p.tagName === "line" || p.tagName === "polyline") && p.getTotalLength;
+      });
+      var lens = paths.map(function (p) { var l = 0; try { l = p.getTotalLength(); } catch (e) { } return l; });
+      paths.forEach(function (p, i) { if (lens[i]) { p.style.strokeDasharray = lens[i]; p.style.strokeDashoffset = lens[i]; } });
+      var del = stagger(opts.step || 150);
+      inView(svg, function () {
+        paths.forEach(function (p, i) {
+          if (!lens[i]) return;
+          tween(lens[i], 0, function (v, done) {
+            p.style.strokeDashoffset = done ? "" : v.toFixed(1);
+            if (done) p.style.strokeDasharray = "";
+          }, { duration: opts.duration || 1600, delay: del(Math.min(i, 8), paths.length), ease: "inOut" });
+        });
+      }, { once: true });
+    });
+  }
+  // scrub: GSAP-style scroll-linked progress. Writes --st-scrub (0..1) as the element
+  // travels from entering the bottom of the viewport to leaving the top. One shared
+  // scroll listener, only for elements currently on screen.
+  var scrubSet = [], scrubOn = [], scrubBound = false, scrubQueued = false;
+  function scrubPaint() {
+    scrubQueued = false;
+    var vh = innerHeight;
+    scrubOn.forEach(function (n) {
+      var r = n.getBoundingClientRect();
+      var p = reduced() ? 1 : clamp((vh - r.top) / (vh + r.height), 0, 1);
+      n.style.setProperty("--st-scrub", p.toFixed(4));
+    });
+  }
+  function scrubQueue() { if (!scrubQueued) { scrubQueued = true; requestAnimationFrame(scrubPaint); } }
+  function scrub(node) {
+    if (!node || node.__stScrub) return; node.__stScrub = 1;
+    scrubSet.push(node);
+    node.style.setProperty("--st-scrub", reduced() ? "1" : "0");
+    if (!global.IntersectionObserver) { scrubOn.push(node); }
+    else new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var i = scrubOn.indexOf(e.target);
+        if (e.isIntersecting && i < 0) scrubOn.push(e.target);
+        else if (!e.isIntersecting && i >= 0) scrubOn.splice(i, 1);
+      });
+      scrubQueue();
+    }).observe(node);
+    if (!scrubBound) { scrubBound = true; addEventListener("scroll", scrubQueue, { passive: true }); addEventListener("resize", scrubQueue); }
+    scrubQueue();
+  }
+  // hover: motion.dev-style spring gesture - lift, slight tilt toward the pointer,
+  // press dip. Transform only (no layout shift); off for touch and reduced motion.
+  function hover(node, opts) {
+    opts = opts || {};
+    if (!node || node.__stHover) return; node.__stHover = 1;
+    if (reduced() || (global.matchMedia && matchMedia("(hover: none)").matches)) return;
+    var lift = opts.lift == null ? 2 : opts.lift, tilt = opts.tilt == null ? 3 : opts.tilt;
+    var st = { y: 0, rx: 0, ry: 0, s: 1 }, sp = {};
+    function paint() { node.style.transform = (st.y || st.rx || st.ry || st.s !== 1) ? "perspective(700px) translateY(" + st.y.toFixed(2) + "px) rotateX(" + st.rx.toFixed(2) + "deg) rotateY(" + st.ry.toFixed(2) + "deg) scale(" + st.s.toFixed(4) + ")" : ""; }
+    function to(k, v) {
+      if (sp[k]) sp[k].setTarget(v);
+      else sp[k] = spring(st[k], v, function (x, done) { st[k] = x; paint(); if (done) sp[k] = null; }, { config: "stiff", force: true });
+    }
+    var queued = false, lx = 0, ly = 0;
+    node.addEventListener("pointerenter", function (e) { if (e.pointerType === "touch") return; to("y", -lift); });
+    node.addEventListener("pointermove", function (e) {
+      if (e.pointerType === "touch") return;
+      lx = e.clientX; ly = e.clientY;
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () {
+        queued = false;
+        var r = node.getBoundingClientRect();
+        to("ry", ((lx - r.left) / r.width - 0.5) * 2 * tilt);
+        to("rx", -((ly - r.top) / r.height - 0.5) * 2 * tilt);
+      });
+    });
+    node.addEventListener("pointerleave", function () { to("y", 0); to("rx", 0); to("ry", 0); to("s", 1); });
+    node.addEventListener("pointerdown", function () { to("s", 0.97); });
+    node.addEventListener("pointerup", function () { to("s", 1); });
+  }
+  function autoMotion() {
+    els("[data-st-stagger]").forEach(function (n) { trail(n); });
+    draw(document);
+    els("[data-st-scrub]").forEach(scrub);
+    els("[data-st-count]").forEach(function (n) { countUp(n); });
+    els("[data-st-hover], .doors > a, .st-findings li").forEach(function (n) { hover(n); });
+    if (document.body && document.body.hasAttribute("data-st-progress")) progressBar();
+  }
+
   function boot() {
     autoChapters(); autoFindings();
     try { autoGloss(); } catch (e) { if (global.console) console.error(e); }
@@ -5336,6 +5500,7 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
     try { autoKinetic(); } catch (e) { if (global.console) console.error(e); }
     autoWayfinder();
     try { spotlight(document); } catch (e) { if (global.console) console.error(e); }
+    try { autoMotion(); } catch (e) { if (global.console) console.error(e); }
     // ?print=1 previews the handout layout on screen; reload or call Story._printRestore() to leave it
     if (/[?&]print=1/.test(location.search)) printPrepare();
   }
@@ -5741,6 +5906,8 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
     scenes: scenes,
     chart: chart,
     spring: spring,
+    springs: SPRING,
+    ease: EASE,
     tween: tween,
     flip: flip,
     countUp: countUp,
@@ -6422,6 +6589,116 @@ html.rs-lock,html.rs-lock body{overflow:hidden}
 })();
 </script>
 
+<style id="hub-r7-css">
+:root{--h7-out:var(--ease-out,cubic-bezier(.22,1,.36,1));--h7-p4:var(--ease-p4o,cubic-bezier(.23,1,.32,1));--h7-io:var(--ease-io,cubic-bezier(.65,0,.35,1));--h7-back:var(--ease-back,cubic-bezier(.34,1.56,.64,1))}
+/* story arc chip on each chapter header */
+.arc-chip{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+.arc-chip i{font-style:normal;color:var(--muted);letter-spacing:.08em}
+.arc-chip::before{content:"";width:18px;height:2px;background:currentColor;border-radius:2px}
+/* scroll-drawn narrative thread (absolute, never fixed) */
+main#main{position:relative}
+.h7-thread{position:absolute;left:18px;top:0;width:24px;pointer-events:none;z-index:1;display:none}
+@media (min-width:1360px){.h7-thread{display:block}}
+.h7-thread .t-base{stroke:var(--rule-soft);stroke-width:2;fill:none}
+.h7-thread .t-live{stroke:var(--accent);stroke-width:2;fill:none;stroke-linecap:round}
+.h7-thread circle{fill:var(--paper);stroke:var(--rule-soft);stroke-width:2;transition:fill .3s var(--h7-out),stroke .3s var(--h7-out)}
+.h7-thread circle.on{fill:var(--accent);stroke:var(--accent)}
+/* word-mask heading reveal */
+.h7-m{display:inline-block;overflow:hidden;vertical-align:top;padding-bottom:.08em;margin-bottom:-.08em}
+.h7-w{display:inline-block;transform:translateY(105%);transition:transform .8s var(--h7-p4)}
+.h7-split.in .h7-w{transform:none}
+/* so-what close */
+.sowhat{margin:48px 0 40px;padding-top:28px;border-top:2px solid var(--rule)}
+.sowhat h3{font-size:clamp(1.4rem,3vw,2.1rem);margin:10px 0 22px;line-height:1.1}
+.sw-list{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media (max-width:900px){.sw-list{grid-template-columns:1fr}}
+.sw-card{position:relative;border:var(--st-hair,1px solid var(--rule-soft));border-radius:var(--st-radius,14px);padding:20px 20px 18px;background:var(--surface,var(--paper));display:flex;flex-direction:column;gap:8px;opacity:0;transform:translateY(28px)}
+.sw-card.in{opacity:1;transform:none;transition:opacity .7s var(--h7-out),transform .9s var(--h7-out)}
+.sw-n{font-family:var(--font-mono);font-size:.75rem;color:var(--accent);letter-spacing:.1em}
+.sw-card h4{margin:0;font-size:1.15rem;line-height:1.2}
+.sw-card p{margin:0;color:var(--ink-2);font-size:.9375rem;line-height:1.45;flex:1}
+.sw-card a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;color:var(--accent)}
+/* press feedback + lift for buttons */
+.btn{transition:transform .18s var(--h7-out),box-shadow .18s var(--h7-out)}
+@media (hover:hover){.btn:hover{transform:translateY(-2px)}}
+.btn:active{transform:scale(.97);transition-duration:.08s}
+/* constellation boxes draw in */
+.cdiagram.h7-draw .c-box,.cdiagram.h7-draw .c-core,.cdiagram.h7-draw .c-link{stroke-dasharray:var(--L);stroke-dashoffset:var(--L)}
+.cdiagram.h7-draw.in .c-box,.cdiagram.h7-draw.in .c-core,.cdiagram.h7-draw.in .c-link{stroke-dashoffset:0;transition:stroke-dashoffset 1.4s var(--h7-io)}
+@media (prefers-reduced-motion:reduce){.h7-w{transform:none!important;transition:none}.sw-card{opacity:1;transform:none}.btn:hover,.btn:active{transform:none}.cdiagram.h7-draw .c-box,.cdiagram.h7-draw .c-core,.cdiagram.h7-draw .c-link{stroke-dashoffset:0!important}}
+html.st-reduced .h7-w{transform:none!important}html.st-reduced .sw-card{opacity:1;transform:none}
+html.st-printing .h7-w,html.st-printing .sw-card{transform:none!important;opacity:1!important}html.st-printing .h7-thread{display:none!important}
+html.st-printing .cdiagram .c-box,html.st-printing .cdiagram .c-core,html.st-printing .cdiagram .c-link{stroke-dashoffset:0!important}
+</style>
+<script id="hub-r7-js">
+(function(){
+  var RM=matchMedia('(prefers-reduced-motion: reduce)').matches||/[?&]reduced=1/.test(location.search)||/[?&]print=1/.test(location.search);
+  var ARC={'01':['Problem','the failure'],'02':['Evidence','the denominator'],'03':['Method','the benchmark'],'04':['Audit','the claims'],'05':['Instruments','the repositories'],'06':['Limits','what is open']};
+  var chapters=[].slice.call(document.querySelectorAll('section.st-chapter[data-num]'));
+  chapters.forEach(function(c){
+    var a=ARC[c.getAttribute('data-num')]; if(!a)return;
+    var h=c.querySelector('h2'); if(!h||c.querySelector('.arc-chip'))return;
+    var s=document.createElement('p'); s.className='arc-chip';
+    s.innerHTML=a[0]+' <i>&middot; '+a[1]+'</i>'; h.parentNode.insertBefore(s,h);
+  });
+  function once(els,cb,margin){
+    if(RM||!('IntersectionObserver' in window)){els.forEach(function(e){cb(e,true)});return;}
+    var io=new IntersectionObserver(function(es){es.forEach(function(x){if(x.isIntersecting){cb(x.target);io.unobserve(x.target);}})},{rootMargin:margin||'0px 0px -15% 0px'});
+    els.forEach(function(e){io.observe(e)});
+  }
+  /* word-mask reveal on section heads (skip when reduced) */
+  var heads=[].slice.call(document.querySelectorAll('.section .head h2.display, .spine-head h2.display, .sowhat h3'));
+  if(!RM){heads.forEach(function(h){
+    if(h.querySelector('*'))return; var txt=h.textContent.trim(); h.setAttribute('aria-label',txt);
+    h.innerHTML=txt.split(/\s+/).map(function(w,i){return '<span class="h7-m" aria-hidden="true"><span class="h7-w" style="transition-delay:'+(Math.min(i,14)*40)+'ms">'+w.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</span></span>'}).join(' ');
+    h.classList.add('h7-split');
+  });}
+  once(heads,function(h){h.classList.add('in')});
+  /* so-what cards: stagger up */
+  var cards=[].slice.call(document.querySelectorAll('.sw-card'));
+  once(cards.length?[document.getElementById('sowhat')]:[],function(){cards.forEach(function(c,i){setTimeout(function(){c.classList.add('in')},RM?0:i*80)})});
+  /* constellation line draw */
+  var cd=document.querySelector('.cdiagram');
+  if(cd&&!RM){
+    [].slice.call(cd.querySelectorAll('.c-box,.c-core,.c-link')).forEach(function(el){try{var L=el.getTotalLength?el.getTotalLength():0;if(!L&&el.tagName==='rect'){L=2*(el.width.baseVal.value+el.height.baseVal.value)}el.style.setProperty('--L',Math.ceil(L||1000))}catch(e){}});
+    cd.classList.add('h7-draw'); once([cd],function(){cd.classList.add('in')},'0px 0px -20% 0px');
+  }
+  /* magnetic primary CTA (fine pointers only) */
+  if(!RM&&matchMedia('(hover:hover) and (pointer:fine)').matches){
+    [].slice.call(document.querySelectorAll('.hero .btn-primary')).forEach(function(b){
+      b.addEventListener('pointermove',function(e){var r=b.getBoundingClientRect();b.style.transition='transform .15s ease-out';b.style.transform='translate('+((e.clientX-r.left-r.width/2)*.25)+'px,'+((e.clientY-r.top-r.height/2)*.3)+'px)'});
+      b.addEventListener('pointerleave',function(){b.style.transition='transform .6s var(--h7-back)';b.style.transform=''});
+    });
+  }
+  /* narrative thread: scroll-scrubbed line with a node per chapter (wide screens only) */
+  var main=document.getElementById('main'); if(!main||!chapters.length)return;
+  var NS='http://www.w3.org/2000/svg', svg=document.createElementNS(NS,'svg'); svg.setAttribute('class','h7-thread'); svg.setAttribute('aria-hidden','true');
+  var base=document.createElementNS(NS,'line'),live=document.createElementNS(NS,'line');
+  base.setAttribute('class','t-base');live.setAttribute('class','t-live');[base,live].forEach(function(l){l.setAttribute('x1',12);l.setAttribute('x2',12);svg.appendChild(l)});
+  var stops=chapters.concat([document.getElementById('sowhat')].filter(Boolean));
+  var dots=stops.map(function(){var c=document.createElementNS(NS,'circle');c.setAttribute('cx',12);c.setAttribute('r',6);svg.appendChild(c);return c});
+  main.appendChild(svg);
+  var ys=[],y0=0,y1=0,cur=0,tgt=0,raf=0;
+  function measure(){
+    if(getComputedStyle(svg).display==='none')return false;
+    var mt=main.getBoundingClientRect().top+scrollY;
+    ys=stops.map(function(s){return s.getBoundingClientRect().top+scrollY-mt+24});
+    y0=ys[0];y1=ys[ys.length-1];svg.style.top='0px';svg.setAttribute('height',y1+20);svg.style.height=(y1+20)+'px';
+    base.setAttribute('y1',y0);base.setAttribute('y2',y1);live.setAttribute('y1',y0);
+    dots.forEach(function(d,i){d.setAttribute('cy',ys[i])});return true;
+  }
+  function target(){var mt=main.getBoundingClientRect().top;return Math.max(y0,Math.min(y1,innerHeight*.5-mt));}
+  function paint(){live.setAttribute('y2',cur);dots.forEach(function(d,i){d.classList.toggle('on',ys[i]<=cur+1)})}
+  function loop(){cur+=(tgt-cur)*(RM?1:.12);if(Math.abs(tgt-cur)<.5)cur=tgt;paint();raf=cur!==tgt?requestAnimationFrame(loop):0;}
+  function onScroll(){if(!ys.length)return;tgt=target();if(!raf)raf=requestAnimationFrame(loop);}
+  function init(){if(measure()){cur=tgt=target();paint();}else ys=[];}
+  addEventListener('scroll',onScroll,{passive:true});
+  var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(init,150)});
+  addEventListener('load',function(){setTimeout(init,300)});
+  setTimeout(init,600);
+  if(window.ResizeObserver)new ResizeObserver(function(){clearTimeout(rt);rt=setTimeout(init,200)}).observe(main);
+})();
+</script>
 <script id="rs-header-js">
 (function(){
  var h=document.getElementById('rs-header');if(!h)return;
