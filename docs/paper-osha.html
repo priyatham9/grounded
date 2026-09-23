@@ -143,8 +143,9 @@ img,svg{max-width:100%}
 .cite-code{margin:0;padding:12px;font-family:var(--font-mono);font-size:.75rem;line-height:1.6;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow-y:auto}
 @media(max-width:760px){.cite-blocks{grid-template-columns:1fr}}
 
+.paperfig .figbody svg{overflow:visible}.paperfig .figbody{padding-right:2%}
 /* figure / table caption anchors */
-.cap-anchor{margin-left:.45em;text-decoration:none;color:var(--rule-soft);font-family:var(--font-mono);font-weight:400;font-size:.85em}
+.cap-anchor{margin-left:.45em;text-decoration:none;color:var(--muted);font-family:var(--font-mono);font-weight:400;font-size:.85em}
 .paperfig figcaption:hover .cap-anchor,.papertable figcaption:hover .cap-anchor{color:var(--accent)}
 .paperfig:target,.papertable:target{outline:2px solid var(--accent);outline-offset:6px}
 
@@ -172,7 +173,7 @@ img,svg{max-width:100%}
 .doc .h-l2{font-size:clamp(1.16rem,2.2vw,1.42rem);margin:52px 0 16px;font-weight:800;color:var(--ink)}
 .doc .h-l3{font-size:1.02rem;margin:38px 0 12px;font-family:var(--font-mono);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
 .doc > :first-child{margin-top:0}
-.anchor{margin-left:.5em;text-decoration:none;color:var(--rule-soft);font-family:var(--font-mono);font-weight:400;font-size:.7em;opacity:0}
+.anchor{margin-left:.5em;text-decoration:none;color:var(--muted);font-family:var(--font-mono);font-weight:400;font-size:.7em;opacity:0}
 h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}
 .rule{border:0;border-top:2px solid var(--rule-soft);margin:44px 0;max-width:68ch}
 .md-list{margin:0 0 1.3em;padding-left:22px}

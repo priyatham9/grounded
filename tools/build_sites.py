@@ -193,7 +193,7 @@ tbody tr:last-child td{box-shadow:none}
 @media(max-width:660px){.def{grid-template-columns:1fr}.def dd{padding-top:0}}
 
 /* ============ trace block ============ */
-.trace{border:2px solid var(--rule);background:var(--surface);overflow-x:auto;overscroll-behavior-x:contain}
+.trace{border:2px solid var(--rule);background:var(--surface);overflow-x:auto;max-width:100%;min-width:0;overscroll-behavior-x:contain}
 .trace pre{margin:0;padding:22px;font-family:var(--font-mono);font-size:.6875rem;line-height:1.7;color:var(--ink-2);white-space:pre}
 .trace-cap{margin-top:12px;font-size:.8125rem;color:var(--ink-2);line-height:1.55;max-width:76ch}
 .trace-cap .src{display:block;margin-top:7px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
@@ -2446,7 +2446,7 @@ a.door:hover .door-go,a.door:focus-visible .door-go{transform:translateX(5px)}
 .ox-strip{position:relative;height:46px;margin:30px 8px 0;border-bottom:2px solid var(--rule);background:linear-gradient(90deg,var(--accent-wash),transparent)}
 .ox-tick{position:absolute;bottom:0;width:2px;height:24px;background:var(--accent);transform:translateX(-1px)}
 .ox-you{position:absolute;top:-16px;bottom:-8px;width:4px;background:var(--s2);transform:translateX(-2px);transition:left .3s}
-.ox-you span{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.625rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--ink);white-space:nowrap}
+.ox-you span{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:.625rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#101311;background:var(--s2);padding:1px 4px;white-space:nowrap}
 .ox-pcts{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:2px;margin-top:16px}
 .ox-pcts div{background:var(--surface-2);padding:8px 8px}
 .ox-pcts span{display:block;font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.12em;color:var(--muted)}
@@ -2629,6 +2629,7 @@ a.door:hover .door-go,a.door:focus-visible .door-go{transform:translateX(5px)}
 :root{--sf-radius:14px;--sf-radius-sm:10px;--sf-hair:1px solid rgba(127,127,127,.28)}
 @supports (color:color-mix(in srgb,red 10%,blue)){:root{--sf-hair:1px solid color-mix(in srgb,var(--ink) 14%,transparent)}}
 .status,.findings,.fig,.chart,.tbl-wrap,.scope,.opener,.defs,.notice,.trace,.doors{border:var(--sf-hair)!important;border-radius:var(--sf-radius);overflow:hidden}
+.trace{overflow-x:auto!important;overflow-y:hidden}
 .tbl-wrap{overflow:auto}
 .notice{border-color:color-mix(in srgb,var(--warn) 55%,transparent)!important}
 .st-cell,.finding,.project,.scope-col+.scope-col{border-left:var(--sf-hair)!important}

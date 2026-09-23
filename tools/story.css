@@ -690,3 +690,12 @@ html:not(.m-desk) [data-m-progress]{transform:none}
 /* QA: entrance tweens start elements up to 60px to the side; before they play (a pinned chapter not yet reached)
    they must not widen the page. clip, not hidden, so sticky and pinned stages keep working. */
 html{overflow-x:clip}
+/* ---------- v1.5 AA: dimmed steps and disabled dock via color, not low opacity ---------- */
+.st-step{opacity:1}
+.st-step:not(.is-active){color:var(--ink-2)}
+.st-step:not(.is-active) p{color:var(--muted)}
+.st-way .st-way-btn[aria-disabled="true"]{opacity:1;color:var(--muted);border-style:dashed}
+@media (max-width:640px){
+  .st-way a.st-way-btn,.st-way button.st-way-btn{min-height:44px;min-width:44px;justify-content:center}
+  .st-way-row{min-height:48px}
+}
