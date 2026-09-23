@@ -48,6 +48,7 @@ document 'rs-themechange' with detail {theme}. Pages must delete:
 """
 import html as _html
 import re
+import sys
 
 PERSONAL = "https://priyatham9.github.io/"
 HUB = "https://priyatham9.github.io/grounded/"

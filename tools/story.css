@@ -550,7 +550,7 @@ body.st-has-way{padding-bottom:calc(var(--st-way-h,64px) + 22px)}
 
 /* ---------- 10. hero background ---------- */
 .st-hero{isolation:isolate}
-.st-hero::before{content:"";position:absolute;inset:-10% -4%;z-index:-2;pointer-events:none;
+.st-hero::before{content:"";position:absolute;inset:-10% 0;z-index:-2;pointer-events:none;
   background-image:radial-gradient(var(--st-hair-c) 1px,transparent 1px);background-size:22px 22px;
   -webkit-mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 75%);
   mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 75%)}

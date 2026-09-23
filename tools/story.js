@@ -5,6 +5,19 @@
    ============================================================ */
 (function (global) {
   "use strict";
+  // ResizeObserver that defers work to the next frame and ignores size-unchanged
+  // notifications, so callbacks that resize the observed node cannot loop.
+  function sizeObserver(el, fn) {
+    var w = -1, h = -1, raf = 0;
+    var ro = new ResizeObserver(function (es) {
+      var r = es[es.length - 1].contentRect;
+      if (Math.round(r.width) === w && Math.round(r.height) === h) return;
+      w = Math.round(r.width); h = Math.round(r.height);
+      if (!raf) raf = requestAnimationFrame(function () { raf = 0; fn(); });
+    });
+    ro.observe(el);
+    return { disconnect: function () { ro.disconnect(); if (raf) cancelAnimationFrame(raf); } };
+  }
 
   /* ---------------------------------------------------------
      0. small utilities
@@ -732,7 +745,7 @@
       io = new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); else stop(); }, { rootMargin: "120px" });
       io.observe(canvas);
     } else { visible = true; start(); }
-    if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); }
+    if (global.ResizeObserver) { ro = sizeObserver(canvas, resize); }
     else addEventListener("resize", resize);
     resize();
     if (reduced()) renderStatic(); else paint(0);
@@ -930,7 +943,7 @@
     }
     function start() { if (!un && !destroyed && !reduced()) un = tick(step); }
     function stop() { if (un) { un(); un = null; } }
-    if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); } else addEventListener("resize", resize);
+    if (global.ResizeObserver) { ro = sizeObserver(canvas, resize); } else addEventListener("resize", resize);
     if (global.IntersectionObserver) {
       io = new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); else stop(); }, { rootMargin: "80px" });
       io.observe(canvas);
@@ -1139,8 +1152,7 @@
       setLabel: function (s) { svg.setAttribute("aria-label", s); }
     };
     if (global.ResizeObserver) {
-      api._ro = new ResizeObserver(function () { if (api.fit() && api._redraw) api._redraw(); });
-      api._ro.observe(svg);
+      api._ro = sizeObserver(svg, function () { if (api.fit() && api._redraw) api._redraw(); });
     }
     return api;
   }
@@ -1886,7 +1898,7 @@
       anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 22 });
     }
     un = Theme.onChange(function () { render(1); });
-    if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); } else addEventListener("resize", resize);
+    if (global.ResizeObserver) { ro = sizeObserver(canvas, resize); } else addEventListener("resize", resize);
     function offHover() { hideTip(tipBox); }
     if (opts.tips !== false) {
       canvas.addEventListener("pointermove", onHover);
