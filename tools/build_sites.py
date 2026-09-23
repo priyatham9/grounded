@@ -2627,8 +2627,15 @@ def dedash(s):
 
 
 if __name__ == "__main__":
+    import argparse
+    _ap = argparse.ArgumentParser(description="Generate the project pages.")
+    _ap.add_argument("--only", action="append", default=[], metavar="REPO",
+                     help="build only this repo (repeatable or comma-separated), e.g. --only ehs-risk-sem")
+    _only = {r.strip() for a in _ap.parse_args().only for r in a.split(",") if r.strip()}
     for fn in BUILDERS:
         spec = fn()
+        if _only and spec["repo"] not in _only:
+            continue
         out = REPOS / spec["repo"] / "docs"
         out.mkdir(parents=True, exist_ok=True)
         pageurl = f"https://priyatham9.github.io/{spec['repo']}/"

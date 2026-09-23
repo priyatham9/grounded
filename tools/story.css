@@ -674,3 +674,13 @@ html:not(.m-desk) [data-m-progress]{transform:none}
 .m-desk [data-m-hero]{overflow:clip}
 @media (prefers-reduced-motion: reduce){[data-m-step],[data-m-hero-part],[data-m-reveal]{opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important;clip-path:none!important}}
 .st-reduced [data-m-step],.st-reduced [data-m-hero-part],.st-printing [data-m-step]{opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important;clip-path:none!important}
+/* v2.1 motion polish: nothing flashes in its final or unsplit state before GSAP takes it.
+   html.m-ready is set by story.js once the layer is set up (or found missing / reduced);
+   the 2.5s failsafe shows everything even if the script never runs. */
+@keyframes m-failsafe{to{visibility:visible}}
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference){
+  html:not(.m-ready):not(.st-reduced):not(.st-printing) :is([data-m-split]:not([data-m-split-done]),[data-m-hero-part],[data-m-pin] [data-m-step],[data-m-reveal]){visibility:hidden;animation:m-failsafe 0s 2.5s forwards}
+}
+[data-m-count]{font-variant-numeric:tabular-nums}
+.m-on [data-m-split-done]{font-variant-ligatures:none}
+[data-m-split] .m-word{white-space:nowrap}
