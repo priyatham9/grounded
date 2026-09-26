@@ -63,7 +63,7 @@
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%;scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--font-sans);font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:clip}
 h1,h2,h3,h4{margin:0;line-height:1.02;letter-spacing:-.01em;text-wrap:balance}
 p{margin:0 0 1em;text-wrap:pretty}
 a{color:var(--accent)}
@@ -1051,7 +1051,55 @@ html.st-printing .pathcard .label{color:#444!important}
 html.st-printing .st-find-key{display:inline!important;margin:0 0 0 6pt!important}
 html.st-printing .st-findings li{break-inside:avoid;page-break-inside:avoid}
 html.st-printing .label{color:#444!important}
-</style><style id="st-route-css">
+</style><style id="start-r8-css">
+/* r8 finish pass: page-owned. */
+body{overflow-x:clip}
+.label,.stop-fig figcaption,.rt-meta,.rt-links,.foot-base,.footer-links a span{font-size:.75rem}
+.rt-big small{font-size:.75rem}
+/* hero: the claim on the left, three readers on the right */
+.hero .st-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,.95fr);gap:clamp(28px,5vw,72px);align-items:center;min-height:0;padding:clamp(32px,6vh,72px) 24px clamp(36px,6vh,72px)}
+.r8-crumb{margin:0 0 18px;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);display:flex;gap:10px;align-items:center}
+.r8-crumb a{color:var(--muted)}
+.hero .thesis{max-width:22ch}
+.hero .hero-lede{max-width:42ch}
+.r8-paths-h{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700;margin:0 0 12px;line-height:1.3}
+.r8-plist{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.r8-path{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 16px;align-items:baseline;padding:16px 18px;border:var(--st-hair,2px solid var(--rule));border-radius:var(--st-radius,14px);background:var(--surface);color:var(--ink);text-decoration:none;transition:border-color .18s ease,background-color .18s ease}
+.r8-path:hover{border-color:var(--accent)}
+.r8-path:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.r8-path.is-primary{border-color:var(--accent);background:var(--accent-wash)}
+.r8-who{grid-column:1/-1;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.r8-do{font-size:clamp(1.15rem,1.6vw,1.35rem);font-weight:800;line-height:1.2}
+.r8-why{grid-column:1;font-size:.9375rem;line-height:1.45;color:var(--ink-2)}
+.r8-go{grid-column:2;grid-row:2/4;align-self:center;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--accent);white-space:nowrap}
+@media(max-width:900px){
+ .hero .st-hero{grid-template-columns:1fr;gap:22px;padding:24px 20px 32px}
+ .hero h1{font-size:clamp(2.6rem,12vw,3.4rem)}
+ .hero .thesis{font-size:1.2rem;margin-top:14px;max-width:none}
+ .hero .hero-lede{display:none}
+ .r8-path{padding:12px 14px;grid-template-columns:1fr}
+ .r8-why{display:none}
+ .r8-go{grid-column:1;grid-row:auto;font-size:.75rem}
+ .r8-do{font-size:1.1rem}
+}
+/* figures: a visible title, and a phone variant with type at 12px or more */
+.r8-ftitle{margin:0 0 12px;font-family:var(--font-sans);font-weight:700;font-size:1rem;line-height:1.35;color:var(--ink)}
+.fg-phone{display:none}
+@media(max-width:600px){.fg-wide{display:none}.fg-phone{display:block}}
+.r8-data{margin:12px 0 0;border-top:1px solid var(--rule-soft)}
+.r8-data summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.04em;color:var(--accent);font-weight:700}
+.r8-data summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.r8-tw{overflow-x:auto;max-width:100%}
+.r8-data table{border-collapse:collapse;width:100%;font-family:var(--font-mono);font-size:.8125rem;font-variant-numeric:tabular-nums;margin:2px 0 6px}
+.r8-data caption{caption-side:top;text-align:left;font-family:var(--font-sans);font-size:.875rem;line-height:1.45;color:var(--ink-2);padding:0 0 8px}
+.r8-data th,.r8-data td{padding:6px 8px;border-bottom:1px solid var(--rule-soft);text-align:right;vertical-align:top;color:var(--ink-2)}
+.r8-data th{color:var(--ink);font-weight:600;background:var(--surface-2)}
+.r8-data th:first-child,.r8-data td:first-child{text-align:left}
+.foot-base a{display:inline-flex;align-items:center;min-height:44px}
+.rt-links a{display:inline-flex;align-items:center;min-height:44px}
+main [id]{scroll-margin-top:84px}
+</style>
+<style id="st-route-css">
 .route{padding:56px 0;border-top:2px solid var(--rule)}
 .route h2{margin:6px 0 8px}
 .route .claim{max-width:62ch;color:var(--muted);margin:0 0 20px}
@@ -1083,24 +1131,36 @@ html.st-printing .label{color:#444!important}
 <main id="main">
 <section class="hero" id="top" data-m-hero>
  <div class="wrap st-hero" id="heroWrap">
-  <div data-m-hero-copy>
-   <div class="eyebrow" data-m-hero-part="text"><span class="pulse" aria-hidden="true"></span><span class="label">Six minutes &middot; six stops</span></div>
+  <div class="r8-hero-copy" data-m-hero-copy>
+   <p class="crumb r8-crumb"><a href="./index.html">Grounded</a><span aria-hidden="true">&rsaquo;</span><span>Start here</span></p>
    <h1 class="display" data-m-split="chars">Start here</h1>
    <p class="thesis" data-m-split="lines" data-m-delay="0.5">A safety number is only as good as the denominator under it, the source clause behind it, and the peer group it is ranked against.</p>
-   <p class="hero-lede" data-m-hero-part="text">This programme tested all three. Below are the six findings, in order, each with the figure it rests on and the file the figure was built from. Every stop has two doors: the five-minute story for a leader, and the project page for an analyst.</p>
-   <div class="hero-links" data-m-hero-part="text">
-    <a data-m-spring class="btn btn-primary" href="#f1">Begin with finding 01 &darr;</a>
-    <a data-m-spring class="btn" href="./index.html">Back to the overview</a>
-   </div>
+   <p class="hero-lede" data-m-hero-part="text">Six projects tested all three. Pick the reader you are; each path starts with one link.</p>
   </div>
-  <div class="st-hero-orb" data-m-hero-part="visual">
-   <canvas id="heroOrb" width="440" height="440" role="img" aria-label="The system under review, drawn as a field of moving points."></canvas>
-   <span class="label orbcap" id="heroOrbCap">Searching</span>
-  </div>
+  <nav class="r8-paths" aria-labelledby="pathsH" data-m-hero-part="text">
+   <h2 class="r8-paths-h" id="pathsH">Pick your path</h2>
+   <ol class="r8-plist">
+    <li><a class="r8-path is-primary" href="#route">
+     <span class="r8-who">Site leader &middot; 5 minutes</span>
+     <span class="r8-do">Take the five-step route</span>
+     <span class="r8-why">One takeaway and one number per step, then the six stories in order.</span>
+     <span class="r8-go" aria-hidden="true">Start the route &darr;</span></a></li>
+    <li><a class="r8-path" href="./observatory.html">
+     <span class="r8-who">Analyst &middot; the methods</span>
+     <span class="r8-do">Open the Observatory</span>
+     <span class="r8-why">Every chart with its data table and the file it was computed from.</span>
+     <span class="r8-go" aria-hidden="true">Open the charts &rarr;</span></a></li>
+    <li><a class="r8-path" href="./index.html#ledger">
+     <span class="r8-who">Reviewer &middot; the limits</span>
+     <span class="r8-do">Check the claim ledger</span>
+     <span class="r8-why">Fifteen claims with their status and evidence file, then the two draft papers.</span>
+     <span class="r8-go" aria-hidden="true">Read the ledger &rarr;</span></a></li>
+   </ol>
+  </nav>
  </div>
 </section>
 
-<section class="route" id="route" aria-labelledby="routeH">
+<section class="route" id="route" aria-labelledby="routeH" data-st-anchor>
  <div class="wrap">
   <span class="label">The 5-minute route</span>
   <h2 class="display" id="routeH" data-m-split="lines">Five steps, about a minute each</h2>
@@ -1169,8 +1229,9 @@ html.st-printing .label{color:#444!important}
    <a data-m-spring class="btn" href="https://priyatham9.github.io/ehs-osha-analysis/">Open the project page &rarr;</a>
   </div>
  </div>
- <figure class="stop-fig" data-st-spotlight>
-  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 320" class="fg" role="img" aria-labelledby="f1t f1d" preserveAspectRatio="xMidYMid meet">
+ <figure class="stop-fig" data-st-spotlight aria-labelledby="f1t">
+  <p class="r8-ftitle">Aggregate TRIR by reporting year, as filed and screened (cases per 200,000 hours), OSHA ITA Form 300A, 2016 to 2024</p>
+  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 320" class="fg fg-wide" role="img" aria-labelledby="f1t f1d" preserveAspectRatio="xMidYMid meet">
   <title id="f1t">Aggregate TRIR before and after the plausibility screen, 2016 to 2024</title>
   <desc id="f1d">Screened TRIR stays between 3.15 and 4.60 across nine years. Unscreened TRIR collapses to 0.016 in 2019 and 0.280 in 2024.</desc>
   <line class="gl" x1="44" x2="550" y1="274.0" y2="274.0"/>
@@ -1217,7 +1278,9 @@ html.st-printing .label{color:#444!important}
   <rect class="b-s" x="44" y="300" width="13" height="13"/><text class="lg" x="63" y="311">Screened</text>
   <rect class="b-u" x="148" y="300" width="13" height="13"/><text class="lg" x="167" y="311">Unscreened, as filed</text>
   </svg>
+  <svg viewBox="0 0 340 300" class="fg fg-phone" role="img" aria-labelledby="f1pt" preserveAspectRatio="xMidYMid meet"><title id="f1pt">Aggregate TRIR before and after the plausibility screen, 2016 to 2024</title><line class="gl" x1="26" x2="338" y1="242.0" y2="242.0"/><text class="ax" x="20" y="246.5" text-anchor="end">0</text><line class="gl" x1="26" x2="338" y1="200.4" y2="200.4"/><text class="ax" x="20" y="204.9" text-anchor="end">1</text><line class="gl" x1="26" x2="338" y1="158.8" y2="158.8"/><text class="ax" x="20" y="163.3" text-anchor="end">2</text><line class="gl" x1="26" x2="338" y1="117.2" y2="117.2"/><text class="ax" x="20" y="121.7" text-anchor="end">3</text><line class="gl" x1="26" x2="338" y1="75.6" y2="75.6"/><text class="ax" x="20" y="80.1" text-anchor="end">4</text><line class="gl" x1="26" x2="338" y1="34.0" y2="34.0"/><text class="ax" x="20" y="38.5" text-anchor="end">5</text><rect class="b-s" x="29.0" y="78.9" width="14.2" height="163.1"/><rect class="b-u" x="43.2" y="128.5" width="14.2" height="113.5"/><text class="ax" x="43.2" y="260" text-anchor="middle">&#8217;16</text><rect class="b-s" x="63.4" y="75.7" width="14.2" height="166.3"/><rect class="b-u" x="77.7" y="132.4" width="14.2" height="109.6"/><text class="ax" x="77.7" y="260" text-anchor="middle">&#8217;17</text><rect class="b-s" x="97.9" y="72.7" width="14.2" height="169.3"/><rect class="b-u" x="112.1" y="120.5" width="14.2" height="121.5"/><text class="ax" x="112.1" y="260" text-anchor="middle">&#8217;18</text><rect class="b-s" x="132.3" y="74.8" width="14.2" height="167.2"/><rect class="b-u" x="146.6" y="241.3" width="14.2" height="1.5"/><text class="ax" x="146.6" y="260" text-anchor="middle">&#8217;19</text><rect class="b-s" x="166.8" y="55.2" width="14.2" height="186.8"/><rect class="b-u" x="181.0" y="125.9" width="14.2" height="116.1"/><text class="ax" x="181.0" y="260" text-anchor="middle">&#8217;20</text><rect class="b-s" x="201.2" y="60.3" width="14.2" height="181.7"/><rect class="b-u" x="215.4" y="142.8" width="14.2" height="99.2"/><text class="ax" x="215.4" y="260" text-anchor="middle">&#8217;21</text><rect class="b-s" x="235.7" y="50.4" width="14.2" height="191.6"/><rect class="b-u" x="249.9" y="131.3" width="14.2" height="110.7"/><text class="ax" x="249.9" y="260" text-anchor="middle">&#8217;22</text><rect class="b-s" x="270.1" y="111.1" width="14.2" height="130.9"/><rect class="b-u" x="284.3" y="184.6" width="14.2" height="57.4"/><text class="ax" x="284.3" y="260" text-anchor="middle">&#8217;23</text><rect class="b-s" x="304.6" y="90.5" width="14.2" height="151.5"/><rect class="b-u" x="318.8" y="230.3" width="14.2" height="11.7"/><text class="ax" x="318.8" y="260" text-anchor="middle">&#8217;24</text><line class="cal" x1="146.6" x2="146.6" y1="68.8" y2="20"/><text class="cn" x="146.6" y="14" text-anchor="middle">2019: 249x apart</text><rect class="b-s" x="0" y="272" width="13" height="13"/><text class="lg" x="19" y="283">Screened</text><rect class="b-u" x="120" y="272" width="13" height="13"/><text class="lg" x="139" y="283">As filed</text></svg>
   <figcaption>Source: ehs-osha-analysis, outputs/tables/quality_by_year.csv. Persistence figures from outputs/tables/panel_transitions.csv and docs/PANEL.md.</figcaption>
+  <details class="r8-data"><summary>Data table</summary><div class="r8-tw"><table><caption>Aggregate TRIR per 200,000 hours, all OSHA ITA Form 300A filers.</caption><thead><tr><th scope="col">Year</th><th scope="col">As filed</th><th scope="col">Screened</th><th scope="col">Screened / as filed</th></tr></thead><tbody><tr><td>2016</td><td>2.729</td><td>3.921</td><td>1.44&times;</td></tr><tr><td>2017</td><td>2.634</td><td>3.998</td><td>1.52&times;</td></tr><tr><td>2018</td><td>2.920</td><td>4.069</td><td>1.39&times;</td></tr><tr><td>2019</td><td>0.016</td><td>4.018</td><td>249.28&times;</td></tr><tr><td>2020</td><td>2.792</td><td>4.491</td><td>1.61&times;</td></tr><tr><td>2021</td><td>2.385</td><td>4.368</td><td>1.83&times;</td></tr><tr><td>2022</td><td>2.661</td><td>4.605</td><td>1.73&times;</td></tr><tr><td>2023</td><td>1.380</td><td>3.147</td><td>2.28&times;</td></tr><tr><td>2024</td><td>0.280</td><td>3.642</td><td>12.99&times;</td></tr></tbody></table></div></details>
  </figure>
 </div>
 
@@ -1236,8 +1299,9 @@ html.st-printing .label{color:#444!important}
    <a data-m-spring class="btn" href="https://priyatham9.github.io/ehs-ai-grounding-eval/">Open the project page &rarr;</a>
   </div>
  </div>
- <figure class="stop-fig" data-st-spotlight>
-  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 300" class="fg" role="img" aria-labelledby="f2t f2d" preserveAspectRatio="xMidYMid meet">
+ <figure class="stop-fig" data-st-spotlight aria-labelledby="f2t">
+  <p class="r8-ftitle">Accuracy on the benchmark's 63 factual items, three non-language-model baselines (percent)</p>
+  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 300" class="fg fg-wide" role="img" aria-labelledby="f2t f2d" preserveAspectRatio="xMidYMid meet">
   <title id="f2t">Three non-language-model baselines on the 68 item grounding benchmark</title>
   <desc id="f2d">Random floor scores 52.1 percent, TF-IDF retrieval scores 27.0 percent, the oracle ceiling scores 100 percent. No language model has been scored.</desc>
   <rect class="b-s" x="150" y="34.4" width="184.4" height="40.0"/>
@@ -1253,7 +1317,9 @@ html.st-printing .label{color:#444!important}
   <text class="cn" x="326.4" y="188.0" text-anchor="end">Retrieval sits below the floor</text>
   <text class="ax" x="150" y="290">0</text><text class="ax" x="504.0" y="290" text-anchor="end">100% of 63 factual items</text>
   </svg>
+  <svg viewBox="0 0 340 214" class="fg fg-phone" role="img" aria-labelledby="f2pt" preserveAspectRatio="xMidYMid meet"><title id="f2pt">Three non-language-model baselines on the 68 item grounding benchmark</title><text class="al" x="0" y="20">Random floor</text><rect class="b-s" x="0" y="28" width="136.5" height="24"/><text class="vn" x="144.5" y="46">52.1%</text><text class="al" x="0" y="76">TF-IDF retrieval</text><rect class="b-u" x="0" y="84" width="70.7" height="24"/><text class="vn" x="78.7" y="102">27.0%</text><text class="al" x="0" y="132">Oracle ceiling</text><rect class="b-s" x="0" y="140" width="262.0" height="24"/><text class="vn" x="270.0" y="158">100.0%</text><line class="gl" x1="0" x2="262" y1="186" y2="186"/><text class="ax" x="0.0" y="204" text-anchor="start">0</text><text class="ax" x="262.0" y="204" text-anchor="end">100%</text></svg>
   <figcaption>Source: ehs-ai-grounding-eval, results/baselines_*.json and corpus/items/. Scoring policy weights from the same run config.</figcaption>
+  <details class="r8-data"><summary>Data table</summary><div class="r8-tw"><table><caption>Accuracy on 63 factual items, with 95% intervals where the run reports them.</caption><thead><tr><th scope="col">Baseline</th><th scope="col">Accuracy</th></tr></thead><tbody><tr><td>Random floor (5 repeats)</td><td>52.1% [45.9%, 58.9%]</td></tr><tr><td>TF-IDF retrieval</td><td>27.0% [15.4%, 40.0%]</td></tr><tr><td>Oracle ceiling</td><td>100.0%</td></tr></tbody></table></div></details>
  </figure>
 </div>
 
@@ -1271,8 +1337,9 @@ html.st-printing .label{color:#444!important}
    <a data-m-spring class="btn" href="https://priyatham9.github.io/ehs-human-factors-ontology/">Open the project page &rarr;</a>
   </div>
  </div>
- <figure class="stop-fig" data-st-spotlight>
-  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 300" class="fg" role="img" aria-labelledby="f3t f3d" preserveAspectRatio="xMidYMid meet">
+ <figure class="stop-fig" data-st-spotlight aria-labelledby="f3t">
+  <p class="r8-ftitle">Strongest match for 20 factors in each of four frameworks (count of factors, 80 pairs in all)</p>
+  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 300" class="fg fg-wide" role="img" aria-labelledby="f3t f3d" preserveAspectRatio="xMidYMid meet">
   <title id="f3t">Match strength of 20 factors against four human factors frameworks</title>
   <desc id="f3d">Across 80 factor to framework pairs, 31 are close matches, 23 broader, 20 partial and 6 have no counterpart.</desc>
   <rect class="s-close" x="112.0" y="32.7" width="130.2" height="28.3"/>
@@ -1316,7 +1383,9 @@ html.st-printing .label{color:#444!important}
   <text class="ax" x="378.4" y="275">No counterpart</text>
   <text class="ax" x="112" y="250">20 factors per framework, 80 pairs in all</text>
   </svg>
+  <svg viewBox="0 0 340 298" class="fg fg-phone" role="img" aria-labelledby="f3pt" preserveAspectRatio="xMidYMid meet"><title id="f3pt">Match strength of 20 factors against four human factors frameworks</title><text class="al" x="0" y="20">SPAR-H</text><rect class="s-close" x="0.0" y="28" width="100.5" height="28"/><text class="in in-close" x="51.0" y="47" text-anchor="middle">6</text><rect class="s-broader" x="102.0" y="28" width="32.5" height="28"/><text class="in in-broader" x="119.0" y="47" text-anchor="middle">2</text><rect class="s-partial" x="136.0" y="28" width="117.5" height="28"/><text class="in in-partial" x="195.5" y="47" text-anchor="middle">7</text><rect class="s-none" x="255.0" y="28" width="83.5" height="28"/><text class="in in-none" x="297.5" y="47" text-anchor="middle">5</text><text class="al" x="0" y="78">CREAM</text><rect class="s-close" x="0.0" y="86" width="100.5" height="28"/><text class="in in-close" x="51.0" y="105" text-anchor="middle">6</text><rect class="s-broader" x="102.0" y="86" width="134.5" height="28"/><text class="in in-broader" x="170.0" y="105" text-anchor="middle">8</text><rect class="s-partial" x="238.0" y="86" width="100.5" height="28"/><text class="in in-partial" x="289.0" y="105" text-anchor="middle">6</text><text class="al" x="0" y="136">HFACS</text><rect class="s-close" x="0.0" y="144" width="100.5" height="28"/><text class="in in-close" x="51.0" y="163" text-anchor="middle">6</text><rect class="s-broader" x="102.0" y="144" width="134.5" height="28"/><text class="in in-broader" x="170.0" y="163" text-anchor="middle">8</text><rect class="s-partial" x="238.0" y="144" width="83.5" height="28"/><text class="in in-partial" x="280.5" y="163" text-anchor="middle">5</text><rect class="s-none" x="323.0" y="144" width="15.5" height="28"/><text class="in in-none" x="331.5" y="163" text-anchor="middle">1</text><text class="al" x="0" y="194">HSE PIFs</text><rect class="s-close" x="0.0" y="202" width="219.5" height="28"/><text class="in in-close" x="110.5" y="221" text-anchor="middle">13</text><rect class="s-broader" x="221.0" y="202" width="83.5" height="28"/><text class="in in-broader" x="263.5" y="221" text-anchor="middle">5</text><rect class="s-partial" x="306.0" y="202" width="32.5" height="28"/><text class="in in-partial" x="323.0" y="221" text-anchor="middle">2</text><rect class="s-close" x="0" y="254" width="13" height="13"/><text class="lg" x="19" y="265">Close</text><rect class="s-broader" x="110" y="254" width="13" height="13"/><text class="lg" x="129" y="265">Broader</text><rect class="s-partial" x="0" y="276" width="13" height="13"/><text class="lg" x="19" y="287">Partial</text><rect class="s-none" x="110" y="276" width="13" height="13"/><text class="lg" x="129" y="287">No counterpart</text></svg>
   <figcaption>Source: ehs-human-factors-ontology, docs/crosswalk-data.json (80 cells, 96 recorded matches). Taxonomy adopted from IDHEAS-G, not new.</figcaption>
+  <details class="r8-data"><summary>Data table</summary><div class="r8-tw"><table><caption>Strongest recorded match per factor, 20 factors per framework.</caption><thead><tr><th scope="col">Framework</th><th scope="col">Close</th><th scope="col">Broader</th><th scope="col">Partial</th><th scope="col">No counterpart</th></tr></thead><tbody><tr><td>SPAR-H</td><td>6</td><td>2</td><td>7</td><td>5</td></tr><tr><td>CREAM</td><td>6</td><td>8</td><td>6</td><td>0</td></tr><tr><td>HFACS</td><td>6</td><td>8</td><td>5</td><td>1</td></tr><tr><td>HSE PIFs</td><td>13</td><td>5</td><td>2</td><td>0</td></tr><tr><td>All four</td><td>31</td><td>23</td><td>20</td><td>6</td></tr></tbody></table></div></details>
  </figure>
 </div>
 
@@ -1335,8 +1404,9 @@ html.st-printing .label{color:#444!important}
    <a data-m-spring class="btn" href="https://priyatham9.github.io/ehs-risk-sem/">Open the project page &rarr;</a>
   </div>
  </div>
- <figure class="stop-fig" data-st-spotlight>
-  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 300" class="fg" role="img" aria-labelledby="f4t f4d" preserveAspectRatio="xMidYMid meet">
+ <figure class="stop-fig" data-st-spotlight aria-labelledby="f4t">
+  <p class="r8-ftitle">Cases required for five claims about one path model, synthetic simulation (log scale)</p>
+  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 300" class="fg fg-wide" role="img" aria-labelledby="f4t f4d" preserveAspectRatio="xMidYMid meet">
   <title id="f4t">Sample size required for five claims about the same path model</title>
   <desc id="f4d">A global fit test needs 153 cases. A single coefficient precise to 0.05 needs 369. Separating a coefficient of minus 0.25 from minus 0.20 needs 6884.</desc>
   <line class="gl" x1="176.0" x2="176.0" y1="22" y2="256"/>
@@ -1362,7 +1432,9 @@ html.st-printing .label{color:#444!important}
   <text class="vn" x="476.2" y="235.9">6,884</text>
   <text class="ax" x="176" y="292">Cases required, log scale</text>
   </svg>
+  <svg viewBox="0 0 340 326" class="fg fg-phone" role="img" aria-labelledby="f4pt" preserveAspectRatio="xMidYMid meet"><title id="f4pt">Sample size required for five claims about the same path model</title><text class="al" x="0" y="20">80% power for close fit</text><rect class="b-s" x="0" y="28" width="24.2" height="24"/><text class="vn" x="32.2" y="46">153</text><text class="al" x="0" y="76">SE = 0.05 on one path</text><rect class="b-s" x="0" y="84" width="74.3" height="24"/><text class="vn" x="82.3" y="102">369</text><text class="al" x="0" y="132">Separate 0.45 from 0.30</text><rect class="b-s" x="0" y="140" width="116.1" height="24"/><text class="vn" x="124.1" y="158">770</text><text class="al" x="0" y="188">SE = 0.025 on one path</text><rect class="b-s" x="0" y="196" width="152.5" height="24"/><text class="vn" x="160.5" y="214">1,459</text><text class="al" x="0" y="244">Separate -0.25 from -0.20</text><rect class="b-u" x="0" y="252" width="240.8" height="24"/><text class="vn" x="248.8" y="270">6,884</text><line class="gl" x1="0" x2="262" y1="298" y2="298"/><text class="ax" x="0.0" y="316" text-anchor="start">100</text><text class="ax" x="131.0" y="316" text-anchor="middle">1,000</text><text class="ax" x="262.0" y="316" text-anchor="end">10,000</text></svg>
   <figcaption>Source: ehs-risk-sem, results/study01_requirements.csv. Bases listed in the same file: RMSEA power at df = 80, standardised regression SE at R squared 0.288 and VIF 1.28.</figcaption>
+  <details class="r8-data"><summary>Data table</summary><div class="r8-tw"><table><caption>Cases required, from results/study01_requirements.csv.</caption><thead><tr><th scope="col">Claim</th><th scope="col">Basis</th><th scope="col">Cases</th></tr></thead><tbody><tr><td>80% power for the test of close fit</td><td>RMSEA power, df = 80</td><td>153</td></tr><tr><td>SE = 0.05 on one coefficient</td><td>R&sup2; = 0.288, VIF = 1.28</td><td>369</td></tr><tr><td>Separate &beta; = 0.45 from 0.30 at 80% power</td><td>z test on the difference</td><td>770</td></tr><tr><td>SE = 0.025 on one coefficient</td><td>R&sup2; = 0.288, VIF = 1.28</td><td>1,459</td></tr><tr><td>Separate &beta; = &minus;0.25 from &minus;0.20 at 80% power</td><td>z test on the difference</td><td>6,884</td></tr></tbody></table></div></details>
  </figure>
 </div>
 
@@ -1380,8 +1452,9 @@ html.st-printing .label{color:#444!important}
    <a data-m-spring class="btn" href="https://priyatham9.github.io/ehs-capitals-calculator/">Open the project page &rarr;</a>
   </div>
  </div>
- <figure class="stop-fig" data-st-spotlight>
-  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 290" class="fg" role="img" aria-labelledby="f5t f5d" preserveAspectRatio="xMidYMid meet">
+ <figure class="stop-fig" data-st-spotlight aria-labelledby="f5t">
+  <p class="r8-ftitle">Years to payback on one $150,000 control, worked example, two accountings</p>
+  <svg data-m-draw="path,line,polyline" viewBox="0 0 560 290" class="fg fg-wide" role="img" aria-labelledby="f5t f5d" preserveAspectRatio="xMidYMid meet">
   <title id="f5t">Payback period for one loading station control under two accountings</title>
   <desc id="f5d">The same 150,000 dollar control pays back in 3.41 years on the booked ledger and 1.59 years once human capital lines are priced.</desc>
   <line class="gl" x1="210.0" x2="210.0" y1="34" y2="246"/>
@@ -1403,7 +1476,9 @@ html.st-printing .label{color:#444!important}
   <text class="cn" x="210" y="22">Same control. Same station. Two accountings.</text>
   <text class="ax" x="210" y="282">Years to payback</text>
   </svg>
+  <svg viewBox="0 0 340 158" class="fg fg-phone" role="img" aria-labelledby="f5pt" preserveAspectRatio="xMidYMid meet"><title id="f5pt">Payback period for one loading station control under two accountings</title><text class="al" x="0" y="20">Booked ledger only</text><rect class="b-u" x="0" y="28" width="223.4" height="24"/><text class="vn" x="231.4" y="46">3.41 yr</text><text class="al" x="0" y="76">Human-capital lines priced</text><rect class="b-s" x="0" y="84" width="104.1" height="24"/><text class="vn" x="112.1" y="102">1.59 yr</text><line class="gl" x1="0" x2="262" y1="130" y2="130"/><text class="ax" x="0.0" y="148" text-anchor="start">0</text><text class="ax" x="131.0" y="148" text-anchor="middle">2</text><text class="ax" x="262.0" y="148" text-anchor="end">4 yr</text></svg>
   <figcaption>Source: ehs-capitals-calculator, the worked loading-station example in the calculator. JavaScript and Python implementations pinned to identical numbers by a test fixture.</figcaption>
+  <details class="r8-data"><summary>Data table</summary><div class="r8-tw"><table><caption>One $150,000 loading-station control, worked example in the calculator.</caption><thead><tr><th scope="col">Ledger</th><th scope="col">Annual benefit</th><th scope="col">Payback</th></tr></thead><tbody><tr><td>Booked lines only (downtime, spilled material, injury cost)</td><td>$55,000</td><td>3.41 yr</td></tr><tr><td>Booked plus human-capital lines (+$63,000)</td><td>$118,000</td><td>1.59 yr</td></tr></tbody></table></div></details>
  </figure>
 </div>
 
@@ -1422,7 +1497,8 @@ html.st-printing .label{color:#444!important}
    <a data-m-spring class="btn" href="https://priyatham9.github.io/ehs-benchmarks/">Open the project page &rarr;</a>
   </div>
  </div>
- <figure class="stop-fig" data-st-spotlight>
+ <figure class="stop-fig" data-st-spotlight aria-labelledby="f6t">
+  <p class="r8-ftitle">Percentile rank of a 3.20 TRIR in two NAICS 3252 peer groups, OSHA ITA Form 300A, calendar year 2025 filings</p>
   <svg data-m-draw="path,line,polyline" viewBox="0 0 560 300" class="fg" role="img" aria-labelledby="f6t f6d" preserveAspectRatio="xMidYMid meet">
   <title id="f6t">Percentile rank of one TRIR of 3.20 against two peer groups</title>
   <desc id="f6d">A TRIR of 3.20 ranks at the 76th percentile among the 478 establishments in NAICS 3252 and at the 93rd percentile among the 34 establishments in that industry with 250 to 499 employees.</desc>
@@ -1439,13 +1515,14 @@ html.st-printing .label{color:#444!important}
   <text class="ax" x="20" y="291" style="font-size:21px">8% below the 3.49 all-filer aggregate.</text>
   </svg>
   <figcaption>Source: ehs-benchmarks, docs/data/benchmarks/32.json (keys 3252 and 3252|250-499) and the all-filer aggregate of 3.49 over 375,635 CY2025 filings. The 3.20 site is an illustrative input; every group it is compared against is real.</figcaption>
+  <details class="r8-data"><summary>Data table</summary><div class="r8-tw"><table><caption>Rank of an illustrative site with 600,000 hours and 10 recordable cases (TRIR 3.20).</caption><thead><tr><th scope="col">Peer group</th><th scope="col">n</th><th scope="col">Rank</th></tr></thead><tbody><tr><td>NAICS 3252, all sizes</td><td>478</td><td>p76</td></tr><tr><td>NAICS 3252, 250 to 499 employees</td><td>34</td><td>p93</td></tr><tr><td>All filers, aggregate TRIR</td><td>375,635 filings</td><td>3.49 (site is 8% below)</td></tr></tbody></table></div></details>
  </figure>
 </div>
 
-<section class="paths" id="pick">
+<section class="paths" id="pick" data-st-anchor>
  <div class="wrap">
   <span class="label">Where to go next</span>
-  <h2 class="display" data-m-split="chars">Pick your path</h2>
+  <h2 class="display" data-m-split="chars">Where to go next</h2>
   <p class="claim">Three ways through the same material. Take the one that matches what you have to decide.</p>
   <div class="pathgrid">
    <div class="pathcard" data-st-spotlight>
