@@ -107,6 +107,9 @@ a.skip,a.skip-link{min-height:44px;box-sizing:border-box}
 /* isolation: neutralise page element rules (header{}, nav a{}, button{} ...) */
 .rs-header :where(a,button,nav,div,span,summary,details,b,i){all:revert;box-sizing:border-box}
 .rs-header [hidden]{display:none!important}
+.rs-header{transition:transform .28s cubic-bezier(.2,.8,.2,1)}
+.rs-header.rs-hide{transform:translateY(-100%)}
+@media (prefers-reduced-motion:reduce){.rs-header{transition:none}}
 .rs-header svg{display:block;width:18px;height:18px;fill:none;stroke:currentColor}
 .rs-header{all:revert;display:block;position:sticky;top:0;z-index:1000;margin:0;padding:0;width:auto;max-width:none;float:none;transform:none;
  box-sizing:border-box;background:var(--rs-paper);color:var(--rs-ink);border:0;box-shadow:none;font:400 14px/1.3 var(--rs-sans);text-align:left}
@@ -181,7 +184,7 @@ a.skip,a.skip-link{min-height:44px;box-sizing:border-box}
 .rs-header .rs-sheet .rs-opt[aria-current="page"]{padding-left:14px}
 .rs-header .rs-group{display:block;margin:24px 0 4px;font:500 12px/1 var(--rs-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rs-muted)}
 .rs-header .rs-sheet a.rs-sheet-author{margin-top:24px;border-top:2px solid var(--rs-rule);border-bottom:0;color:var(--rs-muted);text-transform:none;font-weight:500}
-html.rs-lock,html.rs-lock body{overflow:hidden}
+htmlhtml.rs-lock{overflow:hidden}
 @media (max-width:1279.98px){.rs-header .rs-author{display:none}}
 @media (max-width:1100px){.rs-header .rs-item{padding:0 10px}}
 @media (min-width:1280px){.rs-header .rs-find{width:auto;padding:0 12px}.rs-header .rs-find span{display:block}.rs-header .rs-item{padding:0 12px}}
@@ -297,6 +300,11 @@ HEADER_JS = r"""<script id="rs-header-js">
  function pad(){root.style.setProperty('--rs-header-h',off()+'px');root.style.scrollPaddingTop=(off()+12)+'px';fades();}
  if(items.length&&'IntersectionObserver' in window){var io=new IntersectionObserver(onScroll,{rootMargin:'-'+off()+'px 0px -50% 0px'});items.forEach(function(it){io.observe(it.el);});}
  if(nav)nav.addEventListener('scroll',fades,{passive:true});
+ /* headroom: hide while reading down, show again on any scroll up */
+ var lastY=scrollY;function headroom(){var y=scrollY,d=y-lastY;if(Math.abs(d)<6)return;
+  var busy=menus.some(function(m){return m.open;})||(sheet&&!sheet.hidden)||h.contains(doc.activeElement)&&doc.activeElement!==doc.body;
+  h.classList.toggle('rs-hide',d>0&&y>160&&!busy);lastY=y;}
+ addEventListener('scroll',headroom,{passive:true});h.addEventListener('focusin',function(){h.classList.remove('rs-hide');});
  addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',function(){pad();onScroll();});
  pad();frame();
  /* programme search: / or Ctrl/Cmd+K; the index is fetched on first use */

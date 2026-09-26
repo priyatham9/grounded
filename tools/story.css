@@ -249,7 +249,7 @@ body.st-has-way .presbtn{bottom:calc(var(--st-way-h,60px) + 16px)}
 .st-findings b{display:block;font-size:1.15rem;line-height:1.2;margin-bottom:8px}
 .st-findings span{display:block;color:var(--ink-2);font-size:.95rem;line-height:1.5}
 /* story pages: the bottom bar is the only fixed chrome */
-body.st-story .rs-header{position:static!important}
+/* r8b: header stays sticky on stories (it hides while scrolling down, returns on scroll up; see banner.py) */
 body.st-story .rs-header .rs-sub{display:none!important}
 body.st-story .presbtn,body.st-has-way .presbtn{display:none!important}
 body.st-story{--st-top:0px}
