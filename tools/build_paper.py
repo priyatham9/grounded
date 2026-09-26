@@ -15,7 +15,8 @@ every reference entry links back to each place it was cited. That is the
 whole point of the exercise: a 33,000 word paper with 193 references is not
 navigable without it.
 
-Usage:  python3 tools/build_paper.py
+Usage:  python3 tools/build_paper.py            builds paper.html and paper-osha.html
+        PAPER_SRC=... PAPER_OUT=... python3 tools/build_paper.py   builds one page
 """
 
 import html
@@ -38,6 +39,16 @@ SRC_JSON = os.path.join(ROOT, "paper", "citations_verified.json")
 OUT_HTML = os.environ.get("PAPER_OUT") or os.path.join(
     ROOT, "repos", "grounded", "docs", "paper.html"
 )
+DOCS_DIR = os.path.join(ROOT, "repos", "grounded", "docs")
+# the two manuscripts this script publishes: (source, output)
+TARGETS = [
+    (os.path.join(ROOT, "paper", "PAPER.md"), os.path.join(DOCS_DIR, "paper.html")),
+    (os.path.join(ROOT, "paper", "OSHA_PAPER.md"), os.path.join(DOCS_DIR, "paper-osha.html")),
+]
+LINK_SVG = ('<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" '
+            'stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+            '<path d="M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5"/>'
+            '<path d="M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5"/></svg>')
 CITATION_CFF = os.path.join(ROOT, "repos", "grounded", "CITATION.cff")
 
 # Bracketed tokens that look like citation keys but are not. "given" and
@@ -215,6 +226,8 @@ class Renderer(object):
         self.seen_ids = {}
         self.n_figures = 0
         self.n_tables = 0
+        self.last_heading = ""     # caption for a markdown table that has none of its own
+        self.top = 1               # shallowest heading level in the body
 
     def uid(self, base):
         n = self.seen_ids.get(base, 0)
@@ -272,16 +285,18 @@ class Renderer(object):
                 level = len(m.group(1))
                 body = self.inline.render(m.group(2))
                 hid = self.uid(slug(m.group(2)))
+                self.last_heading = re.sub(r"<[^>]+>", "", body)
                 if level <= 3 and depth == 0:
                     self.toc.append((level, hid, re.sub(r"<[^>]+>", "", body)))
                     if slug(m.group(2)) == "references":
                         self.inline.in_refs = True
-                tag = "h%d" % min(level + 1, 6)
-                cls = "h-l%d" % level
+                rel = max(1, level - self.top + 1)
+                tag = "h%d" % min(rel + 1, 6)
+                cls = "h-l%d" % rel
                 out.append(
                     '<%s id="%s" class="%s">%s'
-                    '<a class="anchor" href="#%s" aria-label="Link to this section">#</a>'
-                    "</%s>" % (tag, hid, cls, body, hid, tag)
+                    '<a class="anchor" href="#%s" aria-label="Copy link to this section">%s</a>'
+                    "</%s>" % (tag, hid, cls, body, hid, LINK_SVG, tag)
                 )
                 i += 1
                 continue
@@ -375,10 +390,10 @@ class Renderer(object):
         return (
             '<figure class="paperfig" id="%s"><div class="figbody">%s</div>'
             '<figcaption><span class="figlabel">Figure %d.</span> %s'
-            '<a class="cap-anchor" href="#%s" aria-label="Link to this figure">#</a>'
+            '<a class="cap-anchor" href="#%s" aria-label="Copy link to Figure %d">%s</a>'
             '<span class="figsrc">Source: ehs-osha-analysis/outputs/figures/%s</span>'
             "</figcaption></figure>"
-            % (fid, svg, self.n_figures, self.inline.render(caption), fid, esc(rel))
+            % (fid, svg, self.n_figures, self.inline.render(caption), fid, self.n_figures, LINK_SVG, esc(rel))
         )
 
     def csv_table(self, rel, caption):
@@ -405,11 +420,12 @@ class Renderer(object):
         return (
             '<figure class="papertable" id="%s"><figcaption>'
             '<span class="figlabel">Table %d.</span> %s%s'
-            '<a class="cap-anchor" href="#%s" aria-label="Link to this table">#</a>'
+            '<a class="cap-anchor" href="#%s" aria-label="Copy link to Table %d">%s</a>'
             '<span class="figsrc">Source: ehs-osha-analysis/outputs/tables/%s</span>'
-            '</figcaption><div class="tablewrap"><table><thead><tr>%s</tr></thead>'
+            '</figcaption><div class="tablewrap" role="region" tabindex="0" aria-label="Table %d, scrolls sideways">'
+            '<table><thead><tr>%s</tr></thead>'
             "<tbody>%s</tbody></table></div></figure>"
-            % (tid, self.n_tables, self.inline.render(caption), note, tid, esc(rel), th, trs)
+            % (tid, self.n_tables, self.inline.render(caption), note, tid, self.n_tables, LINK_SVG, esc(rel), self.n_tables, th, trs)
         )
 
     @staticmethod
@@ -455,9 +471,17 @@ class Renderer(object):
         for r in rows:
             tds = "".join("<td>%s</td>" % self.inline.render(c) for c in r)
             body.append("<tr>%s</tr>" % tds)
+        # every table gets a number and a caption; a markdown table borrows the
+        # heading it sits under, since the manuscript gives it no caption of its own
+        self.n_tables += 1
+        tid = "tbl-%d" % self.n_tables
         return (
-            '<div class="tablewrap"><table><thead><tr>%s</tr></thead>'
-            "<tbody>%s</tbody></table></div>" % (th, "".join(body))
+            '<figure class="papertable" id="%s"><figcaption><span class="figlabel">Table %d.</span> %s'
+            '<a class="cap-anchor" href="#%s" aria-label="Copy link to Table %d">%s</a></figcaption>'
+            '<div class="tablewrap" role="region" tabindex="0" aria-label="Table %d, scrolls sideways">'
+            '<table><thead><tr>%s</tr></thead>'
+            "<tbody>%s</tbody></table></div></figure>"
+            % (tid, self.n_tables, esc(self.last_heading), tid, self.n_tables, LINK_SVG, self.n_tables, th, "".join(body))
         )
 
     def collect_list(self, lines, i):
@@ -574,25 +598,25 @@ img,svg{max-width:100%}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 30px}
 .display{font-stretch:125%;font-weight:900;text-transform:uppercase}
-.label{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.label{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
-.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--accent);color:var(--accent-ink);padding:12px 18px;font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;text-decoration:none}
+.skip{position:absolute;left:-9999px;top:0;z-index:99;background:var(--accent);color:var(--accent-ink);padding:14px 18px;min-height:44px;display:inline-flex;align-items:center;font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.08em;text-decoration:none}
 .skip:focus{left:8px;top:8px}
 
 /* five-minute path */
 .read5wrap{border-bottom:2px solid var(--rule);padding:0 0 34px}
 .read5{border:2px solid var(--accent);background:var(--accent-wash);padding:22px 26px}
 .read5 h2{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
-.read5 p{margin:10px 0 0;font-size:.925rem;color:var(--ink-2);max-width:78ch}
+.read5 p{margin:10px 0 0;font-size:1rem;color:var(--ink-2);max-width:78ch}
 .read5 ol{list-style:none;counter-reset:r5;margin:16px 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:0;border:2px solid var(--rule);background:var(--surface)}
 .read5 li{counter-increment:r5;border-left:2px solid var(--rule-soft);min-width:0}
 .read5 li:first-child{border-left:0}
-.read5 li a{display:block;height:100%;padding:12px 14px;text-decoration:none;color:var(--ink)}
+.read5 li a{display:block;height:100%;padding:14px 16px;text-decoration:none;color:var(--ink)}
 .read5 li a:hover{background:var(--accent);color:var(--accent-ink)}
-.read5 li a::before{content:"0" counter(r5);display:block;font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.16em;color:var(--muted);margin-bottom:4px}
+.read5 li a::before{content:"0" counter(r5);display:block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.16em;color:var(--muted);margin-bottom:4px}
 .read5 li a:hover::before{color:var(--accent-ink)}
-.read5 .r5-t{display:block;font-family:var(--font-mono);font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
-.read5 .r5-d{display:block;font-size:.8125rem;margin-top:4px;color:var(--ink-2)}
+.read5 .r5-t{display:block;font-family:var(--font-mono);font-size:.8125rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+.read5 .r5-d{display:block;font-size:.9375rem;line-height:1.45;margin-top:4px;color:var(--ink-2)}
 .read5 li a:hover .r5-d{color:var(--accent-ink)}
 @media(max-width:760px){.read5 li{border-left:0;border-top:2px solid var(--rule-soft)}.read5 li:first-child{border-top:0}}
 
@@ -601,7 +625,7 @@ img,svg{max-width:100%}
 .pn-inner{max-width:var(--maxw);margin:0 auto;padding:0 30px;display:grid;grid-template-columns:1fr 1fr}
 .pn a{display:block;padding:26px 0;text-decoration:none;color:var(--ink);min-width:0}
 .pn a+a{text-align:right;border-left:2px solid var(--rule-soft);padding-left:20px}
-.pn .pn-k{display:block;font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.pn .pn-k{display:block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:700}
 .pn .pn-v{display:block;margin-top:6px;font-family:var(--font-mono);font-size:.9rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:var(--accent)}
 .pn a:hover .pn-v{text-decoration:underline}
 @media(max-width:560px){.pn-inner{grid-template-columns:1fr}.pn a+a{border-left:0;border-top:2px solid var(--rule-soft);padding-left:0;text-align:left}}
@@ -616,13 +640,13 @@ img,svg{max-width:100%}
   .pulse{animation:none}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
 }
-.phero h1{font-size:clamp(1.6rem,4.4vw,3.35rem);max-width:22ch;line-height:1.04;overflow-wrap:break-word}
+.phero h1{font-size:clamp(1.55rem,2.9vw,2.6rem);max-width:30ch;line-height:1.06;overflow-wrap:break-word;text-wrap:balance}
 .phero .byline{margin-top:22px;font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--ink-2)}
 .phero .sub{margin-top:16px;font-size:1.02rem;color:var(--ink-2);max-width:66ch}
 .metastrip{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--rule);background:var(--surface);margin-top:32px;max-width:820px}
 .ms-cell{padding:13px 16px;border-left:2px solid var(--rule-soft);min-width:0}
 .ms-cell:first-child{border-left:0}
-.ms-k{font-family:var(--font-mono);font-size:.5625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.ms-k{font-family:var(--font-mono);font-size:.75rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
 .ms-v{font-family:var(--font-mono);font-size:1rem;font-weight:700;font-variant-numeric:tabular-nums}
 .ms-v.accent{color:var(--accent)}
 @media(max-width:760px){.metastrip{grid-template-columns:1fr 1fr}.ms-cell:nth-child(3){border-left:0}.ms-cell:nth-child(n+3){border-top:2px solid var(--rule-soft)}}
@@ -630,9 +654,9 @@ img,svg{max-width:100%}
 /* status banner */
 .statuswrap{border-bottom:2px solid var(--rule);padding:34px 0}
 .status-note{border:2px solid var(--warn);border-left-width:8px;background:var(--warn-wash);padding:24px 26px}
-.status-note h2{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warn);font-weight:700}
-.status-note p{margin-top:14px;font-size:.925rem;color:var(--ink-2);max-width:78ch}
-.status-note ul{margin:14px 0 0;padding-left:20px;font-size:.9rem;color:var(--ink-2);max-width:78ch}
+.status-note h2{font-family:var(--font-mono);font-size:.875rem;letter-spacing:.12em;text-transform:uppercase;color:var(--warn);font-weight:700}
+.status-note p{margin-top:14px;font-size:1rem;color:var(--ink-2);max-width:78ch}
+.status-note ul{margin:14px 0 0;padding-left:20px;font-size:1rem;line-height:1.6;color:var(--ink-2);max-width:78ch}
 .status-note li{margin-bottom:8px}
 .status-note strong{color:var(--ink)}
 
@@ -644,112 +668,143 @@ img,svg{max-width:100%}
 .cite-blocks{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px}
 .cite-block{border:1px solid var(--rule-soft);background:var(--surface-2);min-width:0}
 .cite-block-head{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--rule-soft)}
-.cite-fmt{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
-.copy-btn{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;background:var(--surface);color:var(--accent);border:1px solid var(--accent);padding:5px 10px;cursor:pointer;min-height:28px}
+.cite-fmt{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:var(--muted)}
+.copy-btn{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;background:var(--surface);color:var(--accent);border:1px solid var(--accent);padding:0 16px;cursor:pointer;min-height:44px;min-width:88px}
 .copy-btn:hover{background:var(--accent);color:var(--paper)}
 .copy-btn[data-copied="true"]{background:var(--accent);color:var(--paper)}
-.cite-code{margin:0;padding:12px;font-family:var(--font-mono);font-size:.75rem;line-height:1.6;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow-y:auto}
+.cite-code{margin:0;padding:12px;font-family:var(--font-mono);font-size:.8125rem;line-height:1.6;color:var(--ink-2);white-space:pre-wrap;overflow-wrap:anywhere;max-height:220px;overflow-y:auto}
 @media(max-width:760px){.cite-blocks{grid-template-columns:1fr}}
 
 .paperfig .figbody svg{overflow:visible}.paperfig .figbody{padding-right:2%}
 /* figure / table caption anchors */
-.cap-anchor{margin-left:.45em;text-decoration:none;color:var(--muted);font-family:var(--font-mono);font-weight:400;font-size:.85em}
+.cap-anchor{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;margin-left:.3em;vertical-align:middle;text-decoration:none;color:var(--muted);border-radius:6px}
 .paperfig figcaption:hover .cap-anchor,.papertable figcaption:hover .cap-anchor{color:var(--accent)}
 .paperfig:target,.papertable:target{outline:2px solid var(--accent);outline-offset:6px}
 
+
+/* hero actions */
+.hero-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}
+.hero-actions a{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:2px solid var(--rule);color:var(--ink);background:var(--surface);text-decoration:none;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;font-weight:700}
+.hero-actions a.pri{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.hero-actions a:hover{border-color:var(--accent)}
+.hero-actions a:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.phero .sub{font-size:1.125rem;line-height:1.55}
+/* citation preview: shown on hover or keyboard focus of an in-text citation */
+.cite-pop{position:absolute;z-index:60;width:min(420px,calc(100vw - 32px));padding:14px 16px 12px;background:var(--surface);color:var(--ink-2);border:2px solid var(--rule);box-shadow:0 12px 32px var(--shadow);font-size:.9375rem;line-height:1.5;opacity:0;transform:translateY(4px);transition:opacity .12s ease,transform .12s ease;pointer-events:none}
+.cite-pop.on{opacity:1;transform:none;pointer-events:auto}
+.cite-pop .cp-k{display:block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;color:var(--accent);font-weight:700;margin-bottom:6px}
+.cite-pop .cp-go{display:inline-flex;align-items:center;min-height:32px;margin-top:6px;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700}
+.cite-pop .cp-n{display:block;margin-top:6px;font-size:.8125rem;color:var(--muted)}
+/* copy confirmation */
+.pp-toast{position:fixed;left:50%;bottom:28px;z-index:90;transform:translate(-50%,8px);opacity:0;pointer-events:none;background:var(--ink);color:var(--paper);font-family:var(--font-mono);font-size:.8125rem;padding:10px 16px;border-radius:10px;transition:opacity .18s ease,transform .18s ease}
+.pp-toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){.cite-pop,.pp-toast,.anchor{transition:none}}
+.tablewrap:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.paperfig,.papertable{break-inside:avoid}
+
 /* layout */
-.layout{max-width:var(--maxw);margin:0 auto;padding:0 30px;display:grid;grid-template-columns:264px minmax(0,1fr);gap:0;align-items:start}
+.layout{max-width:1320px;margin:0 auto;padding:0 30px;display:grid;grid-template-columns:264px minmax(0,1fr);gap:0;align-items:start}
 .toc-rail{position:sticky;top:calc(var(--hdr-h,56px) + 24px);max-height:calc(100vh - var(--hdr-h,56px) - 48px);overflow-y:auto;padding:34px 26px 40px 0;border-right:2px solid var(--rule-soft);scrollbar-width:thin}
 .toc-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
-.toc-title{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:700}
-.toc-toggle{display:none;background:var(--surface);border:2px solid var(--rule);color:var(--ink);cursor:pointer;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:7px 11px}
+.toc-title{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.toc-toggle{display:none;background:var(--surface);border:2px solid var(--rule);color:var(--ink);cursor:pointer;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:0 16px;min-height:44px}
 .toc-list{list-style:none;margin:16px 0 0;padding:0}
 .toc-list li{margin:0}
-.toc-list a{display:block;text-decoration:none;font-family:var(--font-mono);font-size:.72rem;line-height:1.4;color:var(--muted);padding:5px 0 5px 10px;border-left:2px solid transparent}
+.toc-list a{display:block;text-decoration:none;font-family:var(--font-mono);font-size:.8125rem;line-height:1.4;color:var(--muted);padding:6px 0 6px 10px;border-left:2px solid transparent}
 .toc-list a:hover{color:var(--ink)}
 .toc-list a[aria-current="true"]{color:var(--accent);border-left-color:var(--accent);font-weight:600}
-.toc-list .lvl-1 a{color:var(--ink-2);font-weight:700;margin-top:10px;text-transform:uppercase;letter-spacing:.06em;font-size:.6875rem;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
-.toc-min{flex:none;font-weight:400;font-size:.5625rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
-.toc-list .lvl-3 a{padding-left:22px;font-size:.6875rem;opacity:.86}
+.toc-list .lvl-1 a{color:var(--ink-2);font-weight:700;margin-top:10px;text-transform:uppercase;letter-spacing:.06em;font-size:.75rem;display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.toc-min{flex:none;font-weight:400;font-size:.75rem;letter-spacing:.1em;color:var(--muted);text-transform:uppercase}
+.toc-list .lvl-3 a{padding-left:22px;font-size:.75rem}
 
 /* article */
 .doc{padding:40px 0 80px 40px;min-width:0;position:relative}
-.doc > *{max-width:68ch}
-.doc p,.doc li{font-size:1.0125rem;line-height:1.78;color:var(--ink-2);overflow-wrap:break-word}
+.doc > *{max-width:64ch}
+.doc > .paperfig,.doc > .papertable,.doc > .codewrap{max-width:min(100%,86ch)}
+.doc p,.doc li{font-size:1.125rem;line-height:1.65;color:var(--ink-2);overflow-wrap:break-word;text-wrap:pretty}
+.doc h2,.doc h3,.doc h4,.doc h5{text-wrap:balance;scroll-margin-top:calc(var(--hdr-h,56px) + 20px)}
+.paperfig,.papertable,.ref,.footnote{scroll-margin-top:calc(var(--hdr-h,56px) + 20px)}
 .doc strong{color:var(--ink)}
 .doc .h-l1{font-size:clamp(1.5rem,3.4vw,2.15rem);margin:76px 0 22px;padding-top:26px;border-top:2px solid var(--rule);font-stretch:125%;font-weight:900;text-transform:uppercase;color:var(--ink)}
 .doc .h-l2{font-size:clamp(1.16rem,2.2vw,1.42rem);margin:52px 0 16px;font-weight:800;color:var(--ink)}
 .doc .h-l3{font-size:1.02rem;margin:38px 0 12px;font-family:var(--font-mono);font-weight:700;letter-spacing:-.01em;color:var(--ink)}
 .doc > :first-child{margin-top:0}
-.anchor{margin-left:.5em;text-decoration:none;color:var(--muted);font-family:var(--font-mono);font-weight:400;font-size:.7em;opacity:0}
-h2:hover .anchor,h3:hover .anchor,h4:hover .anchor{opacity:1}
-.rule{border:0;border-top:2px solid var(--rule-soft);margin:44px 0;max-width:68ch}
+.anchor{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;margin-left:.35em;vertical-align:middle;text-decoration:none;color:var(--muted);border-radius:6px;opacity:0;transition:opacity .15s ease}
+.anchor svg{width:16px;height:16px}
+h2:hover .anchor,h3:hover .anchor,h4:hover .anchor,h5:hover .anchor,.anchor:focus-visible{opacity:1}
+.anchor:hover,.cap-anchor:hover,.anchor:focus-visible,.cap-anchor:focus-visible{color:var(--accent);background:var(--surface-2)}
+@media (hover:none){.anchor{opacity:.6;width:44px;height:44px}.cap-anchor{width:44px;height:44px}}
+.rule{border:0;border-top:2px solid var(--rule-soft);margin:44px 0;max-width:64ch}
 .md-list{margin:0 0 1.3em;padding-left:22px}
 .md-list li{margin-bottom:.65em}
 .doc code{font-family:var(--font-mono);font-size:.86em;background:var(--surface-2);padding:.1em .34em;border:1px solid var(--rule-soft);color:var(--ink)}
 .codewrap{max-width:100%;overflow-x:auto;border:2px solid var(--rule-soft);background:var(--surface);margin:0 0 1.5em}
 .codewrap pre{margin:0;padding:18px 20px;width:max-content;min-width:100%}
 .codewrap code{font-family:var(--font-mono);font-size:.8125rem;line-height:1.7;background:none;border:0;padding:0;white-space:pre;color:var(--ink-2)}
-.bq{margin:0 0 1.5em;padding:18px 22px;border-left:4px solid var(--accent);background:var(--surface-2);max-width:68ch}
+.bq{margin:0 0 1.5em;padding:18px 22px;border-left:4px solid var(--accent);background:var(--surface-2);max-width:64ch}
 .bq > :last-child{margin-bottom:0}
-.bq p{font-size:.97rem}
+.bq p{font-size:1.0625rem}
 .paperfig,.papertable{margin:0 0 2em;padding:0;max-width:100%}
 .figbody{border:2px solid var(--rule);background:#fff;padding:10px;overflow-x:auto}
 .figbody svg{display:block;width:100%;height:auto;max-width:820px;margin:0 auto}
 :root[data-theme="dark"] .figbody{background:#fff;filter:invert(1) hue-rotate(180deg)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .figbody{background:#fff;filter:invert(1) hue-rotate(180deg)}}
-.paperfig figcaption,.papertable figcaption{font-size:.9rem;line-height:1.55;color:var(--ink-2);margin:.7em 0 0;max-width:68ch}
+.paperfig figcaption,.papertable figcaption{font-size:1rem;line-height:1.55;color:var(--ink-2);margin:.7em 0 0;max-width:64ch}
 .papertable figcaption{margin:0 0 .7em}
-.figlabel{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--ink);margin-right:.5em}
-.figsrc{display:block;font-family:var(--font-mono);font-size:.7rem;color:var(--muted);margin-top:.3em;opacity:.8}
+.figlabel{font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--ink);margin-right:.5em}
+.figsrc{display:block;font-family:var(--font-mono);font-size:.8125rem;color:var(--muted);margin-top:.3em}
 .papertable .tablewrap{margin:0}
 .tablewrap{max-width:100%;overflow-x:auto;border:2px solid var(--rule);background:var(--surface);margin:0 0 1.7em}
 .tablewrap table{border-collapse:collapse;width:100%;min-width:640px}
-.tablewrap th,.tablewrap td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--rule-soft);border-right:1px solid var(--rule-soft);font-size:.8125rem;line-height:1.55;color:var(--ink-2)}
-.tablewrap th{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);font-weight:700;border-bottom:2px solid var(--rule);background:var(--surface-2)}
+.tablewrap th,.tablewrap td{text-align:left;vertical-align:top;padding:11px 14px;border-bottom:1px solid var(--rule-soft);border-right:1px solid var(--rule-soft);font-size:.9375rem;font-variant-numeric:tabular-nums;line-height:1.55;color:var(--ink-2)}
+.tablewrap th{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);font-weight:700;border-bottom:2px solid var(--rule);background:var(--surface-2)}
 .tablewrap tr:last-child td{border-bottom:0}
+.tablewrap th,.tablewrap td{overflow-wrap:normal;word-break:normal}
+.papertable td{white-space:nowrap}
+.papertable th{white-space:normal;min-width:6ch}
 .tablewrap th:last-child,.tablewrap td:last-child{border-right:0}
 
 /* citations */
-sup.cite{font-family:var(--font-mono);font-size:.62em;line-height:0;letter-spacing:.01em;vertical-align:super}
-sup.cite a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;white-space:nowrap}
+sup.cite{font-family:var(--font-mono);font-size:.68em;line-height:0;letter-spacing:.01em;vertical-align:super}
+sup.cite a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent;white-space:nowrap;padding:2px 1px;border-radius:3px}
+sup.cite a:focus-visible,sup.fnref a:focus-visible{outline:2px solid var(--accent);outline-offset:2px;background:var(--accent-wash)}
 sup.cite a:hover{border-bottom-color:var(--accent)}
-sup.fnref{font-family:var(--font-mono);font-size:.66em}
-sup.fnref a{text-decoration:none;cursor:pointer}
-.footnote{display:flex;gap:12px;max-width:68ch;margin:0 0 1.5em;padding:14px 16px;border-left:2px solid var(--rule-soft);background:var(--surface-2)}
-.fn-n{font-family:var(--font-mono);font-size:.6875rem;font-weight:700;color:var(--accent);flex:none;padding-top:.15em}
-.fn-body{font-size:.875rem;line-height:1.66;color:var(--ink-2)}
-.fn-back{font-family:var(--font-mono);font-size:.625rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;margin-left:6px}
+sup.fnref{font-family:var(--font-mono);font-size:.7em}
+sup.fnref a{text-decoration:none;cursor:pointer;padding:2px 3px;border-radius:3px}
+.footnote{display:flex;gap:12px;max-width:64ch;margin:0 0 1.5em;padding:14px 16px;border-left:2px solid var(--rule-soft);background:var(--surface-2)}
+.fn-n{font-family:var(--font-mono);font-size:.75rem;font-weight:700;color:var(--accent);flex:none;padding-top:.15em}
+.fn-body{font-size:.9375rem;line-height:1.66;color:var(--ink-2)}
+.fn-back{font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;margin-left:6px}
 /* sidenotes: on wide screens, footnotes move into the doc's own right
    margin (JS positions them level with their reference mark). On narrow
    screens they stay inline but collapsed, toggled open by the marker. */
 @media(min-width:1280px){
- .footnote.sidenote{position:absolute;left:calc(68ch + 30px);width:210px;max-width:210px;margin:0;padding:10px 12px;font-size:.8rem;display:block}
+ .footnote.sidenote{position:absolute;left:auto;right:0;width:220px;max-width:220px;margin:0;padding:10px 12px;font-size:.875rem;display:block}
  .footnote.sidenote .fn-n{display:inline;margin-right:6px}
- .footnote.sidenote .fn-body{font-size:.8rem;line-height:1.6}
+ .footnote.sidenote .fn-body{font-size:.875rem;line-height:1.55}
  .footnote.sidenote .fn-back{display:none}
 }
 .footnote.fn-collapsed{display:none}
 .footnote.fn-collapsed.fn-open{display:flex}
 
 /* references */
-.ref{display:grid;grid-template-columns:170px minmax(0,1fr);gap:0 18px;max-width:68ch;padding:16px 0 4px;border-top:1px solid var(--rule-soft)}
+.ref{display:grid;grid-template-columns:170px minmax(0,1fr);gap:0 18px;max-width:72ch;padding:16px 0 4px;border-top:1px solid var(--rule-soft)}
 .ref:target{background:var(--accent-wash);border-top-color:var(--accent)}
-.ref-key{font-size:.72rem;font-weight:700;color:var(--accent);word-break:break-word;padding-top:.18em}
-.ref-body{font-size:.9rem;line-height:1.66;color:var(--ink-2);min-width:0;overflow-wrap:anywhere;word-break:break-word}
-.ref-ev{font-family:var(--font-mono);font-size:.625rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;margin-left:8px;border-bottom:1px solid var(--accent)}
+.ref-key{font-size:.8125rem;font-weight:700;color:var(--accent);word-break:break-word;padding-top:.18em}
+.ref-body{font-size:1rem;line-height:1.66;color:var(--ink-2);min-width:0;overflow-wrap:anywhere;word-break:break-word}
+.ref-ev{font-family:var(--font-mono);font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;text-decoration:none;margin-left:8px;border-bottom:1px solid var(--accent)}
 .backrefs{display:inline}
-.backrefs a{font-family:var(--font-mono);font-size:.625rem;text-decoration:none;margin-left:5px;color:var(--muted);border-bottom:1px solid var(--rule-soft)}
+.backrefs a{font-family:var(--font-mono);font-size:.75rem;padding:2px 3px;text-decoration:none;margin-left:5px;color:var(--muted);border-bottom:1px solid var(--rule-soft)}
 .backrefs a:hover{color:var(--accent);border-bottom-color:var(--accent)}
-.backrefs .brlabel{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-left:10px}
-.ref-note{display:block;max-width:68ch;margin:0 0 6px;padding:10px 14px 10px 188px;font-size:.8125rem;line-height:1.6;color:var(--muted);overflow-wrap:anywhere}
-.ref-note-k{display:block;font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
+.backrefs .brlabel{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-left:10px}
+.ref-note{display:block;max-width:72ch;margin:0 0 6px;padding:10px 14px 10px 188px;font-size:.9375rem;line-height:1.6;color:var(--muted);overflow-wrap:anywhere}
+.ref-note-k{display:block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:4px}
 
 /* footer */
 .footer{border-top:2px solid var(--rule);padding:48px 0 64px;background:var(--surface-2)}
-.footer p{font-size:.875rem;color:var(--muted);max-width:68ch}
+.footer p{font-size:.9375rem;color:var(--muted);max-width:68ch}
 .footer-links{display:flex;flex-wrap:wrap;gap:18px;margin-top:16px}
-.footer-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--muted)}
+.footer-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;color:var(--muted);display:inline-flex;align-items:center;min-height:44px}
 .footer-links a:hover{color:var(--accent)}
 
 /* narrow */
@@ -774,7 +829,13 @@ sup.fnref a{text-decoration:none;cursor:pointer}
 /* print */
 @media print{
  :root{--paper:#fff;--surface:#fff;--surface-2:#fff;--ink:#000;--ink-2:#111;--muted:#444;--rule:#000;--rule-soft:#bbb;--accent:#000;--accent-wash:#fff;--warn:#000;--warn-wash:#fff;--grid-dot:transparent}
- .toc-rail,.anchor,.footer-links,.skip,.ref-ev,.backrefs,.pn,.read5wrap{display:none !important}
+ .toc-rail,.anchor,.cap-anchor,.footer-links,.skip,.ref-ev,.backrefs,.pn,.read5wrap,.hero-actions,.cite-pop,.pp-toast,.copy-btn,.toc-toggle{display:none !important}
+ .figbody{filter:none !important;border:.5pt solid #999;background:#fff}
+ .paperfig,.papertable,.cite-panel,.status-note{break-inside:avoid}
+ .doc p,.doc li{font-size:10.5pt;line-height:1.5;color:#000}
+ .footnote.sidenote{position:static;width:auto;max-width:none}
+ .footnote.fn-collapsed{display:flex !important}
+ .cite-code{max-height:none;overflow:visible}
  body{font-size:10.5pt;line-height:1.5;background:#fff;color:#000}
  .layout{display:block;max-width:none;padding:0}
  .doc{padding:0;max-width:none}
@@ -792,7 +853,7 @@ sup.fnref a{text-decoration:none;cursor:pointer}
 }
 """
 
-PAPER_SECTIONS = [("read5", "Summary"), ("abstract", "Abstract"), ("cite-this", "Cite"), ("references", "References")]
+PAPER_SECTIONS = [("read5", "Summary"), ("abstract", "Abstract"), ("references", "References"), ("cite-this", "Cite")]
 
 JS = u"""
 /* back-links on each reference, built from the citation anchors in the body */
@@ -932,6 +993,58 @@ JS = u"""
   sync();
 })();
 
+
+/* a small confirmation for every copy on the page */
+var ppToast=(function(){var t=document.createElement('div');t.className='pp-toast';t.setAttribute('role','status');t.setAttribute('aria-live','polite');document.body.appendChild(t);var h;
+  return function(msg){t.textContent=msg;t.classList.add('on');clearTimeout(h);h=setTimeout(function(){t.classList.remove('on');},1800);};})();
+function ppCopy(text,label){
+  function done(ok){ppToast(ok?(label||'Copied'):'Copy failed. Select the text and copy it by hand.');}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){done(true);},function(){done(false);});return;}
+  try{var ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='absolute';ta.style.left='-9999px';document.body.appendChild(ta);ta.select();var ok=document.execCommand('copy');document.body.removeChild(ta);done(ok);}catch(e){done(false);}
+}
+
+/* heading, figure and table link icons copy a link to that spot */
+document.addEventListener('click',function(e){
+  var a=e.target.closest&&e.target.closest('a.anchor,a.cap-anchor');if(!a)return;
+  e.preventDefault();var h=a.getAttribute('href');
+  try{history.replaceState(history.state,'',h);}catch(x){}
+  ppCopy(location.origin+location.pathname+h,'Link copied');
+});
+
+/* in-text citations: hover or focus shows the full reference in place */
+(function(){
+  var pop=document.createElement('div');pop.className='cite-pop';pop.id='citePop';pop.setAttribute('role','tooltip');document.body.appendChild(pop);
+  var cur=null,hideT=0;
+  function show(a){
+    var key=(a.getAttribute('href')||'').replace('#ref-','');var ref=document.getElementById('ref-'+key);if(!ref)return;
+    clearTimeout(hideT);cur=a;
+    var txt=ref.querySelector('.ref-text');var n=document.querySelectorAll('sup.cite a[href="#ref-'+key+'"]').length;
+    pop.innerHTML='';var k=document.createElement('span');k.className='cp-k';k.textContent=key;pop.appendChild(k);
+    var b=document.createElement('span');b.textContent=txt?txt.textContent:'';pop.appendChild(b);
+    var m=document.createElement('span');m.className='cp-n';m.textContent='Cited '+n+(n===1?' time':' times')+' in this paper.';pop.appendChild(m);
+    var go=document.createElement('a');go.className='cp-go';go.href='#ref-'+key;go.textContent='Go to the reference';pop.appendChild(go);
+    a.setAttribute('aria-describedby','citePop');
+    var r=a.getBoundingClientRect(),sx=window.pageXOffset,sy=window.pageYOffset;
+    pop.style.left='0px';pop.style.top='0px';pop.classList.add('on');
+    var w=pop.offsetWidth,hh=pop.offsetHeight,vw=document.documentElement.clientWidth;
+    var left=Math.min(Math.max(16,r.left+r.width/2-w/2),vw-w-16);
+    var top=r.bottom+10; if(r.bottom+hh+20>window.innerHeight&&r.top-hh-10>0)top=r.top-hh-10;
+    pop.style.left=(left+sx)+'px';pop.style.top=(top+sy)+'px';
+  }
+  function hide(){if(cur)cur.removeAttribute('aria-describedby');cur=null;pop.classList.remove('on');}
+  function later(){clearTimeout(hideT);hideT=setTimeout(hide,160);}
+  var links=document.querySelectorAll('sup.cite a');
+  Array.prototype.forEach.call(links,function(a){
+    a.removeAttribute('title');
+    a.addEventListener('mouseenter',function(){show(a);});a.addEventListener('mouseleave',later);
+    a.addEventListener('focus',function(){show(a);});a.addEventListener('blur',later);
+  });
+  pop.addEventListener('mouseenter',function(){clearTimeout(hideT);});pop.addEventListener('mouseleave',later);
+  pop.addEventListener('focusin',function(){clearTimeout(hideT);});pop.addEventListener('focusout',later);
+  document.addEventListener('keydown',function(e){if(e.key==='Escape'&&cur){var c=cur;hide();c.focus();}});
+  window.addEventListener('scroll',function(){if(cur&&document.activeElement!==cur&&!pop.matches(':hover'))hide();},{passive:true});
+})();
+
 /* copy-to-clipboard for the Cite this panel */
 (function(){
   var btns=document.querySelectorAll('.copy-btn[data-copy-target]');
@@ -947,6 +1060,7 @@ JS = u"""
         btn.setAttribute('data-copied','true');
         setTimeout(function(){btn.textContent=prev;btn.removeAttribute('data-copied');},1600);
       };
+      ppToast((btn.getAttribute('data-copy-label')||'Citation')+' copied');
       if(navigator.clipboard&&navigator.clipboard.writeText){
         navigator.clipboard.writeText(text).then(done,done);
       }else{
@@ -974,13 +1088,22 @@ FAVICON = (
 WORDS_PER_MIN = 230
 
 
+def top_level(lines):
+    """The shallowest heading level the body uses: '#' in the bundled draft,
+    '##' in the standalone OSHA paper."""
+    levels = [len(m.group(1)) for m in (re.match(r"^(#{1,6})\s+\S", l) for l in lines) if m]
+    return min(levels) if levels else 1
+
+
 def section_minutes(lines):
     """Estimated reading time per top-level section, keyed by heading slug.
-    Counts words from each '# ' heading to the next one."""
+    Counts words from each top-level heading to the next one."""
+    lvl = top_level(lines)
+    rx = re.compile(r"^#{%d} (\S.*)$" % lvl)
     counts = {}
     key = None
     for l in lines:
-        m = re.match(r"^# (\S.*)$", l)
+        m = rx.match(l)
         if m:
             key = slug(m.group(1))
             counts.setdefault(key, 0)
@@ -991,10 +1114,12 @@ def section_minutes(lines):
                 for k, v in counts.items())
 
 
-def build_toc(entries, minutes):
+def build_toc(entries, minutes, top=1):
     out = ['<ul class="toc-list">']
     for level, hid, text in entries:
         extra = ""
+        # the list shows the manuscript's top level as its bold rows
+        level = max(1, level - (top - 1))
         if level == 1 and hid in minutes and hid != "references":
             extra = ('<span class="toc-min" aria-label="about %d minutes">%d min</span>'
                      % (minutes[hid], minutes[hid]))
@@ -1104,17 +1229,46 @@ finished result.</p>
 <div class="cite-blocks">
 <div class="cite-block">
 <div class="cite-block-head"><span class="cite-fmt">BibTeX</span>
-<button type="button" class="copy-btn" data-copy-target="cite-bibtex">Copy</button></div>
+<button type="button" class="copy-btn" data-copy-target="cite-bibtex" data-copy-label="BibTeX" aria-label="Copy the BibTeX citation">Copy</button></div>
 <pre class="cite-code" id="cite-bibtex">%s</pre>
 </div>
 <div class="cite-block">
 <div class="cite-block-head"><span class="cite-fmt">APA</span>
-<button type="button" class="copy-btn" data-copy-target="cite-apa">Copy</button></div>
+<button type="button" class="copy-btn" data-copy-target="cite-apa" data-copy-label="APA citation" aria-label="Copy the APA citation">Copy</button></div>
 <pre class="cite-code" id="cite-apa">%s</pre>
 </div>
 </div>
 </div>
 </div></section>""" % (esc(bibtex), esc(apa))
+
+
+def status_banner_osha(n_refs, n_notes, n_words):
+    return u"""<section class="statuswrap"><div class="wrap">
+<div class="status-note">
+<h2>Read this first: what this paper is and is not</h2>
+<p>This is a <strong>working draft</strong>, split out of the bundled manuscript on the
+recommendation of internal review. It has not been submitted to any venue and has not
+been peer reviewed.</p>
+<ul>
+<li><strong>Real data.</strong> 2,801,064 establishment filings from OSHA's Injury
+Tracking Application (Form 300A summaries, 2016 to 2024) after 4,703 duplicate rows
+were dropped. Every number is reproducible from the committed pipeline in the
+ehs-osha-analysis repository.</li>
+<li><strong>Coverage.</strong> The ITA collects Form 300A data from establishments with
+250 or more employees, and from those with 20 to 249 only in designated industries.
+Aggregates here are over ITA filers. They are not the BLS survey estimate, and small or
+exempt establishments are not in the file.</li>
+<li><strong>Definitions.</strong> TRIR is recordable cases &times; 200,000 / hours worked.
+A filing fails the plausibility screen when reported hours per employee fall outside 120 to
+4,500 a year. The bounds are a defensible choice, not a discovered truth; the sensitivity
+grid ships with the repository.</li>
+<li><strong>What it measures.</strong> What employers filed, not what happened at the
+workplace. Associations reported here are not causes.</li>
+<li><strong>Citations.</strong> All %d citation keys used in the text resolve to a
+reference below, each checked against a primary or publisher-of-record source.%s</li>
+</ul>
+</div>
+</div></section>""" % (n_refs, (" %d entries carry a verification note saying what that check found." % n_notes) if n_notes else "")
 
 
 def status_banner(n_refs, n_notes, n_words):
@@ -1125,10 +1279,11 @@ def status_banner(n_refs, n_notes, n_words):
 it has not been peer reviewed, and nothing in it should be read as a validated
 result about any deployed system.</p>
 <ul>
-<li><strong>The benchmark has no baseline results.</strong> Section 5 describes a
-preregistered apparatus of 68 clause-anchored items. The harness has been exercised
-only against a mock adapter with a synthetic response profile. No model has been
-evaluated. Any number attributed to it would be wrong.</li>
+<li><strong>No language model has been evaluated on the benchmark.</strong> Section 5
+describes a preregistered apparatus of 68 clause-anchored items and was written before
+any baseline existed. Three non-language-model reference baselines have since been run
+on its 63 factual items: a random floor at 52.1%%, TF-IDF retrieval at 27.0%% and an
+oracle ceiling at 100%%. Any language-model number attributed to it would be wrong.</li>
 <li><strong>Four of five internal adversarial reviewers would reject this manuscript
 as structured</strong> - mainly for bundling four separable contributions into one
 paper, and for presenting an evaluation benchmark with no baselines. The
@@ -1154,7 +1309,38 @@ confirming against printed proceedings.</li>
 </div></section>""" % (n_refs, n_notes)
 
 
+PROFILES = {
+    "PAPER.md": {
+        "title_short": "Grounded Reasoning for Safety-Critical AI",
+        "kicker": "Draft manuscript - not submitted",
+        "subtitle": (
+            "A working draft. Four artifacts: a structural account of semantically "
+            "adjacent substitution, an auditable human-factors ontology, a preregistered "
+            "grounding benchmark, and a population-scale reanalysis of the exposure "
+            "denominator underlying every rate-based safety metric."),
+        "ld_about": None,
+        "meta3": ("Language-model results", "None"),
+        "status": "bundled",
+        "next": ("paper-osha.html", "The standalone OSHA paper"),
+    },
+    "OSHA_PAPER.md": {
+        "title_short": "The Hours Denominator: OSHA Injury Filing Data Quality",
+        "kicker": "Working paper - not submitted",
+        "subtitle": (
+            "A working draft on the hours-worked denominator in 2,801,064 OSHA Injury Tracking "
+            "Application establishment filings (Form 300A, 2016 to 2024): one plausibility screen "
+            "moves the aggregate injury rate by a factor that changes every year, and no single "
+            "multiplier repairs a benchmark built on the raw file."),
+        "ld_about": "OSHA injury-rate data quality and the exposure-hours denominator",
+        "meta3": ("Filings analysed", "2,801,064"),
+        "status": "osha",
+        "next": ("https://priyatham9.github.io/ehs-osha-analysis/", "OSHA data quality project &#x2197;"),
+    },
+}
+
+
 def build():
+    prof = PROFILES.get(os.path.basename(SRC_MD), PROFILES["PAPER.md"])
     if not os.path.exists(SRC_MD):
         die("cannot find %s" % SRC_MD)
     if not os.path.exists(SRC_JSON):
@@ -1182,6 +1368,7 @@ def build():
     body_lines = lines[h1s[1] + 1:]
 
     r = Renderer(refs)
+    r.top = top_level(body_lines)
     blocks = r.render(body_lines)
     article = "\n".join(blocks)
 
@@ -1199,12 +1386,10 @@ def build():
     if dangling:
         die("cited keys with no reference entry: %s" % ", ".join(dangling))
 
-    subtitle = (
-        "A working draft. Four artifacts: a structural account of semantically "
-        "adjacent substitution, an auditable human-factors ontology, a preregistered "
-        "grounding benchmark, and a population-scale reanalysis of the exposure "
-        "denominator underlying every rate-based safety metric."
-    )
+    subtitle = prof["subtitle"]
+    top = top_level(body_lines)
+    minutes = section_minutes(body_lines)
+    total_min = max(1, int(round(n_words / float(WORDS_PER_MIN))))
 
     page = u"""<!doctype html>
 <html lang="en">
@@ -1212,17 +1397,17 @@ def build():
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>%(title_short)s - Paper - Priyatham Chimmani</title>
-<meta name="description" content="Working draft. %(desc)s" />
+<meta name="description" content="%(desc)s" />
 <link rel="canonical" href="%(pageurl)s" />
 <meta property="og:title" content="%(title_short)s - Paper - Priyatham Chimmani" />
-<meta property="og:description" content="Working draft. %(desc)s" />
+<meta property="og:description" content="%(desc)s" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="%(pageurl)s" />
 <meta property="og:image" content="%(ogimage)s" />
 <meta property="og:site_name" content="Grounded" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content="%(title_short)s - Paper - Priyatham Chimmani" />
-<meta name="twitter:description" content="Working draft. %(desc)s" />
+<meta name="twitter:description" content="%(desc)s" />
 <meta name="twitter:image" content="%(ogimage)s" />
 <script type="application/ld+json">%(ldjson)s</script>
 <meta name="theme-color" content="#F7F7F3" media="(prefers-color-scheme: light)" />
@@ -1239,21 +1424,20 @@ def build():
 
 
 <section class="phero"><div class="wrap">
-  <div class="kicker"><span class="pulse"></span><span class="label">Draft manuscript - not submitted</span></div>
+  <div class="kicker"><span class="pulse"></span><span class="label">%(kicker)s</span></div>
   <h1 class="display">%(title_full)s</h1>
   <div class="byline">%(byline)s</div>
   <p class="sub">%(subtitle)s</p>
+  <div class="hero-actions"><a class="pri" href="#read5">Read it in 5 minutes</a><a href="#doc">Start the full paper</a><a href="#cite-this">Cite this</a></div>
   <div class="metastrip">
     <div class="ms-cell"><span class="ms-k">Manuscript</span><span class="ms-v">%(words)s</span></div>
+    <div class="ms-cell"><span class="ms-k">Reading time</span><span class="ms-v">%(readmin)s</span></div>
     <div class="ms-cell"><span class="ms-k">References</span><span class="ms-v accent">%(nrefs)d</span></div>
-    <div class="ms-cell"><span class="ms-k">Benchmark results</span><span class="ms-v">None</span></div>
-    <div class="ms-cell"><span class="ms-k">Peer review</span><span class="ms-v">None</span></div>
+    <div class="ms-cell"><span class="ms-k">%(meta3k)s</span><span class="ms-v">%(meta3v)s</span></div>
   </div>
 </div></section>
 
 %(status)s
-
-%(cite)s
 
 %(read5)s
 
@@ -1271,15 +1455,17 @@ def build():
   </article>
 </main>
 
+%(cite)s
+
 <nav class="pn" aria-label="Previous and next">
   <div class="pn-inner">
     <a href="index.html"><span class="pn-k">&larr; Previous</span><span class="pn-v">Research hub</span></a>
-    <a href="https://priyatham9.github.io/ehs-osha-analysis/"><span class="pn-k">Next &rarr;</span><span class="pn-v">OSHA data quality &#x2197;</span></a>
+    <a href="%(next_href)s"><span class="pn-k">Next &rarr;</span><span class="pn-v">%(next_label)s</span></a>
   </div>
 </nav>
 
 <footer class="footer"><div class="wrap">
-  <p>Generated from <code>paper/PAPER.md</code> by <code>tools/build_paper.py</code>.
+  <p>Generated from <code>paper/%(src_name)s</code> by <code>tools/build_paper.py</code>.
   Edit the Markdown and rerun the script; do not edit this file by hand.
   Every reference below was checked against a primary or publisher-of-record source,
   and the evidence URL for each check lives in <code>paper/citations_verified.json</code>.</p>
@@ -1295,18 +1481,22 @@ def build():
 </body>
 </html>
 """ % {
-        "title_short": os.environ.get("PAPER_TITLE_SHORT") or "Grounded Reasoning for Safety-Critical AI",
+        "title_short": os.environ.get("PAPER_TITLE_SHORT") or prof["title_short"],
+        "kicker": prof["kicker"],
+        "readmin": "about %d min" % total_min,
+        "meta3k": prof["meta3"][0],
+        "meta3v": prof["meta3"][1],
+        "next_href": prof["next"][0],
+        "next_label": prof["next"][1],
+        "src_name": os.path.basename(SRC_MD),
         "pageurl": "https://priyatham9.github.io/grounded/" + os.path.basename(OUT_HTML),
         "ogimage": "https://priyatham9.github.io/grounded/" + (
             "og-paper-osha.png" if os.path.basename(OUT_HTML) == "paper-osha.html" else "og-paper.png"),
         "ldjson": json.dumps({
             "@context": "https://schema.org",
             "@type": "ScholarlyArticle",
-            "headline": os.environ.get("PAPER_TITLE_SHORT") or "Grounded Reasoning for Safety-Critical AI",
-            "description": subtitle if os.path.basename(OUT_HTML) != "paper-osha.html" else
-                "A standalone paper on the OSHA hours-denominator result: data quality in OSHA "
-                "Injury Tracking Application establishment filings and its effect on rate-based "
-                "safety benchmarks.",
+            "headline": os.environ.get("PAPER_TITLE_SHORT") or prof["title_short"],
+            "description": subtitle,
             "author": {
                 "@type": "Person",
                 "name": "Priyatham Chimmani",
@@ -1315,8 +1505,7 @@ def build():
             },
             "datePublished": "2026-09",
             "isPartOf": "https://priyatham9.github.io/grounded/",
-            "about": subtitle if os.path.basename(OUT_HTML) != "paper-osha.html" else
-                "OSHA injury-rate data quality and the exposure-hours denominator",
+            "about": prof["ld_about"] or subtitle,
         }, ensure_ascii=False),
         "title_full": esc(full_title),
         "desc": esc(subtitle),
@@ -1325,10 +1514,10 @@ def build():
         "favicon": FAVICON,
         "css": CSS,
         "js": JS,
-        "toc": build_toc(r.toc, section_minutes(body_lines)),
+        "toc": build_toc(r.toc, minutes, top),
         "read5": read5_box(r.toc),
         "article": article,
-        "status": status_banner(n_refs, n_notes, n_words),
+        "status": (status_banner_osha if prof["status"] == "osha" else status_banner)(n_refs, n_notes, n_words),
         "cite": cite_panel(full_title, os.path.basename(OUT_HTML)),
         "words": "{:,}".format(n_words) + " words",
         "nrefs": n_refs,
@@ -1364,4 +1553,9 @@ def build():
 
 
 if __name__ == "__main__":
-    build()
+    if os.environ.get("PAPER_SRC") or os.environ.get("PAPER_OUT"):
+        build()
+    else:
+        for _src, _out in TARGETS:
+            SRC_MD, OUT_HTML = _src, _out
+            build()

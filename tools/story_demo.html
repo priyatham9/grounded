@@ -6,6 +6,9 @@
 <title>Story engine demo — all data on this page is fake</title>
 <style>
 /*SHARED_CSS_START*/
+/* shared motion tokens (v1.4): out-eases for entrances, shorter in-eases for exits, inOut for scrubbed moves */
+:root{--ease-out:cubic-bezier(.22,1,.36,1);--ease-p1o:cubic-bezier(.25,.46,.45,.94);--ease-p2o:cubic-bezier(.215,.61,.355,1);--ease-p3o:cubic-bezier(.165,.84,.44,1);--ease-p4o:cubic-bezier(.23,1,.32,1);--ease-io:cubic-bezier(.65,0,.35,1);--ease-back:cubic-bezier(.34,1.56,.64,1);--d-fast:150ms;--d-base:300ms;--d-slow:600ms;--d-hero:1000ms}
+
 /* ============ tokens ============ */
 :root {
  color-scheme:light;
@@ -49,7 +52,7 @@ a{color:var(--accent)}
 img,svg{max-width:100%}
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 30px}
 .display{font-stretch:125%;font-weight:900;text-transform:uppercase}
-.label{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.label{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);font-weight:600}
 .mono{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 
@@ -89,7 +92,7 @@ code,.mono,.src,.f-src,.backlink{overflow-wrap:anywhere}
 .status{display:grid;grid-template-columns:repeat(4,1fr);border:2px solid var(--rule);background:var(--surface);margin-top:34px;max-width:940px}
 .st-cell{padding:13px 16px;border-left:2px solid var(--rule-soft);min-width:0}
 .st-cell:first-child{border-left:0}
-.st-k{font-family:var(--font-mono);font-size:.5625rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+.st-k{font-family:var(--font-mono);font-size:.75rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
 .st-v{font-family:var(--font-mono);font-size:1.05rem;font-weight:700;font-variant-numeric:tabular-nums}
 .st-v.accent{color:var(--accent)}
 @media(max-width:760px){.status{grid-template-columns:1fr 1fr}.st-cell:nth-child(3){border-left:0}.st-cell:nth-child(n+3){border-top:2px solid var(--rule-soft)}}
@@ -98,7 +101,7 @@ code,.mono,.src,.f-src,.backlink{overflow-wrap:anywhere}
 .section{padding:66px 0;border-bottom:2px solid var(--rule)}
 .rail-head{display:flex;align-items:baseline;gap:16px;margin-bottom:34px;flex-wrap:wrap}
 .rail-head h2{font-size:clamp(1.5rem,3vw,2.1rem)}
-.rail-num{font-family:var(--font-mono);font-size:.6875rem;color:var(--accent);font-weight:700;letter-spacing:.16em}
+.rail-num{font-family:var(--font-mono);font-size:.75rem;color:var(--accent);font-weight:700;letter-spacing:.16em}
 
 /* ============ findings ============ */
 .findings{display:grid;grid-template-columns:repeat(auto-fit,minmax(268px,1fr));border:2px solid var(--rule);background:var(--surface)}
@@ -108,20 +111,20 @@ code,.mono,.src,.f-src,.backlink{overflow-wrap:anywhere}
 .f-unit{font-size:.9rem;color:var(--muted);font-weight:600}
 .f-title{margin-top:12px;font-weight:700;font-size:.95rem}
 .f-body{margin-top:8px;font-size:.875rem;color:var(--ink-2);line-height:1.55}
-.f-src{margin-top:12px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.f-src{margin-top:12px;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 @media(max-width:900px){.finding{border-left:0;border-top:2px solid var(--rule-soft)}.finding:first-child{border-top:0}}
 
 /* ============ projects ============ */
 .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:0;border:2px solid var(--rule)}
 .project{padding:28px 26px;border-left:2px solid var(--rule-soft);background:var(--surface);display:flex;flex-direction:column}
 .project:first-child{border-left:0}
-.project-kicker{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.project-kicker{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
 .project h3{margin-top:10px;font-size:1.05rem;font-family:var(--font-mono);font-weight:700}
 .project p{margin-top:10px;font-size:.875rem;color:var(--ink-2);line-height:1.58;flex:1}
 .chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:14px}
-.chip{font-family:var(--font-mono);font-size:.5625rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--rule-soft);color:var(--muted)}
+.chip{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 8px;border:1px solid var(--rule-soft);color:var(--muted)}
 .p-links{margin-top:16px;display:flex;gap:14px}
-.p-links a{font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:2px}
+.p-links a{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;font-weight:600;text-decoration:none;border-bottom:2px solid var(--accent);padding-bottom:2px}
 @media(max-width:900px){.project{border-left:0;border-top:2px solid var(--rule-soft)}.project:first-child{border-top:0}}
 
 /* ============ notice ============ */
@@ -166,6 +169,9 @@ body:has(.st-progress) .rs-header .rs-progress{display:none}
    --rule-soft --accent --accent-2 --accent-ink --accent-wash
    --warn --warn-wash --font-sans --font-mono
    ============================================================ */
+/* shared motion tokens (v1.4): out-eases for entrances, shorter in-eases for exits, inOut for scrubbed moves */
+:root{--ease-out:cubic-bezier(.22,1,.36,1);--ease-p1o:cubic-bezier(.25,.46,.45,.94);--ease-p2o:cubic-bezier(.215,.61,.355,1);--ease-p3o:cubic-bezier(.165,.84,.44,1);--ease-p4o:cubic-bezier(.23,1,.32,1);--ease-io:cubic-bezier(.65,0,.35,1);--ease-back:cubic-bezier(.34,1.56,.64,1);--d-fast:150ms;--d-base:300ms;--d-slow:600ms;--d-hero:1000ms}
+
 
 /* ---------- orb ---------- */
 .st-orb{display:block;width:100%;height:100%;touch-action:manipulation}
@@ -184,7 +190,7 @@ body:has(.st-progress) .rs-header .rs-progress{display:none}
 .st-stage-inner > .st-figure{margin:0;width:100%}
 .st-stage-inner > .st-figure > svg,.st-stage-inner > .st-figure > canvas{display:block;width:100%;height:auto;max-height:66vh;max-height:66svh}
 .st-steps{min-width:0}
-.st-step{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:34px 0;opacity:.34;transition:opacity .45s ease}
+.st-step{min-height:86vh;display:flex;flex-direction:column;justify-content:center;padding:34px 0;opacity:1;transition:opacity .45s ease}
 .st-step.is-active{opacity:1}
 .st-step:last-child{min-height:64vh}
 .st-step h3{font-size:clamp(1.6rem,2.6vw,2.4rem);margin-bottom:14px;letter-spacing:-.015em;line-height:1.08}
@@ -194,7 +200,7 @@ body:has(.st-progress) .rs-header .rs-progress{display:none}
 
 /* big number beside or inside a visual */
 .st-bignum{display:block;font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:clamp(3rem,7.5vw,6rem);line-height:.92;letter-spacing:-.04em;color:var(--accent);font-weight:700}
-.st-bignum small{display:block;margin-top:.5em;font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:400;line-height:1.4}
+.st-bignum small{display:block;margin-top:.5em;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:400;line-height:1.4}
 .st-bignum-row{display:flex;align-items:baseline;gap:22px;flex-wrap:wrap}
 
 /* staggered step entrance (only once .st-flow is set by the engine) */
@@ -218,7 +224,7 @@ body:has(.st-progress) .rs-header .rs-progress{display:none}
 /* ---------- companion orb docked on the stage ---------- */
 .st-companion{position:absolute;left:0;top:0;z-index:3;display:flex;flex-direction:column;align-items:flex-start;gap:6px;pointer-events:none}
 .st-companion .st-companion-orb{width:var(--st-comp,108px);height:var(--st-comp,108px);line-height:0}
-.st-companion .st-companion-cap{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);transition:opacity .28s ease;padding-left:2px}
+.st-companion .st-companion-cap{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);transition:opacity .28s ease;padding-left:2px}
 .st-companion .st-companion-cap.is-fading{opacity:0}
 .st-companion[data-state="wrong"] .st-companion-cap{color:var(--warn)}
 .st-companion[data-state="grounded"] .st-companion-cap,.st-companion[data-state="resolved"] .st-companion-cap{color:var(--accent)}
@@ -246,12 +252,12 @@ body:has(.st-progress) .rs-header .rs-progress{display:none}
 .st-chart{display:block;width:100%;overflow:visible;font-family:var(--font-sans)}
 .st-chart.st-in-stage{height:min(66vh,720px);max-height:66vh}
 .st-chart text{font-family:var(--font-mono);font-variant-numeric:tabular-nums}
-.st-chart text:not([fill]){fill:var(--muted)}
-.st-chart text:not([font-size]){font-size:14px}
+:where(.st-chart text:not([fill])){fill:var(--muted)}
+:where(.st-chart text:not([font-size])){font-size:14px}
 .st-chart .st-axis-line{stroke:var(--rule-soft);stroke-width:1.5}
 .st-chart .st-grid{stroke:var(--rule-soft);stroke-width:1;stroke-dasharray:2 4}
 .st-chart .st-label-direct{fill:var(--ink);font-weight:700}
-.st-chart .st-label-direct:not([font-size]){font-size:14px}
+:where(.st-chart .st-label-direct:not([font-size])){font-size:14px}
 .st-chart .st-caption{fill:var(--muted);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
 .st-chart .st-series-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
 .st-chart .st-gap{fill:var(--accent);opacity:.14}
@@ -279,14 +285,14 @@ body:has(.st-progress) .rs-header .rs-progress{display:none}
 .st-chart .st-hit:focus-visible{outline:none;stroke:var(--accent);stroke-width:2}
 .st-canvas{display:block;width:100%}
 .st-figure{margin:0}
-.st-figure figcaption{margin-top:10px;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.st-figure figcaption{margin-top:10px;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
 /* tooltip */
 .st-tiphost{position:relative}
 .st-tip{position:absolute;left:0;top:0;z-index:12;transform:translate(-50%,-128%);padding:7px 10px;background:var(--surface);border:2px solid var(--rule);color:var(--ink);font-family:var(--font-mono);font-size:.75rem;line-height:1.35;white-space:pre;pointer-events:none;opacity:0;transition:opacity .16s ease;max-width:280px}
 .st-tip.is-on{opacity:1}
 
 /* ---------- reveal ---------- */
-.st-reveal{opacity:0;transform:translateY(14px);transition:opacity .6s cubic-bezier(.22,.7,.2,1),transform .6s cubic-bezier(.22,.7,.2,1)}
+.st-reveal{opacity:0;transform:translateY(24px);transition:opacity .7s var(--ease-out),transform .7s var(--ease-out)}
 .st-reveal.is-in{opacity:1;transform:none}
 
 /* ---------- progress bar ---------- */
@@ -301,7 +307,7 @@ body:has(.st-progress) .rs-header .rs-progress{display:none}
 .st-present-dots{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;gap:8px;z-index:70;padding:9px 13px;border:2px solid var(--rule);background:var(--surface)}
 .st-present-dots b{display:block;width:8px;height:8px;background:var(--rule-soft);border-radius:50%}
 .st-present-dots b.is-on{background:var(--accent)}
-.st-present-hint{position:fixed;right:18px;bottom:24px;z-index:70;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.st-present-hint{position:fixed;right:18px;bottom:24px;z-index:70;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 
 /* ---------- wayfinder ---------- */
 body.st-has-way{padding-bottom:calc(var(--st-way-h,60px) + 10px)}
@@ -313,14 +319,14 @@ body.st-has-way .presbtn{bottom:calc(var(--st-way-h,60px) + 16px)}
 .st-way-seg i.is-done{background:var(--accent);opacity:.45}
 .st-way-seg i.is-now{background:var(--accent);opacity:1}
 .st-way-row{display:flex;align-items:center;gap:14px;padding:9px 16px;min-height:44px}
-.st-way-crumb{flex:1 1 auto;min-width:0;font-size:.6875rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.st-way-crumb{flex:1 1 auto;min-width:0;font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .st-way-crumb b{color:var(--ink);font-weight:700}
 .st-way-btns{display:flex;gap:8px;flex:0 0 auto}
-.st-way a.st-way-btn,.st-way button.st-way-btn{display:inline-block;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border:2px solid var(--rule);background:var(--paper);color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.1}
+.st-way a.st-way-btn,.st-way button.st-way-btn{display:inline-block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;padding:7px 12px;border:2px solid var(--rule);background:var(--paper);color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.1}
 .st-way a.st-way-btn:hover,.st-way button.st-way-btn:hover{border-color:var(--accent);color:var(--accent)}
 .st-way .st-way-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .st-way .st-way-btn[aria-disabled="true"]{opacity:.35;pointer-events:none}
-@media(max-width:820px){.st-way-crumb{font-size:.625rem;letter-spacing:.08em}.st-way a.st-way-btn,.st-way button.st-way-btn{padding:7px 9px}}
+@media(max-width:820px){.st-way-crumb{font-size:.75rem;letter-spacing:.08em}.st-way a.st-way-btn,.st-way button.st-way-btn{padding:7px 9px}}
 @media(max-width:620px){.st-way-site{display:none}}
 @media(max-width:460px){.st-way-title{display:none}.st-way-row{gap:8px;padding:8px 12px}.st-way a.st-way-btn,.st-way button.st-way-btn{padding:7px 7px;letter-spacing:.06em}}
 
@@ -329,7 +335,7 @@ body.st-has-way .presbtn{bottom:calc(var(--st-way-h,60px) + 16px)}
 .st-way-map.is-open{display:block}
 .st-way-map .st-map-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:20px 24px 8px;flex-wrap:wrap}
 .st-way-map .st-map-head h2{font-size:clamp(1.3rem,3vw,2rem);margin:0;letter-spacing:-.02em}
-.st-way-map .st-map-hint{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.st-way-map .st-map-hint{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
 .st-map-wrap{position:relative;padding:0 24px 28px}
 .st-map-svg{display:block;width:100%;height:auto;max-height:64vh;overflow:visible}
 .st-map-svg text{font-family:var(--font-mono);font-size:13px;fill:var(--muted)}
@@ -342,11 +348,11 @@ body.st-has-way .presbtn{bottom:calc(var(--st-way-h,60px) + 16px)}
 .st-map-card{border:2px solid var(--rule);background:var(--surface);padding:14px 15px}
 .st-map-card.is-now{border-color:var(--accent)}
 .st-map-card h3{font-size:.95rem;margin:0 0 3px;letter-spacing:-.01em}
-.st-map-card .st-map-sub{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.st-map-card .st-map-sub{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
 .st-map-card ul{list-style:none;margin:0;padding:0;display:grid;gap:7px}
 .st-map-card a{display:block;text-decoration:none;color:var(--ink);border-left:3px solid var(--rule-soft);padding-left:9px;font-size:.85rem}
 .st-map-card a:hover,.st-map-card a:focus-visible{border-left-color:var(--accent);color:var(--accent);outline:none}
-.st-map-card a span{display:block;font-family:var(--font-mono);font-size:.625rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.st-map-card a span{display:block;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .st-map-card a:hover span{color:var(--ink-2)}
 .st-map-extra{display:flex;flex-wrap:wrap;gap:8px;padding:0 24px 40px}
 @media(max-width:800px){.st-map-wrap{display:none}}
@@ -357,7 +363,7 @@ body.st-has-way .presbtn{bottom:calc(var(--st-way-h,60px) + 16px)}
   .st-scene[data-side="left"]{grid-template-columns:minmax(0,5fr) minmax(0,6fr)}
 }
 @media(max-width:900px){
-  .st-hero{grid-template-columns:1fr;gap:26px;min-height:0;padding:28px 0}
+  .st-hero{grid-template-columns:1fr;gap:26px;min-height:0;padding-top:28px;padding-bottom:28px}
   .st-hero .st-hero-orb{width:min(72vw,360px);order:-1}
   .st-chapter{grid-template-columns:1fr;gap:24px;text-align:left}
   .st-chapter .st-chapter-orb{width:min(60vw,240px);justify-self:start}
@@ -374,7 +380,7 @@ body.st-has-way .presbtn{bottom:calc(var(--st-way-h,60px) + 16px)}
   .st-step p{font-size:1.0625rem}
   .st-scene-rail{display:none}
   .st-companion{--st-comp:64px}
-  .st-companion .st-companion-cap{font-size:.5625rem;letter-spacing:.12em}
+  .st-companion .st-companion-cap{font-size:.75rem;letter-spacing:.12em}
 }
 @media(max-width:420px){
   .st-companion{--st-comp:52px}
@@ -414,12 +420,14 @@ body.st-story{--st-top:0px}
 body.st-story .st-scene .st-stage{top:0!important}
 @media(min-width:801px){body.st-story .st-scene .st-stage{height:calc(100vh - var(--st-way-h,60px))!important;height:calc(100svh - var(--st-way-h,60px))!important}}
 .st-presenting .st-findings{display:none}
-html{scroll-padding-top:16px}
+html:has(body.st-story){scroll-padding-top:16px}
 /* v1.2.1: closing Next cards carry no orb */
 .nextcard-orb,.nc-orb,.sy-nextorb,.nextcard .st-orb-wrap,[class*="next"] > canvas.st-orb{display:none!important}
 .nextcard,.sy-next{grid-template-columns:1fr!important}
 /* v1.2.2: companion orb sits top-right, small, never over a figure title; tall figures shrink to fit the stage */
 .st-companion{left:auto!important;right:0!important;top:0!important;align-items:flex-end!important;--st-comp:72px}
+/* QA: on phones and tablets the companion sits over figure labels and the step cards scrolling past it; the figure carries the state there */
+@media(max-width:800px){.st-companion{display:none!important}}
 @media(min-width:801px){
   body.st-story .st-stage{justify-content:center;overflow:visible}
   body.st-story .st-stage-inner svg,body.st-story .st-stage-inner canvas:not(.st-orb){max-height:calc(100vh - var(--st-way-h,60px) - 230px);max-height:calc(100svh - var(--st-way-h,60px) - 230px);width:auto;max-width:100%;margin-inline:auto}
@@ -556,7 +564,7 @@ html.st-printing .st-print-foot{display:block!important;margin-top:9pt;padding-t
 /* ---------- v1.3 speaker notes (presenter mode only) ---------- */
 .st-notes{position:fixed;left:22px;bottom:22px;z-index:78;max-width:46ch;padding:12px 15px 13px;background:var(--surface);border:2px solid var(--ink);color:var(--ink)}
 .st-notes.st-notes-right{left:auto;right:22px;bottom:54px}
-.st-notes-lab{font-family:var(--font-mono);font-size:.625rem;letter-spacing:.2em;font-weight:700;color:var(--accent);margin-bottom:7px}
+.st-notes-lab{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.2em;font-weight:700;color:var(--accent);margin-bottom:7px}
 .st-notes-body{font-size:1rem;line-height:1.45;color:var(--ink)}
 html:not(.st-presenting) .st-notes{display:none!important}
 @media(max-width:800px){.st-notes{max-width:calc(100vw - 32px);left:16px;right:16px;bottom:16px}.st-notes.st-notes-right{left:16px;right:16px;bottom:16px}}
@@ -618,7 +626,7 @@ body.st-has-way{padding-bottom:calc(var(--st-way-h,64px) + 22px)}
 .st-way-lamp::after{content:"";position:absolute;left:50%;top:2px;width:150%;height:26px;transform:translateX(-50%);
   background:radial-gradient(60% 100% at 50% 0%,var(--accent),transparent 72%);opacity:.20;pointer-events:none}
 .st-way-row{padding:10px 8px 9px 18px;gap:10px;min-height:44px}
-.st-way-crumb{font-size:.6875rem;letter-spacing:.1em}
+.st-way-crumb{font-size:.75rem;letter-spacing:.1em}
 .st-way-btns{gap:4px}
 .st-way a.st-way-btn,.st-way button.st-way-btn{display:inline-flex;align-items:center;gap:6px;border-radius:999px;
   border:var(--st-hair);background:transparent;padding:7px 12px;transition:transform .18s var(--st-ease),border-color .18s,color .18s,background .18s}
@@ -650,7 +658,7 @@ body.st-has-way{padding-bottom:calc(var(--st-way-h,64px) + 22px)}
 .st-findings a{padding:18px 20px 20px;position:relative}
 .st-findings a:hover{background:transparent}
 .st-findings a::before{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:22px;
-  border:var(--st-hair);border-radius:999px;font-size:.6875rem;color:var(--accent);margin-bottom:12px}
+  border:var(--st-hair);border-radius:999px;font-size:.75rem;color:var(--accent);margin-bottom:12px}
 .st-findings b{font-size:1.2rem}
 .st-find-key{position:absolute;top:16px;right:18px;font-family:var(--font-mono);font-style:normal;font-weight:700;
   font-size:1.35rem;letter-spacing:-.02em;color:var(--accent);opacity:.9}
@@ -708,11 +716,11 @@ body.st-has-way{padding-bottom:calc(var(--st-way-h,64px) + 22px)}
 
 /* ---------- 10. hero background ---------- */
 .st-hero{isolation:isolate}
-.st-hero::before{content:"";position:absolute;inset:-10% -4%;z-index:-2;pointer-events:none;
+.st-hero::before{content:"";position:absolute;inset:-64px 0;z-index:-2;pointer-events:none;
   background-image:radial-gradient(var(--st-hair-c) 1px,transparent 1px);background-size:22px 22px;
   -webkit-mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 75%);
   mask-image:radial-gradient(70% 60% at 50% 40%,#000,transparent 75%)}
-.st-hero::after{content:"";position:absolute;right:6%;top:18%;width:46%;height:56%;z-index:-3;pointer-events:none;
+.st-hero::after{content:"";position:absolute;right:6%;top:120px;width:46%;height:56%;z-index:-3;pointer-events:none;
   background:radial-gradient(closest-side,var(--accent),transparent 70%);opacity:.12;filter:blur(28px);
   animation:st-aurora 18s ease-in-out infinite alternate}
 @keyframes st-aurora{from{transform:translate3d(-3%,2%,0) scale(1)}to{transform:translate3d(4%,-3%,0) scale(1.08)}}
@@ -747,7 +755,7 @@ html.st-printing .st-tick-col{height:auto!important;overflow:visible!important}
 @media print{.st-tick-col{height:1em!important;overflow:hidden!important}}
 html.st-printing .st-tick-col{height:1em!important;overflow:hidden!important}
 .st-presenting .st-stage-inner.st-frame{border:0!important;background:none!important;padding:0!important;box-shadow:none!important}
-.st-way-map .st-way-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.6875rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;background:var(--surface);color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.1}
+.st-way-map .st-way-btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;padding:8px 14px;background:var(--surface);color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.1}
 .st-way-map .st-way-btn:hover,.st-way-map .st-way-btn:focus-visible{color:var(--accent);border-color:var(--accent)}
 
 @media print{
@@ -814,6 +822,160 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
 .st-reduced [data-st-scrollfade],.st-reduced [data-st-parallax],.st-printing [data-st-scrollfade],.st-printing [data-st-parallax]{animation:none!important;opacity:1!important;transform:none!important}
 /* cross-page transitions: same-origin navigations across the programme cross-fade where supported; instant elsewhere */
 @media (prefers-reduced-motion: no-preference){@view-transition{navigation:auto}}
+/* v1.4 motion kit: trail / draw / scrub / hover land their final state for print and reduced motion */
+[data-st-scrub].st-scrub-rise{transform:translateY(calc((1 - min(1, var(--st-scrub,1) * 2.2)) * 32px));opacity:calc(.25 + min(1, var(--st-scrub,1) * 2.2) * .75)}
+@media (prefers-reduced-motion:reduce){[data-st-stagger]>*,[data-st-scrub]{opacity:1!important;transform:none!important}}
+.st-reduced [data-st-stagger]>*,.st-reduced [data-st-scrub]{opacity:1!important;transform:none!important}
+@media print{[data-st-stagger]>*,[data-st-scrub],[data-st-hover],.doors>a,.st-findings li{opacity:1!important;transform:none!important}[data-st-draw] *{stroke-dashoffset:0!important}}
+html.st-printing [data-st-stagger]>*,html.st-printing [data-st-scrub],html.st-printing [data-st-hover],html.st-printing .st-findings li{opacity:1!important;transform:none!important}
+
+/* ---------- v2.0 motion layer (GSAP; see story.js header) ---------- */
+/* split lines keep their descenders inside the mask */
+[data-m-split] .word,[data-m-split] [class*="-mask"]{padding-bottom:.08em;margin-bottom:-.08em}
+[data-m-split]{font-kerning:none}
+.m-desk [data-m-pin]{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center}
+[data-m-progress]{display:block;height:3px;border-radius:3px;background:var(--accent);transform-origin:0 50%}
+html:not(.m-desk) [data-m-progress]{transform:none}
+[data-m-spring]{will-change:transform}
+.m-desk [data-m-hero]{overflow:clip}
+@media (prefers-reduced-motion: reduce){[data-m-step],[data-m-hero-part],[data-m-reveal]{opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important;clip-path:none!important}}
+.st-reduced [data-m-step],.st-reduced [data-m-hero-part],.st-printing [data-m-step]{opacity:1!important;visibility:visible!important;transform:none!important;filter:none!important;clip-path:none!important}
+/* v2.1 motion polish: nothing flashes in its final or unsplit state before GSAP takes it.
+   html.m-ready is set by story.js once the layer is set up (or found missing / reduced);
+   the 2.5s failsafe shows everything even if the script never runs. */
+@keyframes m-failsafe{to{visibility:visible}}
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference){
+  html:not(.m-ready):not(.st-reduced):not(.st-printing) :is([data-m-split]:not([data-m-split-done]),[data-m-hero-part],[data-m-pin] [data-m-step],[data-m-reveal]){visibility:hidden;animation:m-failsafe 0s 2.5s forwards}
+}
+[data-m-count]{font-variant-numeric:tabular-nums}
+.m-on [data-m-split-done]{font-variant-ligatures:none}
+[data-m-split] .m-word{white-space:nowrap}
+
+/* QA: entrance tweens start elements up to 60px to the side; before they play (a pinned chapter not yet reached)
+   they must not widen the page. clip, not hidden, so sticky and pinned stages keep working. */
+html{overflow-x:clip}
+/* ---------- v1.5 AA: dimmed steps and disabled dock via color, not low opacity ---------- */
+.st-step{opacity:1}
+.st-step:not(.is-active){color:var(--ink-2)}
+.st-step:not(.is-active) p{color:var(--ink-2)}
+.st-way .st-way-btn[aria-disabled="true"]{opacity:1;color:var(--muted);border-style:dashed}
+@media (max-width:640px){
+  .st-way a.st-way-btn,.st-way button.st-way-btn{min-height:44px;min-width:44px;justify-content:center}
+  .st-way-row{min-height:48px}
+}
+
+/* ============================================================
+   v2.2 reading layer (round 8): short-screen fit, one statement once,
+   copy links, data tables, readability floor, calmer entrances
+   ============================================================ */
+/* --- readability floor: no engine text under 12px; balanced headings, pretty paragraphs --- */
+.st-step h3,.st-chapter h2,.st-chapter .st-chapter-title,.st-findings b,.st-way-map h2,.st-map-card h3{text-wrap:balance}
+.st-step p,.st-chapter p,.st-findings span,.st-figure figcaption,.st-data caption{text-wrap:pretty}
+.st-step p{max-width:46ch}
+.st-gloss-tip{font-size:.875rem;line-height:1.45}
+.st-tip{font-size:.8125rem}
+
+/* --- pinned scenes on short screens ---
+   Cards hug their text (the page's step height becomes scroll room around the card,
+   set by story.js as --st-mt/--st-mb), and the stage content starts at the top of the
+   band when it cannot be centred, instead of spilling above and below it. */
+.st-scene.st-fit .st-steps{display:flex;flex-direction:column}
+.st-scene.st-fit .st-steps > .st-step{min-height:0;margin:var(--st-mt,0px) 0 var(--st-mb,0px)}
+.st-presenting .st-scene.st-fit .st-steps > .st-step,html.st-printing .st-scene.st-fit .st-steps > .st-step{margin:0!important}
+@media print{.st-scene.st-fit .st-steps > .st-step{margin:0!important}}
+.st-stage{justify-content:safe center}
+@media(min-width:801px){
+  /* the stage ends where the floating dock begins */
+  body.st-story.st-has-way .st-scene .st-stage{height:calc(100vh - var(--st-way-h,60px) - 20px)!important;height:calc(100svh - var(--st-way-h,60px) - 20px - env(safe-area-inset-bottom,0px))!important}
+  body.st-story .st-stage-inner{min-height:0}
+}
+svg.st-fitted,canvas.st-fitted{display:block}
+
+/* --- entrances: step text is readable within ~0.4s of arriving --- */
+.st-scene.st-flow .st-step > *{transform:translateY(12px);transition:opacity .32s cubic-bezier(.22,.7,.2,1),transform .32s cubic-bezier(.22,.7,.2,1)}
+.st-scene.st-flow .st-step.is-entered > :nth-child(2){transition-delay:.04s}
+.st-scene.st-flow .st-step.is-entered > :nth-child(3){transition-delay:.08s}
+.st-scene.st-flow .st-step.is-entered > :nth-child(4){transition-delay:.1s}
+.st-scene.st-flow .st-step.is-entered > :nth-child(n+5){transition-delay:.12s}
+.st-reveal{transition-duration:.45s,.45s}
+@media (scripting: enabled) and (prefers-reduced-motion: no-preference){
+  html:not(.m-ready):not(.st-reduced):not(.st-printing) :is([data-m-split]:not([data-m-split-done]),[data-m-hero-part],[data-m-pin] [data-m-step],[data-m-reveal]){animation:m-failsafe 0s 1.2s forwards}
+}
+
+/* --- one statement once: a heading that repeats its chapter card (story.js dedupe) --- */
+.st-dup{display:none!important}
+
+/* --- copy link: small icon after a chapter / scene / finding heading, 44px hit area --- */
+.st-anchor{position:absolute;left:0;top:0;z-index:4;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;
+  margin:0;padding:0;border:0;border-radius:12px;background:transparent;color:var(--muted);cursor:pointer;
+  opacity:0;visibility:hidden;transition:opacity .15s ease,color .15s ease,background-color .15s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.st-anchor.is-placed{visibility:visible}
+.st-anchor svg{width:18px;height:18px;display:block;pointer-events:none}
+:hover > .st-anchor.is-placed,.st-anchor.is-placed:focus-visible{opacity:1}
+.st-anchor:hover{color:var(--accent);background:var(--accent-wash)}
+.st-anchor:focus-visible{outline:2px solid var(--accent);outline-offset:-4px;color:var(--accent)}
+@media (hover:none){.st-anchor.is-placed{opacity:.85}}
+.st-presenting .st-anchor{display:none!important}
+@media print{.st-anchor{display:none!important}}
+html.st-printing .st-anchor{display:none!important}
+/* anchored sections clear a sticky header when reached by link */
+.st-chapter,.st-scene,.finding,[data-st-anchor]{scroll-margin-top:16px}
+.st-toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));z-index:96;transform:translate(-50%,8px);
+  padding:10px 16px;border:var(--st-hair);border-radius:999px;background:var(--surface);color:var(--ink);box-shadow:var(--st-shadow);
+  font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.04em;opacity:0;pointer-events:none;transition:opacity .18s ease,transform .18s ease;white-space:nowrap}
+body.st-has-way .st-toast{bottom:calc(var(--st-way-h,60px) + 30px + env(safe-area-inset-bottom,0px))}
+.st-toast.is-on{opacity:1;transform:translate(-50%,0)}
+.st-toast:empty{display:none}
+@media (prefers-reduced-motion: reduce){.st-toast,.st-anchor{transition:none}}
+.st-reduced .st-toast,.st-reduced .st-anchor{transition:none}
+
+/* --- data disclosure under a figure (Story.dataTable) --- */
+.st-data{margin:14px 0 0;border:var(--st-hair);border-radius:var(--st-radius-sm,10px);background:var(--surface);max-width:100%}
+.st-data > summary{display:flex;align-items:center;gap:10px;min-height:44px;padding:0 14px;cursor:pointer;list-style:none;
+  font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.08em;text-transform:uppercase;color:var(--ink);border-radius:inherit}
+.st-data > summary::-webkit-details-marker{display:none}
+.st-data > summary::before{content:"";width:7px;height:7px;flex:0 0 auto;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(-45deg);transition:transform .15s ease;margin-right:2px}
+.st-data[open] > summary::before{transform:rotate(45deg)}
+.st-data > summary:hover{color:var(--accent)}
+.st-data > summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.st-data .st-data-n{color:var(--muted);letter-spacing:.04em;text-transform:none}
+.st-data-scroll{overflow-x:auto;padding:0 14px 12px;-webkit-overflow-scrolling:touch}
+.st-data-scroll:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.st-data table{width:100%;border-collapse:collapse;font-size:.875rem;line-height:1.4;color:var(--ink)}
+.st-data caption{caption-side:top;text-align:left;padding:4px 0 8px;color:var(--ink-2);font-size:.875rem}
+.st-data th,.st-data td{padding:7px 14px 7px 0;border-bottom:1px solid var(--st-hair-c);text-align:left;vertical-align:top}
+.st-data thead th{font-family:var(--font-mono);font-size:.75rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule-soft);white-space:nowrap}
+.st-data tbody th{font-weight:600}
+.st-data .st-num{text-align:right;font-family:var(--font-mono);font-variant-numeric:tabular-nums;white-space:nowrap}
+.st-data tbody tr:last-child > *{border-bottom:0}
+.st-data .st-data-src{margin:0;padding:0 14px 12px;font-size:.8125rem;color:var(--muted);text-wrap:pretty}
+@media print{
+  details.st-data{display:block!important;border:.5pt solid #999!important;border-radius:0!important;break-inside:avoid;margin:4pt 0 8pt}
+  details.st-data > summary{min-height:0;padding:3pt 0;font-size:8.5pt;color:#000}
+  details.st-data > summary::before{display:none}
+  .st-data-scroll{overflow:visible!important;padding:0}
+  .st-data table{font-size:8.5pt;color:#000}
+  .st-data th,.st-data td{padding:2pt 6pt 2pt 0;border-color:#bbb!important;color:#000!important}
+  .st-data .st-data-src{padding:2pt 0 0;font-size:8pt;color:#333}
+}
+html.st-printing details.st-data{display:block!important}
+
+/* --- phone hero: headline, answer and first action come first; nothing touches the edge --- */
+@media(max-width:600px){
+  .st-hero{min-height:0;gap:18px}
+  .st-hero > .st-hero-orb,.st-hero > [data-m-hero-part="visual"]{order:2}
+  .st-hero .st-hero-orb{width:min(46vw,200px);justify-self:center}
+  .st-hero > .st-field{opacity:.6}
+}
+
+/* --- dock: 12px labels, 44px targets on touch --- */
+.st-way-crumb{font-size:.75rem}
+@media (hover:none) and (pointer:coarse){.st-way a.st-way-btn,.st-way button.st-way-btn{min-height:44px;min-width:44px;justify-content:center}}
+/* glossary terms: a 44px-tall touch target around the inline term, without moving the line */
+@media (pointer:coarse){abbr.st-gloss{position:relative}abbr.st-gloss::after{content:"";position:absolute;left:-2px;right:-2px;top:50%;height:44px;transform:translateY(-50%)}}
+.st-scene.st-measuring .st-stage-inner,.st-scene.st-measuring .st-stage-inner.st-frame{transform:none!important;transition:none!important}
+/* short laptop screens: a little less card padding so tall step cards fit above the dock */
+@media (min-width:801px) and (max-height:800px){.st-step{padding:16px 20px}}
 /*STORY_CSS_END*/
 
 /* ---- demo-only chrome ---- */
@@ -1007,18 +1169,171 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
   </div>
 </section>
 
+<section class="section" id="reading-layer">
+  <div class="wrap">
+    <div class="rail-head"><span class="rail-num">07</span><h2>Reading layer (v2.2): data tables, copy links, one statement once</h2><span class="fake">Fake data</span></div>
+    <p style="max-width:62ch">Every chart gets a <b>Data</b> disclosure with a real table of the plotted numbers:
+      <code>Story.dataTable(figureEl, {caption, columns, rows, source})</code>. It sits under the figure (after the whole scene when the
+      figure is pinned in a stage), opens itself for print, and is what a screen reader reads instead of the drawing.</p>
+    <figure class="st-figure" id="demo-dt-fig" style="max-width:560px;margin-top:18px">
+      <svg viewBox="0 0 560 180" class="st-chart" role="img" aria-label="Fake bar chart: rate falls from 3.4 to 2.9 over four years">
+        <g font-family="var(--font-mono)" font-size="13">
+          <rect x="40" y="30" width="80" height="120" fill="var(--accent)"></rect><text x="80" y="170" text-anchor="middle">2021</text><text x="80" y="24" text-anchor="middle" class="st-label-direct">3.4</text>
+          <rect x="160" y="42" width="80" height="108" fill="var(--accent)"></rect><text x="200" y="170" text-anchor="middle">2022</text><text x="200" y="36" text-anchor="middle" class="st-label-direct">3.1</text>
+          <rect x="280" y="45" width="80" height="105" fill="var(--accent)"></rect><text x="320" y="170" text-anchor="middle">2023</text><text x="320" y="39" text-anchor="middle" class="st-label-direct">3.0</text>
+          <rect x="400" y="48" width="80" height="102" fill="var(--accent)"></rect><text x="440" y="170" text-anchor="middle">2024</text><text x="440" y="42" text-anchor="middle" class="st-label-direct">2.9</text>
+        </g>
+      </svg>
+      <figcaption>Fake rate per 200,000 hours, 2021 to 2024. Source: invented for this demo.</figcaption>
+    </figure>
+    <pre class="mono" style="margin-top:18px;font-size:.8125rem;white-space:pre-wrap;max-width:74ch">Story.dataTable(document.getElementById("demo-dt-fig"), {
+  caption: "Fake rate per 200,000 hours, 2021-2024",
+  columns: ["Year", {label: "Rate", digits: 1}, "Hours worked"],
+  rows: [[2021, 3.4, 1250000], [2022, 3.1, 1301000], [2023, 3.0, 1296500], [2024, 2.9, 1340200]],
+  source: "invented for this demo"
+});</pre>
+    <p style="max-width:62ch;margin-top:18px">Hover a chapter, scene or finding heading on this page (or look on a touch screen) for the link icon:
+      <code>Story.anchors()</code> gives each one a stable id and a copy-link button with a 44px hit area; copying announces
+      "Link copied". Opening a link with <code>#id</code> lands on that chapter with its pinned build finished.
+      <code>Story.dedupe()</code> hides a heading that restates the chapter card right before it (opt out with <code>data-st-keep</code>).</p>
+  </div>
+</section>
+
 <footer class="footer"><div class="wrap"><span class="label">Story engine demo</span><p style="margin-top:10px;font-size:.875rem;color:var(--muted)">Nothing on this page is a real measurement.</p></div></footer>
 </main>
 
+<script id="gsap-gsap" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/gsap.min.js"></script>
+<script id="gsap-scrolltrigger" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/ScrollTrigger.min.js"></script>
+<script id="gsap-splittext" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/SplitText.min.js"></script>
+<script id="gsap-flip" src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.15.0/Flip.min.js"></script>
 <script>
 /*STORY_JS_START*/
 /* ============================================================
    story.js  -  shared storytelling engine (stdlib only, no deps)
    Exposes one global: Story
    Pairs with tools/story.css and the tokens in tools/shared.css.
+
+   MOTION ATTRIBUTE API (v2.0, section 9)
+   Needs GSAP 3.15 core + ScrollTrigger + SplitText (+ Flip, optional) from
+   cdnjs, loaded before this script (tools/inline_story.py and
+   tools/build_sites.py add the tags). Without them, or under reduced motion
+   (OS setting, ?reduced=1, print), every element simply shows its final state.
+   Desktop (>= 900px) gets pins and scrub; phones get one-shot reveals only.
+
+   data-m-hero                 section: cinematic entrance timeline for its
+     data-m-hero-part="text|visual|rule"  parts, in DOM order
+     data-m-hero-copy          block that rises and fades as the hero leaves
+   data-m-split="chars|words|lines"  SplitText masked reveal on enter
+                               (chars fall back to words on phones);
+                               data-m-delay="0.3" offsets it
+   data-m-pin="220%"           section pins at the top for that much scroll
+                               and scrubs its [data-m-step] children
+     data-m-step="0|1|2.5"     order / timeline position inside the pin
+     data-m-from="up|down|left|right|scale|blur|clip" (combine with spaces)
+     data-m-dim                dims the previous step when this one lands
+     data-m-progress           element whose scaleX tracks the pin's progress
+     data-m-at="1.5"           position of a nested draw/bars/count in the pin
+   data-m-draw[="selector"]    stroke draw of paths/lines, scrubbed to scroll
+   data-m-bars="y|x"           bars grow from their baseline, scrubbed
+     data-m-bar="selector"     which children are bars (default rect / > *)
+   data-m-count[="12,345.6%"]  counter from 0 to the element's own text
+   data-m-reveal [data-m-stagger="0.08"]  one-shot fade-up (of children)
+   data-m-start="top 70%"      custom ScrollTrigger start for draw/reveal
+   data-m-parallax="-12"       yPercent drift across the viewport (desktop)
+   data-m-spring[="1.5"]       spring hover lift + press squash (elastic)
+   data-m-flip[="selector"]    Flip layout transition when a button inside
+                               filters or re-orders the children
+   Aliases: data-st-kinetic -> data-m-split="words" when GSAP is present.
+   JS: Story.motion.scan(root) re-applies after DOM changes; Story.motion.kill().
+
+   Rules the engine enforces (v2.1):
+   - Until the layer is ready, split headlines, hero parts, pinned steps and
+     reveals are hidden by story.css (no flash of the unsplit/final state);
+     html gets .m-ready once set up. A 2.5s CSS failsafe shows them anyway.
+   - An element GSAP animates must not also carry a page CSS animation or a
+     CSS transition on transform/opacity/visibility/filter: the engine turns
+     those off inline on that element while motion runs (they fight GSAP and
+     can leave it stuck at opacity 0). Put page animations on a wrapper.
+   - One ease vocabulary (M_EASE) and one scrub lag (M_SCRUB = 0.8s).
+   - Pinned chapters shorter than the screen are centred in it (no dead strip).
+   - ScrollTrigger re-measures after fonts, images (load) and bfcache restore;
+     a #hash in the URL, or an in-page link into a pinned chapter, lands on
+     the chapter with its build complete (v2.2: end of the pin, not mid-scrub).
+
+   READING LAYER (v2.2, section 10) - all automatic at boot, all opt-out-able
+   Story.dataTable(figureEl, {caption, columns, rows, source, summary, open, into})
+       Adds <details class="st-data"><summary>Data</summary><table>...</table></details>
+       under a figure (after its .st-scene when the figure sits in a pinned stage),
+       styled in the design system, opened for print. Returns the <details>.
+         columns: ["Year", "TRIR"] | [{label, key, num, digits, fmt}]
+         rows:    [[2019, 3.1], ...] | [{year: 2019, trir: 3.1}, ...]
+         source:  "results/trir_by_year.csv" (printed as "Source: ...")
+       Numbers print exactly as passed (thousands separators added for 5+ digit
+       integers); round with {digits} or format with {fmt} per column.
+       Example:
+         Story.dataTable(document.getElementById("fig-trir"), {
+           caption: "TRIR by year, ITA Form 300A, 2016-2024",
+           columns: ["Year", {label: "TRIR", digits: 2}],
+           rows: [[2016, 3.412], [2017, 3.298]],
+           source: "results/trir_by_year.csv" });
+   Story.anchors()   every .st-chapter, .st-scene (or the section[id] holding it),
+       .finding and [data-st-anchor] gets a stable id (existing ids kept; new ids
+       are slugs of the heading) and a copy-link button placed after its heading
+       (hover/focus to show, always shown on touch, 44px). Copying says "Link
+       copied" through a polite live region. data-st-anchor="off" skips one.
+       Returns the ids. Runs at boot; call again after adding sections.
+   Story.dedupe()    a heading that restates the chapter card right before it
+       (same sentence after normalising case/space, or one contains the other)
+       is hidden from view and from assistive tech (.st-dup, aria-hidden). Links
+       to its id land on the chapter. Opt out: data-st-keep on the heading or its
+       section, or <body data-st-dedupe="off">. Force: data-st-dup-of="#id".
+   Story.landHash()  lands the current #hash (also on hashchange): pinned
+       chapters at their finished state, scenes with the linked step active.
+   Story.fit()       re-fits every scene's pinned figure to the screen band
+       above the dock (runs on resize, fonts, load; call after redrawing a figure).
+       data-st-fit="off" on a .st-stage opts out.
+   Story.toast(msg) / Story.copyLink(id)  the same polite toast and copy action.
+   Scenes (v2.2): step cards hug their text; the page's step min-height becomes
+   scroll room around the card (--st-mt / --st-mb). The active step is the one
+   most fully visible in the band between a stacked phone stage and the dock.
    ============================================================ */
 (function (global) {
   "use strict";
+  // ResizeObserver that defers work to the next frame and ignores size-unchanged
+  // notifications, so callbacks that resize the observed node cannot loop.
+  function sizeObserver(el, fn) {
+    var w = -1, h = -1, raf = 0;
+    var ro = new ResizeObserver(function (es) {
+      var r = es[es.length - 1].contentRect;
+      if (Math.round(r.width) === w && Math.round(r.height) === h) return;
+      w = Math.round(r.width); h = Math.round(r.height);
+      if (!raf) raf = requestAnimationFrame(function () { raf = 0; fn(); });
+    });
+    ro.observe(el);
+    return { disconnect: function () { ro.disconnect(); if (raf) cancelAnimationFrame(raf); } };
+  }
+  // the same for a list of nodes: one observer, one deferred callback per frame
+  function sizeObserverAll(list, fn) {
+    var raf = 0, seen = new Map();
+    var ro = new ResizeObserver(function (es) {
+      var changed = false;
+      es.forEach(function (e) {
+        var k = Math.round(e.contentRect.width) + "x" + Math.round(e.contentRect.height);
+        if (seen.get(e.target) !== k) { seen.set(e.target, k); changed = true; }
+      });
+      if (changed && !raf) raf = requestAnimationFrame(function () { raf = 0; fn(); });
+    });
+    list.forEach(function (n) { ro.observe(n); });
+    return { disconnect: function () { ro.disconnect(); if (raf) cancelAnimationFrame(raf); } };
+  }
+  // room the floating dock (wayfinder) takes at the bottom of the viewport, gap included
+  function dockClear() {
+    var w = document.querySelector(".st-way");
+    if (!w || document.documentElement.classList.contains("st-presenting")) return 0;
+    var r = w.getBoundingClientRect();
+    if (!r.height || r.top >= innerHeight) return 0;
+    return Math.max(0, innerHeight - r.top) + 8;
+  }
 
   /* ---------------------------------------------------------
      0. small utilities
@@ -1164,8 +1479,12 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
      3. motion primitives: spring, tween, flip, countUp, reveal
      --------------------------------------------------------- */
   // Critically damped by default: no overshoot on data.
+  // react-spring style named configs (tension/friction, mass 1); damping ratio
+  // near 1 for data, lower only for delight moments
+  var SPRING = { "default": [170, 26], gentle: [120, 14], wobbly: [180, 12], stiff: [210, 20], slow: [280, 60], molasses: [280, 120], snappy: [500, 30] };
   function spring(from, to, cb, opts) {
     opts = opts || {};
+    if (opts.config && SPRING[opts.config] && opts.stiffness == null) { opts.stiffness = SPRING[opts.config][0]; opts.damping = SPRING[opts.config][1]; }
     var k = opts.stiffness == null ? 170 : opts.stiffness;
     var d = opts.damping == null ? 2 * Math.sqrt(k) : opts.damping; // critical
     var prec = opts.precision == null ? 0.0008 : opts.precision;
@@ -1203,6 +1522,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
   }
   var EASE = {
     out: function (t) { return 1 - Math.pow(1 - t, 3); },
+    expo: function (t) { return t >= 1 ? 1 : 1 - Math.pow(2, -10 * t); },
     inOut: function (t) { return t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; },
     linear: function (t) { return t; }
   };
@@ -1273,7 +1593,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
           if (grp) s = s.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
           tickerPaint(n, pre + s + post, !reduced());
         }
-        : function () { tween(opts.from == null ? 0 : opts.from, target, function (v) { paint(v); }, { duration: opts.duration || 1100 }); };
+        : function () { tween(opts.from == null ? 0 : opts.from, target, function (v) { paint(v); }, { duration: opts.duration || 1400, ease: "expo" }); };
       if (opts.now) run(); else inView(n, run, { once: true });
     });
   }
@@ -1283,14 +1603,18 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     var sel = opts.selector || "[data-st-reveal]";
     if (!root || root.nodeType === 9) root = document.body;
     var nodes = isEl(root) ? (root.matches && root.matches(sel) ? [root] : els(sel, root)) : Array.prototype.slice.call(root);
-    var step = opts.stagger == null ? 70 : opts.stagger;
+    var step = opts.stagger == null ? 60 : opts.stagger;
+    // one API: nodes the GSAP layer animates (section 9) are left to it
+    if (gsapOK()) nodes = nodes.filter(function (n) {
+      return !(n.matches("[data-m-hero-part],[data-m-split],[data-m-reveal],[data-m-step],[data-m-hero-copy]") || n.closest("[data-m-reveal],[data-m-pin],[data-m-hero-part]"));
+    });
     nodes.forEach(function (n) { n.classList.add("st-reveal"); });
     var groups = new Map();
     nodes.forEach(function (n) {
       var p = n.parentNode;
       if (!groups.has(p)) groups.set(p, 0);
       var i = groups.get(p); groups.set(p, i + 1);
-      inView(n, function () { setTimeout(function () { n.classList.add("is-in"); }, reduced() ? 0 : i * step); }, { once: true, margin: "0px 0px -8% 0px" });
+      inView(n, function () { setTimeout(function () { n.classList.add("is-in"); }, reduced() ? 0 : Math.min(i, 10) * step); }, { once: true, margin: "0px 0px -8% 0px" });
     });
     return nodes;
   }
@@ -1741,7 +2065,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
       io = new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); else stop(); }, { rootMargin: "120px" });
       io.observe(canvas);
     } else { visible = true; start(); }
-    if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); }
+    if (global.ResizeObserver) { ro = sizeObserver(canvas, resize); }
     else addEventListener("resize", resize);
     resize();
     if (reduced()) renderStatic(); else paint(0);
@@ -1939,7 +2263,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     }
     function start() { if (!un && !destroyed && !reduced()) un = tick(step); }
     function stop() { if (un) { un(); un = null; } }
-    if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); } else addEventListener("resize", resize);
+    if (global.ResizeObserver) { ro = sizeObserver(canvas, resize); } else addEventListener("resize", resize);
     if (global.IntersectionObserver) {
       io = new IntersectionObserver(function (es) { visible = es[0].isIntersecting; if (visible) start(); else stop(); }, { rootMargin: "80px" });
       io.observe(canvas);
@@ -1990,7 +2314,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     var steps = els(".st-step", scene);
     var stage = el(".st-stage", scene);
     var inner = el(".st-stage-inner", scene) || stage;
-    var active = -1, ioStep = null, unScroll = null;
+    var active = -1;
 
     // staggered step-text entrance is opt-in via this class, so pages that
     // never run scenes() still render their step text normally
@@ -2055,18 +2379,155 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     // presenter mode drives steps directly, so it never depends on scroll observers firing
     steps.forEach(function (st, j) { st.__stActivate = function () { if (active === j && st.classList.contains("is-active")) return; active = -1; setActive(j); }; });
 
-    if (global.IntersectionObserver) {
-      // under 800px the stage is stacked on top, so the active band sits in the lower part of the viewport
-      var narrow = global.matchMedia && global.matchMedia("(max-width:800px)").matches, bandMid = narrow ? 0.66 : 0.5;
-      ioStep = new IntersectionObserver(function (es) {
-        // pick the entry closest to the middle band of the viewport
-        var best = null, bestD = Infinity;
-        es.forEach(function (e) { if (e.isIntersecting) { var d = Math.abs(e.boundingClientRect.top + e.boundingClientRect.height / 2 - innerHeight * bandMid); if (d < bestD) { bestD = d; best = e; } } });
-        // presenter mode and the print handout drive steps directly; scroll must not fight them
-        if (best && !presentState && !printing) setActive(steps.indexOf(best.target));
-      }, { rootMargin: narrow ? "-56% 0px -24% 0px" : "-45% 0px -45% 0px", threshold: 0 });
-      steps.forEach(function (s) { ioStep.observe(s); });
-    } else { steps.forEach(function (s) { s.classList.add("is-entered"); }); setActive(0); }
+    /* v2.2 reading fit. The active step is the one a reader can see whole: the step
+       whose card is most visible inside the reading band (below a stacked phone stage,
+       above the floating dock). A card that just came fully into view goes active, so its
+       figure state never runs ahead of text still under the fold. Cards hug their text;
+       the scroll room between them keeps the old pacing (see fitSteps). */
+    function isNarrow() { return !!(global.matchMedia && global.matchMedia("(max-width:800px)").matches); }
+    function pickActive() {
+      if (presentState || printing || !steps.length) return;
+      var sr = scene.getBoundingClientRect();
+      if (sr.bottom < 0 || sr.top > innerHeight) return;
+      var bt = 0, bb = innerHeight - dockClear();
+      if (isNarrow() && stage) { var st = stage.getBoundingClientRect(); if (st.top <= 1 + (parseFloat(getComputedStyle(stage).top) || 0)) bt = Math.max(0, st.bottom); }
+      if (bb - bt < 80) { bt = 0; bb = innerHeight; }
+      var mid = bt + (bb - bt) * 0.45, best = -1, bestF = 0, bestD = Infinity, curF = 0;
+      for (var i = 0; i < steps.length; i++) {
+        var r = steps[i].getBoundingClientRect();
+        if (!r.height) continue;
+        var vis = Math.min(r.bottom, bb) - Math.max(r.top, bt);
+        if (vis <= 0) continue;
+        var f = Math.min(1, vis / Math.max(1, Math.min(r.height, bb - bt)));
+        var d = Math.abs(r.top + r.height / 2 - mid);
+        if (i === active) curF = f;
+        if (f > bestF + 0.02 || (Math.abs(f - bestF) <= 0.02 && d < bestD)) { best = i; bestF = f; bestD = d; }
+      }
+      if (best < 0 || best === active) return;
+      // hysteresis: the current step keeps the lead until the new one is clearly more readable
+      if (active >= 0 && curF >= 0.98 && bestF < 0.995) return;
+      setActive(best);
+    }
+
+    /* Cards hug their content; the page's own step min-height (vh) becomes scroll room
+       around the card, so pacing is unchanged but no empty box runs under the dock. */
+    // the page's own step heights, read once before the fit class lands, kept as a share
+    // of the viewport (vh-based min-heights scale with it). Re-reading later would toggle
+    // the layout and count as a layout shift.
+    var roomFrac = null, roomNarrow = null;
+    function fitSteps() {
+      if (!steps.length) return;
+      var narrow = isNarrow();
+      if (roomFrac === null || roomNarrow !== narrow) {
+        scene.classList.remove("st-fit");
+        roomFrac = steps.map(function (s) { return (parseFloat(getComputedStyle(s).minHeight) || 0) / Math.max(1, innerHeight); });
+        roomNarrow = narrow;
+        scene.classList.add("st-fit");
+      }
+      var vh = innerHeight, band = vh - dockClear();
+      steps.forEach(function (s, i) {
+        var h = s.getBoundingClientRect().height;
+        var room = Math.max(roomFrac[i] * vh, 0);
+        var floor = room > 0 ? Math.round(vh * 0.05) : 0;
+        var m = Math.max(floor, Math.round((room - h) / 2));
+        var mt = m, mb = m;
+        // the last card can sit centred in the reading band before the stage unpins
+        if (i === steps.length - 1 && !narrow && room > 0) mb = Math.max(m, Math.round((band - h) / 2) + (vh - band));
+        // write only real changes: an unchanged value must not re-lay the column out
+        if (s.__stMt !== mt) { s.style.setProperty("--st-mt", mt + "px"); s.__stMt = mt; }
+        if (s.__stMb !== mb) { s.style.setProperty("--st-mb", mb + "px"); s.__stMb = mb; }
+      });
+    }
+
+    /* The pinned figure fits the stage band on short screens (1280x720, 1024x768):
+       the biggest svg/canvas in the stage shrinks, keeping its aspect ratio, until the
+       stage content (figure, caption, controls) ends above the dock. */
+    var fitted = [];
+    function unfitStage() {
+      fitted.forEach(function (g) { g.style.removeProperty("max-height"); g.style.removeProperty("max-width"); g.style.removeProperty("margin-inline"); g.classList.remove("st-fitted"); });
+      fitted = [];
+    }
+    function stageOverflow() {
+      var cs = getComputedStyle(stage), top = parseFloat(cs.top);
+      if (cs.position !== "sticky" || isNaN(top)) return 0;
+      var sh = stage.getBoundingClientRect().height;
+      var bandBottom = Math.min(top + sh, innerHeight - dockClear());
+      var avail = bandBottom - top - (parseFloat(cs.paddingTop) || 0) - (parseFloat(cs.paddingBottom) || 0);
+      var lo = Infinity, hi = -Infinity;
+      Array.prototype.forEach.call(stage.children, function (k) {
+        var kc = getComputedStyle(k);
+        if (kc.position === "absolute" || kc.position === "fixed" || kc.display === "none") return;
+        var r = contentBox(k); if (!r) return;
+        lo = Math.min(lo, r.top); hi = Math.max(hi, r.bottom);
+      });
+      return isFinite(lo) ? (hi - lo) - avail : 0;
+    }
+    // the extent of a stage child: its in-flow children (which may overflow a fixed-height
+    // box), not a min-height box drawn around them
+    function contentBox(k) {
+      var r = k.getBoundingClientRect();
+      if (!r.height && !k.children.length) return null;
+      var kc = getComputedStyle(k);
+      var lo = Infinity, hi = -Infinity;
+      Array.prototype.forEach.call(k.children, function (c) {
+        var cc = getComputedStyle(c);
+        if (cc.position === "absolute" || cc.position === "fixed" || cc.display === "none") return;
+        var cr = c.getBoundingClientRect(); if (!cr.height) return;
+        lo = Math.min(lo, cr.top - (parseFloat(cc.marginTop) || 0)); hi = Math.max(hi, cr.bottom + (parseFloat(cc.marginBottom) || 0));
+      });
+      if (!isFinite(lo)) return r.height ? r : null;
+      lo -= (parseFloat(kc.paddingTop) || 0) + (parseFloat(kc.borderTopWidth) || 0);
+      hi += (parseFloat(kc.paddingBottom) || 0) + (parseFloat(kc.borderBottomWidth) || 0);
+      if (!(parseFloat(kc.minHeight) > 0)) { lo = Math.min(lo, r.top); hi = Math.max(hi, r.bottom); }
+      return { top: lo, bottom: hi };
+    }
+    function fitStage() {
+      if (!stage) return;
+      unfitStage();
+      if (isNarrow() || printing || presentState || stage.getAttribute("data-st-fit") === "off") return;
+      // measure the flat layout: the stage frame's entrance tilt and scale distort rects
+      scene.classList.add("st-measuring");
+      try { fitPasses(); } finally { scene.classList.remove("st-measuring"); }
+    }
+    function fitPasses() {
+      for (var pass = 0; pass < 3; pass++) {
+        var over = stageOverflow();
+        if (over <= 1) return;
+        var g = null, ga = 0;
+        els("svg,canvas", inner).forEach(function (n) {
+          if (n.closest(".st-companion,.st-orb-wrap") || n.classList.contains("st-orb") || n.classList.contains("st-field")) return;
+          if (n.ownerSVGElement) return; // nested svg
+          var r = n.getBoundingClientRect(), a = r.width * r.height;
+          if (a > ga) { ga = a; g = n; }
+        });
+        if (!g) return;
+        var gr = g.getBoundingClientRect();
+        var target = Math.max(160, Math.floor(gr.height - over - 2));
+        if (target >= gr.height - 1) return;
+        g.style.setProperty("max-height", target + "px", "important");
+        g.style.setProperty("max-width", Math.floor(target * gr.width / gr.height) + "px", "important");
+        g.style.setProperty("margin-inline", "auto", "important");
+        g.classList.add("st-fitted");
+        if (fitted.indexOf(g) < 0) fitted.push(g);
+      }
+    }
+    var fitRaf = 0;
+    function refit() {
+      if (fitRaf) return;
+      fitRaf = requestAnimationFrame(function () { fitRaf = 0; fitSteps(); fitStage(); pickActive(); });
+    }
+    fitSteps();
+    fitStage();
+    // pages draw their charts after the engine boots, and webfonts change heights: fit again then
+    [120, 600, 1600].forEach(function (ms) { setTimeout(refit, ms); });
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(refit, function () { });
+    addEventListener("load", refit);
+    addEventListener("resize", refit);
+    var roSteps = global.ResizeObserver ? sizeObserverAll(steps, refit) : null;
+
+    var scrollRaf = 0;
+    function onScrollRaf() { if (!scrollRaf) scrollRaf = requestAnimationFrame(function () { scrollRaf = 0; onScroll(); pickActive(); }); }
+    if (!global.requestAnimationFrame) steps.forEach(function (s) { s.classList.add("is-entered"); });
 
     function onScroll() {
       var r = scene.getBoundingClientRect();
@@ -2083,24 +2544,31 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
         });
       }
     }
-    addEventListener("scroll", onScroll, { passive: true });
-    addEventListener("resize", onScroll);
+    addEventListener("scroll", onScrollRaf, { passive: true });
+    addEventListener("resize", onScrollRaf);
     onScroll();
     if (reduced()) setActive(steps.length ? steps.length - 1 : -1);
     else if (active < 0) setActive(0);
+    pickActive();
 
-    return {
+    var api = {
       steps: steps, stage: stage, scene: scene, companion: comp,
       get index() { return active; },
+      fit: refit,
       go: function (i) { // instant jump: the figure still animates, and a smooth scroll can stall between steps on some displays
       if (steps[i]) { var r = steps[i].getBoundingClientRect(); global.scrollTo({ top: r.top + global.pageYOffset - (global.innerHeight - r.height) / 2, behavior: "instant" }); }
       if (steps[i] && steps[i].__stActivate) { var cur = steps[i]; cur.__stActivate(); setTimeout(function () { if (steps[i] === cur) cur.__stActivate(); }, 120); } },
       destroy: function () {
-        if (ioStep) ioStep.disconnect();
         if (comp) comp.destroy();
-        removeEventListener("scroll", onScroll); removeEventListener("resize", onScroll);
+        if (roSteps) roSteps.disconnect();
+        unfitStage(); scene.classList.remove("st-fit");
+        removeEventListener("scroll", onScrollRaf); removeEventListener("resize", onScrollRaf);
+        removeEventListener("resize", refit); removeEventListener("load", refit);
+        scene.__stScene = null;
       }
     };
+    scene.__stScene = api;
+    return api;
   }
 
   /* ---------------------------------------------------------
@@ -2148,8 +2616,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
       setLabel: function (s) { svg.setAttribute("aria-label", s); }
     };
     if (global.ResizeObserver) {
-      api._ro = new ResizeObserver(function () { if (api.fit() && api._redraw) api._redraw(); });
-      api._ro.observe(svg);
+      api._ro = sizeObserver(svg, function () { if (api.fit() && api._redraw) api._redraw(); });
     }
     return api;
   }
@@ -2895,7 +3362,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
       anim = transition(function (t) { render(clamp(t, 0, 1)); }, { stiffness: 22 });
     }
     un = Theme.onChange(function () { render(1); });
-    if (global.ResizeObserver) { ro = new ResizeObserver(resize); ro.observe(canvas); } else addEventListener("resize", resize);
+    if (global.ResizeObserver) { ro = sizeObserver(canvas, resize); } else addEventListener("resize", resize);
     function offHover() { hideTip(tipBox); }
     if (opts.tips !== false) {
       canvas.addEventListener("pointermove", onHover);
@@ -3461,6 +3928,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
   function words(node) {
     node = isEl(node) ? node : el(node);
     if (!node || node.__stWords) return null;
+    if (node.hasAttribute("data-m-split") && gsapOK()) return null; // SplitText owns it
     var full = (node.textContent || "").replace(/\s+/g, " ").trim();
     if (!full || full.length > 400) return null;
     node.__stWords = 1;
@@ -3778,9 +4246,11 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     if (printSaved) return;
     if (presentState) presentState.exit(); // presenter layout and handout layout must never combine
     printing = true;
+    try { motionKill(); } catch (e) { } // pins and split text never reach paper
     glossHide();
     document.documentElement.classList.add("st-printing");
     printSaved = [];
+    els("details.st-data:not([open])").forEach(function (d) { d.open = true; d.__stPrintOpened = 1; });
     els(".st-scene").forEach(function (sc) {
       var list = els(".st-step", sc);
       if (!list.length) return;
@@ -3823,6 +4293,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
       if (s.idx >= 0 && s.steps[s.idx] && s.steps[s.idx].__stActivate) s.steps[s.idx].__stActivate();
     });
     printSaved = null; printing = false;
+    els("details.st-data").forEach(function (d) { if (d.__stPrintOpened) { d.open = false; d.__stPrintOpened = 0; } });
     document.documentElement.classList.remove("st-printing");
   }
   function printHandout() {
@@ -3835,13 +4306,164 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
   addEventListener("beforeprint", printPrepare);
   addEventListener("afterprint", printRestore);
 
+
+  /* ---------------------------------------------------------
+     8b. motion kit (v1.4): stagger, trail, draw, scrub, hover
+     Ideas from anime.js (stagger grids, line drawing), react-spring
+     (trails), GSAP (scrubbed scroll timelines, batch reveals) and
+     motion.dev (whileInView, spring gestures). Vanilla, no deps.
+     Every effect lands its final state under reduced motion / print.
+     --------------------------------------------------------- */
+  // stagger(step, {from:'first'|'last'|'center'|index, grid:[cols,rows], start}) -> fn(i, n)
+  function stagger(step, o) {
+    o = o || {}; step = step == null ? 60 : step;
+    return function (i, n) {
+      var from = o.from == null ? 0 : o.from, d;
+      if (o.grid) {
+        var c = o.grid[0], r = o.grid[1];
+        var fi = from === "center" ? [(c - 1) / 2, (r - 1) / 2] : from === "last" ? [c - 1, r - 1] : [(from | 0) % c, Math.floor((from | 0) / c)];
+        d = Math.hypot(i % c - fi[0], Math.floor(i / c) - fi[1]);
+      } else {
+        var f = from === "center" ? (n - 1) / 2 : from === "last" ? n - 1 : from === "first" ? 0 : +from;
+        d = Math.abs(i - f);
+      }
+      return (o.start || 0) + d * step;
+    };
+  }
+  // trail: children spring in one after another when the container enters view
+  function trail(root, opts) {
+    opts = opts || {};
+    var kids = opts.items ? Array.prototype.slice.call(opts.items) : Array.prototype.slice.call(root.children);
+    if (!kids.length || root.__stTrail) return;
+    root.__stTrail = 1;
+    var fromAttr = root.getAttribute && root.getAttribute("data-st-stagger");
+    var base = typeof opts.delay === "function" ? opts.delay : stagger(opts.step || 60, { from: fromAttr && fromAttr !== "" ? fromAttr : "first" });
+    // cap the cascade so a long list never takes more than ~0.6s to settle
+    var del = function (i, n) { return base(Math.min(i, 10), Math.min(n, 11)); };
+    if (reduced()) return;
+    var dy = opts.y == null ? 24 : opts.y;
+    kids.forEach(function (k) { k.style.opacity = "0"; k.style.transform = "translateY(" + dy + "px)"; });
+    function land(k) { k.style.opacity = ""; k.style.transform = ""; }
+    inView(root, function () {
+      kids.forEach(function (k, i) {
+        setTimeout(function () {
+          spring(0, 1, function (v, done) {
+            if (done) return land(k);
+            k.style.opacity = clamp(v * 1.4, 0, 1).toFixed(3);
+            k.style.transform = "translateY(" + ((1 - v) * dy).toFixed(2) + "px)";
+          }, { config: opts.config || "default", stiffness: opts.stiffness, damping: opts.damping });
+        }, document.hidden ? 0 : del(i, kids.length));
+      });
+      // safety net: a background tab or dropped frames must never leave items hidden
+      setTimeout(function () { kids.forEach(land); }, del(kids.length - 1, kids.length) + 2200);
+    }, { once: true, margin: "0px 0px -8% 0px" });
+  }
+  // draw: strokes of an SVG (or [data-st-draw] svgs in root) draw themselves in view
+  function draw(node, opts) {
+    opts = opts || {};
+    var list = isEl(node) && node.tagName.toLowerCase() === "svg" ? [node] : els("svg[data-st-draw], [data-st-draw] svg", node || document);
+    list.forEach(function (svg) {
+      if (svg.__stDraw) return; svg.__stDraw = 1;
+      if (reduced()) return;
+      var paths = els("path,line,polyline,circle,rect,ellipse,polygon", svg).filter(function (p) {
+        var st = getComputedStyle(p);
+        return st.stroke && st.stroke !== "none" && (st.fill === "none" || p.tagName === "line" || p.tagName === "polyline") && p.getTotalLength;
+      });
+      var lens = paths.map(function (p) { var l = 0; try { l = p.getTotalLength(); } catch (e) { } return l; });
+      paths.forEach(function (p, i) { if (lens[i]) { p.style.strokeDasharray = lens[i]; p.style.strokeDashoffset = lens[i]; } });
+      var del = stagger(opts.step || 150);
+      inView(svg, function () {
+        paths.forEach(function (p, i) {
+          if (!lens[i]) return;
+          tween(lens[i], 0, function (v, done) {
+            p.style.strokeDashoffset = done ? "" : v.toFixed(1);
+            if (done) p.style.strokeDasharray = "";
+          }, { duration: opts.duration || 1600, delay: del(Math.min(i, 8), paths.length), ease: "inOut" });
+        });
+      }, { once: true });
+    });
+  }
+  // scrub: GSAP-style scroll-linked progress. Writes --st-scrub (0..1) as the element
+  // travels from entering the bottom of the viewport to leaving the top. One shared
+  // scroll listener, only for elements currently on screen.
+  var scrubSet = [], scrubOn = [], scrubBound = false, scrubQueued = false;
+  function scrubPaint() {
+    scrubQueued = false;
+    var vh = innerHeight;
+    scrubOn.forEach(function (n) {
+      var r = n.getBoundingClientRect();
+      var p = reduced() ? 1 : clamp((vh - r.top) / (vh + r.height), 0, 1);
+      n.style.setProperty("--st-scrub", p.toFixed(4));
+    });
+  }
+  function scrubQueue() { if (!scrubQueued) { scrubQueued = true; requestAnimationFrame(scrubPaint); } }
+  function scrub(node) {
+    if (!node || node.__stScrub) return; node.__stScrub = 1;
+    scrubSet.push(node);
+    node.style.setProperty("--st-scrub", reduced() ? "1" : "0");
+    if (!global.IntersectionObserver) { scrubOn.push(node); }
+    else new IntersectionObserver(function (es) {
+      es.forEach(function (e) {
+        var i = scrubOn.indexOf(e.target);
+        if (e.isIntersecting && i < 0) scrubOn.push(e.target);
+        else if (!e.isIntersecting && i >= 0) scrubOn.splice(i, 1);
+      });
+      scrubQueue();
+    }).observe(node);
+    if (!scrubBound) { scrubBound = true; addEventListener("scroll", scrubQueue, { passive: true }); addEventListener("resize", scrubQueue); }
+    scrubQueue();
+  }
+  // hover: motion.dev-style spring gesture - lift, slight tilt toward the pointer,
+  // press dip. Transform only (no layout shift); off for touch and reduced motion.
+  function hover(node, opts) {
+    opts = opts || {};
+    if (!node || node.__stHover) return; node.__stHover = 1;
+    if (reduced() || (global.matchMedia && matchMedia("(hover: none)").matches)) return;
+    var lift = opts.lift == null ? 2 : opts.lift, tilt = opts.tilt == null ? 3 : opts.tilt;
+    var st = { y: 0, rx: 0, ry: 0, s: 1 }, sp = {};
+    function paint() { node.style.transform = (st.y || st.rx || st.ry || st.s !== 1) ? "perspective(700px) translateY(" + st.y.toFixed(2) + "px) rotateX(" + st.rx.toFixed(2) + "deg) rotateY(" + st.ry.toFixed(2) + "deg) scale(" + st.s.toFixed(4) + ")" : ""; }
+    function to(k, v) {
+      if (sp[k]) sp[k].setTarget(v);
+      else sp[k] = spring(st[k], v, function (x, done) { st[k] = x; paint(); if (done) sp[k] = null; }, { config: "stiff", force: true });
+    }
+    var queued = false, lx = 0, ly = 0;
+    node.addEventListener("pointerenter", function (e) { if (e.pointerType === "touch") return; to("y", -lift); });
+    node.addEventListener("pointermove", function (e) {
+      if (e.pointerType === "touch") return;
+      lx = e.clientX; ly = e.clientY;
+      if (queued) return; queued = true;
+      requestAnimationFrame(function () {
+        queued = false;
+        var r = node.getBoundingClientRect();
+        to("ry", ((lx - r.left) / r.width - 0.5) * 2 * tilt);
+        to("rx", -((ly - r.top) / r.height - 0.5) * 2 * tilt);
+      });
+    });
+    node.addEventListener("pointerleave", function () { to("y", 0); to("rx", 0); to("ry", 0); to("s", 1); });
+    node.addEventListener("pointerdown", function () { to("s", 0.97); });
+    node.addEventListener("pointerup", function () { to("s", 1); });
+  }
+  function autoMotion() {
+    els("[data-st-stagger]").forEach(function (n) { trail(n); });
+    draw(document);
+    els("[data-st-scrub]").forEach(scrub);
+    els("[data-st-count]").forEach(function (n) { countUp(n); });
+    els("[data-st-hover], .doors > a, .st-findings li").forEach(function (n) { hover(n); });
+    if (document.body && document.body.hasAttribute("data-st-progress")) progressBar();
+  }
+
   function boot() {
-    autoChapters(); autoFindings();
+    autoChapters();
+    autoReading();   // duplicate headings hidden, anchor ids assigned (the findings list links to them)
+    autoFindings();
     try { autoGloss(); } catch (e) { if (global.console) console.error(e); }
+    try { autoGsap(); } catch (e) { if (global.console) console.error(e); }
     try { autoWords(); } catch (e) { if (global.console) console.error(e); }
     try { autoKinetic(); } catch (e) { if (global.console) console.error(e); }
     autoWayfinder();
     try { spotlight(document); } catch (e) { if (global.console) console.error(e); }
+    try { autoMotion(); } catch (e) { if (global.console) console.error(e); }
+    autoReadingLate();  // copy-link buttons, hash landing
     // ?print=1 previews the handout layout on screen; reload or call Story._printRestore() to leave it
     if (/[?&]print=1/.test(location.search)) printPrepare();
   }
@@ -4216,6 +4838,7 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     return node;
   }
   function autoKinetic() {
+    if (gsapOK()) return; // SplitText owns these headlines (see section 9)
     els("[data-st-kinetic]").forEach(function (n) { try { kinetic(n); } catch (e) { if (global.console) console.error(e); } });
   }
 
@@ -4226,7 +4849,12 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
   function viewTransition(update) {
     var done = { finished: Promise.resolve(), ready: Promise.resolve(), updateCallbackDone: Promise.resolve(), skipTransition: function () { } };
     if (!reduced() && !printing && typeof document.startViewTransition === "function") {
-      try { return document.startViewTransition(update); } catch (e) { }
+      try {
+        var vt = document.startViewTransition(update);
+        // a newer transition skips this one and rejects its promises: that is expected, not an error
+        ["ready", "finished", "updateCallbackDone"].forEach(function (k) { if (vt[k] && vt[k].catch) vt[k].catch(function () { }); });
+        return vt;
+      } catch (e) { }
     }
     try { update(); } catch (e2) { if (global.console) console.error(e2); }
     return done;
@@ -4235,8 +4863,857 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
   /* ---------------------------------------------------------
      9. export
      --------------------------------------------------------- */
+  /* ---------------------------------------------------------
+     9. Story.motion  -  GSAP + ScrollTrigger + SplitText layer (v2.0)
+     The attribute API is documented at the top of this file. Three tiers,
+     chosen once per breakpoint by gsap.matchMedia:
+       desktop  (>= 900px, motion allowed): pins, scrub, SplitText, springs
+       phone    (< 900px, motion allowed):  no pins, no scrub; one-shot reveals
+       reduced  (OS setting, ?reduced=1, print, or no GSAP): final state, no motion
+     Nothing here animates layout properties: transforms, opacity, clip-path
+     and stroke-dashoffset only.
+     --------------------------------------------------------- */
+  var M = { ready: false, mm: null, mms: [], scanned: [] };
+  var M_EASE = { out: "expo.out", soft: "power3.out", io: "power2.inOut", back: "back.out(1.6)", spring: "elastic.out(1.1,0.5)" };
+  var M_SCRUB = 0.8; // one catch-up lag for every scrubbed timeline
+  // an element GSAP drives must not also run a page CSS animation, or a CSS
+  // transition on the properties GSAP tweens: turn those off inline (restored on revert)
+  var M_TAMED = [];
+  function mTame(n) {
+    if (!n || n.__mTamed || !(n instanceof Element)) return;
+    var cs = getComputedStyle(n), fix = {};
+    if (cs.animationName && cs.animationName !== "none") fix.animation = "none";
+    var props = (cs.transitionProperty || "").split(/\s*,\s*/);
+    var durs = (cs.transitionDuration || "0s").split(/\s*,\s*/);
+    var live = props.filter(function (p, i) { return parseFloat(durs[i % durs.length]) > 0; });
+    if (live.some(function (p) { return /^(all|transform|translate|scale|rotate|opacity|visibility|filter)$/.test(p); })) {
+      var keep = live.filter(function (p) { return !/^(transform|translate|scale|rotate|opacity|visibility|filter)$/.test(p); });
+      if (keep.indexOf("all") >= 0) keep = keep.filter(function (p) { return p !== "all"; }).concat(["color", "background-color", "border-color", "box-shadow", "outline-color", "text-decoration-color"]);
+      fix.transitionProperty = keep.length ? keep.join(",") : "none";
+    }
+    if (!fix.animation && !fix.transitionProperty) return;
+    n.__mTamed = { animation: n.style.animation, transitionProperty: n.style.transitionProperty };
+    if (fix.animation) n.style.animation = "none";
+    if (fix.transitionProperty) n.style.transitionProperty = fix.transitionProperty;
+    M_TAMED.push(n);
+  }
+  function mUntameAll() {
+    M_TAMED.forEach(function (n) { var o = n.__mTamed; if (!o) return; n.style.animation = o.animation; n.style.transitionProperty = o.transitionProperty; n.__mTamed = null; });
+    M_TAMED = [];
+  }
+  function mTameAll(list) { list.forEach(mTame); return list; }
+  // one entrance per element: two .from() tweens on the same node (say a hero part
+  // that is also a reveal) capture each other's hidden start and leave it stuck
+  // half-shown. The first system to claim a node owns its entrance.
+  function mClaim(list) { return list.filter(function (n) { if (n.__mClaim) return false; n.__mClaim = 1; return true; }); }
+  function gsapOK() {
+    var g = global.gsap;
+    return !!(g && global.ScrollTrigger);
+  }
+  function mNum(v, d) { var n = parseFloat(v); return isNaN(n) ? d : n; }
+  function mSel(root, sel) {
+    var out = els(sel, root);
+    if (root && root.matches && root.matches(sel)) out.unshift(root);
+    return out;
+  }
+  // "12,345.6 %" -> {pre, value, dec, suf, sep}
+  function mParseNum(txt) {
+    var m = /^([^\d\-]*)(-?[\d,]*\.?\d+)(.*)$/.exec((txt || "").trim());
+    if (!m) return null;
+    var raw = m[2];
+    return { pre: m[1], value: parseFloat(raw.replace(/,/g, "")), dec: (raw.split(".")[1] || "").length, sep: raw.indexOf(",") >= 0, suf: m[3] };
+  }
+  function mFmtNum(p, v) {
+    var s = v.toFixed(p.dec);
+    if (p.sep) { var parts = s.split("."); parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); s = parts.join("."); }
+    return p.pre + s + p.suf;
+  }
+  function mFrom(n) {
+    var v = (n.getAttribute("data-m-from") || "up").split(/\s+/);
+    var o = { autoAlpha: 0 };
+    v.forEach(function (w) {
+      if (w === "up") o.y = 40; else if (w === "down") o.y = -40;
+      else if (w === "left") o.x = -48; else if (w === "right") o.x = 48;
+      else if (w === "scale") o.scale = 0.92; else if (w === "blur") o.filter = "blur(10px)";
+      else if (w === "clip") { o.clipPath = "inset(0 0 100% 0)"; o.autoAlpha = 1; }
+    });
+    // phones: never slide sideways (an off-screen start widens the page)
+    if (o.x && document.documentElement.classList.contains("m-phone")) { delete o.x; o.y = 24; }
+    return o;
+  }
+
+  // --- SplitText reveal (desktop and phone; reduced skips) ---
+  function mSplit(n, phone) {
+    if (!global.SplitText || n.__mSplit) return;
+    n.__mSplit = 1;
+    mTame(n);
+    // soft hyphens do not survive a split (the word breaks mid-line): reveal the block whole
+    if ((n.textContent || "").indexOf("\u00AD") >= 0) {
+      if (!mClaim([n]).length) return;
+      global.gsap.from(n, { autoAlpha: 0, y: 40, duration: 1, ease: M_EASE.out, delay: n.closest("[data-m-hero]") ? 0.15 : 0,
+        scrollTrigger: n.closest("[data-m-hero]") ? null : { trigger: n, start: "top 88%", once: true } });
+      return;
+    }
+    var type = n.getAttribute("data-m-split") || "words";
+    if (!/^(chars|words|lines)$/.test(type)) type = "words";
+    if (phone && type === "chars") type = "words";
+    var st = global.SplitText.create(n, {
+      type: type === "lines" ? "lines" : type === "chars" ? "words,chars" : "words",
+      mask: type === "chars" ? "words" : type,
+      aria: "auto",
+      // chars stay inside a no-wrap word, so a line never breaks mid-word
+      wordsClass: "m-word", charsClass: "m-char", linesClass: "m-line",
+      autoSplit: type === "lines",
+      onSplit: function (self) {
+        var parts = self[type];
+        n.setAttribute("data-m-split-done", "");
+        var hero = n.closest("[data-m-hero]");
+        var t = global.gsap.from(parts, {
+          yPercent: 110, autoAlpha: type === "chars" ? 1 : 0, rotate: type === "chars" && !phone ? 6 : 0,
+          // v2.2: the whole line is in within ~0.9s however long the headline is
+          duration: type === "chars" ? 0.6 : 0.55, ease: M_EASE.out,
+          stagger: { amount: Math.min(0.35, parts.length * (type === "chars" ? 0.022 : type === "words" ? 0.045 : 0.1)) },
+          delay: Math.min(0.3, mNum(n.getAttribute("data-m-delay"), hero ? 0.05 : 0)),
+          scrollTrigger: hero ? null : { trigger: n, start: "top 88%", once: true }
+        });
+        return t;
+      }
+    });
+    return st;
+  }
+
+  // --- pinned chapter: children with [data-m-step] play in order, scrubbed ---
+  function mPin(sec) {
+    var g = global.gsap;
+    var steps = els("[data-m-step]", sec);
+    // a chapter taller than the screen cannot pin without hiding its end: reveal its steps instead
+    if (sec.getBoundingClientRect().height > innerHeight * 1.02) {
+      mStepsOnce(steps);
+      mSel(sec, "[data-m-draw]").forEach(function (d) { mDraw(d); });
+      mSel(sec, "[data-m-bars]").forEach(function (b) { mBars(b); });
+      mSel(sec, "[data-m-count]").forEach(function (c) { mCount(c); });
+      return null;
+    }
+    // v2.2: the floating dock covers the bottom of a pinned screen; a chapter whose content
+    // cannot sit above it is revealed in normal flow instead of pinned with its end hidden
+    mCenterPin(sec);
+    if (mPinContentH(sec) > innerHeight + 1) {
+      mUncenterPin(sec);
+      mStepsOnce(steps);
+      mSel(sec, "[data-m-draw]").forEach(function (d) { mDraw(d); });
+      mSel(sec, "[data-m-bars]").forEach(function (b) { mBars(b); });
+      mSel(sec, "[data-m-count]").forEach(function (c) { mCount(c); });
+      return null;
+    }
+    steps = mTameAll(mClaim(steps));
+    var len = sec.getAttribute("data-m-pin") || (100 + steps.length * 60) + "%";
+    var tl = sec.__mTl = g.timeline({
+      defaults: { ease: "none" },
+      scrollTrigger: { trigger: sec, start: "top top", end: "+=" + len, pin: true, scrub: M_SCRUB, anticipatePin: 1, invalidateOnRefresh: true,
+        onRefreshInit: function () { mCenterPin(sec); } }
+    });
+    steps.sort(function (a, b) { return mNum(a.getAttribute("data-m-step"), 0) - mNum(b.getAttribute("data-m-step"), 0); });
+    steps.forEach(function (s, i) {
+      var at = s.getAttribute("data-m-step");
+      var pos = at && !isNaN(parseFloat(at)) ? parseFloat(at) : i;
+      tl.fromTo(s, mFrom(s), { autoAlpha: 1, x: 0, y: 0, scale: 1, filter: "blur(0px)", clipPath: "inset(0 0 0% 0)", duration: 0.6, ease: M_EASE.soft }, pos);
+      // data-m-dim used to fade the previous step to 0.35, which left explanatory text below
+      // AA contrast and read as a half-finished reveal. The newest line now leads by its
+      // entrance alone; earlier lines stay fully legible.
+    });
+    // scrubbed builds nested in a pinned chapter ride its timeline, not their own trigger
+    mSel(sec, "[data-m-draw]").forEach(function (d) { mDraw(d, tl, mNum(d.getAttribute("data-m-at"), 0)); });
+    mSel(sec, "[data-m-bars]").forEach(function (b) { mBars(b, tl, mNum(b.getAttribute("data-m-at"), 0)); });
+    mSel(sec, "[data-m-count]").forEach(function (c) { mCount(c, tl, mNum(c.getAttribute("data-m-at"), 0)); });
+    // where the first step has fully landed: anchors into this chapter stop here, not on a blank frame
+    sec.__mFirstAt = steps.length ? Math.min.apply(null, steps.map(function (s, i) { var at = s.getAttribute("data-m-step"); return at && !isNaN(parseFloat(at)) ? parseFloat(at) : i; })) + 0.6 : 0;
+    var prog = el("[data-m-progress]", sec);
+    if (prog) tl.fromTo(prog, { scaleX: 0 }, { scaleX: 1, transformOrigin: "0 50%", duration: tl.duration() || 1 }, 0);
+    return tl;
+  }
+
+  // a pinned chapter shorter than the screen would leave a dead strip under it:
+  // centre its content in a screen-tall box. Uses the section's own layout mode,
+  // set inline so page CSS cannot undo it; restored when motion is reverted.
+  function mCenterPin(sec) {
+    if (!sec.__mPinOrig) sec.__mPinOrig = { display: sec.style.display, fd: sec.style.flexDirection, jc: sec.style.justifyContent, ac: sec.style.alignContent, mh: sec.style.minHeight, pb: sec.style.paddingBottom };
+    var o = sec.__mPinOrig;
+    sec.style.minHeight = o.mh; sec.style.justifyContent = o.jc; sec.style.alignContent = o.ac; sec.style.display = o.display; sec.style.flexDirection = o.fd; sec.style.paddingBottom = o.pb;
+    var cs = getComputedStyle(sec), d = cs.display;
+    sec.style.minHeight = innerHeight + "px";
+    // centre in the part of the screen the dock leaves free
+    var dc = dockClear();
+    if (dc > (parseFloat(cs.paddingBottom) || 0)) sec.style.paddingBottom = dc + "px";
+    if (/grid/.test(d)) sec.style.alignContent = "center";
+    else if (/flex/.test(d)) { if (/column/.test(cs.flexDirection)) sec.style.justifyContent = "center"; else sec.style.alignItems = sec.style.alignItems || "center"; }
+    else { sec.style.display = "flex"; sec.style.flexDirection = "column"; sec.style.justifyContent = "center"; }
+  }
+  // height the chapter's content needs: its in-flow children plus its own padding
+  function mPinContentH(sec) {
+    var lo = Infinity, hi = -Infinity;
+    Array.prototype.forEach.call(sec.children, function (k) {
+      var c = getComputedStyle(k);
+      if (c.position === "absolute" || c.position === "fixed" || c.display === "none") return;
+      var r = k.getBoundingClientRect(); if (!r.height) return;
+      lo = Math.min(lo, r.top - (parseFloat(c.marginTop) || 0)); hi = Math.max(hi, r.bottom + (parseFloat(c.marginBottom) || 0));
+    });
+    if (!isFinite(lo)) return 0;
+    var cs = getComputedStyle(sec);
+    return hi - lo + (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+  }
+  function mUncenterPin(sec) {
+    var o = sec.__mPinOrig; if (!o) return;
+    sec.style.display = o.display; sec.style.flexDirection = o.fd; sec.style.justifyContent = o.jc; sec.style.alignContent = o.ac; sec.style.minHeight = o.mh; sec.style.paddingBottom = o.pb || "";
+    sec.__mPinOrig = null;
+  }
+  function mUncenterPins() {
+    els("[data-m-pin]").forEach(function (sec) {
+      var o = sec.__mPinOrig; if (!o) return;
+      sec.style.display = o.display; sec.style.flexDirection = o.fd; sec.style.justifyContent = o.jc; sec.style.alignContent = o.ac; sec.style.minHeight = o.mh; sec.style.paddingBottom = o.pb || "";
+      sec.__mPinOrig = null;
+    });
+  }
+  // phone (or an over-tall chapter): the chapter scrolls normally and each step reveals once
+  function mStepsOnce(steps) {
+    steps = mTameAll(mClaim(steps));
+    steps.forEach(function (s) {
+      global.gsap.from(s, { autoAlpha: 0, y: 24, duration: 0.7, ease: M_EASE.out, scrollTrigger: { trigger: s, start: "top 88%", once: true } });
+    });
+  }
+
+  // --- stroke draw for every path/line/polyline/circle inside (or the node itself) ---
+  function mDrawables(n) {
+    var sel = "path,line,polyline,polygon,circle,ellipse,rect";
+    var only = n.getAttribute("data-m-draw");
+    if (only && only !== "" && only !== "all" && only !== "true") sel = only;
+    return mSel(n, sel).filter(function (p) {
+      if (typeof p.getTotalLength !== "function") return false;
+      var cs = getComputedStyle(p);
+      if (!cs.stroke || cs.stroke === "none" || !(parseFloat(cs.strokeWidth) > 0)) return false;
+      if (cs.strokeDasharray && cs.strokeDasharray !== "none") return false; // dashed on purpose: leave it
+      var tag = p.tagName.toLowerCase();
+      return tag === "line" || tag === "polyline" || cs.fill === "none" || p.hasAttribute("data-m-line");
+    });
+  }
+  function mDraw(n, tl, at) {
+    if (n.__mDraw) return; n.__mDraw = 1;
+    var g = global.gsap, paths = mDrawables(n);
+    if (!paths.length) return;
+    paths.forEach(function (p) {
+      var L = 0; try { L = p.getTotalLength(); } catch (e) { L = 0; }
+      if (!L) return;
+      p.style.strokeDasharray = L + " " + L;
+      p.__mLen = L;
+    });
+    var live = paths.filter(function (p) { return p.__mLen; });
+    if (!live.length) return; // hidden or zero-length (e.g. a desktop-only SVG on a phone)
+    var vars = { strokeDashoffset: 0, duration: 1, ease: "none", stagger: 0.08 };
+    var from = { strokeDashoffset: function (i, p) { return p.__mLen; } };
+    if (tl) { tl.fromTo(live, from, vars, at || 0); return; }
+    vars.scrollTrigger = { trigger: n, start: n.getAttribute("data-m-start") || "top 80%", end: n.getAttribute("data-m-end") || "bottom 45%", scrub: M_SCRUB };
+    g.fromTo(live, from, vars);
+  }
+  // --- bars grow from their baseline: data-m-bars="y" (default) or "x" ---
+  function mBars(n, tl, at) {
+    if (n.__mBars) return; n.__mBars = 1;
+    var g = global.gsap, axis = n.getAttribute("data-m-bars") === "x" ? "x" : "y";
+    var sel = n.getAttribute("data-m-bar") || (n.tagName.toLowerCase() === "svg" || n instanceof SVGElement ? "rect" : ":scope > *");
+    var bars = els(sel, n).filter(function (b) {
+      if (b.tagName.toLowerCase() !== "rect") return true;
+      var bb; try { bb = b.getBBox(); } catch (e) { return false; }
+      return bb.width > 0 && bb.height > 0 && !(bb.width > 400 && bb.height > 200);
+    });
+    if (!bars.length) return;
+    var from = axis === "y" ? { scaleY: 0, transformOrigin: "50% 100%" } : { scaleX: 0, transformOrigin: "0% 50%" };
+    var to = { scaleY: 1, scaleX: 1, duration: 0.8, ease: M_EASE.soft, stagger: 0.06 };
+    bars.forEach(function (b) { if (b instanceof SVGElement) b.style.transformBox = "fill-box"; });
+    if (tl) { tl.fromTo(bars, from, to, at || 0); return; }
+    mTameAll(bars.filter(function (b) { return !(b instanceof SVGElement); }));
+    to.scrollTrigger = { trigger: n, start: "top 82%", end: "bottom 50%", scrub: M_SCRUB };
+    g.fromTo(bars, from, to);
+  }
+  // --- counters: the element's own text is the final value ---
+  function mCount(n, tl, at) {
+    if (n.__mCount) return; n.__mCount = 1;
+    var p = mParseNum(n.getAttribute("data-m-count") || n.textContent);
+    if (!p) return;
+    var final = n.textContent;
+    var o = { v: 0 };
+    n.setAttribute("aria-label", final.trim());
+    // land on the page's own text exactly (formatting, spaces, units), never a rounded neighbour
+    var step = Math.pow(10, -p.dec) / 2;
+    function upd() { n.textContent = Math.abs(p.value - o.v) < step ? final : mFmtNum(p, o.v); }
+    var vars = { v: p.value, duration: 1.6, ease: M_EASE.soft, onUpdate: upd, onComplete: function () { n.textContent = final; } };
+    upd();
+    if (tl) {
+      // inside a pin the count plays in time once its moment is reached, then holds the
+      // exact figure: a scrubbed counter at rest mid-pin would show a number the data never said
+      var played = false;
+      tl.call(function () {
+        if (played) return; played = true;
+        global.gsap.to(o, { v: p.value, duration: 1.2, ease: M_EASE.soft, onUpdate: upd, onComplete: function () { n.textContent = final; } });
+      }, null, at || 0);
+      return;
+    }
+    vars.scrollTrigger = { trigger: n, start: "top 88%", once: true };
+    global.gsap.to(o, vars);
+  }
+  // --- one-shot reveal of an element or of its children ---
+  function mReveal(n) {
+    if (n.__mRev) return; n.__mRev = 1;
+    var kids = mClaim(n.hasAttribute("data-m-stagger") ? Array.prototype.slice.call(n.children) : [n]);
+    if (!kids.length) return;
+    mTameAll(kids);
+    var from = mFrom(n); from.duration = 0.9; from.ease = M_EASE.out;
+    from.stagger = mNum(n.getAttribute("data-m-stagger"), 0.08) || 0.08;
+    from.scrollTrigger = { trigger: n, start: n.getAttribute("data-m-start") || "top 85%", once: true };
+    global.gsap.from(kids, from);
+  }
+  // --- parallax drift: data-m-parallax="-12" = yPercent at the end of the pass ---
+  function mParallax(n) {
+    var v = mNum(n.getAttribute("data-m-parallax"), -10);
+    global.gsap.fromTo(n, { yPercent: -v / 2 }, { yPercent: v / 2, ease: "none", scrollTrigger: { trigger: n.parentElement || n, start: "top bottom", end: "bottom top", scrub: true } });
+  }
+  // --- spring hover and press (elastic settle, no layout properties) ---
+  function mSpring(n) {
+    if (n.__mSpring) return; n.__mSpring = 1;
+    var g = global.gsap, amt = mNum(n.getAttribute("data-m-spring"), 1) || 1;
+    mTame(n);
+    var qs = g.quickTo(n, "scale", { duration: 0.55, ease: M_EASE.spring });
+    var qy = g.quickTo(n, "y", { duration: 0.55, ease: M_EASE.spring });
+    function on(e) { if (e.pointerType === "touch") return; qs(1 + 0.035 * amt); qy(-3 * amt); }
+    function off() { qs(1); qy(0); }
+    n.addEventListener("pointerenter", on);
+    n.addEventListener("pointerleave", off);
+    n.addEventListener("pointerdown", function () { qs(1 - 0.04 * amt); });
+    n.addEventListener("pointerup", function (e) { if (e.pointerType === "touch") off(); else on(e); });
+    n.addEventListener("focus", function () { qs(1 + 0.02 * amt); });
+    n.addEventListener("blur", off);
+    return function () { g.set(n, { clearProps: "transform" }); };
+  }
+  // --- layout transition for filters and tabs: record before the click handler runs ---
+  function mFlip(box) {
+    if (box.__mFlip || !global.Flip) return; box.__mFlip = 1;
+    var sel = box.getAttribute("data-m-flip") || ":scope > *";
+    function targets() { return els(sel, box); }
+    box.addEventListener("click", function (e) {
+      if (!e.target.closest("button,[role=tab],a[href^='#'],input,label")) return;
+      if (reduced()) return;
+      var state = global.Flip.getState(targets());
+      requestAnimationFrame(function () {
+        global.Flip.from(state, { duration: 0.6, ease: M_EASE.out, absolute: false, nested: true, prune: true,
+          onEnter: function (els2) { return global.gsap.fromTo(els2, { autoAlpha: 0, scale: 0.94 }, { autoAlpha: 1, scale: 1, duration: 0.5 }); },
+          onLeave: function (els2) { return global.gsap.to(els2, { autoAlpha: 0, scale: 0.94, duration: 0.3 }); } });
+      });
+    }, true);
+  }
+  // --- cinematic hero: headline chars, then lede, actions and visual ---
+  function mHero(h, phone) {
+    var g = global.gsap, tl = g.timeline({ defaults: { ease: M_EASE.out } });
+    var parts = mTameAll(mClaim(els("[data-m-hero-part]", h)));
+    if (!parts.length) return tl;
+    // v2.2: the words a reader is waiting for (headline, answer, primary action) start within
+    // ~0.3s and are fully in by ~0.9s; only the decorative visual takes longer
+    var ti = 0;
+    parts.forEach(function (p) {
+      var kind = p.getAttribute("data-m-hero-part");
+      if (kind === "visual") tl.from(p, { autoAlpha: 0, scale: phone ? 0.96 : 0.86, rotate: phone ? 0 : -6, duration: 1.2, ease: M_EASE.out }, 0);
+      else if (kind === "rule") tl.from(p, { scaleX: 0, transformOrigin: "0 50%", duration: 0.8, ease: M_EASE.io }, 0.05 + Math.min(ti++, 4) * 0.07);
+      else tl.from(p, { autoAlpha: 0, y: 18, duration: 0.55 }, 0.05 + Math.min(ti++, 4) * 0.07);
+    });
+    if (!phone) {
+      // the hero drifts apart as it leaves: copy rises, visual sinks
+      var copy = el("[data-m-hero-copy]", h), vis = el("[data-m-hero-part=visual]", h);
+      var exit = { trigger: h, start: "top top", end: "bottom top", scrub: true };
+      if (copy) g.to(copy, { yPercent: -18, autoAlpha: 0.2, ease: "none", scrollTrigger: exit });
+      if (vis) g.to(vis, { yPercent: 14, scale: 0.94, ease: "none", scrollTrigger: exit });
+    }
+    return tl;
+  }
+
+  // set up a root added after boot (new DOM); elements already set up are skipped by their guards
+  function motionScan(root) {
+    root = root || document;
+    if (!gsapOK() || !M.mm) return false;
+    M.scanned.push(root);
+    motionSetup(root, true);
+    return true;
+  }
+  function motionSetup(root, extra) {
+    var g = global.gsap;
+    root = root || document;
+    var desk = "(min-width: 900px) and (prefers-reduced-motion: no-preference)";
+    var phone = "(max-width: 899.98px) and (prefers-reduced-motion: no-preference)";
+    var mm = g.matchMedia();
+    M.mms.push(mm);
+    if (!extra) M.mm = mm;
+    mm.add({ desk: desk, phone: phone }, function (ctx) {
+      if (forceReduced || printing) return;
+      var isPhone = !!ctx.conditions.phone;
+      document.documentElement.classList.add("m-on", isPhone ? "m-phone" : "m-desk");
+      mSel(root, "[data-m-hero]").forEach(function (h) { mHero(h, isPhone); });
+      mSel(root, "[data-m-split]").forEach(function (n) { mSplit(n, isPhone); });
+      if (!isPhone) mSel(root, "[data-m-pin]").forEach(mPin);
+      else mStepsOnce(mSel(root, "[data-m-pin] [data-m-step]"));
+      var loose = function (n) { return isPhone || !n.closest("[data-m-pin]"); };
+      mSel(root, "[data-m-draw]").filter(loose).forEach(function (n) { mDraw(n); });
+      mSel(root, "[data-m-bars]").filter(loose).forEach(function (n) { mBars(n); });
+      mSel(root, "[data-m-count]").filter(loose).forEach(function (n) { mCount(n); });
+      mSel(root, "[data-m-reveal]").forEach(mReveal);
+      if (!isPhone) mSel(root, "[data-m-parallax]").forEach(mParallax);
+      mSel(root, "[data-m-spring]").forEach(mSpring);
+      mSel(root, "[data-m-flip]").forEach(mFlip);
+      // triggers were created by kind, not in page order: order them by position so
+      // everything below a pin accounts for its spacer
+      global.ScrollTrigger.sort();
+      return function () {
+        // leaving a breakpoint: gsap.matchMedia reverts tweens; clear our guards so the next tier rebuilds
+        mSel(root, "[data-m-split],[data-m-draw],[data-m-bars],[data-m-count],[data-m-reveal],[data-m-spring],[data-m-flip]").forEach(function (n) {
+          n.__mSplit = n.__mDraw = n.__mBars = n.__mCount = n.__mRev = n.__mSpring = n.__mFlip = 0;
+        });
+        mSel(root, "[data-m-hero-part],[data-m-step],[data-m-reveal],[data-m-reveal] > *,[data-m-split]").forEach(function (n) { n.__mClaim = 0; });
+        mUntameAll();
+        mUncenterPins();
+        document.documentElement.classList.remove("m-on", "m-phone", "m-desk");
+      };
+    });
+    if (!extra) mSettle();
+  }
+  // late fonts and images change heights: re-measure once each has settled, then
+  // land any #hash on its final position (pins add spacer height after first layout)
+  var mSettled = false, mUserScrolled = false;
+  function mSettle() {
+    if (mSettled) return; mSettled = true;
+    var ST = global.ScrollTrigger;
+    ST.config({ ignoreMobileResize: true });
+    ["wheel", "touchstart", "keydown", "pointerdown"].forEach(function (ev) {
+      addEventListener(ev, function () { mUserScrolled = true; }, { passive: true, once: true });
+    });
+    var fontsDone = !(document.fonts && document.fonts.ready), loadDone = document.readyState === "complete";
+    function settle() { if (!(fontsDone && loadDone)) return; ST.refresh(); mLandHash(); }
+    if (!fontsDone) document.fonts.ready.then(function () { fontsDone = true; ST.refresh(); settle(); }, function () { fontsDone = true; settle(); });
+    if (!loadDone) addEventListener("load", function () { loadDone = true; settle(); }, { once: true });
+    settle();
+    // content above a pin that grows later (charts drawn on idle, lazy images, late
+    // widgets) would leave every trigger below it stale: re-measure when the page
+    // height changes by itself, debounced, and ignore the change a refresh makes
+    if (global.ResizeObserver && document.body) {
+      var lastH = -1, tid = 0;
+      ST.addEventListener("refresh", function () { lastH = document.body.offsetHeight; });
+      new ResizeObserver(function () {
+        clearTimeout(tid);
+        tid = setTimeout(function () {
+          var h = document.body.offsetHeight;
+          if (lastH < 0 || Math.abs(h - lastH) < 2) return;
+          ST.refresh();
+        }, 180);
+      }).observe(document.body);
+    }
+    // back/forward cache: layout may have changed while the page was frozen
+    addEventListener("pageshow", function (e) { if (e.persisted) ST.refresh(); });
+    // in-page links whose target sits inside a pinned chapter go to the pin start
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest("a[href^='#']");
+      if (!a || a.getAttribute("href").length < 2) return;
+      var t = hashTargetEl(a.getAttribute("href"));
+      if (!t || !mPinOf(t)) return;
+      e.preventDefault();
+      var smooth = !reduced() && getComputedStyle(document.documentElement).scrollBehavior === "smooth";
+      scrollTo({ top: mAnchorY(t), behavior: smooth ? "smooth" : "auto" });
+      if (!smooth) mSnapPin(t);
+      if (history.pushState) history.pushState(null, "", a.getAttribute("href"));
+      // the target may still be hidden by the chapter's first step: focus the chapter then
+      var f = getComputedStyle(t).visibility === "hidden" ? mPinOf(t).pin : t;
+      if (!f.hasAttribute("tabindex") && !/^(A|BUTTON|INPUT|SELECT|TEXTAREA)$/.test(f.tagName)) f.setAttribute("tabindex", "-1");
+      try { f.focus({ preventScroll: true }); } catch (e2) { }
+    });
+  }
+  function mHashTarget(h) {
+    if (!h || h.length < 2) return null;
+    try { return document.getElementById(decodeURIComponent(h.slice(1))); } catch (e) { return null; }
+  }
+  function mPinOf(t) {
+    var hit = null;
+    global.ScrollTrigger.getAll().forEach(function (s) { if (!hit && s.pin && (s.pin === t || s.pin.contains(t))) hit = s; });
+    return hit;
+  }
+  function mAnchorY(t) {
+    var s = mPinOf(t);
+    if (s) {
+      // v2.2: land where the chapter's build is complete (every step shown), just before it unpins
+      return Math.max(Math.ceil(s.start) + 1, Math.floor(s.end) - 2);
+    }
+    var sm = parseFloat(getComputedStyle(t).scrollMarginTop) || 0;
+    return Math.max(0, t.getBoundingClientRect().top + scrollY - sm);
+  }
+  function mLandHash() {
+    if (mUserScrolled) return;
+    landHash();
+  }
+  // after an instant jump, skip the scrub catch-up so the chapter is not replayed from blank
+  function mSnapPin(t) {
+    var s = mPinOf(t);
+    if (!s) return;
+    requestAnimationFrame(function () { var tw = s.getTween && s.getTween(); if (tw) tw.progress(1); });
+  }
+  function mReady() { document.documentElement.classList.add("m-ready"); }
+  function autoGsap() {
+    if (!gsapOK()) { document.documentElement.classList.add("m-off"); mReady(); return; }
+    var plugins = [global.ScrollTrigger];
+    if (global.SplitText) plugins.push(global.SplitText);
+    if (global.Flip) plugins.push(global.Flip);
+    global.gsap.registerPlugin.apply(global.gsap, plugins);
+    // legacy aliases: one API. v1.4 kinetic headlines become SplitText word reveals.
+    els("[data-st-kinetic]").forEach(function (n) { if (!n.hasAttribute("data-m-split")) n.setAttribute("data-m-split", "words"); });
+    motionSetup(document);
+    M.ready = true;
+    mReady();
+  }
+  function motionKill() { M.mms.forEach(function (mm) { mm.revert(); }); M.mms = []; M.mm = null; mUntameAll(); mUncenterPins(); }
+
+  /* ---------------------------------------------------------
+     10. v2.2 reading layer: one statement once, shareable anchors,
+         data tables under figures, hash landing
+     --------------------------------------------------------- */
+  function normText(s) {
+    return (s || "").replace(/­/g, "").replace(/\s+/g, " ").replace(/[‘’]/g, "'").replace(/[“”]/g, '"')
+      .trim().toLowerCase().replace(/[.,:;!?…]+$/, "");
+  }
+  /* Story.dedupe(): a chapter card states a finding; when the section right after it
+     opens with a heading that says the same sentence (equal, or one contains the other,
+     after case and whitespace are normalised), that second heading is hidden from view
+     and from assistive tech (class st-dup, aria-hidden). Links to its id land on the
+     chapter. Opt out per heading or section with data-st-keep; per page with
+     <body data-st-dedupe="off">. Force it with data-st-dup-of="#chapterId". */
+  function markDup(h, owner) {
+    if (h.classList.contains("st-dup")) return;
+    h.classList.add("st-dup");
+    h.setAttribute("aria-hidden", "true");
+    h.__stDupOf = owner;
+  }
+  function dedupe() {
+    if (document.body && document.body.getAttribute("data-st-dedupe") === "off") return 0;
+    var n0 = els(".st-dup").length;
+    els(".st-chapter").forEach(function (c) {
+      var t = c.querySelector("h2,.st-chapter-title");
+      if (!t) return;
+      var a = normText(t.textContent);
+      if (a.length < 16) return;
+      for (var n = c.nextElementSibling, hops = 0; n && hops < 2 && !n.classList.contains("st-chapter"); n = n.nextElementSibling, hops++) {
+        if (n.hasAttribute("data-st-keep")) continue;
+        var hs = n.matches("h1,h2,h3") ? [n] : els("h2,h3", n).filter(function (h) { return !h.closest(".st-step,.st-findings,.st-chapter,figure,[data-st-keep]"); }).slice(0, 2);
+        hs.forEach(function (h) {
+          if (h.hasAttribute("data-st-keep")) return;
+          var b = normText(h.textContent);
+          if (b.length < 16) return;
+          if (a === b || (a.length >= 24 && b.indexOf(a) >= 0) || (b.length >= 24 && a.indexOf(b) >= 0)) markDup(h, c);
+        });
+      }
+    });
+    els("[data-st-dup-of]").forEach(function (h) {
+      var o = null; try { o = document.querySelector(h.getAttribute("data-st-dup-of")); } catch (e) { }
+      if (o) markDup(h, o);
+    });
+    return els(".st-dup").length - n0;
+  }
+
+  /* Story.anchors(): every chapter, scene and finding gets a stable id (existing ids are
+     kept; new ones are slugs of the heading text) and a copy-link button after its
+     heading. The button shows on hover and keyboard focus, always on touch screens,
+     and has a 44px hit area; copying announces "Link copied" politely.
+     Targets: .st-chapter, .st-scene (or the section[id] that holds it), .finding,
+     [data-st-anchor]. Skip one with data-st-anchor="off". */
+  var ANCHOR_SEL = ".st-chapter,.st-scene,.finding,[data-st-anchor]";
+  function slugify(s) {
+    s = (s || "").toLowerCase();
+    if (s.normalize) s = s.normalize("NFKD").replace(/[̀-ͯ]/g, "");
+    return s.replace(/&/g, " and ").replace(/%/g, " pct ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "")
+      .split("-").filter(Boolean).slice(0, 7).join("-");
+  }
+  function anchorHeading(n) {
+    if (n.matches("h1,h2,h3,h4")) return n;
+    var h = els("h2,.st-chapter-title,h3,.f-title,h4", n).filter(function (x) { return !x.closest(".st-step,.st-findings,.st-data,figure"); })[0];
+    if (h) return h;
+    if (n.classList.contains("st-scene")) {
+      // a scene's title usually sits just before it (".scene-head h2")
+      for (var p = n.previousElementSibling, k = 0; p && k < 2; p = p.previousElementSibling, k++) {
+        var q = p.matches("h2,h3") ? p : p.querySelector("h2,h3");
+        if (q) return q;
+      }
+    }
+    return null;
+  }
+  function anchorTarget(n) {
+    // a scene inside a section that already has an id: that section is the anchor
+    if (n.classList.contains("st-scene") && !n.id) {
+      var sec = n.parentElement && n.parentElement.closest("section[id],article[id]");
+      if (sec && els(".st-scene", sec).length === 1 && !sec.classList.contains("st-chapter")) return sec;
+    }
+    return n;
+  }
+  var anchorList = [];
+  function anchorIds() {
+    var used = Object.create(null);
+    els("[id]").forEach(function (x) { used[x.id] = 1; });
+    els(ANCHOR_SEL).forEach(function (n) {
+      if (n.getAttribute("data-st-anchor") === "off" || n.closest(".st-way,.st-way-map,.st-findings,.st-print-terms")) return;
+      var t = anchorTarget(n);
+      if (t.__stAnchor) return;
+      var h = anchorHeading(n);
+      if (!t.id) {
+        var base = slugify(h ? h.textContent : "") || (n.classList.contains("st-scene") ? "scene-" + (n.getAttribute("data-scene") || "") : n.classList.contains("st-chapter") ? "chapter-" + (n.getAttribute("data-num") || "") : "section");
+        base = base.replace(/-$/, "") || "section";
+        var id = base, k = 2;
+        while (used[id]) id = base + "-" + (k++);
+        t.id = id; used[id] = 1;
+      }
+      t.__stAnchor = { heading: h, target: t };
+      anchorList.push(t);
+    });
+  }
+  var LINK_ICON = "M10 13a5 5 0 0 0 7.07 0l3-3a5 5 0 0 0-7.07-7.07l-1.5 1.5 M14 11a5 5 0 0 0-7.07 0l-3 3a5 5 0 0 0 7.07 7.07l1.5-1.5";
+  function anchorButtons() {
+    anchorList.forEach(function (t) {
+      var a = t.__stAnchor, h = a.heading;
+      if (!h || h.classList.contains("st-dup") || h.closest(".st-dup") || !h.getClientRects().length) return;
+      if (a.btn && a.btn.isConnected) return;
+      if (pageHasOwnLink(h, t)) return;
+      var b = a.btn;
+      if (!b) {
+        b = document.createElement("button");
+        b.type = "button"; b.className = "st-anchor st-hide-on-present";
+        b.setAttribute("data-st-link", t.id);
+        var label = (h.getAttribute("aria-label") || h.textContent || "").replace(/\s+/g, " ").trim();
+        if (label.length > 90) label = label.slice(0, 87) + "...";
+        b.setAttribute("aria-label", "Copy link to this section: " + label);
+        b.title = "Copy link";
+        var svg = mk("svg", { viewBox: "0 0 24 24", width: 18, height: 18, "aria-hidden": "true", focusable: "false", fill: "none" }, b);
+        mk("path", { d: LINK_ICON, stroke: "currentColor", "stroke-width": 2, "stroke-linecap": "round", "stroke-linejoin": "round" }, svg);
+        a.btn = b;
+      }
+      // a sibling right after the heading (keyboard order: heading, then its link), placed at
+      // the end of the heading's last line by placeAnchors(). Inside the heading it would be
+      // rebuilt away by split-text reveals.
+      h.insertAdjacentElement("afterend", b);
+      h.classList.add("st-anchored");
+    });
+    placeAnchors();
+    if (!anchorWired) {
+      anchorWired = true;
+      document.addEventListener("click", function (e) {
+        var b = e.target.closest && e.target.closest(".st-anchor[data-st-link]");
+        if (!b) return;
+        e.preventDefault(); e.stopPropagation();
+        copyLink(b.getAttribute("data-st-link"));
+      });
+      var q = 0, again = function () { if (!q) q = requestAnimationFrame(function () { q = 0; placeAnchors(); }); };
+      addEventListener("resize", again);
+      addEventListener("load", again);
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(again, function () { });
+      // split headlines settle after their entrance; pinned chapters move their content
+      [400, 1400, 3000].forEach(function (ms) { setTimeout(again, ms); });
+      if (global.ResizeObserver) sizeObserverAll(anchorList.map(function (n) { return n.__stAnchor.heading; }).filter(Boolean), again);
+      if (gsapOK() && global.ScrollTrigger) global.ScrollTrigger.addEventListener("refresh", again);
+    }
+  }
+  var anchorWired = false;
+  // a page that already puts its own copy-link control on this heading keeps it
+  function pageHasOwnLink(h, t) {
+    var scopes = [h, h.parentElement].filter(Boolean);
+    return scopes.some(function (s) {
+      return els("button,a", s).some(function (b) {
+        if (b.classList.contains("st-anchor")) return false;
+        var lab = (b.getAttribute("aria-label") || "") + " " + (b.getAttribute("title") || "") + " " + (typeof b.className === "string" ? b.className : "");
+        if (b.tagName === "BUTTON") return /copy[- ]?link|link to|\blink\b|permalink/i.test(lab);
+        return t.id && b.getAttribute("href") === "#" + t.id && /anchor|permalink|copy|\blink\b/i.test(lab);
+      });
+    });
+  }
+  function placeAnchors() {
+    var vw = document.documentElement.clientWidth;
+    anchorList.forEach(function (t) {
+      var a = t.__stAnchor, b = a && a.btn, h = a && a.heading;
+      if (!b || !b.isConnected || !h) return;
+      // the page added its own link control after the engine booted: keep one
+      if (pageHasOwnLink(h, t)) { b.remove(); h.classList.remove("st-anchored"); return; }
+      var op = b.offsetParent;
+      if (!op) return;
+      var or = op.getBoundingClientRect(), hr = h.getBoundingClientRect();
+      if (!hr.height) return;
+      var cs = getComputedStyle(h), fs = parseFloat(cs.fontSize) || 16;
+      var lh = parseFloat(cs.lineHeight); if (!lh) lh = fs * 1.2;
+      var lastTop = hr.bottom - (parseFloat(cs.paddingBottom) || 0) - (parseFloat(cs.borderBottomWidth) || 0) - lh;
+      var rg = document.createRange(); rg.selectNodeContents(h);
+      var right = -Infinity;
+      Array.prototype.forEach.call(rg.getClientRects(), function (r) { if (r.width > 0 && (r.top + r.bottom) / 2 >= lastTop) right = Math.max(right, r.right); });
+      if (!isFinite(right)) right = hr.right;
+      var size = 44;
+      var x = right + Math.min(8, fs * 0.2) - 10;           // the icon, not the hit box, sits next to the last word
+      var maxX = Math.min(or.right, vw - 4) - size;
+      if (x > maxX) x = maxX;
+      var y = lastTop + lh / 2 - size / 2;
+      b.style.left = Math.round(x - or.left - op.clientLeft) + "px";
+      b.style.top = Math.round(y - or.top - op.clientTop) + "px";
+      b.classList.add("is-placed");
+    });
+  }
+  var toastEl = null, toastT = 0;
+  function toast(msg) {
+    if (!toastEl) {
+      toastEl = html("div", "st-toast st-hide-on-present", document.body);
+      toastEl.setAttribute("role", "status");
+      toastEl.setAttribute("aria-live", "polite");
+    }
+    toastEl.textContent = "";
+    // a fresh text node after a tick so a repeated message is announced again
+    setTimeout(function () { toastEl.textContent = msg; toastEl.classList.add("is-on"); }, 30);
+    clearTimeout(toastT);
+    toastT = setTimeout(function () { toastEl.classList.remove("is-on"); }, 2200);
+  }
+  function copyLink(id) {
+    var url = location.href.split("#")[0] + "#" + encodeURIComponent(id);
+    try { if (history.replaceState) history.replaceState(history.state, "", "#" + encodeURIComponent(id)); } catch (e) { }
+    function fallback() {
+      var ta = document.createElement("textarea");
+      ta.value = url; ta.setAttribute("readonly", ""); ta.style.position = "fixed"; ta.style.opacity = "0"; ta.style.top = "0";
+      document.body.appendChild(ta); ta.select();
+      var ok = false; try { ok = document.execCommand("copy"); } catch (e) { }
+      ta.remove();
+      toast(ok ? "Link copied" : "Link is in the address bar");
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText && global.isSecureContext !== false) {
+      navigator.clipboard.writeText(url).then(function () { toast("Link copied"); }, fallback);
+    } else fallback();
+  }
+
+  /* Story.dataTable(figureEl, {caption, columns, rows, source, summary, open, into})
+     Puts a "Data" disclosure holding a real <table> of the plotted numbers under a
+     figure (after the whole scene when the figure sits in a pinned stage).
+       columns: ["Year", "TRIR"] or [{label, key, num, digits, fmt}]
+       rows:    [[2019, 3.1], ...] or [{year: 2019, trir: 3.1}, ...] (keys from columns)
+     Numbers are printed as given (thousands separators added, never rounded unless
+     digits or fmt says so). The first column is a row header. Returns the <details>. */
+  function dataTable(fig, o) {
+    fig = isEl(fig) ? fig : el(fig);
+    o = o || {};
+    if (!fig) return null;
+    var cols = (o.columns || []).map(function (c) { return typeof c === "string" ? { label: c } : c; });
+    var rows = o.rows || [];
+    if (!cols.length && rows.length) cols = (Array.isArray(rows[0]) ? rows[0] : Object.keys(rows[0])).map(function (x, i) { return { label: Array.isArray(rows[0]) ? "Column " + (i + 1) : x, key: Array.isArray(rows[0]) ? null : x }; });
+    function cell(r, c, i) { return Array.isArray(r) ? r[i] : r[c.key != null ? c.key : c.label]; }
+    cols.forEach(function (c, i) {
+      if (c.num == null) c.num = rows.length > 0 && rows.every(function (r) { var v = cell(r, c, i); return v == null || v === "" || typeof v === "number" || /^[-+]?[$]?[\d,]*\.?\d+%?$/.test(String(v).trim()); });
+    });
+    function show(v, c) {
+      if (v == null || v === "") return "";
+      if (c.fmt) return String(c.fmt(v));
+      if (typeof v === "number") {
+        if (c.digits != null) v = Number(v.toFixed(c.digits));
+        var s = String(v), m = /^(-?)(\d+)(\.\d+)?$/.exec(s);
+        if (m && m[2].length > 4) s = m[1] + m[2].replace(/\B(?=(\d{3})+(?!\d))/g, ",") + (m[3] || "");
+        if (c.digits != null && m) { var parts = s.split("."); s = parts[0] + (c.digits > 0 ? "." + ((parts[1] || "") + "0000000000").slice(0, c.digits) : ""); }
+        return s;
+      }
+      return String(v);
+    }
+    var d = document.createElement("details");
+    d.className = "st-data";
+    var sm = html("summary", "", d);
+    var lab = html("span", "st-data-lab", sm); lab.textContent = o.summary || "Data";
+    var cnt = html("span", "st-data-n", sm); cnt.textContent = rows.length + (rows.length === 1 ? " row" : " rows");
+    var wrap = html("div", "st-data-scroll", d);
+    wrap.tabIndex = 0;
+    wrap.setAttribute("role", "region");
+    wrap.setAttribute("aria-label", (o.caption || "Data") + ", table");
+    var tb = html("table", "", wrap);
+    if (o.caption) { var cap = tb.createCaption(); cap.textContent = o.caption; }
+    var thead = html("thead", "", tb), tr = html("tr", "", thead);
+    cols.forEach(function (c) { var th = html("th", c.num ? "st-num" : "", tr); th.scope = "col"; th.textContent = c.label; });
+    var tbody = html("tbody", "", tb);
+    rows.forEach(function (r) {
+      var row = html("tr", "", tbody);
+      cols.forEach(function (c, i) {
+        var head = i === 0 && o.rowHeader !== false;
+        var td = html(head ? "th" : "td", c.num ? "st-num" : "", row);
+        if (head) td.scope = "row";
+        td.textContent = show(cell(r, c, i), c);
+      });
+    });
+    if (o.source) { var p = html("p", "st-data-src", d); p.textContent = /^source/i.test(o.source) ? o.source : "Source: " + o.source; }
+    if (o.open) d.open = true;
+    var host = o.into ? (isEl(o.into) ? o.into : el(o.into)) : null;
+    if (host) host.appendChild(d);
+    else {
+      var sc = fig.closest(".st-stage") ? fig.closest(".st-scene") : null;
+      (sc || fig).insertAdjacentElement("afterend", d);
+    }
+    return d;
+  }
+
+  /* hash landing: a link to a chapter, scene or finding arrives with the chapter's
+     pinned build complete (not mid-animation), clear of the header; a link to a
+     duplicate heading lands on the chapter that states it */
+  function hashTargetEl(h) {
+    if (!h || h.length < 2) return null;
+    var t = null;
+    try { t = document.getElementById(decodeURIComponent(h.slice(1))); } catch (e) { }
+    if (!t) return null;
+    if (t.__stDupOf) t = t.__stDupOf;
+    while (t && t !== document.body && !t.getClientRects().length) t = t.parentElement;
+    return t && t !== document.body ? t : null;
+  }
+  function landHash() {
+    var t = hashTargetEl(location.hash);
+    if (!t) return false;
+    if (gsapOK() && M.ready && global.ScrollTrigger && mPinOf(t)) {
+      scrollTo(0, mAnchorY(t)); mSnapPin(t);
+    } else {
+      var sm = parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
+      var y = Math.max(0, t.getBoundingClientRect().top + scrollY - Math.max(sm, parseFloat(getComputedStyle(t).scrollMarginTop) || 0));
+      if (Math.abs(scrollY - y) > 2) scrollTo(0, y);
+    }
+    // a scene lands on the step the link names, or its first step, already active
+    var sc = t.closest(".st-scene") || (t.querySelector && t.querySelector(".st-scene"));
+    var api = sc && sc.__stScene;
+    if (api) {
+      var st = t.closest(".st-step"), i = st ? api.steps.indexOf(st) : -1;
+      if (i >= 0) api.go(i);
+    }
+    return true;
+  }
+  var hashWired = false;
+  function wireHash() {
+    if (hashWired) return; hashWired = true;
+    addEventListener("hashchange", function () { requestAnimationFrame(landHash); });
+    // clicks on in-page links to a duplicate heading go to its chapter
+    document.addEventListener("click", function (e) {
+      if (e.defaultPrevented || e.button || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+      var a = e.target.closest && e.target.closest("a[href^='#']");
+      if (!a) return;
+      var raw = null; try { raw = document.getElementById(decodeURIComponent(a.getAttribute("href").slice(1))); } catch (e2) { }
+      if (!raw || !raw.__stDupOf) return;
+      e.preventDefault();
+      if (history.pushState) history.pushState(null, "", a.getAttribute("href"));
+      landHash();
+    });
+  }
+  function autoReading() {
+    try { dedupe(); } catch (e) { if (global.console) console.error(e); }
+    try { anchorIds(); } catch (e) { if (global.console) console.error(e); }
+  }
+  function autoReadingLate() {
+    try { anchorButtons(); } catch (e) { if (global.console) console.error(e); }
+    wireHash();
+    // no motion layer: nothing re-lands the hash later, so do it once the page has settled
+    if (location.hash && !(gsapOK() && M.ready)) {
+      var go = function () { landHash(); };
+      if (document.readyState === "complete") requestAnimationFrame(go); else addEventListener("load", go, { once: true });
+    }
+  }
+
   var Story = {
-    version: "1.4.0",
+    version: "2.2.0",
     orb: orb,
     orbInline: orbInline,
     companion: companion,
@@ -4247,6 +5724,8 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     scenes: scenes,
     chart: chart,
     spring: spring,
+    springs: SPRING,
+    ease: EASE,
     tween: tween,
     flip: flip,
     countUp: countUp,
@@ -4265,6 +5744,19 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     marks: marks,
     kinetic: kinetic,
     viewTransition: viewTransition,
+    dedupe: dedupe,
+    anchors: function () { anchorIds(); anchorButtons(); wireHash(); return anchorList.map(function (n) { return n.id; }); },
+    copyLink: copyLink,
+    toast: toast,
+    dataTable: dataTable,
+    landHash: landHash,
+    fit: function () { els(".st-scene").forEach(function (sc) { if (sc.__stScene) sc.__stScene.fit(); }); },
+    motion: { scan: function (r) { if (r && r !== document && M.mm) { motionScan(r); return; } motionKill(); motionSetup(document); }, kill: motionKill, refresh: function () { if (gsapOK()) global.ScrollTrigger.refresh(); }, get on() { return M.ready; } },
+    stagger: stagger,
+    trail: trail,
+    draw: draw,
+    scrub: scrub,
+    hover: hover,
     print: printHandout,
     _printPrepare: printPrepare,
     _printRestore: printRestore,
@@ -4478,6 +5970,14 @@ canvas.st-particles{display:block;max-width:100%;touch-action:pan-y}
     });
   });
 })();
+
+// v2.2 reading layer demo: a data table under the fake bar chart
+if (window.Story && Story.dataTable) Story.dataTable(document.getElementById("demo-dt-fig"), {
+  caption: "Fake rate per 200,000 hours, 2021-2024",
+  columns: ["Year", { label: "Rate", digits: 1 }, "Hours worked"],
+  rows: [[2021, 3.4, 1250000], [2022, 3.1, 1301000], [2023, 3.0, 1296500], [2024, 2.9, 1340200]],
+  source: "invented for this demo"
+});
 </script>
 </body>
 </html>

@@ -250,6 +250,7 @@ SHELL = """<!doctype html>
       <span class="src">Source artifact: {num_src}</span>
     </div>
     <div class="hero-text" data-m-hero-copy>
+      <nav class="crumbs" aria-label="Breadcrumb"><a href="{hub}">Grounded</a><span class="sep" aria-hidden="true">/</span><span aria-current="page">{crumb}</span></nav>
       <h1 class="display" data-m-split="chars">{h1}</h1>
       <p class="hero-role" data-m-hero-part="text">{lede}</p>
       <p class="hero-not" data-m-hero-part="text"><span class="hn-k">What this does not establish</span>{nots}</p>
@@ -273,6 +274,7 @@ SHELL = """<!doctype html>
 </aside>
 <div class="content">
 {body}
+{nextstep}
 </div>
 </div>
 </main>
@@ -328,9 +330,11 @@ def crossbar(current):
 def section(sid, num, title, inner, lede="", note=""):
     n = f'<span class="label">{note}</span>' if note else ""
     l = f'<p class="sec-lede">{lede}</p>' if lede else ""
-    return (f'<section class="section rv" id="{sid}" aria-labelledby="h-{sid}"><div class="wrap">'
+    # data-st-anchor: the story engine (Story.anchors) gives the heading its copy-link button
+    return (f'<section class="section rv" id="{sid}" aria-labelledby="h-{sid}" data-st-anchor><div class="wrap">'
             f'<div class="rail-head"><span class="rail-num" aria-hidden="true">{num}</span>'
-            f'<h2 class="display" id="h-{sid}">{title}</h2>{n}</div>{l}{inner}</div></section>')
+            f'<div class="rh-t"><h2 class="display" id="h-{sid}">{title}</h2></div>'
+            f'{n}</div>{l}{inner}</div></section>')
 
 
 # --------------------------------------------------------------------------
@@ -564,16 +568,28 @@ def _theme_svg(svg):
     return svg, title, sub
 
 
-def figure(repo, name, caption, legend=""):
-    """Inline a committed SVG so the page has no external asset dependency."""
+def figure(repo, name, caption, legend="", data=""):
+    """Inline a committed SVG so the page has no external asset dependency.
+
+    The pipeline's figures are drawn for a desktop page. On a phone they keep their
+    drawn size (labels stay at 12px) and scroll sideways inside the figure; `data`
+    carries the plotted numbers as a table or a link to one on the page."""
     p = REPOS / repo / "outputs" / "figures" / name
     if not p.exists():
         return ""
     svg, title, sub = _theme_svg(p.read_text(encoding="utf-8"))
+    if re.search(r'font-size="(?:[0-9]|1[01])(?:\.\d+)?"', svg):
+        svg = re.sub(r'font-size="(?:[0-9]|1[01])(?:\.\d+)?"', 'font-size="12"', svg)
+        vb = re.search(r'viewBox="([\d.]+) ([\d.]+) ([\d.]+) ([\d.]+)"', svg)
+        if vb:
+            svg = svg.replace(vb.group(0), f'viewBox="{vb.group(1)} {vb.group(2)} {float(vb.group(3)) + 110:g} {vb.group(4)}"', 1)
+    label = html.escape(f"{_plain(title) or name}. {_label(caption)}", quote=True)
+    svg = re.sub(r"<svg\b", f'<svg role="img" aria-label="{label}"', svg, count=1)
     head = f'<h3 class="fig-title">{title}</h3>' if title else ""
     head += f'<p class="fig-sub">{sub}</p>' if sub else ""
-    return (f'<figure class="fig"><span class="label">{esc(name)}</span>{head}'
-            f'<div class="fig-scroll">{svg}</div>{legend}'
+    return (f'<figure class="fig fig-static"><span class="label">{esc(name)}</span>{head}'
+            f'<div class="fig-scroll" tabindex="0" role="region" aria-label="{esc(_plain(title) or name)}, scrolls sideways">{svg}</div>'
+            f'<p class="fig-hint">Scroll the chart sideways to see all of it at full size.</p>{legend}{data}'
             f'<figcaption>{caption}'
             f'<span class="src">Source artifact: outputs/figures/{esc(name)}</span></figcaption></figure>')
 
@@ -628,6 +644,42 @@ DOOR_EXTRA = {
 }
 
 
+# The page ends with one next step: the paper that carries this work, with the story
+# and the tool as the two alternatives.
+NEXT = {
+    "ehs-osha-analysis": ("paper-osha.html", "The hours denominator",
+                          "The standalone paper sets out the screen, the year-by-year correction and what a "
+                          "published benchmark owes its readers."),
+    "ehs-ai-grounding-eval": ("paper.html", "Grounded reasoning for safety-critical AI",
+                              "The paper states the construct this benchmark measures, the scoring rules and "
+                              "what will not be claimed from it."),
+    "ehs-human-factors-ontology": ("paper.html", "Grounded reasoning for safety-critical AI",
+                                   "The paper places the ontology in the human reliability literature and states "
+                                   "where its guarantees stop."),
+    "ehs-risk-sem": ("paper.html", "Grounded reasoning for safety-critical AI",
+                     "The paper sets these simulation results against the claims a safety risk model is "
+                     "usually asked to carry."),
+}
+
+
+TOOL_NEXT = {"ehs-osha-analysis": "Or screen a site in the denominator explorer",
+             "ehs-ai-grounding-eval": "Or answer one benchmark item yourself",
+             "ehs-human-factors-ontology": "Or step through one derivation",
+             "ehs-risk-sem": "Or browse the API reference"}
+
+
+def next_step(repo):
+    paper, name, why = NEXT[repo]
+    tool_href, tool_name, _ = DOORS[repo]
+    return (f'<aside class="next-step" aria-labelledby="ns-h"><div>'
+            f'<h2 id="ns-h" class="display">Next: read the paper</h2>'
+            f'<p><cite>{esc(name)}</cite>. {esc(why)}</p>'
+            f'<p class="ns-more"><a href="story.html">Or read the five-minute story</a>'
+            f'<a href="{tool_href}">{TOOL_NEXT[repo]}</a></p></div>'
+            f'<a class="btn btn-primary" href="{HUB}{paper}">Read the paper<span class="btn-arrow" aria-hidden="true">&rarr;</span></a>'
+            f'</aside>')
+
+
 def doors(repo):
     """One consistent three-door strip under the hero: story, this page, tool."""
     href, name, note = DOORS[repo]
@@ -654,11 +706,47 @@ def doors(repo):
         + third + '</div>' + side + '</div></nav>')
 
 
-def chart(spec, takeaway, source):
-    """Interactive chart: inline JSON, rendered client-side by charts.js."""
+def chart(spec, takeaway, source, unit="", note=""):
+    """Interactive chart: inline JSON, rendered client-side by charts.js.
+
+    The figure carries a visible title with its unit and data years, the takeaway, a
+    source line and a Data table built from the same spec, so it reads without the
+    script and without the animation."""
+    title = spec["title"]
+    take_plain = html.unescape(re.sub(r"<[^>]+>", "", takeaway))
+    spec = dict(spec, title=f"{title}. {take_plain}")
     data = html.escape(json.dumps(spec, separators=(",", ":")), quote=True)
-    return (f'<figure class="chart" data-chart="{data}"><p class="chart-take">{takeaway}</p>'
-            f'<div class="chart-slot"></div><span class="src">Source artifact: {esc(source)}</span></figure>')
+    f = (spec.get("y") or {}).get("fmt")
+    rows = [[esc(x)] + [fmt_cell(s_["values"][i], f) for s_ in spec["series"]] for i, x in enumerate(spec["x"])]
+    tbl = data_table([spec.get("xname", "")] + [s_["name"] for s_ in spec["series"]], rows)
+    u = f'<span class="fig-unit">{unit}</span>' if unit else ""
+    nt = f'<p class="chart-note">{note}</p>' if note else ""
+    return (f'<figure class="chart" data-chart="{data}"><h3 class="fig-title">{esc(title)}{u}</h3>'
+            f'<p class="chart-take">{takeaway}</p>'
+            f'<div class="chart-slot"></div>{nt}{tbl}<span class="src">Source artifact: {esc(source)}</span></figure>')
+
+
+def fmt_cell(v, f=None):
+    """Format one plotted value for a Data table the way the chart labels it."""
+    if v is None:
+        return "-"
+    if f == "pct":
+        return f"{v * 100:.1f}%"
+    if f == "int":
+        return f"{round(v):,}"
+    if isinstance(f, int) and not isinstance(f, bool):
+        return f"{v:.{f}f}"
+    return f"{v:.0f}" if abs(v) >= 100 else f"{v:.3g}" if abs(v) < 1 else f"{v:.2f}"
+
+
+def data_table(head, rows, label="Data: the plotted numbers"):
+    """The numbers behind a figure, as a real table in a disclosure. Screen readers and
+    anyone who wants the values get them without reading the chart."""
+    th = "".join(f'<th scope="col">{esc(h)}</th>' for h in head)
+    trs = "".join("<tr>" + "".join((f'<th scope="row" class="t-first">{c}</th>' if i == 0 else f"<td>{c}</td>")
+                                   for i, c in enumerate(r)) + "</tr>" for r in rows)
+    return (f'<details class="fig-data"><summary>{label}</summary><div class="tbl-wrap"><table>'
+            f'<thead><tr>{th}</tr></thead><tbody>{trs}</tbody></table></div></details>')
 
 
 def statrow(status):
@@ -732,14 +820,34 @@ def svg_text(x, y, s, size=11, anchor="start", fill="var(--fig-axis)", weight="4
             f'fill="{fill}" font-weight="{weight}">{esc(s)}</text>')
 
 
+def _fig_wrap(title, unit, desk, phone, legend_html, data, caption, source):
+    """Figure shell shared by the drawn figures: title with unit and years, the chart
+    (a phone variant when one is drawn), legend, the Data table, caption and source."""
+    u = f'<span class="fig-unit">{unit}</span>' if unit else ""
+    body = desk if not phone else desk.replace("<svg ", '<svg class="fig-desk" ', 1) + phone.replace("<svg ", '<svg class="fig-phone" ', 1)
+    return (f'<figure class="fig"><h3 class="fig-title">{esc(title)}{u}</h3>'
+            f'<div class="fig-scroll">{body}</div>{legend_html}{data}'
+            f'<figcaption>{caption}<span class="src">Source artifact: {esc(source)}</span>'
+            f'</figcaption></figure>')
+
+
+def _plain(s):
+    return html.unescape(re.sub(r"<[^>]+>", "", s))
+
+
+def _label(caption):
+    """The figure's takeaway for assistive tech: its first sentence."""
+    return _SENT.split(_plain(caption).strip(), maxsplit=1)[0]
+
+
 def fig_lines(series, xlabels, ylo, yhi, yticks, caption, title,
-              ref=None, reflabel="", source="", legend_items=None):
+              ref=None, reflabel="", source="", legend_items=None, unit="", fmt_val=None):
     """Line chart from real rows. series = [(name, [y...], colour), ...]."""
     w, h = 860, 420
     L, R, T, B = 74, 210, 30, 52
     pw, ph = w - L - R, h - T - B
     n = len(xlabels)
-    out = [svg_open(w, h, title)]
+    out = [svg_open(w, h, f"{title}. {_label(caption)}")]
 
     def ypx(v):
         return T + ph - (v - ylo) / (yhi - ylo) * ph
@@ -751,14 +859,14 @@ def fig_lines(series, xlabels, ylo, yhi, yticks, caption, title,
         y = ypx(t)
         out.append(f'<line x1="{L}" y1="{y:.1f}" x2="{L+pw}" y2="{y:.1f}" '
                    f'stroke="var(--fig-grid)" stroke-width="1"/>')
-        out.append(svg_text(L - 10, y + 4, f"{t:g}", 11, "end", "var(--fig-mute)"))
+        out.append(svg_text(L - 10, y + 4, f"{t:g}", 13, "end", "var(--fig-mute)"))
     if ref is not None:
         y = ypx(ref)
         out.append(f'<line x1="{L}" y1="{y:.1f}" x2="{L+pw}" y2="{y:.1f}" '
                    f'stroke="var(--ink)" stroke-width="2" stroke-dasharray="7 5"/>')
-        out.append(svg_text(L + pw + 10, y + 4, reflabel, 11, "start", "var(--ink)", "700"))
+        out.append(svg_text(L + pw + 10, y + 4, reflabel, 13, "start", "var(--ink)", "700"))
     for i, lab in enumerate(xlabels):
-        out.append(svg_text(xpx(i), T + ph + 24, lab, 11, "middle", "var(--fig-mute)"))
+        out.append(svg_text(xpx(i), T + ph + 26, lab, 13, "middle", "var(--fig-mute)"))
     out.append(f'<line x1="{L}" y1="{T+ph:.1f}" x2="{L+pw}" y2="{T+ph:.1f}" '
                f'stroke="var(--fig-axis)" stroke-width="2"/>')
     ends = []
@@ -775,80 +883,61 @@ def fig_lines(series, xlabels, ylo, yhi, yticks, caption, title,
     # finish close together, so no two labels overlap.
     ends.sort(key=lambda e: e[0])
     for i in range(1, len(ends)):
-        if ends[i][0] - ends[i - 1][0] < 13:
-            ends[i][0] = ends[i - 1][0] + 13
+        if ends[i][0] - ends[i - 1][0] < 15:
+            ends[i][0] = ends[i - 1][0] + 15
     for y, name, colour in ends:
-        out.append(svg_text(L + pw + 10, y + 4, name, 10, "start", colour, "600"))
+        out.append(svg_text(L + pw + 10, y + 4, name, 13, "start", colour, "700"))
     out.append("</svg>")
     lg = legend(legend_items) if legend_items else ""
-    return (f'<figure class="fig"><h3 class="fig-title">{esc(title)}</h3>'
-            f'<div class="fig-scroll">{"".join(out)}</div>{lg}'
-            f'<figcaption>{caption}<span class="src">Source artifact: {esc(source)}</span>'
-            f'</figcaption></figure>')
+    fv = fmt_val or (lambda v: f"{v:.3g}")
+    data = data_table([""] + [nm for nm, _, _ in series],
+                      [[esc(x)] + [fv(ys[i]) if ys[i] is not None else "-" for _, ys, _ in series]
+                       for i, x in enumerate(xlabels)])
+    return _fig_wrap(title, unit, "".join(out), "", lg, data, caption, source)
 
 
-def fig_stacked(rows, keys, colours, caption, title, source="", unit=""):
-    """Horizontal stacked bars. rows = [(label, {key: value})]."""
-    barh, gap, T = 26, 12, 26
-    rows = [(lab if len(lab) <= 34 else lab[:33].rstrip() + ".", d) for lab, d in rows]
-    # 11px IBM Plex Mono advances about 6.6px per character; size the label
-    # gutter to the longest label so nothing is clipped at the left edge.
-    L = int(min(330, 24 + 6.8 * max(len(lab) for lab, _ in rows)))
-    R = 90
-    w = 860
-    h = T + len(rows) * (barh + gap) + 34
-    total_max = max(sum(d.get(k, 0) for k in keys) for _, d in rows) or 1
-    pw = w - L - R
-    out = [svg_open(w, h, title)]
-    for i, (lab, d) in enumerate(rows):
-        y = T + i * (barh + gap)
-        out.append(svg_text(L - 14, y + barh * 0.68, lab, 11, "end", "var(--fig-axis)", "600"))
-        x = L
-        for k, c in zip(keys, colours):
-            v = d.get(k, 0)
+def _hbars(title, caption, rows, total_max, value_text, segments):
+    """Horizontal bars drawn in HTML, so labels render at real CSS sizes at every width.
+    rows: [(label, [(value, colour), ...], right_text)]"""
+    aria = html.escape(f"{title}. {_label(caption)}", quote=True)
+    out = [f'<div class="hbars" role="img" aria-label="{aria}">']
+    for lab, segs, right in rows:
+        seg_html = ""
+        for v, c in segs:
             if not v:
                 continue
-            bw = pw * v / total_max
-            out.append(f'<rect x="{x:.1f}" y="{y}" width="{bw:.1f}" height="{barh}" fill="{c}"/>')
-            if bw > 22:
-                # Pale segments need dark text on them, not the reversed-out white
-                # that reads on the saturated ones.
-                ink = "var(--fig-axis)" if c == "var(--fig-grid)" else "var(--fig-paper)"
-                out.append(svg_text(x + bw / 2, y + barh * 0.68, str(v), 10, "middle", ink, "700"))
-            x += bw
-        tot = sum(d.get(k, 0) for k in keys)
-        out.append(svg_text(x + 10, y + barh * 0.68, f"{tot}{unit}", 11, "start",
-                            "var(--fig-mute)", "600"))
-    out.append("</svg>")
-    lg = legend(list(zip(keys, colours)))
-    return (f'<figure class="fig"><h3 class="fig-title">{esc(title)}</h3>'
-            f'<div class="fig-scroll">{"".join(out)}</div>{lg}'
-            f'<figcaption>{caption}<span class="src">Source artifact: {esc(source)}</span>'
-            f'</figcaption></figure>')
+            pct = 100 * v / total_max
+            # pale and warm segments take dark numerals (white on orange/green fails AA in the light theme)
+            ink = "hb-dark" if c == "var(--fig-grid)" else "hb-warm" if c in ("var(--s2)", "var(--s3)") else ""
+            txt = esc(value_text(v)) if segments and pct >= 7 else ""
+            seg_html += (f'<span class="hb-seg {ink}" style="width:{pct:.2f}%;background:{c}">'
+                         f'{txt}</span>')
+        out.append(f'<div class="hb-row" aria-hidden="true"><span class="hb-lab">{esc(lab)}</span>'
+                   f'<span class="hb-track">{seg_html}</span><span class="hb-val">{esc(right)}</span></div>')
+    out.append("</div>")
+    return "".join(out)
 
 
-def fig_bars(rows, caption, title, source="", fmt_val=lambda v: f"{v:.1f}"):
-    """Simple horizontal bars. rows = [(label, value_0_to_1)]."""
-    barh, gap, T = 30, 14, 26
-    L = int(min(330, 24 + 6.8 * max(len(lab) for lab, _ in rows)))
-    R, w = 110, 860
-    h = T + len(rows) * (barh + gap) + 30
-    pw = w - L - R
+def fig_stacked(rows, keys, colours, caption, title, source="", unit="", unit_label=""):
+    """Horizontal stacked bars. rows = [(label, {key: value})]. `unit` is appended to the
+    row totals; `unit_label` is the title's unit line."""
+    total_max = max(sum(d.get(k, 0) for k in keys) for _, d in rows) or 1
+    body = _hbars(title, caption,
+                  [(lab, [(d.get(k, 0), c) for k, c in zip(keys, colours)],
+                    f"{sum(d.get(k, 0) for k in keys)}{unit}") for lab, d in rows],
+                  total_max, lambda v: str(v), True)
+    data = data_table([""] + list(keys) + ["Total"],
+                      [[esc(lab)] + [str(d.get(k, 0)) for k in keys] + [f"{sum(d.get(k, 0) for k in keys)}{unit}"]
+                       for lab, d in rows])
+    return _fig_wrap(title, unit_label, body, "", legend(list(zip(keys, colours))), data, caption, source)
+
+
+def fig_bars(rows, caption, title, source="", fmt_val=lambda v: f"{v:.1f}", unit=""):
+    """Simple horizontal bars on a zero baseline. rows = [(label, value)]."""
     top = max(v for _, v in rows) or 1
-    out = [svg_open(w, h, title)]
-    for i, (lab, v) in enumerate(rows):
-        y = T + i * (barh + gap)
-        out.append(svg_text(L - 14, y + barh * 0.66, lab, 11, "end", "var(--fig-axis)", "600"))
-        bw = pw * v / top
-        out.append(f'<rect x="{L}" y="{y}" width="{pw:.1f}" height="{barh}" fill="var(--fig-grid)"/>')
-        out.append(f'<rect x="{L}" y="{y}" width="{bw:.1f}" height="{barh}" fill="var(--s1)"/>')
-        out.append(svg_text(L + pw + 12, y + barh * 0.66, fmt_val(v), 12, "start",
-                            "var(--ink)", "700"))
-    out.append("</svg>")
-    return (f'<figure class="fig"><h3 class="fig-title">{esc(title)}</h3>'
-            f'<div class="fig-scroll">{"".join(out)}</div>'
-            f'<figcaption>{caption}<span class="src">Source artifact: {esc(source)}</span>'
-            f'</figcaption></figure>')
+    body = _hbars(title, caption, [(lab, [(v, "var(--s1)")], fmt_val(v)) for lab, v in rows], top, fmt_val, False)
+    data = data_table(["", "Value"], [[esc(lab), fmt_val(v)] for lab, v in rows])
+    return _fig_wrap(title, unit, body, "", "", data, caption, source)
 
 
 def read_csv(path):
@@ -930,10 +1019,11 @@ def build_osha():
     lead = opener(
         "The correction is real, it is large, and it is not a constant. That last part is "
         "what stops it being a footnote.",
-        [f"Every establishment-level injury benchmark in the United States is computed from the "
-         f"same public filings analysed here: {q['n_filings']:,} of them, calendar years {y0} "
-         f"through {y1}, downloaded from the OSHA Injury Tracking Application by a script in this "
-         f"repository. The rate everyone quotes has hours worked in its denominator.",
+        [f"Establishment-level benchmarks built from OSHA's public data draw on the same filings "
+         f"analysed here: {q['n_filings']:,} Form 300A summaries, calendar years {y0} through {y1}, "
+         f"downloaded from the OSHA Injury Tracking Application (ITA) by a script in this "
+         f"repository. TRIR is recordable cases x 200,000 divided by hours worked, so hours sit in "
+         f"its denominator.",
          f"Only {q['implausible_share']*100:.2f}% of filings report hours that cannot be right. "
          f"Those filings carry {q['hours_share_implausible']*100:.2f}% of every hour in the "
          f"dataset. Pooled aggregate TRIR reads {q['aggregate_trir_unscreened']:.3f} before the "
@@ -1000,18 +1090,19 @@ def build_osha():
         [(f'Top {int(c["top_n_filings_by_hours"]):,} filing'
           f'{"" if int(c["top_n_filings_by_hours"]) == 1 else "s"}', c["hours_share"])
          for c in conc],
-        "One keying error in the hours column sets the national denominator. A single "
+        "One keying error in the hours column sets the ITA aggregate denominator. A single "
         f'establishment filing accounts for {top1["hours_share"]*100:.1f}% of the '
         f"{q['hours_total']/1e12:.1f} trillion hours in the pooled dataset while contributing "
         f'{top1["cases_share"]*100:.2f}% of the recordable cases. Share of all reported hours '
         "held by the largest filings, ranked by hours.",
         "Hours concentration in the largest filings",
         "outputs/tables/quality_hours_concentration.csv",
-        fmt_val=lambda v: f"{v*100:.2f}%")
+        fmt_val=lambda v: f"{v*100:.2f}%",
+        unit=f"Percent of all hours reported on Form 300A through the ITA, pooled {y0}-{y1}")
 
     trir_chart = chart(
         {"type": "line", "title": "Aggregate TRIR by year, screened against unscreened",
-         "x": ylab, "aspect": 2.2, "y": {"min": 0},
+         "x": ylab, "xname": "Year", "aspect": 2.2, "y": {"min": 0, "fmt": 3},
          "series": [
              {"name": "Unscreened", "values": [round(v, 3) for v in uns],
               "tip": [f"ratio {r:.2f}x" for r in ratios]},
@@ -1019,24 +1110,31 @@ def build_osha():
               "tip": [f"ratio {r:.2f}x" for r in ratios]}]},
         f"Screened TRIR stays between {min(scr):.1f} and {max(scr):.1f}. Unscreened swings "
         f"{min(uns):.2f} to {max(uns):.2f}.",
-        "outputs/summary.json - quality.by_year")
+        "outputs/summary.json - quality.by_year",
+        unit=f"Recordable cases x 200,000 / hours worked, all ITA Form 300A filings, {y0}-{y1}")
     hours_chart = chart(
         {"type": "bar", "title": "Share of reported hours in implausible filings, by year",
-         "x": ylab, "aspect": 2.4, "y": {"min": 0, "max": 1, "fmt": "pct"},
+         "x": ylab, "xname": "Year", "aspect": 2.4, "y": {"min": 0, "max": 1, "fmt": "pct"},
          "series": [{"name": "Hours in flagged filings",
                      "values": [round(y["hours_share_implausible"], 4) for y in years],
                      "tip": [f'{y["implausible_share"]*100:.2f}% of filings' for y in years]}]},
         f"Flagged filings hold {min(y['hours_share_implausible'] for y in years)*100:.0f}% to "
         f"{max(y['hours_share_implausible'] for y in years)*100:.0f}% of all hours, depending on the year.",
-        "outputs/summary.json - quality.by_year")
+        "outputs/summary.json - quality.by_year",
+        unit=f"Percent of reported hours in filings that fail the 120-4,500 hours-per-employee screen, {y0}-{y1}")
 
+    def figure_d(name, data, caption):
+        return figure(repo, name, caption, data=data)
+    DATA_BYYEAR = '<p class="fig-datalink"><a href="#byyear">Data: the year-by-year table</a></p>'
+    DATA_SIZE = '<p class="fig-datalink"><a href="#peers">Data: the size-band table</a></p>'
+    DATA_BANDS = '<p class="fig-datalink"><a href="#peers">Data: the percentile-band table</a></p>'
     figs = trir_chart + hours_chart + '<details class="more"><summary>Static figures</summary><div>' + (
-        figure(repo, "fig01_aggregate_trir_by_year.svg",
+        figure_d("fig01_aggregate_trir_by_year.svg", DATA_BYYEAR,
                "The unscreened series is governed by how much bad hours data entered that "
                "year's file, not by safety performance. That is why the two series cross and "
                "diverge rather than tracking each other: the unscreened aggregate is not a noisy "
                "version of the screened one. Aggregate TRIR by year, screened against unscreened.")
-        + figure(repo, "fig02_hours_share_implausible.svg",
+        + figure_d("fig02_hours_share_implausible.svg", DATA_BYYEAR,
                  "Implausible filings hold anywhere from roughly a third to nearly all of the "
                  "reported hours, depending on the year. That swing is what drives the "
                  "instability in the ratio above. Share of all reported hours sitting in filings "
@@ -1046,11 +1144,11 @@ def build_osha():
                  "produce, so values outside the window are unit or keying errors rather than "
                  "real labour. Distribution of hours worked per employee; the screen retains 120 "
                  "to 4,500 hours per employee per year.")
-        + figure(repo, "fig05_zero_share_by_size.svg",
+        + figure_d("fig05_zero_share_by_size.svg", DATA_SIZE,
                  "A zero rate says as much about headcount as about safety performance: zero is "
                  "the modal outcome at small establishments. Share of establishments reporting "
                  "zero recordable cases, by size band.")
-        + figure(repo, "fig06_percentile_stability.svg",
+        + figure_d("fig06_percentile_stability.svg", DATA_BANDS,
                  "A benchmark is only usable if the band a site is compared against holds still "
                  "enough between years to mean the same thing. Year-over-year stability of "
                  "peer-group percentile bands.")
@@ -1160,7 +1258,7 @@ def build_osha():
     }
     explore = (
         explore_intro("Three ways into the same public filings. Move the plausibility window and "
-                      "watch what it does to the national rate, switch the yearly series, then place "
+                      "watch what it does to the ITA aggregate rate, switch the yearly series, then place "
                       "a site's TRIR against its industry peers.", "explore.html", "Full denominator explorer")
         + '<div class="ix" id="ix-osha">'
         '<div class="ix-panel ix-wide"><div class="ix-head"><span class="ix-k">A</span><h3>Move the screen</h3>'
@@ -1204,6 +1302,9 @@ def build_osha():
          "Aggregates after screening are conditional on the surviving population, which is not a "
          "random sample of the original. If implausible hours are filed disproportionately by one "
          "kind of employer, the screened aggregate inherits that selection.",
+         "The ITA file holds only establishments required to submit Form 300A data: 250 or more "
+         "employees, or 20 to 249 in designated industries. Smaller sites and exempt industries "
+         "are absent, so an aggregate here is not a rate for all US workplaces.",
          "Nothing here is a claim about whether workplaces got safer. It is a claim about what "
          "the denominator will support."])
     qs = quickstart(repo, [
@@ -1224,8 +1325,8 @@ def build_osha():
                   lede="The pooled ratio is an average over years that do not resemble each other. "
                        "The point of this table is the spread, not the centre.")
         + section("hours", "04", "Where the hours are", conc_fig,
-                  lede="A national aggregate rate is a sum of cases over a sum of hours. When one "
-                       "filing dominates the second sum, it decides the answer on its own.")
+                  lede="An aggregate rate across ITA filings is total recordable cases x 200,000 over "
+                       "total hours. When one filing dominates the hours, it decides the answer on its own.")
         + section("figures", "05", "Figures", figs,
                   lede="Two interactive charts from summary.json. The pipeline's static figures "
                        "sit underneath.")
@@ -1254,7 +1355,8 @@ def build_osha():
              "establishment filings, over 2.8 million real public records.",
         kicker="Empirical analysis - real public data",
         h1="The hours column decides every benchmark built on it",
-        lede=f"A reproducible pipeline over {q['n_filings']:,} filings, calendar years {y0} to {y1}. "
+        lede=f"A reproducible pipeline over {q['n_filings']:,} OSHA Form 300A filings from the Injury "
+             f"Tracking Application, calendar years {y0} to {y1}. "
              f"{q['implausible_share']*100:.2f}% of filings carry "
              f"{q['hours_share_implausible']*100:.2f}% of all hours, and the correction ranges "
              f"{min(ratios):.2f}x to {max(ratios):.0f}x by year. It cannot be published as a "
@@ -1335,7 +1437,7 @@ def build_sem():
     burden = read_csv(res / "study02_alert_burden.csv")
     disc.sort(key=lambda r: float(r["target_base_rate"]), reverse=True)
     rec_chart = chart(
-        {"type": "line", "title": "95% interval coverage by sample size", "x": [f"n={n:,}" for n in ns],
+        {"type": "line", "title": "95% interval coverage by sample size", "x": [f"n={n:,}" for n in ns], "xname": "Sample size",
          "aspect": 2.2, "ref": 0.95, "refLabel": "nominal 95%", "y": {"min": 0.7, "max": 1.0, "fmt": "pct"},
          "series": [{"name": p.replace("SafetyResponseCapability", "SafetyResponse"),
                      "values": [round(float(by[(n, p)]["coverage_95_analytic"]), 3) for n in ns],
@@ -1343,38 +1445,32 @@ def build_sem():
                              f'RMSE {float(by[(n, p)]["rmse"]):.3f}' for n in ns]} for p in preds]},
         f"Coverage sits at {min(cov_all)*100:.0f}% to {max(cov_all)*100:.0f}% against a nominal 95%, "
         "at every sample size.",
-        "results/study01_recovery.csv")
+        "results/study01_recovery.csv",
+        unit="Share of simulated 95% intervals that contain the true path coefficient, by sample size (simulation study 01)",
+        note="Coverage should sit on the dashed line. It does not improve with sample size: the "
+             f"analytic standard errors are {min(ser_all)*100:.0f}% to {max(ser_all)*100:.0f}% of the "
+             "empirical ones at every n tested. The point estimates are nearly unbiased. It is the "
+             "uncertainty around them that is wrong, the more dangerous failure, because an interval "
+             "that is too narrow reads as confidence.")
     cal_chart = chart(
         {"type": "bar", "title": "Calibration slope by event base rate",
-         "x": [f'{float(r["target_base_rate"])*100:g}%' for r in disc], "aspect": 2.4,
+         "x": [f'{float(r["target_base_rate"])*100:g}%' for r in disc], "xname": "Event base rate", "aspect": 2.4,
          "ref": 1.0, "refLabel": "ideal slope 1.0", "y": {"min": 0, "fmt": 2},
          "series": [{"name": "Calibration slope", "values": [round(float(r["calibration_slope"]), 3) for r in disc],
                      "tip": [f'AUC {float(r["auc"]):.3f}, ECE {float(r["ece"]):.4f}, '
                              f'{float(r["alerts_per_true_event_at_top_5pct"]):.1f} alerts per true event' for r in disc]}]},
-        f"AUC holds near {statistics.median(float(r['auc']) for r in disc):.2f} at every base rate; "
-        f"alerts per true event climb to {max(float(r['alerts_per_true_event_at_top_5pct']) for r in disc):.0f} at the rarest "
-        f"({min(float(r['target_base_rate']) for r in disc)*100:g}% base rate, top 5% of scores flagged). "
-        f"The story's {float(burden[0]['alerts_per_true_event']):.0f} comes from a different study: a fixed screen at "
-        f"{float(burden[0]['sensitivity'])*100:.0f}% sensitivity and {float(burden[0]['specificity'])*100:.0f}% specificity, "
-        f"at {float(burden[0]['base_rate_per_shift'])*1e5:.1f} events per 100,000 worker-shifts (results/study02_alert_burden.csv).",
-        "results/study02_discrimination.csv")
+        f"AUC holds near {statistics.median(float(r['auc']) for r in disc):.2f} at every base rate, "
+        f"while alerts per true event climb to {max(float(r['alerts_per_true_event_at_top_5pct']) for r in disc):.0f}.",
+        "results/study02_discrimination.csv",
+        unit="Calibration slope (ideal 1.0) of a simulated risk score, by event base rate (simulation study 02)",
+        note=f"Alerts per true event reach {max(float(r['alerts_per_true_event_at_top_5pct']) for r in disc):.0f} at the rarest "
+             f"base rate ({min(float(r['target_base_rate']) for r in disc)*100:g}%, top 5% of scores flagged). "
+             f"The story's {float(burden[0]['alerts_per_true_event']):.0f} comes from a different study: a fixed screen at "
+             f"{float(burden[0]['sensitivity'])*100:.0f}% sensitivity and {float(burden[0]['specificity'])*100:.0f}% specificity, "
+             f"at {float(burden[0]['base_rate_per_shift'])*1e5:.1f} events per 100,000 worker-shifts "
+             "(results/study02_alert_burden.csv).")
 
-    cov_fig = rec_chart + cal_chart + fig_lines(
-        [(p.replace("SafetyResponseCapability", "SafetyResponse"),
-          [float(by[(n, p)]["coverage_95_analytic"]) for n in ns],
-          f"var(--s{i+1})") for i, p in enumerate(preds)],
-        [f"n={n:,}" for n in ns], 0.70, 1.00,
-        [0.70, 0.75, 0.80, 0.85, 0.90, 0.95, 1.00],
-        "Coverage of the nominal 95% confidence interval, by sample size, for each of the four "
-        f"path coefficients. Coverage should sit on the dashed line. It sits between "
-        f"{min(cov_all)*100:.0f}% and {max(cov_all)*100:.0f}% instead, and it does not improve "
-        f"with sample size: the analytic standard errors are {min(ser_all)*100:.0f}% to "
-        f"{max(ser_all)*100:.0f}% of the empirical ones at every n tested. The point estimates are "
-        "nearly unbiased. It is the uncertainty around them that is wrong, which is the more "
-        "dangerous failure, because an interval that is too narrow reads as confidence.",
-        "Interval coverage against sample size",
-        ref=0.95, reflabel="nominal 95%",
-        source="results/study01_recovery.csv")
+    cov_fig = rec_chart + cal_chart
 
     rec_tbl = table(
         res / "study01_recovery.csv",
@@ -1680,7 +1776,8 @@ def build_grounding():
         "where the motivating failure occurred and where the adjacent-device confusion is "
         "sharpest.",
         "Corpus items by domain and risk tier",
-        "corpus/items/*.json")
+        "corpus/items/*.json",
+        unit_label=f"Number of benchmark items, {total} in all, split by risk tier")
 
     dom_rows = "".join(
         f'<tr><td class="t-first">{esc(title)}</td><td>{n}</td>'
@@ -2055,7 +2152,8 @@ def build_ontology():
         "enforces that, because asserting exact identity between factors written decades apart "
         "for different industries would claim more than the sources support.",
         "Crosswalk match strength by framework",
-        "crosswalk/crosswalk.csv")
+        "crosswalk/crosswalk.csv",
+        unit_label="Number of factor correspondences per framework, by match strength")
 
     xw_tbl = table(
         d / "crosswalk" / "crosswalk.csv",
@@ -2648,7 +2746,102 @@ a.door:hover{transform:translateY(-2px)}
 .section-alt,.prog{border-top:var(--sf-hair)}
 .fig,.chart{padding:24px}
 @media print{.status,.findings,.fig,.chart,.tbl-wrap,.scope,.opener,.defs,.notice,.door{border:1px solid #999!important;border-radius:6px}}
+
+/* ============ round 8: finish and usability ============ */
+/* readability floor: nothing under 12px, body copy 16-17px, balanced headings */
+.label,.st-k,.f-src,.src,.hm-k,.hn-k,.door-k,.toc-n,.prog-tag,.fig-legend span,.chart .src,.fig figcaption .src{font-size:.75rem}
+h1,h2,h3,.f-title,.fig-title,.chart-take,.prog-name{text-wrap:balance}
+p,li,figcaption,dd{text-wrap:pretty}
+.hero .hero-role{font-size:1.0625rem;line-height:1.6}
+.hero-not{font-size:1rem;line-height:1.6}
+.opener-main p,.prose p{font-size:1.0625rem;line-height:1.62;max-width:68ch}
+.opener-side p,.scope li,.f-body,.door-w,.gx-block p,.hx-m p{font-size:1rem;line-height:1.6}
+.fig figcaption,.tbl-cap,.trace-cap,.ix-head p{font-size:.9375rem;line-height:1.6}
+.sec-lede{font-size:1.0625rem}
+/* touch targets: disclosure toggles, footer and secondary links reach 44px */
+details.more>summary{display:flex;align-items:center;min-height:44px;padding:0;font-size:.75rem}
+figcaption details.more>summary,.f-body details.more>summary{padding:0}
+.footer-links a,.door-also,.qs-note a{min-height:44px}
+.door-also{display:inline-flex;align-items:center;padding-bottom:0}
+/* derivation traces wrap on narrow screens instead of hiding text off to the side */
+.trace pre{white-space:pre-wrap;overflow-wrap:anywhere}
+.backlink{display:inline-flex;align-items:center;min-height:44px;padding:0;border-bottom:0;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:5px;text-decoration-color:var(--rule-soft);line-height:18px}
+.backlink:hover{text-decoration-color:var(--accent)}
+.fig-datalink{margin:10px 0 0}
+.fig-datalink a{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-mono);font-size:.8125rem;font-weight:700;letter-spacing:.04em}
+/* the hero number never grows past its column (it met the headline at 1920) */
+.hero-fig{container-type:inline-size}
+@supports (width:1cqw){@media(min-width:901px){.hero-num{font-size:min(10.5rem,10.5vw,calc(100cqw / var(--k,3.7)))}}}
+/* where you are in the programme */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin:0 0 14px;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.crumbs a{display:inline-flex;align-items:center;min-height:44px;color:var(--muted);text-decoration:none;border-bottom:0}
+.crumbs a:hover{color:var(--accent)}
+.crumbs [aria-current]{color:var(--ink);font-weight:700}
+.crumbs .sep{color:var(--rule-soft)}
+/* first viewport on phones: claim, answer and the primary action come before the big number */
+@media(max-width:900px){
+  .hero{padding:24px 0 36px}
+  .hero-grid{display:flex;flex-direction:column;gap:28px}
+  .hero-text{order:1;display:flex;flex-direction:column}
+  .hero-fig{order:2}
+  .hero .status{order:3}
+  .hero .hero-text h1{font-size:clamp(1.75rem,8vw,2.4rem);max-width:none}
+  .hero-text .hero-links{order:3;margin-top:18px}
+  .hero-text .hero-not{order:4}
+  .hero-links .btn{margin-bottom:0}
+}
+.content .rail-head .rh-t{display:flex;align-items:flex-end;min-width:0}
+.chart-note{margin:12px 0 0;font-size:.9375rem;line-height:1.6;color:var(--ink-2);max-width:76ch}
+.content>.next-step{margin:56px 0 72px}
+/* every figure: title with units and year, source, and the plotted numbers as a table */
+.fig-title{font-size:1.0625rem}
+.fig-unit{display:block;margin-top:4px;font-family:var(--font-mono);font-size:.75rem;font-weight:500;letter-spacing:.04em;color:var(--muted)}
+details.fig-data{margin-top:14px;border-top:1px solid var(--rule-soft)}
+details.fig-data>summary{display:flex;align-items:center;gap:8px;min-height:44px;cursor:pointer;list-style:none;font-family:var(--font-mono);font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+details.fig-data>summary::-webkit-details-marker{display:none}
+details.fig-data>summary::before{content:'+';font-weight:700}
+details.fig-data[open]>summary::before{content:'\2212'}
+.fig-data .tbl-wrap{max-height:360px;margin-bottom:6px}
+.fig-data table{font-size:.875rem}
+.hbars{display:grid;gap:10px;margin:6px 0 4px}
+.hb-row{display:grid;grid-template-columns:minmax(10ch,32%) minmax(0,1fr) minmax(6ch,auto);align-items:center;gap:6px 14px}
+.hb-lab{font-family:var(--font-mono);font-size:.8125rem;font-weight:600;line-height:1.3;color:var(--fig-axis);text-align:right}
+.hb-track{display:flex;height:28px;background:var(--fig-grid);border-radius:3px;overflow:hidden}
+.hb-seg{display:flex;align-items:center;justify-content:center;min-width:0;overflow:hidden;font-family:var(--font-mono);font-size:.8125rem;font-weight:700;color:var(--fig-paper);white-space:nowrap}
+.hb-seg.hb-dark{color:var(--fig-axis)}
+.hb-seg.hb-warm{color:#101311}
+:root[data-theme=dark] .hb-seg.hb-warm{color:var(--fig-paper)}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hb-seg.hb-warm{color:var(--fig-paper)}}
+.hb-val{font-family:var(--font-mono);font-size:.875rem;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
+@media(max-width:640px){.hb-row{grid-template-columns:minmax(0,1fr) auto;row-gap:6px}.hb-lab{grid-column:1;text-align:left}.hb-val{grid-column:2;grid-row:1;text-align:right}.hb-track{grid-column:1/-1}}
+.fig svg.fig-phone{display:none}
+@media(max-width:640px){.fig svg.fig-desk{display:none}.fig svg.fig-phone{display:block;min-width:0}}
+.ix-sub small{font-size:inherit}
+.qs-note{font-size:.9375rem}
+.qs-note code{font-size:.875em}
+.fig-static .fig-scroll>svg{min-width:0}
+.fig-static .fig-scroll>svg{min-width:930px}
+@media(max-width:640px){.fig-static .fig-scroll{margin:0 -16px;padding:0 16px}}
+.fig-hint{display:none;margin:8px 0 0;font-family:var(--font-mono);font-size:.75rem;color:var(--muted)}
+@media(max-width:1279px){.fig-static .fig-hint{display:block}}
+/* the page ends with one next step */
+.next-step{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:18px 32px;align-items:center;padding:32px;border:var(--sf-hair);border-radius:var(--sf-radius);background:var(--surface)}
+.next-step h2{font-size:clamp(1.3rem,2.6vw,1.9rem);line-height:1.1;margin:0}
+.next-step p{margin:8px 0 0;font-size:1rem;line-height:1.6;color:var(--ink-2);max-width:60ch}
+.next-step .ns-more{display:flex;flex-wrap:wrap;gap:4px 20px;margin-top:10px}
+.next-step .ns-more a{display:inline-flex;align-items:center;min-height:44px;font-family:var(--font-mono);font-size:.8125rem;letter-spacing:.04em;color:var(--ink);text-decoration:underline;text-decoration-color:var(--rule-soft);text-underline-offset:4px}
+.next-step .ns-more a:hover{text-decoration-color:var(--accent)}
+.next-step .btn{margin:0;white-space:nowrap}
+@media(max-width:640px){.next-step{grid-template-columns:1fr;padding:22px 18px}}
 """
+
+
+def font_floor(css, floor=0.75):
+    """Readability floor for this generator's own CSS: no font-size under 12px (.75rem)."""
+    def fix(m):
+        v = float(m.group(1))
+        return f"font-size:{floor:g}rem" if v < floor else m.group(0)
+    return re.sub(r"font-size:\s*(0?\.\d+)rem", fix, css)
 
 
 PROGRAMME = [
@@ -2679,12 +2872,15 @@ if __name__ == "__main__":
     _ap = argparse.ArgumentParser(description="Generate the project pages.")
     _ap.add_argument("--only", action="append", default=[], metavar="REPO",
                      help="build only this repo (repeatable or comma-separated), e.g. --only ehs-risk-sem")
-    _only = {r.strip() for a in _ap.parse_args().only for r in a.split(",") if r.strip()}
+    _ap.add_argument("--out", default="", metavar="DIR",
+                     help="write pages under DIR/<repo>/docs/ instead of repos/ (inputs are still read from repos/)")
+    _args = _ap.parse_args()
+    _only = {r.strip() for a in _args.only for r in a.split(",") if r.strip()}
     for fn in BUILDERS:
         spec = fn()
         if _only and spec["repo"] not in _only:
             continue
-        out = REPOS / spec["repo"] / "docs"
+        out = (Path(_args.out) if _args.out else REPOS) / spec["repo"] / "docs"
         out.mkdir(parents=True, exist_ok=True)
         pageurl = f"https://priyatham9.github.io/{spec['repo']}/"
         ld = {
@@ -2711,10 +2907,11 @@ if __name__ == "__main__":
             unit_plain=html.unescape(re.sub(r"<[^>]+>", "", unit)),
             num_k=f"{0.8 * len(num) + 0.3 * len(html.unescape(unit)) + 0.2:.2f}",
         )
-        page = SHELL.format(css=CSS, extra=EXTRA_CSS + SITE_CSS, storycss=STORY_CSS,
+        page = SHELL.format(css=CSS, extra=font_floor(EXTRA_CSS + SITE_CSS), storycss=STORY_CSS,
                             hub=HUB, personal=PERSONAL, gh=GH,
                             pageurl=pageurl, ldjson=ldjson, body=body, toc=tocl,
                             programme=programme(spec["repo"]), doors=doors(spec["repo"]),
+                            nextstep=next_step(spec["repo"]), crumb=esc(dict(PORTFOLIO)[spec["repo"]]),
                             **extra, **spec)
         page = trim_page(page)
         page = page.replace(

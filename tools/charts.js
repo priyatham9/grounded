@@ -5,7 +5,7 @@
 */
 (function () {
   var NS = 'http://www.w3.org/2000/svg';
-  var W = 720, PAD = { l: 52, r: 16, t: 14, b: 34 };
+  var W = 720, PAD, FS;
   var COL = ['var(--s1)', 'var(--s2)', 'var(--s3)', 'var(--s4)'];
 
   function el(tag, attrs, parent) {
@@ -35,7 +35,15 @@
 
   function render(fig) {
     var spec; try { spec = JSON.parse(fig.getAttribute('data-chart')); } catch (e) { return; }
-    var H = Math.round(W / (spec.aspect || 2.2));
+    // a phone gets its own geometry: fewer, larger labels (12px or more on screen), never a scaled-down desktop chart
+    var slotW = (fig.querySelector('.chart-slot,.chart-body') || fig).clientWidth;
+    var narrow = slotW > 0 && fig.clientWidth < 560;
+    fig.__narrow = narrow; fig.__w = fig.clientWidth;
+    var lined = spec.type !== 'bar' && spec.series.length > 1;
+    // the drawing is laid out at the pixel width it gets, so 13px text renders at 13px on any screen
+    W = Math.max(280, Math.round(slotW || 720)); FS = 13;
+    PAD = { l: narrow ? 50 : 56, r: lined ? (narrow ? 104 : 150) : 16, t: 16, b: narrow ? 38 : 36 };
+    var H = Math.round(W / (narrow ? Math.min(spec.aspect || 2.2, 1.35) : (spec.aspect || 2.2)));
     var svg = el('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': spec.title || 'chart', 'font-family': "'IBM Plex Mono', ui-monospace, Menlo, monospace" });
     el('rect', { x: 0, y: 0, width: W, height: H, fill: 'var(--fig-paper)' }, svg);
     var all = [];
@@ -50,15 +58,18 @@
     var nx = spec.x.length;
     var fmt = spec.y && spec.y.fmt;
 
+    // tick labels carry only the decimals their step needs (5, not 5.000)
+    var tstep = ticks.length > 1 ? Math.abs(ticks[1] - ticks[0]) : 1;
+    var tfmt = typeof fmt === 'number' ? Math.max(0, Math.min(fmt, -Math.floor(Math.log10(tstep) + 1e-9))) : fmt;
     ticks.forEach(function (t) {
       var y = ny(t);
       el('line', { x1: PAD.l, x2: W - PAD.r, y1: y, y2: y, stroke: 'var(--fig-grid)', 'stroke-width': 1 }, svg);
-      svg.appendChild(txt(PAD.l - 8, y + 4, fmtv(t, fmt), 'end', 10, 'var(--fig-mute)'));
+      svg.appendChild(txt(PAD.l - 8, y + 4, fmtv(t, tfmt), 'end', FS, 'var(--fig-mute)'));
     });
     el('line', { x1: PAD.l, x2: W - PAD.r, y1: PAD.t + ih, y2: PAD.t + ih, stroke: 'var(--fig-axis)', 'stroke-width': 2 }, svg);
     if (spec.ref != null) {
       el('line', { x1: PAD.l, x2: W - PAD.r, y1: ny(spec.ref), y2: ny(spec.ref), stroke: 'var(--fig-axis)', 'stroke-dasharray': '4 4' }, svg);
-      if (spec.refLabel) svg.appendChild(txt(W - PAD.r, ny(spec.ref) - 5, spec.refLabel, 'end', 10, 'var(--fig-mute)'));
+      if (spec.refLabel) svg.appendChild(txt(W - PAD.r, ny(spec.ref) - 6, spec.refLabel, 'end', FS, 'var(--fig-mute)'));
     }
 
     var tip = document.createElement('div'); tip.className = 'chart-tip'; tip.hidden = true;
@@ -85,6 +96,7 @@
           var x = PAD.l + slot * i + slot / 2 - (bw * ns) / 2 + bw * si;
           var y = ny(Math.max(v, lo)), h = Math.max(1, ny(lo) - y);
           var r = el('rect', { x: x, y: y, width: bw - 2, height: h, fill: COL[si % 4], class: 'chart-bar' }, svg);
+          if (!narrow && ns === 1 && nx <= 12) svg.appendChild(txt(x + (bw - 2) / 2, y - 6, fmtv(v, fmt), 'middle', FS, 'var(--fig-axis)'));
           attach(r, '<b>' + spec.x[i] + '</b><br>' + s.name + ': ' + fmtv(v, fmt) + (s.tip && s.tip[i] ? '<br>' + s.tip[i] : ''));
         });
       });
@@ -102,12 +114,31 @@
         });
       });
     }
-    var every = Math.ceil(nx / 12);
+    var every = Math.ceil(nx / (narrow ? Math.max(3, Math.floor((W - PAD.l - PAD.r) / 64)) : 12));
     spec.x.forEach(function (lab, i) {
       if (i % every) return;
       var x = spec.type === 'bar' ? PAD.l + iw / nx * i + iw / nx / 2 : PAD.l + (nx > 1 ? iw / (nx - 1) : 0) * i;
-      svg.appendChild(txt(x, H - 10, lab, 'middle', 10, 'var(--fig-mute)'));
+      svg.appendChild(txt(x, H - 12, lab, 'middle', FS, 'var(--fig-mute)'));
     });
+    // direct labels: each line is named at its last point, pushed apart so none overlap
+    if (lined) {
+      var ends = [];
+      spec.series.forEach(function (s, si) {
+        for (var k = s.values.length - 1; k >= 0; k--) if (s.values[k] != null) { ends.push({ y: ny(s.values[k]), n: s.name, c: COL[si % 4] }); break; }
+      });
+      ends.sort(function (a, b) { return a.y - b.y; });
+      // a name too long for the margin breaks at a space or a capital (OperationalStress -> Operational / Stress)
+      var fit = Math.floor((PAD.r - 10) / (FS * 0.62));
+      ends.forEach(function (d) {
+        var words = d.n.replace(/([a-z])([A-Z])/g, '$1 $2').split(' '), lines = [''];
+        words.forEach(function (w) { var l = lines[lines.length - 1]; if (l && (l + ' ' + w).length > fit) lines.push(w); else lines[lines.length - 1] = l ? l + (/[A-Z]/.test(w[0]) && d.n.indexOf(l + w) > -1 ? '' : ' ') + w : w; });
+        d.lines = lines;
+      });
+      for (var e2 = 1; e2 < ends.length; e2++) { var need = ends[e2 - 1].y + ends[e2 - 1].lines.length * (FS + 2); if (ends[e2].y < need) ends[e2].y = need; }
+      ends.forEach(function (d) {
+        d.lines.forEach(function (ln, li) { var t = txt(W - PAD.r + 8, d.y + FS / 3 + li * (FS + 2), ln, 'start', FS, d.c); t.setAttribute('font-weight', '700'); svg.appendChild(t); });
+      });
+    }
 
     var body = document.createElement('div'); body.className = 'chart-body';
     body.appendChild(svg); body.appendChild(tip);
@@ -116,7 +147,7 @@
     if (slot2) slot2.replaceWith(body); else if (prev) prev.replaceWith(body); else fig.appendChild(body);
     var oldLg = body.nextElementSibling;
     while (oldLg && oldLg.classList.contains('fig-legend')) { var nx2 = oldLg.nextElementSibling; oldLg.remove(); oldLg = nx2; }
-    if (spec.series.length > 1) {
+    if (spec.series.length > 1 && !lined) {
       var lg = document.createElement('div'); lg.className = 'fig-legend';
       spec.series.forEach(function (s, i) { var sp = document.createElement('span'); sp.innerHTML = '<i style="background:' + COL[i % 4] + '"></i>' + s.name; lg.appendChild(sp); });
       body.after(lg);
@@ -163,6 +194,12 @@
   window.GCharts = { init: function () { document.querySelectorAll('figure.chart[data-chart]').forEach(render); } };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', window.GCharts.init); else window.GCharts.init();
   document.addEventListener('rs-themechange', function () { window.GCharts.init(); });
+  // charts are laid out at their pixel width: re-draw when that width changes (rotation, window resize)
+  var rt; addEventListener('resize', function () {
+    clearTimeout(rt); rt = setTimeout(function () {
+      document.querySelectorAll('figure.chart[data-chart]').forEach(function (f) { if (Math.abs(f.clientWidth - (f.__w || 0)) > 24) { f.__drawn = 1; render(f); } });
+    }, 150);
+  });
 })();
 
 /* ======================================================================
@@ -346,7 +383,9 @@
     var mode = 'both', svgBox = $('#ox-years', root), readout = $('#ox-year-read', root);
     function paintYears() {
       clear(svgBox);
-      var W = 640, H = 260, L = 44, R = 10, T = 16, B = 30, iw = W - L - R, ih = H - T - B;
+      // laid out at the pixel width it gets, so labels render at 13px on any screen
+      var W = Math.max(280, Math.round(svgBox.clientWidth || 640)), H = Math.round(Math.min(300, Math.max(220, W * 0.5))), L = 40, R = 8, T = 16, B = 32, iw = W - L - R, ih = H - T - B;
+      svgBox.__w = W;
       var svg = s('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Aggregate TRIR by year, ' + mode });
       var vals = [];
       D.years.forEach(function (y) { if (mode !== 'uns') vals.push(y.scr); if (mode !== 'scr') vals.push(y.uns); });
@@ -354,7 +393,7 @@
       for (var t = 0; t <= top; t++) {
         var yy = T + ih - t / top * ih;
         s('line', { x1: L, x2: W - R, y1: yy, y2: yy, stroke: 'var(--fig-grid)' }, svg);
-        s('text', { x: L - 8, y: yy + 4, 'text-anchor': 'end', 'font-size': 11, fill: 'var(--fig-mute)', text: t }, svg);
+        s('text', { x: L - 8, y: yy + 4, 'text-anchor': 'end', 'font-size': 13, fill: 'var(--fig-mute)', text: t }, svg);
       }
       var slot = iw / D.years.length, series = mode === 'both' ? ['uns', 'scr'] : [mode];
       var bw = Math.min(34, slot * 0.72 / series.length);
@@ -368,7 +407,7 @@
           }
           r.addEventListener('mouseenter', show); r.addEventListener('focus', show);
         });
-        s('text', { x: L + slot * i + slot / 2, y: H - 9, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--fig-mute)', text: y.y }, svg);
+        if (slot >= 40 || i % 2 === 0) s('text', { x: L + slot * i + slot / 2, y: H - 10, 'text-anchor': 'middle', 'font-size': 13, fill: 'var(--fig-mute)', text: y.y }, svg);
       });
       s('line', { x1: L, x2: W - R, y1: T + ih, y2: T + ih, stroke: 'var(--fig-axis)', 'stroke-width': 2 }, svg);
       svgBox.appendChild(svg);
@@ -376,6 +415,7 @@
     seg($('#ox-mode', root), [{ value: 'both', label: 'Both' }, { value: 'scr', label: 'Screened' }, { value: 'uns', label: 'Unscreened' }], mode,
       function (v) { mode = v; paintYears(); }, 'Series shown');
     paintYears();
+    var yt; addEventListener('resize', function () { clearTimeout(yt); yt = setTimeout(function () { if (Math.abs((svgBox.clientWidth || 0) - (svgBox.__w || 0)) > 24) paintYears(); }, 150); });
 
     // C. peer lookup
     var selN = $('#ox-naics', root), selS = $('#ox-size', root), inp = $('#ox-trir', root), pr = $('#ox-peer', root);
@@ -417,11 +457,11 @@
     var pred = D.preds[0], ni = 0, slider = $('#sx-n', root), nlab = $('#sx-nlab', root);
     slider.max = D.ns.length - 1; slider.value = 0;
     function row(n, p) { var r = null; D.rows.forEach(function (x) { if (x.n === n && x.p === p) r = x; }); return r; }
-    function axis(svg, W, L, R, lo, hi, y) {
-      for (var v = lo; v <= hi + 1e-9; v += 0.25) {
+    function axis(svg, W, L, R, lo, hi, y, fs, step) {
+      for (var v = lo; v <= hi + 1e-9; v += step) {
         var x = L + (v - lo) / (hi - lo) * (W - L - R);
         s('line', { x1: x, x2: x, y1: 8, y2: y, stroke: Math.abs(v) < 1e-9 ? 'var(--fig-axis)' : 'var(--fig-grid)' }, svg);
-        s('text', { x: x, y: y + 16, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--fig-mute)', text: v.toFixed(2) }, svg);
+        s('text', { x: x, y: y + fs + 4, 'text-anchor': 'middle', 'font-size': fs, fill: 'var(--fig-mute)', text: v.toFixed(2) }, svg);
       }
     }
     function paint() {
@@ -429,15 +469,18 @@
       nlab.textContent = 'n = ' + n.toLocaleString();
       slider.setAttribute('aria-valuetext', 'n = ' + n);
       // all four at this n
-      var box = $('#sx-four', root); clear(box);
-      var W = 640, L = 150, R = 16, lo = -0.75, hi = 1.0, rowH = 46, H = D.preds.length * rowH + 30;
+      var box = $('#sx-four', root);
+      // phones get their own geometry so labels stay 12px or more and every row is a 44px target
+      var nar = box.clientWidth > 0 && box.clientWidth < 560; box.__nar = nar; clear(box);
+      var fs = nar ? 15 : 12, W = nar ? 360 : 640, L = nar ? 124 : 150, R = 16, lo = -0.75, hi = 1.0, rowH = nar ? 60 : 46, H = D.preds.length * rowH + (nar ? 40 : 30);
       var svg = s('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Estimate spread for four coefficients at n = ' + n });
-      axis(svg, W, L, R, lo, hi, H - 22);
+      axis(svg, W, L, R, lo, hi, H - (nar ? 28 : 22), fs, nar ? 0.5 : 0.25);
       function X(v) { return L + (v - lo) / (hi - lo) * (W - L - R); }
       D.preds.forEach(function (p, i) {
-        var r = row(n, p), y = 22 + i * rowH, on = p === pred;
+        var r = row(n, p), y = rowH / 2 + i * rowH, on = p === pred;
         var g = s('g', { class: 'sx-row' + (on ? ' on' : ''), tabindex: 0, role: 'button', 'aria-pressed': String(on), 'aria-label': p + ': select' }, svg);
-        s('text', { x: L - 12, y: y + 5, 'text-anchor': 'end', 'font-size': 12, 'font-weight': on ? 700 : 500, fill: on ? 'var(--ink)' : 'var(--fig-axis)', text: D.short[p] }, g);
+        s('rect', { x: 0, y: y - rowH / 2, width: W, height: rowH, fill: 'transparent' }, g);
+        s('text', { x: L - 10, y: y + fs / 3, 'text-anchor': 'end', 'font-size': fs, 'font-weight': on ? 700 : 500, fill: on ? 'var(--ink)' : 'var(--fig-axis)', text: D.short[p] }, g);
         s('rect', { x: X(r.mean - 1.96 * r.sd), y: y - 9, width: X(r.mean + 1.96 * r.sd) - X(r.mean - 1.96 * r.sd), height: 18, fill: 'var(--s2)', opacity: on ? 0.35 : 0.18 }, g);
         s('rect', { x: X(r.mean - 1.96 * r.se), y: y - 3, width: X(r.mean + 1.96 * r.se) - X(r.mean - 1.96 * r.se), height: 6, fill: 'var(--accent)' }, g);
         s('line', { x1: X(r.beta), x2: X(r.beta), y1: y - 14, y2: y + 14, stroke: 'var(--ink)', 'stroke-width': 2, 'stroke-dasharray': '3 2' }, g);
@@ -459,17 +502,17 @@
       $('.sx-covbar i', root).style.width = pct(r.cov, 2);
       // spread vs n for the selected predictor
       var box2 = $('#sx-byn', root); clear(box2);
-      var W2 = 640, L2 = 70, R2 = 16, H2 = D.ns.length * 30 + 30, lo2 = r.beta - 0.35, hi2 = r.beta + 0.35;
+      var rh2 = nar ? 36 : 30, W2 = nar ? 360 : 640, L2 = nar ? 78 : 70, R2 = 16, H2 = D.ns.length * rh2 + (nar ? 40 : 30), lo2 = r.beta - 0.35, hi2 = r.beta + 0.35;
       var svg2 = s('svg', { viewBox: '0 0 ' + W2 + ' ' + H2, role: 'img', 'aria-label': 'Spread of ' + pred + ' estimates by sample size' });
       function X2(v) { return L2 + (v - lo2) / (hi2 - lo2) * (W2 - L2 - R2); }
-      [-0.3, -0.15, 0, 0.15, 0.3].forEach(function (d) {
+      (nar ? [-0.3, 0, 0.3] : [-0.3, -0.15, 0, 0.15, 0.3]).forEach(function (d) {
         var x = X2(r.beta + d);
-        s('line', { x1: x, x2: x, y1: 6, y2: H2 - 22, stroke: d === 0 ? 'var(--ink)' : 'var(--fig-grid)', 'stroke-dasharray': d === 0 ? '3 2' : '' }, svg2);
-        s('text', { x: x, y: H2 - 6, 'text-anchor': 'middle', 'font-size': 11, fill: 'var(--fig-mute)', text: (r.beta + d).toFixed(2) }, svg2);
+        s('line', { x1: x, x2: x, y1: 6, y2: H2 - (nar ? 28 : 22), stroke: d === 0 ? 'var(--ink)' : 'var(--fig-grid)', 'stroke-dasharray': d === 0 ? '3 2' : '' }, svg2);
+        s('text', { x: x, y: H2 - 6, 'text-anchor': 'middle', 'font-size': fs, fill: 'var(--fig-mute)', text: (r.beta + d).toFixed(2) }, svg2);
       });
       D.ns.forEach(function (nn, i) {
-        var q = row(nn, pred), y = 18 + i * 30, on = i === ni;
-        s('text', { x: L2 - 10, y: y + 4, 'text-anchor': 'end', 'font-size': 11, 'font-weight': on ? 700 : 400, fill: on ? 'var(--ink)' : 'var(--fig-mute)', text: nn.toLocaleString() }, svg2);
+        var q = row(nn, pred), y = rh2 / 2 + 4 + i * rh2, on = i === ni;
+        s('text', { x: L2 - 10, y: y + fs / 3, 'text-anchor': 'end', 'font-size': fs, 'font-weight': on ? 700 : 400, fill: on ? 'var(--ink)' : 'var(--fig-mute)', text: nn.toLocaleString() }, svg2);
         s('rect', { x: X2(q.mean - 1.96 * q.sd), y: y - 7, width: X2(q.mean + 1.96 * q.sd) - X2(q.mean - 1.96 * q.sd), height: 14, fill: 'var(--s2)', opacity: on ? 0.45 : 0.2 }, svg2);
         s('rect', { x: X2(q.mean - 1.96 * q.se), y: y - 2, width: X2(q.mean + 1.96 * q.se) - X2(q.mean - 1.96 * q.se), height: 4, fill: 'var(--accent)' }, svg2);
       });
@@ -477,6 +520,7 @@
     }
     slider.addEventListener('input', function () { ni = +slider.value; paint(); });
     paint();
+    var rt; addEventListener('resize', function () { clearTimeout(rt); rt = setTimeout(function () { var b = $('#sx-four', root); if (b && (b.clientWidth < 560) !== !!b.__nar) paint(); }, 150); });
   }
 
   /* =================== GROUNDING =================== */
