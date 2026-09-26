@@ -64,8 +64,10 @@ PAPERS = [
     ("paper.html", "Grounded reasoning for safety-critical AI", "bundled draft"),
     ("paper-osha.html", "The hours denominator", "standalone OSHA paper"),
 ]
-PRIMARY = [("hub", "Overview", HUB), ("start", "Start here", HUB + "start.html"),
-           ("observatory", "Observatory", HUB + "observatory.html")]
+# Round 8b: the header is only Home (the brand), Projects and Papers. Start here,
+# Observatory, Overview, "Read the story" and the "On this page" strip were removed
+# because readers found the stacked navigation confusing.
+PRIMARY = []
 
 _E = _html.escape
 
@@ -378,7 +380,8 @@ def build_header(current=None, sections=None, story_href=None):
     story_href, when given, adds one marked link in the primary row that takes
     the reader to that page's narrative walkthrough.
     """
-    sections = list(sections or [])
+    sections = []  # no "On this page" strip (round 8b simplification)
+    story_href = None
     proj_cur = any(current == s for s, _, _ in PROJECTS)
     pap_cur = any(current == f for f, _, _ in PAPERS)
 

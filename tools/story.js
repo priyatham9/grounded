@@ -2646,7 +2646,8 @@
     return wayState;
   }
   function autoWayfinder() {
-    if (global.STORY_NO_WAYFINDER) return;
+    // The bottom dock is off by default (readers found it confusing); a page can opt back in.
+    if (!global.STORY_WAYFINDER) return;
     if (document.querySelector(".st-way")) return;
     try { wayfinder(); } catch (e) { if (global.console) console.error(e); }
   }

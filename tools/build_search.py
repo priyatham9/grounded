@@ -214,6 +214,8 @@ def build(repos):
         if d.name in SKIP_REPOS or not (d / "docs").is_dir():
             continue
         for f in sorted((d / "docs").glob("*.html")):
+            if 'http-equiv="refresh"' in f.read_text(encoding="utf-8", errors="ignore")[:2000]:
+                continue  # redirect stubs (e.g. grounded/start.html) are not pages
             found.append((d.name, f))
     found.sort(key=lambda x: (ORDER.index(x[0]) if x[0] in ORDER else 99,
                               FILE_ORDER.index(x[1].name) if x[1].name in FILE_ORDER else 50, x[1].name))
