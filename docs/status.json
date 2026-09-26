@@ -1,6 +1,6 @@
 {
-  "generated_utc": "2026-09-11T02:25:16Z",
-  "last_commit_date": "2026-09-10",
+  "generated_utc": "2026-09-26T16:04:10Z",
+  "last_commit_date": "2026-09-26",
   "repos": {
     "ehs-ai-grounding-eval": {
       "benchmark": {
@@ -23,28 +23,28 @@
         ],
         "item_count": 68
       },
-      "last_commit_date": "2026-09-10",
-      "last_commit_sha": "59e289b",
+      "last_commit_date": "2026-09-26",
+      "last_commit_sha": "a5bfe9e",
       "release_tag": "v0.1.0",
       "tests": {
-        "count": 158,
+        "count": 165,
         "ok": true,
         "path": "python3 -m unittest discover -s tests -t ."
       }
     },
     "ehs-capitals-calculator": {
-      "last_commit_date": "2026-09-10",
-      "last_commit_sha": "502e14f",
+      "last_commit_date": "2026-09-26",
+      "last_commit_sha": "c15bd76",
       "release_tag": "v0.1.0",
       "tests": {
-        "count": 174,
+        "count": 177,
         "ok": true,
         "path": "python3 -m unittest discover -s tests"
       }
     },
     "ehs-human-factors-ontology": {
-      "last_commit_date": "2026-09-10",
-      "last_commit_sha": "9e39f16",
+      "last_commit_date": "2026-09-26",
+      "last_commit_sha": "fe7d96f",
       "ontology": {
         "alignment_count": 90,
         "factor_count": 20
@@ -64,18 +64,18 @@
         "n_filings": 2801064,
         "trir_screened": 3.983078949653959
       },
-      "last_commit_date": "2026-09-10",
-      "last_commit_sha": "7c2f24a",
+      "last_commit_date": "2026-09-26",
+      "last_commit_sha": "0091549",
       "release_tag": "v0.1.0",
       "tests": {
-        "count": 175,
+        "count": 178,
         "ok": true,
         "path": "make test (data/raw populated, real-data tests ran)"
       }
     },
     "ehs-risk-sem": {
-      "last_commit_date": "2026-09-10",
-      "last_commit_sha": "9707cf7",
+      "last_commit_date": "2026-09-26",
+      "last_commit_sha": "8a85ca0",
       "release_tag": "v0.1.0",
       "tests": {
         "count": 114,
@@ -84,8 +84,8 @@
       }
     },
     "grounded": {
-      "last_commit_date": "2026-09-10",
-      "last_commit_sha": "b5d083a",
+      "last_commit_date": "2026-09-26",
+      "last_commit_sha": "9751201",
       "release_tag": "v0.1.0",
       "tests": {
         "count": 0,
@@ -94,5 +94,5 @@
       }
     }
   },
-  "total_tests": 810
+  "total_tests": 823
 }
