@@ -68,6 +68,18 @@ PAPERS = [
 # Observatory, Overview, "Read the story" and the "On this page" strip were removed
 # because readers found the stacked navigation confusing.
 PRIMARY = []
+# Pages inside each project, in reading order: shown as tabs next to the project name.
+PROJECT_PAGES = {
+    "ehs-osha-analysis": [("story.html", "Story"), ("index.html", "Data & method"), ("explore.html", "Explorer")],
+    "ehs-ai-grounding-eval": [("story.html", "Story"), ("index.html", "Data & method"), ("try.html", "Try it")],
+    "ehs-human-factors-ontology": [("story.html", "Story"), ("index.html", "Data & method"),
+                                   ("crosswalk.html", "Crosswalk"), ("walkthrough.html", "Walkthrough")],
+    "ehs-risk-sem": [("story.html", "Story"), ("index.html", "Data & method")],
+    "ehs-capitals-calculator": [("index.html", "Calculator"), ("story.html", "Story")],
+    "ehs-benchmarks": [("index.html", "Benchmark tool"), ("story.html", "Story")],
+}
+HUB_CRUMBS = {"story.html": "The argument", "observatory.html": "Data dashboard", "changelog.html": "Changelog",
+              "paper.html": "Paper", "paper-osha.html": "Paper", "start.html": None, "hub": None}
 
 _E = _html.escape
 
@@ -186,18 +198,29 @@ a.skip,a.skip-link{min-height:44px;box-sizing:border-box}
 .rs-header .rs-sheet a.rs-sheet-author{margin-top:24px;border-top:2px solid var(--rs-rule);border-bottom:0;color:var(--rs-muted);text-transform:none;font-weight:500}
 htmlhtml.rs-lock{overflow:hidden}
 @media (max-width:1279.98px){.rs-header .rs-author{display:none}}
+.rs-header .rs-crumb{display:flex;align-items:center;gap:10px;min-width:0;height:56px;padding:0 4px 0 0}
+.rs-header .rs-slash{color:var(--rs-muted);font:400 20px/1 var(--rs-sans)}
+.rs-header .rs-proj,.rs-header .rs-here{display:block;min-width:0;line-height:44px!important;min-height:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 15px/1.2 var(--rs-sans);color:var(--rs-ink);text-decoration:none}
+.rs-header a.rs-proj:hover{text-decoration:underline}
+.rs-header .rs-tabs{display:flex;align-items:center;height:56px;margin:0 0 0 14px;padding:0}
+.rs-header .rs-tab{display:flex;align-items:center;height:56px;padding:0 12px;font:600 12px/1 var(--rs-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rs-muted);text-decoration:none;white-space:nowrap}
+.rs-header .rs-tab:hover{background:var(--rs-surface-2);color:var(--rs-ink)}
+.rs-header .rs-tab[aria-current="page"]{color:var(--rs-ink);box-shadow:inset 0 -3px 0 var(--rs-accent)}
+.rs-header .rs-tab:focus-visible,.rs-header .rs-proj:focus-visible{outline:3px solid var(--rs-accent);outline-offset:-3px}
+@media (max-width:599.98px){.rs-header .rs-brand:has(+.rs-crumb){font-size:0;gap:0;min-width:44px;padding-right:0;justify-content:center}.rs-header .rs-crumb{gap:8px}}
 @media (max-width:1100px){.rs-header .rs-item{padding:0 10px}}
 @media (min-width:1280px){.rs-header .rs-find{width:auto;padding:0 12px}.rs-header .rs-find span{display:block}.rs-header .rs-item{padding:0 12px}}
-@media (max-width:959.98px){
+@media (max-width:1099.98px){
+ .rs-header .rs-tabs{display:none}
+ .rs-header .rs-find{margin-left:auto}
  .rs-header .rs-row{padding:0 16px}
  .rs-header.rs-js .rs-nav,.rs-header.rs-js .rs-sep,.rs-header .rs-author{display:none}
  .rs-header.rs-js .rs-burger{display:inline-flex}
- .rs-header .rs-brand{margin-right:auto}
  .rs-header:not(.rs-js) .rs-nav{overflow-x:auto;margin-left:0}
  .rs-header.rs-js .rs-sublabel,.rs-header.rs-js .rs-subrow>.rs-sections{display:none}
  .rs-header.rs-js .rs-subbtn{display:flex}
 }
-@media (min-width:960px){.rs-header .rs-sheet,.rs-header .rs-sublist{display:none}}
+@media (min-width:1100px){.rs-header .rs-sheet,.rs-header .rs-sublist{display:none}}
 /* programme search dialog (built by rs-header-js on first open) */
 .rs-k,.rs-k :where(div,span,a,button,input,p,mark,kbd,b,svg){all:revert;box-sizing:border-box}
 .rs-k{width:min(640px,100vw - 32px);max-width:none;max-height:min(76vh,680px);margin:10vh auto auto;padding:0;overflow:hidden;background:var(--rs-surface);color:var(--rs-ink);border:2px solid var(--rs-rule);box-shadow:8px 8px 0 var(--rs-rule);font:400 15px/1.4 var(--rs-sans)}
@@ -266,7 +289,7 @@ HEADER_JS = r"""<script id="rs-header-js">
   if(open){var f=sheet.querySelector('a[href]');if(f)f.focus();}}
  if(mb&&sheet){mb.addEventListener('click',function(){setSheet(sheet.hidden);});
   sheet.addEventListener('click',function(e){if(e.target.closest('a'))setSheet(false);});
-  window.addEventListener('resize',function(){if(!sheet.hidden&&innerWidth>959)setSheet(false);});}
+  window.addEventListener('resize',function(){if(!sheet.hidden&&innerWidth>1099)setSheet(false);});}
  /* sections */
  var sb=doc.getElementById('rs-subbtn'),sl=doc.getElementById('rs-sublist'),nav=doc.getElementById('rs-sections');
  function setSub(open){if(!sb)return;sl.hidden=!open;sb.setAttribute('aria-expanded',open?'true':'false');}
@@ -382,61 +405,60 @@ def _current_from(current, current_project, current_paper, is_hub):
     return "hub" if is_hub else None
 
 
-def build_header(current=None, sections=None, story_href=None):
-    """Return the header markup. sections: list of (id, label) or None/[].
+def build_header(current=None, sections=None, story_href=None, page=None):
+    """Return the header markup.
 
-    story_href, when given, adds one marked link in the primary row that takes
-    the reader to that page's narrative walkthrough.
+    Brand (home) / where you are (project name) / that project's pages as tabs,
+    then plain links to All projects and Papers on the home page, Search, theme.
+    No dropdowns and no section strip: readers found both confusing.
+    `page` is the file name of the page being built (index.html when omitted).
     """
-    sections = []  # no "On this page" strip (round 8b simplification)
-    story_href = None
-    proj_cur = any(current == s for s, _, _ in PROJECTS)
-    pap_cur = any(current == f for f, _, _ in PAPERS)
-
-    def aria(flag):
-        return ' aria-current="page"' if flag else ""
-
-    def opts(rows, href):
-        return "".join('<a class="rs-opt" href="%s"%s><span class="rs-t">%s</span><span class="rs-n">%s</span></a>'
-                       % (href(k), aria(k == current), _E(t), _E(n)) for k, t, n in rows)
-    proj = opts(PROJECTS, lambda s: "https://priyatham9.github.io/%s/" % s)
-    paps = opts(PAPERS, lambda f: HUB + f)
-    prim = "".join('<a class="rs-item" href="%s"%s>%s</a>' % (u, aria(k == current), l) for k, l, u in PRIMARY)
-    story = ('<a class="rs-item rs-story" href="%s">Read the story</a>' % _E(story_href, quote=True)) if story_href else ""
-    caret = '<span class="rs-caret" aria-hidden="true"></span>'
-
-    def menu(label, body, cur):
-        return ('<details class="rs-menu"%s><summary class="rs-item" aria-haspopup="true">%s%s</summary>'
-                '<div class="rs-panel">%s</div></details>' % (' data-current="true"' if cur else "", label, caret, body))
-
+    page = page or "index.html"
+    is_proj = any(current == k for k, _, _ in PROJECTS)
+    names = {k: t for k, t, _ in PROJECTS}
+    aria = lambda on: ' aria-current="page"' if on else ""
+    crumb, tabs, sheet_here = "", "", ""
+    if is_proj:
+        base = "https://priyatham9.github.io/%s/" % current
+        href = lambda f: base + ("" if f == "index.html" else f)
+        items = PROJECT_PAGES.get(current, [("index.html", "Overview")])
+        crumb = ('<span class="rs-crumb"><span class="rs-slash" aria-hidden="true">/</span>'
+                 '<a class="rs-proj" href="%s">%s</a></span>' % (href(items[0][0]), _E(names[current])))
+        tabs = ('<nav class="rs-tabs" aria-label="Pages in %s">%s</nav>' % (_E(names[current]), "".join(
+            '<a class="rs-tab" href="%s"%s>%s</a>' % (href(f), aria(f == page), _E(l)) for f, l in items)))
+        sheet_here = ('<span class="rs-group">%s</span>%s' % (_E(names[current]), "".join(
+            '<a href="%s"%s>%s</a>' % (href(f), aria(f == page), _E(l)) for f, l in items)))
+    else:
+        key = page if current in ("hub", "start", "observatory", "changelog") else current
+        if current in ("observatory", "changelog"):
+            key = current + ".html"
+        label = HUB_CRUMBS.get(key) or HUB_CRUMBS.get(current or "")
+        if label:
+            crumb = ('<span class="rs-crumb"><span class="rs-slash" aria-hidden="true">/</span>'
+                     '<span class="rs-here">%s</span></span>' % _E(label))
+    nav = ('<nav class="rs-nav" aria-label="Research site">'
+           '<a class="rs-item" href="%s#projects">All projects</a><a class="rs-item" href="%s#papers">Papers</a></nav>'
+           % (HUB, HUB))
+    projs = "".join('<a class="rs-opt" href="https://priyatham9.github.io/%s/"%s><span class="rs-t">%s</span><span class="rs-n">%s</span></a>'
+                    % (k, aria(k == current and page == "index.html"), _E(t), _E(n)) for k, t, n in PROJECTS)
+    paps = "".join('<a class="rs-opt" href="%s%s"%s><span class="rs-t">%s</span><span class="rs-n">%s</span></a>'
+                   % (HUB, f, aria(f == current), _E(t), _E(n)) for f, t, n in PAPERS)
     row1 = (
         '<div class="rs-bar"><div class="rs-row">'
-        '<a class="rs-brand" href="%s"%s><span class="rs-mark" aria-hidden="true"></span>Grounded</a>'
-        '<a class="rs-author" href="%s">Priyatham Chimmani&nbsp;&#8599;</a>'
-        '<nav class="rs-nav" aria-label="Research site">%s%s%s%s</nav>'
+        '<a class="rs-brand" href="%s" aria-label="Grounded home"><span class="rs-mark" aria-hidden="true"></span>Grounded</a>'
+        '%s%s%s'
         '<span class="rs-sep" aria-hidden="true"></span>'
         '<button class="rs-btn rs-find" id="rs-find" type="button" aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K /" '
         'aria-label="Search the research" title="Search (/ or Ctrl+K)">%s<span>Search</span></button>'
         '<button class="rs-btn" id="rs-theme" type="button" aria-label="Dark theme" aria-pressed="false" title="Switch colour theme">%s%s</button>'
         '<button class="rs-btn rs-burger" id="rs-menu-btn" type="button" aria-expanded="false" aria-controls="rs-sheet" aria-label="Open menu"><i></i></button>'
-        '</div></div>' % (HUB, ' aria-label="Grounded research hub"', PERSONAL, prim,
-                          menu("Projects", proj, proj_cur), menu("Papers", paps, pap_cur), story, _FIND, _SUN, _MOON))
-    sheet = ('<div class="rs-sheet" id="rs-sheet" hidden>%s%s'
-             '<span class="rs-group">Projects</span>%s<span class="rs-group">Papers</span>%s'
+        '</div></div>' % (HUB, crumb, tabs, nav, _FIND, _SUN, _MOON))
+    sheet = ('<div class="rs-sheet" id="rs-sheet" hidden><a href="%s"%s>Grounded home</a>%s'
+             '<span class="rs-group">All projects</span>%s<span class="rs-group">Papers</span>%s'
              '<a class="rs-sheet-author" href="%s">Priyatham Chimmani&nbsp;&#8599;</a></div>'
-             % (prim, story, proj, paps, PERSONAL))
-    row2 = ""
-    if sections:
-        secs = "".join('<a class="rs-sec" href="#%s">%s</a>' % (_E(i, quote=True), _E(l)) for i, l in sections)
-        row2 = ('<div class="rs-sub"><div class="rs-row rs-subrow">'
-                '<span class="rs-sublabel">On this page</span>'
-                '<nav class="rs-sections" id="rs-sections" aria-label="On this page">%s</nav>'
-                '<button class="rs-subbtn" id="rs-subbtn" type="button" aria-expanded="false" aria-controls="rs-sublist">'
-                'On this page:<b id="rs-now">%s</b>%s</button></div>'
-                '<nav class="rs-sublist" id="rs-sublist" aria-label="On this page (list)" hidden>%s</nav></div>'
-                % (secs, _E(sections[0][1]), caret, secs))
-    return ('<header class="rs-header" id="rs-header">%s%s%s<span class="rs-progress" aria-hidden="true"></span></header>'
-            % (row1, row2, sheet))
+             % (HUB, aria(current == "hub"), sheet_here, projs, paps, PERSONAL))
+    return ('<header class="rs-header" id="rs-header">%s%s<span class="rs-progress" aria-hidden="true"></span></header>'
+            % (row1, sheet))
 
 
 # ---------------------------------------------------------------- page surgery
@@ -578,7 +600,7 @@ def _strip_old_css(css):
 
 
 def apply_banner(html, current=None, sections=None, current_project=None,
-                 current_paper=None, is_hub=False, story_href=None):
+                 current_paper=None, is_hub=False, story_href=None, page=None):
     current = _current_from(current, current_project, current_paper, is_hub)
     if sections is None:
         sections = _detect_sections(html)
@@ -600,7 +622,9 @@ def apply_banner(html, current=None, sections=None, current_project=None,
     else:
         mh = re.search(r"<head\b[^>]*>", html) or re.search(r"<html\b[^>]*>", html)
         html = (html[:mh.end()] + head_bits + html[mh.end():]) if mh else head_bits + html
-    header = build_header(current, sections, story_href=story_href)
+    if page is None and current_paper:
+        page = current_paper
+    header = build_header(current, sections, story_href=story_href, page=page)
     # keep a leading skip link ("<a class=\"skip\" ...>") as the first focusable element
     mb = re.search(r"<body\b[^>]*>(?:\s*<a\b[^>]*class=\"[^\"]*\bskip(?:-link)?\b[^\"]*\"[^>]*>.*?</a>)?", html, re.S)
     if not mb:

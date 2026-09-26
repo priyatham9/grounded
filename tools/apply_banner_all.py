@@ -23,7 +23,7 @@ import build_search  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 PROJECT_SLUGS = {s for s, _, _ in banner.PROJECTS}
-HUB_PAGES = {"index.html": "hub", "start.html": "start", "observatory.html": "observatory",
+HUB_PAGES = {"index.html": "hub", "story.html": "story.html", "start.html": "start", "observatory.html": "observatory",
              "changelog.html": "changelog", "paper.html": "paper.html", "paper-osha.html": "paper-osha.html"}
 SKIP_REPOS = {"ehs-osha-benchmark-api", "priyathamchimmani", "priyatham9.github.io", "priyatham9", "brag"}
 
@@ -70,7 +70,7 @@ def main(argv=None):
                 skipped.append(rel)
                 continue
             current, story, secs = settings(d.name, f, page)
-            out = banner.apply_banner(page, current=current, sections=secs, story_href=story)
+            out = banner.apply_banner(page, current=current, sections=secs, story_href=story, page=f.name)
             if out == page:
                 same += 1
                 continue
