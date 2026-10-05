@@ -59,6 +59,7 @@ PROJECTS = [
     ("ehs-risk-sem", "SEM for safety risk", "simulation studies"),
     ("ehs-capitals-calculator", "Cost-benefit calculator", "interactive tool"),
     ("ehs-benchmarks", "OSHA benchmarks", "TRIR/DART library"),
+    ("ehs-chemical-peers", "Chemical plant peers", "peer explorer"),
 ]
 PAPERS = [
     ("paper.html", "Grounded reasoning for safety-critical AI", "bundled draft"),
@@ -77,6 +78,7 @@ PROJECT_PAGES = {
     "ehs-risk-sem": [("story.html", "Story"), ("index.html", "Data & method")],
     "ehs-capitals-calculator": [("index.html", "Calculator"), ("story.html", "Story")],
     "ehs-benchmarks": [("index.html", "Benchmark tool"), ("story.html", "Story")],
+    "ehs-chemical-peers": [("index.html", "Plant explorer"), ("story.html", "Story"), ("method.html", "Data & method")],
 }
 HUB_CRUMBS = {"story.html": "The argument", "observatory.html": "Data dashboard", "changelog.html": "Changelog",
               "paper.html": "Paper", "paper-osha.html": "Paper", "start.html": None, "hub": None}
