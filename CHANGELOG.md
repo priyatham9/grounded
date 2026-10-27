@@ -9,6 +9,7 @@ Keep a Changelog and this project uses semantic versioning.
 - Hub: story-arc labels on each chapter, a scroll-drawn narrative thread on wide screens, word-mask heading reveals, constellation line draw, and a closing "so what" section with three questions for a VP of EHS
 
 ### Fixed
+- OSHA paper: all 45 references verified on 2026-10-27 and recorded in `docs/references-osha.csv`; corrected Steiger (1979) issue, Kuhn et al. (2023) venue label, the ITA users guide date and the OSHA ITA page title; added missing issue, page and DOI details; reworded eight sentences to match what their sources say
 - Changelog regenerated through 2026-09-20 with linkable day anchors; RSS feed now uses RFC 822 dates, an atom:self link, and anchors that resolve
 - Broken PANEL.md link on the hub; horizontal overflow on start.html at phone width; changelog added to the sitemap
 
