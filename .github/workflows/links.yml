@@ -12,7 +12,7 @@ jobs:
       - uses: actions/checkout@v4
       - name: Check published pages exist
         run: |
-          for f in docs/index.html docs/paper.html docs/paper-osha.html; do
+          for f in docs/index.html docs/paper.html docs/paper-osha.html docs/endeavour.html; do
             test -s "$f" || { echo "missing or empty: $f"; exit 1; }
           done
           echo "all pages present"

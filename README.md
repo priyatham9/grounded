@@ -10,6 +10,8 @@ dependencies beyond two webfonts. It presents the programme's findings, links th
 seven repositories that make it up, and states plainly what has and has not been
 established.
 
+The [proposed endeavour page](docs/endeavour.html) sets out a three-year plan built only from the work that exists, with plans labelled as plans and no results claimed.
+
 ## At a glance
 
 - Status: draft
