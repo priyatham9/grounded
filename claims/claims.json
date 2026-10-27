@@ -496,11 +496,11 @@
     },
     {
       "id": "tests-osha",
-      "statement": "The ehs-osha-analysis repository carries 268 test functions",
+      "statement": "The ehs-osha-analysis repository carries 339 test functions",
       "appears_in": [
         {
           "path": "docs/paper-osha.html",
-          "contains": "The repository carries 268 test functions"
+          "contains": "The repository carries 339 test functions"
         }
       ],
       "source": {
@@ -509,7 +509,7 @@
         "kind": "json_path",
         "key": "repos.ehs-osha-analysis.tests.count"
       },
-      "expected": 268,
+      "expected": 339,
       "tolerance": 0,
       "verifying_test": {
         "repo": "ehs-osha-analysis",
@@ -521,11 +521,11 @@
     },
     {
       "id": "tests-total",
-      "statement": "996 test functions across the six programme repositories",
+      "statement": "1144 test functions across the six programme repositories",
       "appears_in": [
         {
           "path": "docs/observatory.html",
-          "contains": "\"total_tests\":996"
+          "contains": "\"total_tests\":1144"
         }
       ],
       "source": {
@@ -534,7 +534,7 @@
         "kind": "json_path",
         "key": "total_tests"
       },
-      "expected": 996,
+      "expected": 1144,
       "tolerance": 0,
       "verifying_test": {
         "repo": "ehs-osha-analysis",
@@ -569,11 +569,11 @@
     },
     {
       "id": "osha-test-count",
-      "statement": "The OSHA pipeline is covered by 268 stdlib unittest test functions",
+      "statement": "The OSHA pipeline is covered by 339 stdlib unittest test functions",
       "appears_in": [
         {
           "path": "docs/story.html",
-          "contains": "covered by 268 stdlib unittest test functions"
+          "contains": "covered by 339 stdlib unittest test functions"
         }
       ],
       "source": {
@@ -582,7 +582,7 @@
         "kind": "json_path",
         "key": "repos.ehs-osha-analysis.tests.count"
       },
-      "expected": 268,
+      "expected": 339,
       "tolerance": 0,
       "verifying_test": {
         "repo": "ehs-osha-analysis",
