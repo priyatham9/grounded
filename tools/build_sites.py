@@ -1738,8 +1738,8 @@ def build_grounding():
          "and it is why the primary outcome is paired accuracy rather than per-item accuracy."],
         "State of the work",
         "<p><strong>No language model has been evaluated on this corpus.</strong> What exists is "
-        "the apparatus plus three non-LLM baselines (random floor 52.1%, TF-IDF retrieval 27.0%, "
-        "oracle ceiling 100%) that show the items discriminate, and a real Anthropic Messages API "
+        "the apparatus plus six non-LLM baselines (random floor 52.1%, TF-IDF retrieval 27.0%, "
+        "BM25, BM25+, rank-fusion retrieval, oracle ceiling 100%) that show the items discriminate, and a real Anthropic Messages API "
         "adapter with a one-command run script, ready for the owner to run against an actual "
         "model.</p>"
         "<p>That is a real limitation, not a phase of a rollout. Nothing here should be read as a "
@@ -1747,7 +1747,7 @@ def build_grounding():
 
     no_results = notice(
         "Baselines exist - no language model scored yet",
-        "<p>This repository contributes a question corpus, a scoring harness, and three non-LLM "
+        "<p>This repository contributes a question corpus, a scoring harness, and six non-LLM "
         "baselines that establish the items discriminate: random floor 52.1%, TF-IDF retrieval "
         "27.0%, oracle ceiling 100% accuracy. No language model has been evaluated on it yet.</p>"
         "<ul>"
@@ -1936,7 +1936,7 @@ def build_grounding():
     explore = (
         explore_intro(f"Every one of the {total} corpus items, with the plausible wrong answer it was "
                       "built to catch. Pick a domain, open an item, reveal the trap. The bars show how the "
-                      "three non-LLM baselines score per domain on factual items; none of them is a "
+                      "non-LLM baselines score per domain on factual items; none of them is a "
                       "language model.", "try.html", "Try answering an item yourself")
         + '<div class="ix" id="ix-ground">'
         '<div class="ix-panel ix-wide"><h3 class="ix-sub">Baseline accuracy by domain <small>select a domain to filter</small></h3>'
@@ -1997,7 +1997,7 @@ def build_grounding():
     return dict(
         repo=repo, mark="G", title="Grounding evaluation for safety-critical QA - " + repo,
         desc="A preregistered benchmark for whether AI answers to safety-critical technical "
-             "questions are bound to authoritative sources. Three non-LLM baselines exist; no "
+             "questions are bound to authoritative sources. Six non-LLM baselines exist; no "
              "language model has been scored yet.",
         kicker="Benchmark - baselines exist, no language model scored yet",
         h1="Measuring whether an answer is grounded or merely plausible",

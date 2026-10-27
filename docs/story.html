@@ -2286,7 +2286,7 @@ main [id]{scroll-margin-top:84px}
 <!-- ============ 03 TRY ============ -->
 <section class="section" id="try" data-st-anchor>
  <div class="wrap">
-  <div class="head rv"><span class="num">03</span><div><h2 class="display" data-m-split="lines">TF-IDF retrieval scores 27.0 percent, below a 52.1 percent random floor</h2><p class="claim">Pick an answer on three real items from the 68-item corpus, then see the co-hyponym trap and how the three non-LLM baselines scored the same item. Questions are verbatim; answer options are abridged from the corpus answer key.</p></div></div>
+  <div class="head rv"><span class="num">03</span><div><h2 class="display" data-m-split="lines">TF-IDF retrieval scores 27.0 percent, below a 52.1 percent random floor</h2><p class="claim">Pick an answer on three real items from the 68-item corpus, then see the co-hyponym trap and how the non-LLM baselines scored the same item. Questions are verbatim; answer options are abridged from the corpus answer key.</p></div></div>
 
   <div class="rv trytabs-wrap" style="border:var(--st-hair);border-bottom:0;border-radius:var(--st-radius) var(--st-radius) 0 0">
    <div class="tabs" role="tablist" aria-label="Benchmark items" id="tryTabs"></div>
@@ -2308,7 +2308,7 @@ main [id]{scroll-margin-top:84px}
      <tr><td>TF-IDF retrieval</td><td class="m">27.0% [15.4%, 40.0%]</td></tr>
      <tr><td>Oracle</td><td class="m">100.0%</td></tr>
     </tbody></table>
-    <div class="caveat"><b>No language model evaluated</b>Three non-LLM baselines exist; a real Anthropic adapter and a one-command run script exist, but no model result should be inferred from the baselines.</div>
+    <div class="caveat"><b>No language model evaluated</b>Six non-LLM baselines exist (random floor, TF-IDF, BM25, BM25+, rank-fusion retrieval, oracle ceiling); a real Anthropic adapter and a one-command run script exist, but no model result should be inferred from the baselines.</div>
    </aside>
   </div>
   <p class="rv" style="margin-top:16px;font-size:.875rem;color:var(--muted)">Source: ehs-ai-grounding-eval, corpus/items/pressure_relief.json and results/baselines_*.json. Scoring policy weights from the same run config. <a href="https://priyatham9.github.io/ehs-ai-grounding-eval/try.html">Try more items</a>.</p>
@@ -2349,10 +2349,10 @@ main [id]{scroll-margin-top:84px}
      <tr data-s="v"><td class="claim-t">The raw 2019 aggregate TRIR is 249x below the screened one.<span class="why">Unscreened 0.016, screened 4.02, with 99.6% of hours in implausible filings.</span></td><td class="repo">ehs-osha-analysis</td><td><span class="st v">Verified</span></td></tr>
      <tr data-s="v"><td class="claim-t">A flagged establishment is flagged again next year 27.2% of the time, against 0.95% for one never flagged (odds ratio 39.1).<span class="why">Measures what employers filed, not workplaces.</span></td><td class="repo">ehs-osha-analysis</td><td><span class="st v">Verified</span></td></tr>
      <tr data-s="v"><td class="claim-t">Covariate-adjusted count models show NB2 beats Poisson in all 30 industries tested.</td><td class="repo">ehs-osha-analysis</td><td><span class="st v">Verified</span></td></tr>
-     <tr data-s="v"><td class="claim-t">Three non-LLM baselines on the 68-item benchmark: random floor 52.1%, TF-IDF 27.0%, oracle 100%.<span class="why">Baselines only. They say nothing about any language model.</span></td><td class="repo">ehs-ai-grounding-eval</td><td><span class="st v">Verified</span></td></tr>
+     <tr data-s="v"><td class="claim-t">Six non-LLM baselines on the 68-item benchmark, including random floor 52.1%, TF-IDF 27.0%, BM25 28.6% and oracle 100%.<span class="why">Baselines only. They say nothing about any language model.</span></td><td class="repo">ehs-ai-grounding-eval</td><td><span class="st v">Verified</span></td></tr>
      <tr data-s="v"><td class="claim-t">The calculator's JavaScript and Python implementations produce identical numbers.<span class="why">Pinned by a test fixture. The ROI comparison is an accounting-scope argument, not a discovery.</span></td><td class="repo">ehs-capitals-calculator</td><td><span class="st v">Verified</span></td></tr>
      <tr data-s="v"><td class="claim-t">The ontology encodes IDHEAS-G's four contexts and twenty factors with a generated crosswalk and derivation traces.<span class="why">Taxonomy adopted, not new. Factor levels in worked scenarios are analyst-assigned.</span></td><td class="repo">ehs-human-factors-ontology</td><td><span class="st v">Verified</span></td></tr>
-     <tr data-s="v"><td class="claim-t">197 citation keys cited in the bundled draft, 197 verified, 5 judged overstretched.</td><td class="repo">grounded</td><td><span class="st v">Verified</span></td></tr>
+     <tr data-s="v"><td class="claim-t">197 citation keys cited in the bundled draft, all checked against a primary or publisher-of-record source (a few page ranges still to confirm), 5 judged overstretched.</td><td class="repo">grounded</td><td><span class="st v">Verified</span></td></tr>
      <tr data-s="d"><td class="claim-t">Grounded reasoning for safety-critical AI: ontology, benchmark, evaluation and data foundations in one manuscript.<span class="why">Not submitted. Four of five internal reviewers would reject it as it stands.</span></td><td class="repo">grounded</td><td><span class="st d">Draft</span></td></tr>
      <tr data-s="d"><td class="claim-t">OSHA ITA data quality as a standalone paper: screen definition, sensitivity grid, and the nine-year series.<span class="why">Not submitted. The data-quality section is the only part of the programme with empirical findings.</span></td><td class="repo">grounded</td><td><span class="st d">Draft</span></td></tr>
      <tr data-s="d"><td class="claim-t">SEM simulation studies show where the method breaks under rare events and misspecification.<span class="why">Every number comes from a known generating model. Hand-set path weights cannot be read causally.</span></td><td class="repo">ehs-risk-sem</td><td><span class="st d">Draft</span></td></tr>
@@ -2428,7 +2428,7 @@ main [id]{scroll-margin-top:84px}
      <a class="node" data-st-spotlight href="https://priyatham9.github.io/ehs-ai-grounding-eval/">
       <div class="node-top"><span class="node-name">ehs-ai-grounding-eval</span><span class="chip">Apparatus</span></div>
       <span class="node-num">3<small>baselines</small></span>
-      <span class="node-line">Benchmark with a source clause and anchor span on every item. Three non-LLM baselines run (random floor 52.1%, TF-IDF 27.0%, oracle 100%); a real Anthropic adapter and a one-command run script exist, but no language model has been scored yet.</span>
+      <span class="node-line">Benchmark with a source clause and anchor span on every item. Six non-LLM baselines run (random floor 52.1%, TF-IDF 27.0%, BM25 28.6%, BM25+ 27.0%, rank fusion 27.0%, oracle 100%); a real Anthropic adapter and a one-command run script exist, but no language model has been scored yet.</span>
       <span class="node-why">Why it matters: checks whether an AI's safety answer is tied to a real source before anyone acts on it.</span>
       <span class="node-go">Open &rarr;</span>
      </a>
@@ -2503,7 +2503,7 @@ main [id]{scroll-margin-top:84px}
     </ol>
     <ol class="steps" role="tabpanel" id="pp-2" aria-labelledby="pt-2" hidden>
      <li data-st-spotlight><p>Two papers: the bundled draft and the OSHA data-quality paper split out from it.</p><a href="./paper.html">The bundled draft &rarr;</a></li>
-     <li data-st-spotlight><p>197 citation keys cited, 197 verified, 5 judged overstretched.</p><a href="./paper.html">The citation audit &rarr;</a></li>
+     <li data-st-spotlight><p>197 citation keys cited, all checked against a primary or publisher-of-record source (a few page ranges still to confirm), 5 judged overstretched.</p><a href="./paper.html">The citation audit &rarr;</a></li>
      <li data-st-spotlight><p>Four of five internal reviewers would reject the combined manuscript, which is why the OSHA paper now stands alone.</p><a href="./INTEGRATION.md">The review outcome &rarr;</a></li>
      <li data-st-spotlight><p>Every section states what it does not yet establish.</p><a href="#open">What is missing &rarr;</a></li>
     </ol>
@@ -2521,7 +2521,7 @@ main [id]{scroll-margin-top:84px}
    <a data-st-spotlight href="./paper.html">
     <span class="pn-k">Bundled draft</span>
     <h3>Grounded reasoning for safety-critical AI</h3>
-    <span class="pn-n">197 <small>verified references</small></span>
+    <span class="pn-n">197 <small>references checked</small></span>
     <p>Ontology, benchmark, evaluation and data foundations in one manuscript, with a list of what it does not yet establish.</p>
     <span class="pn-go">Open the paper &rarr;</span>
    </a>
@@ -2562,7 +2562,7 @@ main [id]{scroll-margin-top:84px}
  <div class="wrap">
   <div class="head rv"><span class="num">07</span><div><h2 class="display" data-m-split="lines">Four things are not established, and they are listed here rather than buried</h2><p class="claim">No model result, one rejected manuscript verdict, an adopted taxonomy, and a simulation with no real data behind it.</p></div></div>
   <ul class="open-list rv">
-   <li data-st-spotlight><span class="k">01</span><span>No language model has been run through the benchmark. Three non-LLM baselines exist (random floor 52.1%, TF-IDF 27.0%, oracle 100%); a real Anthropic Messages API adapter and a one-command run script now exist, but no model result should be inferred from the baselines.</span></li>
+   <li data-st-spotlight><span class="k">01</span><span>No language model has been run through the benchmark. Six non-LLM baselines exist (random floor 52.1%, TF-IDF 27.0%, BM25 28.6%, BM25+ 27.0%, rank fusion 27.0%, oracle 100%); a real Anthropic Messages API adapter and a one-command run script now exist, but no model result should be inferred from the baselines.</span></li>
    <li data-st-spotlight><span class="k">02</span><span>Four of five internal reviewers would reject the bundled manuscript as it stands. The data-quality section is the only part with empirical findings.</span></li>
    <li data-st-spotlight><span class="k">03</span><span>The ontology's four contexts and twenty factors are IDHEAS-G's, taken unchanged and cited. Factor levels in worked scenarios are analyst-assigned.</span></li>
    <li data-st-spotlight><span class="k">04</span><span>The SEM work is entirely synthetic. Hand-set path weights cannot be read causally, and no real injury data has been analysed with it.</span></li>
