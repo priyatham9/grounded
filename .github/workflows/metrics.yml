@@ -1,0 +1,21 @@
+name: metrics
+on:
+  push:
+    branches: [main]
+    paths: ["metrics/**"]
+  pull_request:
+    paths: ["metrics/**"]
+permissions:
+  contents: read
+jobs:
+  agreement:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Python agreement test
+        run: python3 metrics/agreement_test.py
+      - name: Node agreement test
+        run: node metrics/agreement_test.mjs

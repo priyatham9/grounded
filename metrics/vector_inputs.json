@@ -1,0 +1,8 @@
+[
+{"id":"typical_manufacturer","deaths":0,"dafw_cases":3,"djtr_cases":4,"other_cases":5,"dafw_days":45,"djtr_days":60,"hours":400000},
+{"id":"with_fatality","deaths":1,"dafw_cases":2,"djtr_cases":1,"other_cases":0,"dafw_days":180,"djtr_days":10,"hours":1250000},
+{"id":"single_case_small_hours","deaths":0,"dafw_cases":0,"djtr_cases":0,"other_cases":1,"dafw_days":0,"djtr_days":0,"hours":10000},
+{"id":"zero_cases","deaths":0,"dafw_cases":0,"djtr_cases":0,"other_cases":0,"dafw_days":0,"djtr_days":0,"hours":2000000},
+{"id":"fractional_hours","deaths":0,"dafw_cases":7,"djtr_cases":2,"other_cases":11,"dafw_days":123,"djtr_days":77,"hours":987654.5},
+{"id":"zero_hours","deaths":0,"dafw_cases":1,"djtr_cases":1,"other_cases":1,"dafw_days":5,"djtr_days":5,"hours":0}
+]

@@ -1,0 +1,69 @@
+{
+  "per_hours": 200000,
+  "per_hours_basis": "100 full-time employees x 40 h/week x 50 weeks = 200,000 h",
+  "per_hours_source": {
+    "citation": "OSHA guidance on calculating incidence rates for the Form 300/300A (copy hosted by NJ Dept. of Labor): https://www.nj.gov/labor/safetyandhealth/assets/PDFs/Survey/form300.pdf",
+    "note": "The 200,000-hour basis and the rate formulas are OSHA guidance, not text of 29 CFR 1904."
+  },
+  "aggregation": {
+    "rule": "ratio of sums: sum cases (or days) over establishments, divide by sum of hours, times 200,000",
+    "never": "mean of establishment-level rates",
+    "source": "Programme convention (ehs-osha-analysis metrics.py module docstring); not a regulatory requirement."
+  },
+  "metrics": [
+    {
+      "id": "trir",
+      "name": "Total Recordable Incident Rate",
+      "formula": "200000 * (G + H + I + J) / hours",
+      "form_300a_columns": ["G deaths", "H days-away cases", "I job transfer or restriction cases", "J other recordable cases"],
+      "cfr": ["29 CFR 1904.7(a)", "29 CFR 1904.7(b)(2)", "29 CFR 1904.7(b)(3)", "29 CFR 1904.7(b)(4)", "29 CFR 1904.32(b)(2)(ii)"],
+      "typescript": "trir (ehs-benchmarks src/rates.ts)",
+      "python_key": "trir (ehs-osha-analysis ehs_osha.metrics, RATE_NUMERATORS)"
+    },
+    {
+      "id": "dart",
+      "name": "Days Away, Restricted or Transferred rate",
+      "formula": "200000 * (H + I) / hours",
+      "form_300a_columns": ["H days-away cases", "I job transfer or restriction cases"],
+      "cfr": ["29 CFR 1904.7(b)(3)", "29 CFR 1904.7(b)(4)", "29 CFR 1904.32(b)(2)(ii)"],
+      "typescript": "dart",
+      "python_key": "dart"
+    },
+    {
+      "id": "ltir",
+      "name": "Lost Time Incident Rate (days-away cases only; OSHA DAFWII)",
+      "formula": "200000 * H / hours",
+      "form_300a_columns": ["H days-away cases"],
+      "cfr": ["29 CFR 1904.7(b)(3)", "29 CFR 1904.32(b)(2)(ii)"],
+      "typescript": "ltir",
+      "python_key": "ltir",
+      "note": "Industry use of LTIR varies; some include restricted-duty cases, which makes it DART. This programme uses days-away only."
+    },
+    {
+      "id": "severity",
+      "name": "Severity rate (days lost per 200,000 hours)",
+      "formula": "200000 * (K + L) / hours",
+      "form_300a_columns": ["K total days away", "L total days of job transfer or restriction"],
+      "cfr": ["29 CFR 1904.7(b)(3)(i)", "29 CFR 1904.7(b)(3)(ii)", "29 CFR 1904.7(b)(3)(vii)", "29 CFR 1904.7(b)(4)", "29 CFR 1904.32(b)(2)(ii)"],
+      "typescript": "severityRate",
+      "python_key": "severity",
+      "note": "Days away are capped at 180 per case when the employer uses the 1904.7(b)(3)(vii) cap, so this rate is bounded per case."
+    },
+    {
+      "id": "fatality",
+      "name": "Fatality rate per 200,000 hours",
+      "formula": "200000 * G / hours",
+      "form_300a_columns": ["G deaths"],
+      "cfr": ["29 CFR 1904.7(b)(2)", "29 CFR 1904.32(b)(2)(ii)"],
+      "typescript": "fatalityRate",
+      "python_key": null,
+      "note": "TypeScript only; the Python package folds deaths into TRIR and has no separate rate."
+    }
+  ],
+  "denominator": {
+    "id": "hours",
+    "definition": "Total hours worked by all employees covered by the OSHA 300 Log (actual hours, not scheduled)",
+    "cfr": ["29 CFR 1904.32(b)(2)(ii)", "29 CFR 1904.31(a)", "29 CFR 1904.31(b)(2)", "29 CFR 1904.31(b)(4)"],
+    "note": "Workers not on the payroll but supervised day-to-day are covered by the log (1904.31); ehs-benchmarks exposes this as contractorBasis 'combined' vs the default 'employee-only'. Undefined when hours <= 0: TypeScript returns null, Python returns NaN; both mean 'not computable', never 0."
+  }
+}
