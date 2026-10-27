@@ -2,7 +2,7 @@
 
 ## Running Tests
 
-The site is static HTML. The only tests are the metric-dictionary agreement tests in `metrics/` (`python3 metrics/agreement_test.py` and `node metrics/agreement_test.mjs`). There is no build step and no runtime dependencies beyond two webfonts.
+The site is static HTML. The only tests are the metric-dictionary agreement tests in `metrics/` (`python3 metrics/agreement_test.py` and `node metrics/agreement_test.mjs`). There is no build step and no runtime dependencies beyond two webfonts. To rerun the other repositories' tests from clean clones, see [REPRODUCE.md](REPRODUCE.md); change it together with `.github/workflows/reproduce.yml` when a repository's test command changes.
 
 ## Dependency Policy
 

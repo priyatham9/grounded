@@ -12,6 +12,8 @@ established.
 
 The [proposed endeavour page](docs/endeavour.html) sets out a three-year plan built only from the work that exists, with plans labelled as plans and no results claimed.
 
+[REPRODUCE.md](REPRODUCE.md) (page: [docs/reproduce.html](docs/reproduce.html)) gives, for each of the eight research repositories, the commands to run its tests and regenerate its committed outputs from a clean clone, with runtimes, versions and the steps that need raw-data downloads. The weekly [`reproduce` workflow](.github/workflows/reproduce.yml) reruns the test commands and reports a status table; it never runs on pull requests.
+
 ## At a glance
 
 - Status: draft
