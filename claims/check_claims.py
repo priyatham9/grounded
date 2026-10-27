@@ -64,6 +64,9 @@ def extract(src, fetcher):
     kind = src["kind"]
     if kind == "json_path":
         return json_lookup(json.loads(text), src["key"])
+    if kind == "json_count":
+        items = json_lookup(json.loads(text), src["key"])
+        return sum(all(i.get(k) == v for k, v in src["where"].items()) for i in items)
     if kind == "regex_count":
         return len(re.findall(src["pattern"], text))
     rows = list(csv.DictReader(io.StringIO(text)))

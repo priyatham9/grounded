@@ -3,24 +3,7 @@
   "description": "Machine-readable registry of headline claims made on the Grounded programme site and the two papers. Each claim names where it is stated, the committed file and key that supports it, the expected value, and the test in the source repo that guards it. Checked by claims/check_claims.py.",
   "raw_base": "https://raw.githubusercontent.com/priyatham9/{repo}/{ref}/{path}",
   "ref": "main",
-  "known_discrepancies": [
-    {
-      "id": "story-osha-tests-175",
-      "where": "docs/story.html",
-      "text": "covered by 175 stdlib unittest tests",
-      "committed_value": 178,
-      "source": "docs/status.json repos.ehs-osha-analysis.tests.count",
-      "note": "The site text is behind the committed count; not asserted as a claim."
-    },
-    {
-      "id": "story-ontology-31-of-80",
-      "where": "docs/story.html",
-      "text": "Only 31 of 80 mappings ... are close matches",
-      "committed_value": "34 of 96 crosswalk rows are labelled close",
-      "source": "ehs-human-factors-ontology crosswalk/crosswalk.csv",
-      "note": "Does not match the committed crosswalk on main; not asserted as a claim."
-    }
-  ],
+  "known_discrepancies": [],
   "claims": [
     {
       "id": "osha-trir-ratio",
@@ -583,6 +566,62 @@
         "path": "tests/test_crosswalk.py",
         "symbol": "test_csv_row_count_matches_the_ontology"
       }
+    },
+    {
+      "id": "osha-test-count",
+      "statement": "The OSHA pipeline is covered by 178 stdlib unittest tests",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "covered by 178 stdlib unittest tests"
+        }
+      ],
+      "source": {
+        "repo": "grounded",
+        "path": "docs/status.json",
+        "kind": "json_path",
+        "key": "repos.ehs-osha-analysis.tests.count"
+      },
+      "expected": 178,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "Makefile",
+        "symbol": "test",
+        "contains": "unittest discover"
+      },
+      "note": "Count from the status snapshot in docs/status.json (make test with data/raw populated). Formerly a known discrepancy (site said 175)."
+    },
+    {
+      "id": "ontology-close-cells",
+      "statement": "31 of the 80 factor-by-framework crosswalk cells (20 factors, four frameworks) are close matches",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "Only 31 of 80 cells against four established frameworks"
+        },
+        {
+          "path": "docs/story.html",
+          "contains": "n: '31/80'"
+        }
+      ],
+      "source": {
+        "repo": "ehs-human-factors-ontology",
+        "path": "docs/crosswalk-data.json",
+        "kind": "json_count",
+        "key": "cells",
+        "where": {
+          "strength": "close"
+        }
+      },
+      "expected": 31,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-human-factors-ontology",
+        "path": "tests/test_crosswalk.py",
+        "symbol": "test_every_factor_is_covered_against_every_framework"
+      },
+      "note": "A cell is one factor against one framework, graded by its strongest match. The 96-row crosswalk.csv lists every individual alignment (34 rows labelled close), a different unit from the 80 cells. Formerly a known discrepancy caused by comparing the two units."
     }
   ]
 }

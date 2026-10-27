@@ -11,7 +11,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 import check_claims as cc
 
 REG = json.loads((Path(cc.HERE) / "claims.json").read_text(encoding="utf-8"))
-KINDS = {"json_path", "csv_cell", "csv_rows", "regex_count"}
+KINDS = {"json_path", "csv_cell", "csv_rows", "regex_count", "json_count"}
 
 
 class TestRegistryShape(unittest.TestCase):
@@ -104,6 +104,21 @@ class TestChecker(unittest.TestCase):
         out = io.StringIO()
         self.assertEqual(cc.run(self._reg(2.5), self.root, out), 1)
         self.assertIn("symbol", out.getvalue())
+
+    def test_json_count_counts_matching_items(self):
+        (self.root / "r" / "c.json").write_text(
+            json.dumps({"cells": [{"s": "close"}, {"s": "none"}, {"s": "close"}]}),
+            encoding="utf-8",
+        )
+        src = {
+            "repo": "r",
+            "path": "c.json",
+            "kind": "json_count",
+            "key": "cells",
+            "where": {"s": "close"},
+        }
+        f = cc.Fetcher("", "main", self.root)
+        self.assertEqual(cc.extract(src, f), 2)
 
 
 if __name__ == "__main__":
