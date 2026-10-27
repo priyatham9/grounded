@@ -1266,9 +1266,17 @@ grid ships with the repository.</li>
 workplace. Associations reported here are not causes.</li>
 <li><strong>Citations.</strong> All %d citation keys used in the text resolve to a
 reference below, each checked against a primary or publisher-of-record source.%s</li>
+<li><strong>References verified on 2026-10-27.</strong> All %d references were re-checked
+on 2026-10-27: each one exists and resolves, its metadata matches the publisher record, and
+the sentence citing it says what the source says. Five entries had wrong or unconfirmable
+metadata corrected, six more gained missing issue, page or DOI details, eight sentences were
+reworded to match their sources, and none was removed. The
+<a href="references-osha.csv">reference ledger</a> lists every check. This is a
+reference check by the author, not external peer review; the paper has not been peer
+reviewed.</li>
 </ul>
 </div>
-</div></section>""" % (n_refs, (" %d entries carry a verification note saying what that check found." % n_notes) if n_notes else "")
+</div></section>""" % (n_refs, (" %d entries carry a verification note saying what that check found." % n_notes) if n_notes else "", n_refs)
 
 
 def status_banner(n_refs, n_notes, n_words):

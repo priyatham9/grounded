@@ -3,7 +3,7 @@
 [![docs](https://github.com/priyatham9/grounded/actions/workflows/links.yml/badge.svg)](https://github.com/priyatham9/grounded/actions/workflows/links.yml)
 [![site](https://img.shields.io/badge/site-priyatham9.github.io%2Fgrounded-1E40AF)](https://priyatham9.github.io/grounded/)
 
-Landing site for a research programme on grounded reasoning for safety-critical AI in EHS and process industries. It presents the programme's findings and links seven repositories. The programme is in draft status. All 197 references in the paper are checked against a primary or publisher-of-record source, a few page ranges still need confirming, and no external peer review has been conducted.
+Landing site for a research programme on grounded reasoning for safety-critical AI in EHS and process industries. It presents the programme's findings and links seven repositories. The programme is in draft status. All 197 references in the bundled paper are checked against a primary or publisher-of-record source, a few page ranges still need confirming. All 45 references in the standalone OSHA paper were verified on 2026-10-27 (each resolves, its metadata matches the publisher record, and the citing sentence matches the source); see the [reference ledger](docs/references-osha.csv). No external peer review has been conducted on either paper.
 
 The site at `docs/index.html` is a static page with no build step and no runtime
 dependencies beyond two webfonts. It presents the programme's findings, links the
@@ -36,8 +36,11 @@ rather than copies. Full light/dark support with a persisted manual override.
 
 Draft. Empirical figures on the page come from real public OSHA Injury Tracking
 Application data. The paper's 197 references are checked against primary or
-publisher-of-record sources, with a few page ranges still to confirm. No external
-peer review has been conducted. The page says so on itself.
+publisher-of-record sources, with a few page ranges still to confirm. The standalone
+OSHA paper's 45 references were verified on 2026-10-27: 45 of 45 resolve and match
+their sources, with corrections recorded in
+[docs/references-osha.csv](docs/references-osha.csv). No external peer review has been
+conducted. The page says so on itself.
 
 ## Security
 
