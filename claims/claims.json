@@ -496,11 +496,11 @@
     },
     {
       "id": "tests-osha",
-      "statement": "The ehs-osha-analysis repository carries 178 tests",
+      "statement": "The ehs-osha-analysis repository carries 249 test functions",
       "appears_in": [
         {
           "path": "docs/paper-osha.html",
-          "contains": "The repository carries 178 tests"
+          "contains": "The repository carries 249 test functions"
         }
       ],
       "source": {
@@ -509,7 +509,7 @@
         "kind": "json_path",
         "key": "repos.ehs-osha-analysis.tests.count"
       },
-      "expected": 178,
+      "expected": 249,
       "tolerance": 0,
       "verifying_test": {
         "repo": "ehs-osha-analysis",
@@ -517,15 +517,15 @@
         "symbol": "test",
         "contains": "unittest discover"
       },
-      "note": "Snapshot count recorded in docs/status.json at the stated commit; the suite is run with `make test`."
+      "note": "Static count of test functions recorded in docs/status.json by tools/refresh_status.py (ast over test_*.py files of a depth-1 clone); the suite is run with `make test`. Includes tests that skip at run time when data/raw is empty."
     },
     {
       "id": "tests-total",
-      "statement": "823 tests across the five analysis repositories",
+      "statement": "977 test functions across the six programme repositories",
       "appears_in": [
         {
           "path": "docs/observatory.html",
-          "contains": "\"total_tests\":823"
+          "contains": "\"total_tests\":977"
         }
       ],
       "source": {
@@ -534,7 +534,7 @@
         "kind": "json_path",
         "key": "total_tests"
       },
-      "expected": 823,
+      "expected": 977,
       "tolerance": 0,
       "verifying_test": {
         "repo": "ehs-osha-analysis",
@@ -542,7 +542,7 @@
         "symbol": "test",
         "contains": "unittest discover"
       },
-      "note": "Sum of per-repository counts in docs/status.json (snapshot). Not recounted live."
+      "note": "Sum of per-repository static counts in docs/status.json, recomputed weekly by .github/workflows/status.yml (fails if the snapshot is over 14 days old or differs)."
     },
     {
       "id": "ontology-factors",
@@ -569,11 +569,11 @@
     },
     {
       "id": "osha-test-count",
-      "statement": "The OSHA pipeline is covered by 178 stdlib unittest tests",
+      "statement": "The OSHA pipeline is covered by 249 stdlib unittest test functions",
       "appears_in": [
         {
           "path": "docs/story.html",
-          "contains": "covered by 178 stdlib unittest tests"
+          "contains": "covered by 249 stdlib unittest test functions"
         }
       ],
       "source": {
@@ -582,7 +582,7 @@
         "kind": "json_path",
         "key": "repos.ehs-osha-analysis.tests.count"
       },
-      "expected": 178,
+      "expected": 249,
       "tolerance": 0,
       "verifying_test": {
         "repo": "ehs-osha-analysis",
@@ -590,7 +590,7 @@
         "symbol": "test",
         "contains": "unittest discover"
       },
-      "note": "Count from the status snapshot in docs/status.json (make test with data/raw populated). Formerly a known discrepancy (site said 175)."
+      "note": "Static count from docs/status.json (tools/refresh_status.py). Formerly a known discrepancy (site said 175)."
     },
     {
       "id": "ontology-close-cells",

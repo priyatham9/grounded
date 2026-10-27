@@ -1,0 +1,16 @@
+name: status
+# Opens no PR. Fails when docs/status.json is older than 14 days or differs
+# from a fresh static recount of the public repositories.
+on:
+  schedule:
+    - cron: "43 6 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check the committed snapshot against the public repositories
+        run: python3 tools/refresh_status.py --check
