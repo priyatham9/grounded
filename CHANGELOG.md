@@ -6,7 +6,7 @@ Keep a Changelog and this project uses semantic versioning.
 ## [Unreleased]
 
 ### Changed
-- `docs/status.json` refreshed from the public repositories (was a 2026-09-26 snapshot). Counts are now a static count of test functions (`tools/refresh_status.py`, ast over `test_*.py` in a depth-1 clone), not a test run: they include tests that skip at run time, so OSHA reads 249 against 178 "Ran" before. The grounded entry now counts its own 14 claims-checker tests. The observatory tile is relabelled "Test functions" (it no longer claims "all passing"), and the story, OSHA paper and `claims/claims.json` quote the new counts.
+- `docs/status.json` refreshed from the public repositories (was a 2026-09-26 snapshot). Counts are now a static count of test functions (`tools/refresh_status.py`, ast over `test_*.py` in a depth-1 clone), not a test run: they include tests that skip at run time, so OSHA reads 268 against 178 "Ran" before. The grounded entry now counts its own 14 claims-checker tests. The observatory tile is relabelled "Test functions" (it no longer claims "all passing"), and the story, OSHA paper and `claims/claims.json` quote the new counts.
 
 ### Added
 - `tools/refresh_status.py` and `.github/workflows/status.yml`: weekly check (no PR is opened) that fails when the committed snapshot is over 14 days old or its counts, tags or headline figures differ from a fresh recount.
