@@ -148,9 +148,9 @@
           "quote": "Wilson intervals treat filings as independent."
         },
         {
-          "text": "Reporting scope: only establishments filing with OSHA are covered.",
+          "text": "Reporting scope: coverage of non-filers is unknown.",
           "path": "DATASHEET.md",
-          "quote": "The dataset covers only establishments filing with OSHA"
+          "quote": "Inferring the national workforce: coverage of non-filers is"
         }
       ]
     },
