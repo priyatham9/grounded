@@ -5,6 +5,10 @@ Keep a Changelog and this project uses semantic versioning.
 
 ## [Unreleased]
 
+### Added
+- `REPRODUCE.md` and `docs/reproduce.html`: for each of the eight research repositories, the commands that run its tests and regenerate its committed outputs from a clean `git clone --depth 1`, each run by hand on 2026-10-27 (Python 3.12.3, Node 22.22.0) with runtimes, test counts and the steps that need raw-data downloads (OSHA ITA files, EPA RMP extracts, eCFR, an API key) listed separately. Records two findings: the ehs-risk-sem full rerun matches the committed tables only to floating-point round-off (max relative difference 7.4e-14), and the ehs-benchmarks README test count (106) is out of date (137 run).
+- `.github/workflows/reproduce.yml`: weekly (Mondays) and manual matrix that clones each public repository and runs its test command plus any offline committed-output check, then writes a status table to the run summary. It has no pull_request trigger, so it cannot fail a PR here.
+
 ### Changed
 - `docs/status.json` refreshed from the public repositories (was a 2026-09-26 snapshot). Counts are now a static count of test functions (`tools/refresh_status.py`, ast over `test_*.py` in a depth-1 clone), not a test run: they include tests that skip at run time, so OSHA reads 268 against 178 "Ran" before. The grounded entry now counts its own 14 claims-checker tests. The observatory tile is relabelled "Test functions" (it no longer claims "all passing"), and the story, OSHA paper and `claims/claims.json` quote the new counts.
 

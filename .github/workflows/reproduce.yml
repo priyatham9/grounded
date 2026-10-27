@@ -1,0 +1,140 @@
+name: reproduce
+# Weekly and manual only. Deliberately has no pull_request or push trigger, so it
+# can never block a grounded PR. It clones each public research repository at its
+# default branch (depth 1) and runs the test command (and, where the repository
+# has one, an offline "is the committed output current" check) documented in
+# REPRODUCE.md. One matrix row per repository; the summary job turns the rows
+# into a single status table on the run page.
+# Not covered here (needs raw data that cannot be fetched offline or is ~GBs):
+# the full ehs-osha-analysis pipeline, ehs-chemical-peers `make build`, and
+# ehs-benchmarks `build-benchmarks.mjs`. See REPRODUCE.md.
+on:
+  schedule:
+    - cron: "37 7 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  repo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - repo: ehs-osha-analysis
+            runtime: python
+            install: python -m pip install numpy pandas
+            test: PYTHONPATH=src python -m unittest discover -s tests
+            check: python scripts/generate_ontology_client.py --check
+          - repo: ehs-chemical-peers
+            runtime: python
+            install: ""
+            test: python -m unittest discover -s tests -p "test_*.py"
+            check: python scripts/paper_tables.py && python scripts/build_compare.py && git diff --exit-code -- docs
+          - repo: ehs-ai-grounding-eval
+            runtime: python
+            install: python -m pip install numpy pandas
+            test: python -m unittest discover -s tests
+            check: python tools/verify_sources.py --offline
+          - repo: ehs-human-factors-ontology
+            runtime: python
+            install: python -m pip install numpy pandas
+            test: PYTHONPATH=src python -m unittest discover -s tests -t .
+            check: python tools/build_crosswalk.py --check && python synthetic/generate_scenarios.py --check && PYTHONPATH=src python tools/methods_note_stats.py --check
+          - repo: ehs-risk-sem
+            runtime: python
+            install: python -m pip install numpy pandas
+            test: python -m unittest discover -s tests
+            check: ""
+          - repo: ehs-capitals-calculator
+            runtime: python
+            install: python -m pip install numpy pandas
+            test: PYTHONPATH=src python -m unittest discover -s tests
+            check: ""
+          - repo: ehs-benchmarks
+            runtime: node
+            install: npm ci
+            test: npm test
+            check: npm run build
+          - repo: grounding-eval-action
+            runtime: python
+            install: ""
+            pre: git clone --depth 1 https://github.com/priyatham9/ehs-ai-grounding-eval.git "$RUNNER_TEMP/corpus"
+            test: PYTHONPATH="$RUNNER_TEMP/corpus:$PWD/runner" python -m unittest discover -s tests
+            check: ""
+    steps:
+      - uses: actions/setup-python@v5
+        if: matrix.runtime == 'python'
+        with:
+          python-version: "3.12"
+      - uses: actions/setup-node@v4
+        if: matrix.runtime == 'node'
+        with:
+          node-version: "20"
+      - name: Clone ${{ matrix.repo }} (depth 1)
+        id: clone
+        run: |
+          set -euo pipefail
+          git clone --depth 1 "https://github.com/priyatham9/${{ matrix.repo }}.git" work
+          echo "sha=$(git -C work rev-parse --short HEAD)" >> "$GITHUB_OUTPUT"
+      - name: Install
+        if: matrix.install != ''
+        working-directory: work
+        run: ${{ matrix.install }}
+      - name: Fetch companion data
+        if: matrix.pre != ''
+        working-directory: work
+        run: ${{ matrix.pre }}
+      - name: Tests
+        id: test
+        working-directory: work
+        run: ${{ matrix.test }}
+      - name: Committed-output check
+        id: check
+        if: always() && matrix.check != ''
+        working-directory: work
+        run: ${{ matrix.check }}
+      - name: Record status row
+        if: always()
+        env:
+          REPO: ${{ matrix.repo }}
+          SHA: ${{ steps.clone.outputs.sha }}
+          TEST: ${{ steps.test.outcome }}
+          CHECK: ${{ steps.check.outcome }}
+        run: |
+          set -euo pipefail
+          mkdir -p status
+          verdict=pass
+          [ "$TEST" = "success" ] || verdict=FAIL
+          if [ "$CHECK" = "failure" ] || [ "$CHECK" = "cancelled" ]; then verdict=FAIL; fi
+          [ -n "$SHA" ] || SHA="clone failed"
+          check_cell="$CHECK"; [ "$CHECK" != "skipped" ] || check_cell="none"
+          echo "| $REPO | $SHA | $TEST | $check_cell | $verdict |" > "status/$REPO.md"
+          cat "status/$REPO.md" >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: status-${{ matrix.repo }}
+          path: status/${{ matrix.repo }}.md
+  summary:
+    needs: repo
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: status-*
+          merge-multiple: true
+          path: status
+      - name: Matrix status table
+        run: |
+          {
+            echo "## Reproduction status"
+            echo
+            echo "Each repository is cloned at its default branch and its documented test command is run (details in REPRODUCE.md). Steps needing raw data downloads are not run here."
+            echo
+            echo "| repository | commit | tests | output check | result |"
+            echo "|---|---|---|---|---|"
+            cat status/*.md
+          } >> "$GITHUB_STEP_SUMMARY"
