@@ -1,0 +1,30 @@
+{
+  "@context": "https://doi.org/10.5063/schema/codemeta-2.0",
+  "@type": "SoftwareSourceCode",
+  "name": "grounded: a research programme on grounded reasoning for safety-critical AI",
+  "description": "Landing site for a research programme on grounded reasoning for safety-critical AI in EHS and process industries. It presents the programme's findings and links seven repositories. The programme is in draft status.",
+  "author": [
+    {
+      "@type": "Person",
+      "givenName": "Priyatham",
+      "familyName": "Chimmani"
+    }
+  ],
+  "license": "https://spdx.org/licenses/MIT",
+  "codeRepository": "https://github.com/priyatham9/grounded",
+  "url": "https://priyatham9.github.io/grounded/",
+  "version": "0.1.0",
+  "programmingLanguage": [
+    "HTML",
+    "Python",
+    "JavaScript"
+  ],
+  "keywords": [
+    "grounded reasoning",
+    "safety-critical AI",
+    "research programme",
+    "EHS",
+    "process safety",
+    "evaluation"
+  ]
+}
