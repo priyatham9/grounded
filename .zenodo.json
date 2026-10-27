@@ -1,0 +1,69 @@
+{
+  "title": "grounded: a research programme on grounded reasoning for safety-critical AI",
+  "upload_type": "software",
+  "description": "Landing site for a research programme on grounded reasoning for safety-critical AI in EHS and process industries. It presents the programme's findings and links seven repositories. The programme is in draft status.",
+  "creators": [
+    {
+      "name": "Chimmani, Priyatham"
+    }
+  ],
+  "license": "mit",
+  "keywords": [
+    "grounded reasoning",
+    "safety-critical AI",
+    "research programme",
+    "EHS",
+    "process safety",
+    "evaluation"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://priyatham9.github.io/grounded/",
+      "relation": "isDocumentedBy",
+      "scheme": "url",
+      "resource_type": "other"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-osha-analysis",
+      "relation": "hasPart",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-chemical-peers",
+      "relation": "hasPart",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-ai-grounding-eval",
+      "relation": "hasPart",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-human-factors-ontology",
+      "relation": "hasPart",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-risk-sem",
+      "relation": "hasPart",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-capitals-calculator",
+      "relation": "hasPart",
+      "scheme": "url",
+      "resource_type": "software"
+    },
+    {
+      "identifier": "https://github.com/priyatham9/ehs-benchmarks",
+      "relation": "hasPart",
+      "scheme": "url",
+      "resource_type": "software"
+    }
+  ]
+}
