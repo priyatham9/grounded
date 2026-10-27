@@ -1,0 +1,21 @@
+name: claims
+on:
+  push:
+    branches: [main]
+    paths: ["claims/**", "docs/**"]
+  pull_request:
+    paths: ["claims/**", "docs/**"]
+  schedule:
+    - cron: "17 6 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Registry and checker unit tests
+        run: python3 -m unittest discover -s claims
+      - name: Check headline claims against the other repos' committed outputs
+        run: python3 claims/check_claims.py
