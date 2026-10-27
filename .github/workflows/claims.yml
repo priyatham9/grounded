@@ -2,9 +2,9 @@ name: claims
 on:
   push:
     branches: [main]
-    paths: ["claims/**", "docs/**"]
+    paths: ["claims/**", "docs/**", "tools/**", "README.md", "REPRODUCE.md"]
   pull_request:
-    paths: ["claims/**", "docs/**"]
+    paths: ["claims/**", "docs/**", "tools/**", "README.md", "REPRODUCE.md"]
   schedule:
     - cron: "17 6 * * 1"
   workflow_dispatch:
@@ -19,3 +19,7 @@ jobs:
         run: python3 -m unittest discover -s claims
       - name: Check headline claims against the other repos' committed outputs
         run: python3 claims/check_claims.py
+      - name: Headline numbers agree across README, site and papers
+        run: |
+          python3 -m unittest tools.test_check_consistency
+          python3 tools/check_consistency.py

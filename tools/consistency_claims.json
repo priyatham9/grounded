@@ -1,0 +1,72 @@
+{
+  "_doc": "Headline numbers that must read the same everywhere. See docs/CONSISTENCY.md.",
+  "claims": [
+    {
+      "id": "bundled-paper-references",
+      "value": "197",
+      "source": {"file": "docs/paper.html", "regex": "<span class=\"ms-k\">References</span><span class=\"ms-v accent\">(\\d+)</span>"},
+      "appears_in": [
+        {"file": "README.md", "regex": "All (\\d+) references in the bundled paper"},
+        {"file": "README.md", "regex": "The paper's (\\d+) references are checked"},
+        {"file": "docs/paper.html", "regex": "All (\\d+) citation keys"},
+        {"file": "docs/endeavour.html", "regex": "bundled paper's (\\d+) references"},
+        {"file": "docs/story.html", "regex": "(\\d+) citation keys cited"},
+        {"file": "docs/story.html", "regex": "pn-n\">(\\d+) <small>references checked"}
+      ]
+    },
+    {
+      "id": "bundled-paper-page-range-caveat",
+      "value": "page range",
+      "source": {"file": "docs/paper.html", "regex": "(page range)s? still needs"},
+      "appears_in": [
+        {"file": "README.md", "regex": "(page range)s still need confirming"},
+        {"file": "README.md", "regex": "(page range)s still to confirm"},
+        {"file": "docs/endeavour.html", "regex": "a few (page range)s still to confirm"},
+        {"file": "docs/story.html", "regex": "a few (page range)s still to confirm"}
+      ]
+    },
+    {
+      "id": "osha-paper-references",
+      "value": "45",
+      "source": {"file": "docs/references-osha.csv", "csv_rows": true},
+      "appears_in": [
+        {"file": "README.md", "regex": "All (\\d+) references in the standalone OSHA paper"},
+        {"file": "README.md", "regex": "OSHA paper's (\\d+) references were verified"},
+        {"file": "docs/paper-osha.html", "regex": "All (\\d+) references were re-checked"},
+        {"file": "docs/endeavour.html", "regex": "The (\\d+) OSHA-paper references"}
+      ]
+    },
+    {
+      "id": "grounding-eval-baseline-count",
+      "value": "six",
+      "source": {"file": "REPRODUCE.md", "regex": "# (six) non-LLM baselines"},
+      "appears_in": [
+        {"file": "tools/build_sites.py", "regex": "plus (six) non-LLM baselines"},
+        {"file": "tools/build_sites.py", "regex": "scoring harness, and (six) non-LLM"},
+        {"file": "docs/story.html", "regex": "(Six) non-LLM baselines exist \\(random"}
+      ],
+      "case_insensitive": true,
+      "forbidden": [
+        {"files": ["docs/*.html", "docs/search-index.json", "tools/build_sites.py"], "regex": "(?i)\\b(three|four|five) non-LLM baselines"}
+      ]
+    },
+    {
+      "id": "grounding-eval-tfidf-accuracy",
+      "value": "27.0",
+      "source": {"file": "docs/story.html", "regex": "<td>TF-IDF retrieval</td><td class=\"m\">([\\d.]+)%"},
+      "appears_in": [
+        {"file": "tools/build_sites.py", "regex": "TF-IDF retrieval ([\\d.]+)%"},
+        {"file": "docs/story.html", "regex": "TF-IDF ([\\d.]+)%, BM25 28"}
+      ]
+    },
+    {
+      "id": "grounding-eval-random-floor",
+      "value": "52.1",
+      "source": {"file": "docs/story.html", "regex": "random floor ([\\d.]+)%"},
+      "appears_in": [
+        {"file": "tools/build_sites.py", "regex": "random floor ([\\d.]+)%"},
+        {"file": "docs/story.html", "regex": "below a ([\\d.]+) percent random floor"}
+      ]
+    }
+  ]
+}
