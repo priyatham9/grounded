@@ -1,0 +1,588 @@
+{
+  "schema": 1,
+  "description": "Machine-readable registry of headline claims made on the Grounded programme site and the two papers. Each claim names where it is stated, the committed file and key that supports it, the expected value, and the test in the source repo that guards it. Checked by claims/check_claims.py.",
+  "raw_base": "https://raw.githubusercontent.com/priyatham9/{repo}/{ref}/{path}",
+  "ref": "main",
+  "known_discrepancies": [
+    {
+      "id": "story-osha-tests-175",
+      "where": "docs/story.html",
+      "text": "covered by 175 stdlib unittest tests",
+      "committed_value": 178,
+      "source": "docs/status.json repos.ehs-osha-analysis.tests.count",
+      "note": "The site text is behind the committed count; not asserted as a claim."
+    },
+    {
+      "id": "story-ontology-31-of-80",
+      "where": "docs/story.html",
+      "text": "Only 31 of 80 mappings ... are close matches",
+      "committed_value": "34 of 96 crosswalk rows are labelled close",
+      "source": "ehs-human-factors-ontology crosswalk/crosswalk.csv",
+      "note": "Does not match the committed crosswalk on main; not asserted as a claim."
+    }
+  ],
+  "claims": [
+    {
+      "id": "osha-trir-ratio",
+      "statement": "Screening raises the pooled aggregate TRIR by a factor of 29.7 (screened / unscreened)",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "29.7x"
+        },
+        {
+          "path": "docs/paper.html",
+          "contains": "a factor of 29.7"
+        },
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "29.7×"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/tables/metrics_pooled.csv",
+        "kind": "csv_cell",
+        "where": {
+          "label": "pooled_all_years"
+        },
+        "column": "trir_ratio_screened_to_unscreened"
+      },
+      "expected": 29.7108,
+      "tolerance": 0.05,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_plausibility_screen_headline_numbers",
+        "contains": "29.7108"
+      }
+    },
+    {
+      "id": "osha-trir-unscreened",
+      "statement": "Pooled unscreened aggregate TRIR is 0.134",
+      "appears_in": [
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "0.134"
+        },
+        {
+          "path": "docs/paper.html",
+          "contains": "0.134"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/tables/metrics_pooled.csv",
+        "kind": "csv_cell",
+        "where": {
+          "label": "pooled_all_years"
+        },
+        "column": "trir_unscreened"
+      },
+      "expected": 0.134062,
+      "tolerance": 0.0005,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_plausibility_screen_headline_numbers",
+        "contains": "0.134062"
+      }
+    },
+    {
+      "id": "osha-trir-screened",
+      "statement": "Pooled screened aggregate TRIR is 3.983",
+      "appears_in": [
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "3.983"
+        },
+        {
+          "path": "docs/story.html",
+          "contains": "3.983"
+        },
+        {
+          "path": "docs/paper.html",
+          "contains": "3.983"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/tables/metrics_pooled.csv",
+        "kind": "csv_cell",
+        "where": {
+          "label": "pooled_all_years"
+        },
+        "column": "trir_screened"
+      },
+      "expected": 3.983079,
+      "tolerance": 0.0005,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_plausibility_screen_headline_numbers",
+        "contains": "3.983079"
+      }
+    },
+    {
+      "id": "osha-n-filings",
+      "statement": "2,801,064 de-duplicated establishment filings (2016 to 2024)",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "2,801,064"
+        },
+        {
+          "path": "docs/paper.html",
+          "contains": "2,801,064"
+        },
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "2,801,064"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/summary.json",
+        "kind": "json_path",
+        "key": "load_report.rows_after_dedup"
+      },
+      "expected": 2801064,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_row_counts_and_dedup",
+        "contains": "2_801_064"
+      }
+    },
+    {
+      "id": "osha-duplicates",
+      "statement": "4,703 repeated rows dropped before analysis",
+      "appears_in": [
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "4,703"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/summary.json",
+        "kind": "json_path",
+        "key": "load_report.duplicate_rows_dropped"
+      },
+      "expected": 4703,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_row_counts_and_dedup",
+        "contains": "4_703"
+      }
+    },
+    {
+      "id": "osha-n-implausible",
+      "statement": "57,857 filings fail the hours screen",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "57,857"
+        },
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "57,857"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/tables/quality_overall.csv",
+        "kind": "csv_cell",
+        "where": {
+          "label": "pooled_all_years"
+        },
+        "column": "n_implausible"
+      },
+      "expected": 57857,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_plausibility_screen_headline_numbers",
+        "contains": "57_857"
+      }
+    },
+    {
+      "id": "osha-implausible-share",
+      "statement": "2.07% of filings fail the hours screen",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "2.07%"
+        },
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "2.07%"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/tables/quality_overall.csv",
+        "kind": "csv_cell",
+        "where": {
+          "label": "pooled_all_years"
+        },
+        "column": "implausible_share"
+      },
+      "expected": 0.0206554,
+      "tolerance": 5e-06,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_plausibility_screen_headline_numbers",
+        "contains": "0.020655"
+      }
+    },
+    {
+      "id": "osha-hours-share",
+      "statement": "Those filings carry 96.68% of reported hours",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "96.68%"
+        },
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "96.68%"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/tables/quality_overall.csv",
+        "kind": "csv_cell",
+        "where": {
+          "label": "pooled_all_years"
+        },
+        "column": "hours_share_implausible"
+      },
+      "expected": 0.966802,
+      "tolerance": 5e-06,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_plausibility_screen_headline_numbers",
+        "contains": "0.966802"
+      }
+    },
+    {
+      "id": "osha-2019-ratio",
+      "statement": "In 2019 the screen moves the aggregate TRIR by a factor of about 249",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "249"
+        },
+        {
+          "path": "docs/paper.html",
+          "contains": "249"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/tables/metrics_by_year.csv",
+        "kind": "csv_cell",
+        "where": {
+          "label": "2019"
+        },
+        "column": "trir_ratio_screened_to_unscreened"
+      },
+      "expected": 249.2758,
+      "tolerance": 0.01,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_the_error_magnitude_is_not_a_stable_constant",
+        "contains": "ratios.max()"
+      },
+      "note": "The test pins only that the yearly maximum exceeds 20; the exact value is pinned by this registry against the committed table."
+    },
+    {
+      "id": "osha-ratio-min-year",
+      "statement": "The year-by-year factor ranges from 1.39 (minimum, 2018)",
+      "appears_in": [
+        {
+          "path": "docs/paper.html",
+          "contains": "1.39"
+        }
+      ],
+      "source": {
+        "repo": "ehs-osha-analysis",
+        "path": "outputs/tables/metrics_by_year.csv",
+        "kind": "csv_cell",
+        "where": {
+          "label": "2018"
+        },
+        "column": "trir_ratio_screened_to_unscreened"
+      },
+      "expected": 1.3934,
+      "tolerance": 0.005,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "tests/test_regression_real_data.py",
+        "symbol": "test_the_error_magnitude_is_not_a_stable_constant",
+        "contains": "ratios.min()"
+      }
+    },
+    {
+      "id": "eval-corpus-items",
+      "statement": "The benchmark corpus has 68 clause-anchored items",
+      "appears_in": [
+        {
+          "path": "docs/paper.html",
+          "contains": "68 items"
+        },
+        {
+          "path": "docs/story.html",
+          "contains": "68 items"
+        }
+      ],
+      "source": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "corpus/verification/source_verification.json",
+        "kind": "json_path",
+        "key": "n_items"
+      },
+      "expected": 68,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "tests/test_corpus.py",
+        "symbol": "test_report_exists_and_records_no_failures",
+        "contains": "n_failed"
+      }
+    },
+    {
+      "id": "eval-corpus-verified",
+      "statement": "All 68 items verified against eCFR with 0 failures",
+      "appears_in": [
+        {
+          "path": "docs/paper.html",
+          "contains": "68 of 68 items verified with 0 failures"
+        }
+      ],
+      "source": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "corpus/verification/source_verification.json",
+        "kind": "json_path",
+        "key": "n_ok"
+      },
+      "expected": 68,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "tests/test_corpus.py",
+        "symbol": "test_report_exists_and_records_no_failures",
+        "contains": "n_failed"
+      }
+    },
+    {
+      "id": "eval-tfidf-accuracy",
+      "statement": "Keyword (TF-IDF) retrieval scores 27.0% on the factual items",
+      "appears_in": [
+        {
+          "path": "docs/index.html",
+          "contains": "27.0%"
+        },
+        {
+          "path": "docs/story.html",
+          "contains": "27.0 percent"
+        }
+      ],
+      "source": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "results/baselines_summary.csv",
+        "kind": "csv_cell",
+        "where": {
+          "adapter": "retrieval_tfidf"
+        },
+        "column": "accuracy"
+      },
+      "expected": 0.2698,
+      "tolerance": 0.0005,
+      "verifying_test": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "tests/test_baselines.py",
+        "symbol": "test_run_all_and_summary_shape"
+      }
+    },
+    {
+      "id": "eval-random-accuracy",
+      "statement": "Random-floor baseline scores 52.1%",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "52.1 percent"
+        }
+      ],
+      "source": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "results/baselines_summary.csv",
+        "kind": "csv_cell",
+        "where": {
+          "adapter": "random_floor"
+        },
+        "column": "accuracy"
+      },
+      "expected": 0.5206,
+      "tolerance": 0.0005,
+      "verifying_test": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "tests/test_baselines.py",
+        "symbol": "test_random_floor_is_seeded_and_order_independent"
+      }
+    },
+    {
+      "id": "eval-factual-items",
+      "statement": "63 of the 68 items are factual",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "63 factual items"
+        }
+      ],
+      "source": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "results/baselines_summary.csv",
+        "kind": "csv_cell",
+        "where": {
+          "adapter": "retrieval_tfidf"
+        },
+        "column": "n_factual_obs"
+      },
+      "expected": 63,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-ai-grounding-eval",
+        "path": "tests/test_baselines.py",
+        "symbol": "test_run_all_and_summary_shape"
+      }
+    },
+    {
+      "id": "refs-paper",
+      "statement": "The bundled paper has 197 references",
+      "appears_in": [
+        {
+          "path": "docs/paper.html",
+          "contains": "<span class=\"ms-v accent\">197</span>"
+        }
+      ],
+      "source": {
+        "repo": "grounded",
+        "path": "docs/paper.html",
+        "kind": "regex_count",
+        "pattern": "id=\"ref-"
+      },
+      "expected": 197,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "grounded",
+        "path": "claims/check_claims.py",
+        "symbol": "regex_count"
+      },
+      "note": "Counts reference anchors in the published paper; the per-reference verification status is described in the paper, not asserted here."
+    },
+    {
+      "id": "refs-osha-paper",
+      "statement": "The standalone OSHA paper has 45 references, all in the reference ledger",
+      "appears_in": [
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "<span class=\"ms-v accent\">45</span>"
+        }
+      ],
+      "source": {
+        "repo": "grounded",
+        "path": "docs/references-osha.csv",
+        "kind": "csv_rows"
+      },
+      "expected": 45,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "grounded",
+        "path": "claims/check_claims.py",
+        "symbol": "csv_rows"
+      }
+    },
+    {
+      "id": "tests-osha",
+      "statement": "The ehs-osha-analysis repository carries 178 tests",
+      "appears_in": [
+        {
+          "path": "docs/paper-osha.html",
+          "contains": "The repository carries 178 tests"
+        }
+      ],
+      "source": {
+        "repo": "grounded",
+        "path": "docs/status.json",
+        "kind": "json_path",
+        "key": "repos.ehs-osha-analysis.tests.count"
+      },
+      "expected": 178,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "Makefile",
+        "symbol": "test",
+        "contains": "unittest discover"
+      },
+      "note": "Snapshot count recorded in docs/status.json at the stated commit; the suite is run with `make test`."
+    },
+    {
+      "id": "tests-total",
+      "statement": "823 tests across the five analysis repositories",
+      "appears_in": [
+        {
+          "path": "docs/observatory.html",
+          "contains": "\"total_tests\":823"
+        }
+      ],
+      "source": {
+        "repo": "grounded",
+        "path": "docs/status.json",
+        "kind": "json_path",
+        "key": "total_tests"
+      },
+      "expected": 823,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-osha-analysis",
+        "path": "Makefile",
+        "symbol": "test",
+        "contains": "unittest discover"
+      },
+      "note": "Sum of per-repository counts in docs/status.json (snapshot). Not recounted live."
+    },
+    {
+      "id": "ontology-factors",
+      "statement": "The ontology encodes 20 factors",
+      "appears_in": [
+        {
+          "path": "docs/story.html",
+          "contains": "20 factors"
+        }
+      ],
+      "source": {
+        "repo": "ehs-human-factors-ontology",
+        "path": "docs/crosswalk-data.json",
+        "kind": "json_path",
+        "key": "factors#len"
+      },
+      "expected": 20,
+      "tolerance": 0,
+      "verifying_test": {
+        "repo": "ehs-human-factors-ontology",
+        "path": "tests/test_crosswalk.py",
+        "symbol": "test_csv_row_count_matches_the_ontology"
+      }
+    }
+  ]
+}

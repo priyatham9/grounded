@@ -6,6 +6,7 @@ Keep a Changelog and this project uses semantic versioning.
 ## [Unreleased]
 
 ### Added
+- Headline-claims registry (`claims/claims.json`): 20 claims from the site and both papers, each with where it is stated, the committed source file and key in the owning repo, and the verifying test; `claims/check_claims.py` fetches those files from raw.githubusercontent.com and a weekly and per-PR `claims` workflow fails if any claim stops matching. Two stale site statements (175 tests, 31 of 80 mappings) are recorded as known discrepancies
 - Programme metric dictionary (`metrics/`): TRIR, DART, LTIR, severity and fatality rate with 29 CFR 1904 sources, plus a cross-implementation agreement test (TypeScript vs Python reference vectors) run in CI
 - Hub: story-arc labels on each chapter, a scroll-drawn narrative thread on wide screens, word-mask heading reveals, constellation line draw, and a closing "so what" section with three questions for a VP of EHS
 
