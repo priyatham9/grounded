@@ -5,6 +5,9 @@ Keep a Changelog and this project uses semantic versioning.
 
 ## [Unreleased]
 
+### Fixed
+- `docs/story.html`: OSHA test count 175 corrected to 178 (docs/status.json) and "31 of 80 mappings" reworded to "31 of 80 cells" (20 factors x four frameworks, `docs/crosswalk-data.json` in the ontology repo; the 96-row CSV is a different unit). Both are now asserted claims in `claims/claims.json`, which gains a `json_count` source kind; the known-discrepancies list is empty.
+
 ### Added
 - Headline-claims registry (`claims/claims.json`): 20 claims from the site and both papers, each with where it is stated, the committed source file and key in the owning repo, and the verifying test; `claims/check_claims.py` fetches those files from raw.githubusercontent.com and a weekly and per-PR `claims` workflow fails if any claim stops matching. Two stale site statements (175 tests, 31 of 80 mappings) are recorded as known discrepancies
 - Programme metric dictionary (`metrics/`): TRIR, DART, LTIR, severity and fatality rate with 29 CFR 1904 sources, plus a cross-implementation agreement test (TypeScript vs Python reference vectors) run in CI
