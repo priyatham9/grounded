@@ -2,7 +2,7 @@
 
 ## Running Tests
 
-This repository is a static HTML site with no test suite. There is no build step and no runtime dependencies beyond two webfonts.
+The site is static HTML. The only tests are the metric-dictionary agreement tests in `metrics/` (`python3 metrics/agreement_test.py` and `node metrics/agreement_test.mjs`). There is no build step and no runtime dependencies beyond two webfonts.
 
 ## Dependency Policy
 

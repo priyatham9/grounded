@@ -1,0 +1,153 @@
+{
+  "generated_from": {
+    "ehs-benchmarks": {
+      "commit": "0026fd27a96b0264ee24d9b0fa521068922b4208",
+      "function": "src/rates.ts trir/dart/ltir/severityRate/fatalityRate"
+    },
+    "ehs-osha-analysis": {
+      "commit": "fb3ce46f0d74c326d0cf9300485a67adbd13a94d",
+      "function": "src/ehs_osha/metrics.py compute_rates (*_screened, implausible=False)"
+    }
+  },
+  "per_hours": 200000,
+  "vectors": [
+    {
+      "id": "typical_manufacturer",
+      "deaths": 0,
+      "dafw_cases": 3,
+      "djtr_cases": 4,
+      "other_cases": 5,
+      "dafw_days": 45,
+      "djtr_days": 60,
+      "hours": 400000,
+      "typescript": {
+        "trir": 6,
+        "dart": 3.5,
+        "ltir": 1.5,
+        "severity": 52.5,
+        "fatality": 0
+      },
+      "python": {
+        "trir": 6.0,
+        "dart": 3.5,
+        "ltir": 1.5,
+        "severity": 52.5
+      }
+    },
+    {
+      "id": "with_fatality",
+      "deaths": 1,
+      "dafw_cases": 2,
+      "djtr_cases": 1,
+      "other_cases": 0,
+      "dafw_days": 180,
+      "djtr_days": 10,
+      "hours": 1250000,
+      "typescript": {
+        "trir": 0.64,
+        "dart": 0.48,
+        "ltir": 0.32,
+        "severity": 30.4,
+        "fatality": 0.16
+      },
+      "python": {
+        "trir": 0.64,
+        "dart": 0.48,
+        "ltir": 0.32,
+        "severity": 30.4
+      }
+    },
+    {
+      "id": "single_case_small_hours",
+      "deaths": 0,
+      "dafw_cases": 0,
+      "djtr_cases": 0,
+      "other_cases": 1,
+      "dafw_days": 0,
+      "djtr_days": 0,
+      "hours": 10000,
+      "typescript": {
+        "trir": 20,
+        "dart": 0,
+        "ltir": 0,
+        "severity": 0,
+        "fatality": 0
+      },
+      "python": {
+        "trir": 20.0,
+        "dart": 0.0,
+        "ltir": 0.0,
+        "severity": 0.0
+      }
+    },
+    {
+      "id": "zero_cases",
+      "deaths": 0,
+      "dafw_cases": 0,
+      "djtr_cases": 0,
+      "other_cases": 0,
+      "dafw_days": 0,
+      "djtr_days": 0,
+      "hours": 2000000,
+      "typescript": {
+        "trir": 0,
+        "dart": 0,
+        "ltir": 0,
+        "severity": 0,
+        "fatality": 0
+      },
+      "python": {
+        "trir": 0.0,
+        "dart": 0.0,
+        "ltir": 0.0,
+        "severity": 0.0
+      }
+    },
+    {
+      "id": "fractional_hours",
+      "deaths": 0,
+      "dafw_cases": 7,
+      "djtr_cases": 2,
+      "other_cases": 11,
+      "dafw_days": 123,
+      "djtr_days": 77,
+      "hours": 987654.5,
+      "typescript": {
+        "trir": 4.049999265937633,
+        "dart": 1.8224996696719349,
+        "ltir": 1.4174997430781715,
+        "severity": 40.49999265937633,
+        "fatality": 0
+      },
+      "python": {
+        "trir": 4.049999265937633,
+        "dart": 1.8224996696719349,
+        "ltir": 1.4174997430781715,
+        "severity": 40.49999265937633
+      }
+    },
+    {
+      "id": "zero_hours",
+      "deaths": 0,
+      "dafw_cases": 1,
+      "djtr_cases": 1,
+      "other_cases": 1,
+      "dafw_days": 5,
+      "djtr_days": 5,
+      "hours": 0,
+      "typescript": {
+        "trir": null,
+        "dart": null,
+        "ltir": null,
+        "severity": null,
+        "fatality": null
+      },
+      "python": {
+        "trir": null,
+        "dart": null,
+        "ltir": null,
+        "severity": null
+      }
+    }
+  ]
+}
