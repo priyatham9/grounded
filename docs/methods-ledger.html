@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Methods and limitations ledger - Grounded</title>
+<meta name="description" content="Per repository, each statistical or machine-learning method used, its assumptions and known limitations, each linked to the file where the repository states it." />
+<link rel="canonical" href="https://priyatham9.github.io/grounded/methods-ledger.html" />
+<meta property="og:title" content="Methods and limitations ledger - Grounded" />
+<meta property="og:description" content="Per repository, each statistical or machine-learning method used, its assumptions and known limitations, each linked to the file where the repository states it." />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="https://priyatham9.github.io/grounded/methods-ledger.html" />
+<meta property="og:image" content="https://priyatham9.github.io/grounded/og.png" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="theme-color" content="#F7F7F3" media="(prefers-color-scheme: light)" />
+<meta name="theme-color" content="#0A0C10" media="(prefers-color-scheme: dark)" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%231E40AF'/%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;800&family=IBM+Plex+Mono:wght@500;600&display=swap" />
+<style>
+:root{
+ color-scheme:light;
+ --paper:#F7F7F3; --surface:#FFFFFF; --surface-2:#EFEFE9;
+ --ink:#101311; --ink-2:#3A403C; --muted:#5E655F;
+ --rule:#101311; --rule-soft:#D6D7CE;
+ --accent:#1E40AF; --accent-ink:#FFFFFF; --accent-wash:#E2E8FB;
+ --font-sans:"Archivo",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+ --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+}
+:root[data-theme="dark"]{
+ color-scheme:dark;
+ --paper:#0A0C10; --surface:#12151C; --surface-2:#171B24;
+ --ink:#EAECF2; --ink-2:#BFC4CF; --muted:#959CAB;
+ --rule:#EAECF2; --rule-soft:#2C3240;
+ --accent:#7C9EFF; --accent-ink:#06101F; --accent-wash:#151C33;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme]){
+ color-scheme:dark;
+ --paper:#0A0C10; --surface:#12151C; --surface-2:#171B24;
+ --ink:#EAECF2; --ink-2:#BFC4CF; --muted:#959CAB;
+ --rule:#EAECF2; --rule-soft:#2C3240;
+ --accent:#7C9EFF; --accent-ink:#06101F; --accent-wash:#151C33;
+}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--font-sans)}
+a{color:inherit}
+.skip{position:absolute;left:-999px}.skip:focus{left:16px;top:8px;z-index:2000;background:var(--surface);padding:10px 14px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+.label{font:600 12.5px/1.4 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+h1{font-weight:800;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05;letter-spacing:-.02em;margin:14px 0 16px;max-width:20ch;text-wrap:balance}
+.intro{padding-top:64px;padding-bottom:40px}
+.intro p{font-size:clamp(1.05rem,1.6vw,1.2rem);color:var(--ink-2);max-width:60ch;margin:0 0 24px;text-wrap:pretty}
+.btns{display:flex;flex-wrap:wrap;gap:10px}
+.btn{display:inline-flex;align-items:center;min-height:44px;padding:0 18px;border:2px solid var(--rule);font:600 13px/1 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;text-decoration:none}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn:hover{background:var(--accent-wash);color:var(--ink);border-color:var(--accent)}
+.btn:focus-visible,.card a:focus-visible,.paper:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+section{padding:32px 0}
+h2{font-size:1.5rem;font-weight:800;margin:0 0 18px;letter-spacing:-.01em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--rule-soft);border-radius:12px;padding:20px 20px 16px;display:flex;flex-direction:column}
+.card .num{font:600 2rem/1 var(--font-mono);color:var(--accent);margin:10px 0 8px}
+.card h3{font-size:1.15rem;margin:0 0 6px}
+.card p{margin:0 0 14px;color:var(--ink-2);font-size:15.5px}
+.card .links{margin-top:auto;display:flex;flex-wrap:wrap;gap:4px 18px}
+.card .links a{display:inline-flex;align-items:center;min-height:44px;font:600 13px/1.2 var(--font-mono);letter-spacing:.04em;color:var(--accent);text-decoration:none}
+.card .links a:hover{text-decoration:underline}
+.papers{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.paper{display:block;background:var(--surface);border:1px solid var(--rule-soft);border-radius:12px;padding:18px 20px;text-decoration:none}
+.paper:hover{border-color:var(--accent)}
+.paper b{display:block;font-size:1.05rem;margin:6px 0 4px}
+.paper span.d{color:var(--ink-2);font-size:15px}
+footer{padding:36px 0 56px;color:var(--muted);font-size:15px}
+footer a{color:var(--ink-2)}
+
+.tablewrap{overflow-x:auto;border:1px solid var(--rule-soft);border-radius:12px;background:var(--surface)}
+table.t{border-collapse:collapse;width:100%;min-width:760px;font-size:15px;line-height:1.45}
+table.t th,table.t td{text-align:left;vertical-align:top;padding:12px 14px;border-bottom:1px solid var(--rule-soft)}
+table.t th{font:600 12px/1.4 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--surface-2)}
+table.t tr:last-child td{border-bottom:0}
+table.t a{color:var(--accent);font-weight:600}
+.prose{max-width:68ch}.prose p,.prose li{color:var(--ink-2)}
+.prose ul{padding-left:1.2em}
+.plan{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.plan .card h3{margin-top:8px}
+.plan ul{margin:0 0 6px;padding-left:1.1em;color:var(--ink-2);font-size:15.5px}
+.plan li{margin-bottom:8px}
+.note{border-left:4px solid var(--accent);background:var(--accent-wash);padding:12px 16px;margin:0 0 20px;max-width:68ch;color:var(--ink)}
+.src{font-size:14.5px;color:var(--ink-2)}
+.src li{margin-bottom:6px}
+
+pre{background:var(--surface);border:1px solid var(--rule-soft);border-radius:12px;padding:14px 16px;overflow-x:auto;font:500 13.5px/1.55 var(--font-mono);color:var(--ink);margin:0 0 18px}
+code{font:500 .92em var(--font-mono)}
+.prose pre,.prose table{max-width:none}
+.wrapwide{max-width:1080px}
+h3{font-size:1.15rem;margin:26px 0 8px}
+</style>
+<script id="rs-theme-init">try{var t=localStorage.getItem("pc-theme")||localStorage.getItem("ehs-ai-theme");if(t==="light"||t==="dark")document.documentElement.setAttribute("data-theme",t);}catch(e){}</script><style id="rs-header-css">.rs-header,.rs-k{--rs-paper:var(--paper,#F7F7F3);--rs-surface:var(--surface,#FFFFFF);--rs-surface-2:var(--surface-2,#EFEFE9);--rs-ink:var(--ink,#101311);--rs-muted:var(--muted,var(--ink-2,#5E655F));--rs-rule:var(--rule,#101311);--rs-rule-soft:var(--rule-soft,#D6D7CE);--rs-accent:var(--accent,#1E40AF);--rs-mono:var(--font-mono,"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace);--rs-sans:var(--font-sans,"Archivo",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif);}:root[data-theme="dark"] .rs-header,:root[data-theme="dark"] .rs-k{--rs-paper:var(--paper,#0A0C10);--rs-surface:var(--surface,#12151C);--rs-surface-2:var(--surface-2,#171B24);--rs-ink:var(--ink,#EAECF2);--rs-muted:var(--muted,var(--ink-2,#959CAB));--rs-rule:var(--rule,#EAECF2);--rs-rule-soft:var(--rule-soft,#2C3240);--rs-accent:var(--accent,#7C9EFF);}@media (prefers-color-scheme:dark){:root:not([data-theme]) .rs-header,:root:not([data-theme]) .rs-k{--rs-paper:var(--paper,#0A0C10);--rs-surface:var(--surface,#12151C);--rs-surface-2:var(--surface-2,#171B24);--rs-ink:var(--ink,#EAECF2);--rs-muted:var(--muted,var(--ink-2,#959CAB));--rs-rule:var(--rule,#EAECF2);--rs-rule-soft:var(--rule-soft,#2C3240);--rs-accent:var(--accent,#7C9EFF);}}:root{--rs-header-h:58px}html{scroll-padding-top:calc(var(--rs-header-h) + 12px)}a.skip,a.skip-link{min-height:44px;box-sizing:border-box}.rs-header :where(a,button,nav,div,span,summary,details,b,i){all:revert;box-sizing:border-box}.rs-header [hidden]{display:none!important}.rs-header{transition:transform .28s cubic-bezier(.2,.8,.2,1)}.rs-header.rs-hide{transform:translateY(-100%)}@media (prefers-reduced-motion:reduce){.rs-header{transition:none}}.rs-header svg{display:block;width:18px;height:18px;fill:none;stroke:currentColor}.rs-header{all:revert;display:block;position:sticky;top:0;z-index:1000;margin:0;padding:0;width:auto;max-width:none;float:none;transform:none;box-sizing:border-box;background:var(--rs-paper);color:var(--rs-ink);border:0;box-shadow:none;font:400 14px/1.3 var(--rs-sans);text-align:left}.rs-header .rs-bar{border-bottom:2px solid var(--rs-rule);background:var(--rs-paper)}.rs-header .rs-row{display:flex;align-items:center;max-width:1180px;height:56px;margin:0 auto;padding:0 24px}.rs-header .rs-brand{display:flex;align-items:center;gap:10px;height:56px;padding:0 16px 0 0;font:700 13px/1 var(--rs-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--rs-ink);text-decoration:none;white-space:nowrap}.rs-header .rs-mark{display:block;width:14px;height:14px;background:var(--rs-accent);flex:none}.rs-header .rs-author{display:flex;align-items:center;height:44px;padding:0 0 0 16px;background:linear-gradient(var(--rs-rule-soft),var(--rs-rule-soft)) 0 50%/2px 24px no-repeat;font:500 12px/1 var(--rs-mono);letter-spacing:.06em;color:var(--rs-muted);text-decoration:none;white-space:nowrap;margin-right:8px}.rs-header .rs-author:hover{color:var(--rs-accent)}.rs-header .rs-nav{display:flex;align-items:center;height:56px;margin:0 0 0 auto;padding:0}.rs-header .rs-menu{display:flex;align-items:center;position:relative;height:56px;margin:0;padding:0}.rs-header .rs-item{display:flex;align-items:center;gap:6px;height:56px;margin:0;padding:0 14px;font:600 12px/1 var(--rs-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rs-muted);text-decoration:none;white-space:nowrap;cursor:pointer;list-style:none;background:transparent;border:0}.rs-header .rs-item::-webkit-details-marker{display:none}.rs-header .rs-item::marker{content:""}.rs-header .rs-item:hover,.rs-header .rs-menu[open]>.rs-item{background:var(--rs-surface-2);color:var(--rs-ink)}.rs-header .rs-item[aria-current="page"],.rs-header .rs-menu[data-current]>.rs-item{color:var(--rs-ink);box-shadow:inset 0 -3px 0 var(--rs-accent)}.rs-header .rs-story{color:var(--rs-accent);font-weight:700;box-shadow:inset 0 -3px 0 var(--rs-accent)}.rs-header .rs-story::before{content:"";display:block;width:7px;height:7px;background:var(--rs-accent);flex:none}.rs-header .rs-story:hover{background:var(--rs-accent);color:var(--rs-paper)}.rs-header .rs-story:hover::before{background:var(--rs-paper)}.rs-header .rs-caret{display:block;width:0;height:0;border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid currentColor;transition:transform .15s}.rs-header .rs-menu[open] .rs-caret{transform:rotate(180deg)}.rs-header .rs-panel{display:block;position:absolute;top:calc(100% + 2px);right:0;width:340px;max-width:calc(100vw - 32px);margin:0;padding:0;background:var(--rs-surface);border:2px solid var(--rs-rule);box-shadow:6px 6px 0 var(--rs-rule);z-index:1}.rs-header .rs-opt{display:flex;flex-direction:column;justify-content:center;gap:4px;min-height:44px;padding:9px 14px;border-bottom:1px solid var(--rs-rule-soft);color:var(--rs-ink);text-decoration:none}.rs-header .rs-opt:last-child{border-bottom:0}.rs-header .rs-opt:hover{background:var(--rs-surface-2)}.rs-header .rs-opt[aria-current="page"]{box-shadow:inset 4px 0 0 var(--rs-accent);background:var(--rs-surface-2)}.rs-header .rs-t{display:block;font:500 14px/1.25 var(--rs-sans);color:var(--rs-ink)}.rs-header .rs-n{display:block;font:400 12px/1.25 var(--rs-mono);letter-spacing:.04em;color:var(--rs-muted)}.rs-header .rs-opt[aria-current="page"] .rs-n::after{content:" \00B7  you are here";color:var(--rs-accent)}.rs-header .rs-sep{display:block;width:2px;height:24px;margin:0 12px 0 10px;background:var(--rs-rule-soft);flex:none}.rs-header .rs-btn{display:inline-flex;align-items:center;justify-content:center;flex:none;width:44px;height:44px;margin:0;padding:0;background:var(--rs-paper);color:var(--rs-ink);border:2px solid var(--rs-rule);border-radius:0;cursor:pointer;font:600 12px/1 var(--rs-mono);touch-action:manipulation}.rs-header .rs-find{margin-right:8px;gap:8px}.rs-header .rs-find span{display:none}.rs-header:not(.rs-js) .rs-find{display:none}.rs-header .rs-btn:hover{background:var(--rs-surface-2)}.rs-header .rs-moon{display:none}:root[data-theme="dark"] .rs-header .rs-sun{display:none}:root[data-theme="dark"] .rs-header .rs-moon{display:block}@media (prefers-color-scheme:dark){:root:not([data-theme]) .rs-header .rs-sun{display:none}:root:not([data-theme]) .rs-header .rs-moon{display:block}}.rs-header .rs-burger{display:none;width:44px;height:44px;margin-left:8px}.rs-header .rs-burger i{display:block;position:relative;width:18px;height:2px;background:currentColor;transition:background .15s}.rs-header .rs-burger i::before,.rs-header .rs-burger i::after{content:"";position:absolute;left:0;width:18px;height:2px;background:currentColor;transition:transform .15s}.rs-header .rs-burger i::before{top:-6px}.rs-header .rs-burger i::after{top:6px}.rs-header .rs-burger[aria-expanded="true"] i{background:transparent}.rs-header .rs-burger[aria-expanded="true"] i::before{transform:translateY(6px) rotate(45deg)}.rs-header .rs-burger[aria-expanded="true"] i::after{transform:translateY(-6px) rotate(-45deg)}.rs-header :focus-visible{outline:2px solid var(--rs-accent);outline-offset:-2px}.rs-header .rs-sub{position:relative;border-bottom:2px solid var(--rs-rule-soft);background:var(--rs-paper)}.rs-header .rs-subrow{height:44px}.rs-header .rs-sublabel{display:block;flex:none;padding:0 12px 0 0;font:500 12px/1 var(--rs-mono);letter-spacing:.06em;color:var(--rs-muted);white-space:nowrap}.rs-header .rs-sections{display:flex;align-items:center;position:relative;flex:1 1 auto;min-width:0;height:44px;margin:0;padding:0;overflow-x:auto;scrollbar-width:none}.rs-header .rs-sections::-webkit-scrollbar{display:none}.rs-header .rs-sections.rs-fl{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px);mask-image:linear-gradient(90deg,transparent,#000 32px)}.rs-header .rs-sections.rs-fr{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,#000 calc(100% - 32px),transparent)}.rs-header .rs-sections.rs-fl.rs-fr{-webkit-mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent);mask-image:linear-gradient(90deg,transparent,#000 32px,#000 calc(100% - 32px),transparent)}.rs-header .rs-sec{display:flex;align-items:center;flex:none;height:44px;padding:0 10px;font:600 12px/1 var(--rs-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--rs-muted);text-decoration:none;white-space:nowrap}.rs-header .rs-sec:hover{color:var(--rs-ink)}.rs-header .rs-sec.rs-active{color:var(--rs-accent);box-shadow:inset 0 -2px 0 var(--rs-accent)}.rs-header .rs-subbtn{display:none;align-items:center;gap:8px;width:100%;height:44px;margin:0;padding:0;background:transparent;border:0;color:var(--rs-muted);font:500 12px/1 var(--rs-mono);letter-spacing:.06em;cursor:pointer;text-align:left}.rs-header .rs-subbtn b{flex:1 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--rs-ink);font-weight:600;text-transform:uppercase}.rs-header .rs-subbtn[aria-expanded="true"] .rs-caret{transform:rotate(180deg)}.rs-header .rs-sublist{position:absolute;top:calc(100% + 2px);left:0;right:0;max-height:60vh;overflow-y:auto;margin:0;padding:0;background:var(--rs-surface);border-top:2px solid var(--rs-rule);border-bottom:2px solid var(--rs-rule);box-shadow:0 6px 0 var(--rs-rule)}.rs-header .rs-sublist .rs-sec{height:auto;min-height:44px;padding:0 16px;border-bottom:1px solid var(--rs-rule-soft)}.rs-header .rs-sublist .rs-sec.rs-active{box-shadow:inset 4px 0 0 var(--rs-accent)}.rs-header .rs-progress{display:block;position:absolute;left:0;right:0;bottom:0;height:2px;background:var(--rs-accent);transform:scaleX(0);transform-origin:0 50%;pointer-events:none}.rs-header .rs-sheet{position:fixed;top:58px;overscroll-behavior:contain;left:0;right:0;bottom:0;overflow-y:auto;margin:0;padding:8px 16px 32px;background:var(--rs-paper);border-top:0;z-index:2}.rs-header .rs-sheet a{display:flex;align-items:center;min-height:48px;padding:0 4px;border-bottom:1px solid var(--rs-rule-soft);color:var(--rs-ink);text-decoration:none;font:600 13px/1.2 var(--rs-mono);letter-spacing:.06em;text-transform:uppercase}.rs-header .rs-sheet a[aria-current="page"]{color:var(--rs-accent);box-shadow:inset 4px 0 0 var(--rs-accent);padding-left:14px}.rs-header .rs-sheet .rs-opt{align-items:flex-start;font:inherit;text-transform:none;letter-spacing:0;padding:8px 4px}.rs-header .rs-sheet .rs-opt[aria-current="page"]{padding-left:14px}.rs-header .rs-group{display:block;margin:24px 0 4px;font:500 12px/1 var(--rs-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rs-muted)}.rs-header .rs-sheet a.rs-sheet-author{margin-top:24px;border-top:2px solid var(--rs-rule);border-bottom:0;color:var(--rs-muted);text-transform:none;font-weight:500}htmlhtml.rs-lock{overflow:hidden}@media (max-width:1279.98px){.rs-header .rs-author{display:none}}.rs-header .rs-crumb{display:flex;align-items:center;gap:10px;min-width:0;height:56px;padding:0 4px 0 0}.rs-header .rs-slash{color:var(--rs-muted);font:400 20px/1 var(--rs-sans)}.rs-header .rs-proj,.rs-header .rs-here{display:block;min-width:0;line-height:44px!important;min-height:44px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font:700 15px/1.2 var(--rs-sans);color:var(--rs-ink);text-decoration:none}.rs-header a.rs-proj:hover{text-decoration:underline}.rs-header .rs-tabs{display:flex;align-items:center;height:56px;margin:0 0 0 14px;padding:0}.rs-header .rs-tab{display:flex;align-items:center;height:56px;padding:0 12px;font:600 12px/1 var(--rs-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rs-muted);text-decoration:none;white-space:nowrap}.rs-header .rs-tab:hover{background:var(--rs-surface-2);color:var(--rs-ink)}.rs-header .rs-tab[aria-current="page"]{color:var(--rs-ink);box-shadow:inset 0 -3px 0 var(--rs-accent)}.rs-header .rs-tab:focus-visible,.rs-header .rs-proj:focus-visible{outline:3px solid var(--rs-accent);outline-offset:-3px}@media (max-width:599.98px){.rs-header .rs-brand:has(+.rs-crumb){font-size:0;gap:0;min-width:44px;padding-right:0;justify-content:center}.rs-header .rs-crumb{gap:8px}}@media (max-width:1100px){.rs-header .rs-item{padding:0 10px}}@media (min-width:1280px){.rs-header .rs-find{width:auto;padding:0 12px}.rs-header .rs-find span{display:block}.rs-header .rs-item{padding:0 12px}}@media (max-width:1099.98px){.rs-header .rs-tabs{display:none}.rs-header .rs-find{margin-left:auto}.rs-header .rs-row{padding:0 16px}.rs-header.rs-js .rs-nav,.rs-header.rs-js .rs-sep,.rs-header .rs-author{display:none}.rs-header.rs-js .rs-burger{display:inline-flex}.rs-header:not(.rs-js) .rs-nav{overflow-x:auto;margin-left:0}.rs-header.rs-js .rs-sublabel,.rs-header.rs-js .rs-subrow>.rs-sections{display:none}.rs-header.rs-js .rs-subbtn{display:flex}}@media (min-width:1100px){.rs-header .rs-sheet,.rs-header .rs-sublist{display:none}}.rs-k,.rs-k :where(div,span,a,button,input,p,mark,kbd,b,svg){all:revert;box-sizing:border-box}.rs-k{width:min(640px,100vw - 32px);max-width:none;max-height:min(76vh,680px);margin:10vh auto auto;padding:0;overflow:hidden;background:var(--rs-surface);color:var(--rs-ink);border:2px solid var(--rs-rule);box-shadow:8px 8px 0 var(--rs-rule);font:400 15px/1.4 var(--rs-sans)}.rs-k[open]{display:flex;flex-direction:column}.rs-k::backdrop{background:#0a0c108c}.rs-k svg{flex:none;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2}.rs-k-top{display:flex;align-items:center;gap:10px;padding:0 8px 0 16px;border-bottom:2px solid var(--rs-rule);color:var(--rs-muted)}.rs-k-top:focus-within{box-shadow:inset 0 -2px var(--rs-accent)}.rs-k input{flex:1;min-width:0;height:56px;border:0;outline:0;background:none;color:var(--rs-ink);font:500 17px var(--rs-sans);appearance:none}.rs-k input::placeholder{color:var(--rs-muted)}.rs-k-x{min-width:44px;height:44px;padding:0 10px;background:none;color:var(--rs-muted);border:1px solid var(--rs-rule-soft);font:600 12px var(--rs-mono);text-transform:uppercase;cursor:pointer}#rs-k-list{flex:1;min-height:0;overflow-y:auto;overscroll-behavior:contain;padding-bottom:8px}#rs-k-list:empty{display:none}.rs-k-g{padding:14px 16px 6px;font:600 12px var(--rs-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--rs-muted)}.rs-k [role=option]{display:block;padding:9px 16px 9px 13px;border-left:3px solid transparent;color:var(--rs-ink);text-decoration:none}.rs-k [role=option]:hover,.rs-k [aria-selected=true]{background:var(--rs-surface-2);border-color:var(--rs-accent)}.rs-k-t{display:block;font-weight:500}.rs-k-c{display:block;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;font-size:13px;color:var(--rs-muted)}.rs-k-c b{margin-right:6px;color:var(--rs-ink)}.rs-k mark{background:none;color:inherit;font-weight:700;text-decoration:underline 2px var(--rs-accent);text-underline-offset:2px}.rs-k-e{margin:0;padding:20px 16px;color:var(--rs-muted)}.rs-k-f{margin:0;padding:10px 16px;border-top:1px solid var(--rs-rule-soft);font:500 12px var(--rs-mono);color:var(--rs-muted);word-spacing:6px}.rs-k-f kbd{margin:0 4px 0 0;padding:2px 5px;border:1px solid var(--rs-rule-soft);font:inherit;word-spacing:0}.rs-k-sr{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.rs-k :focus-visible{outline:2px solid var(--rs-accent);outline-offset:-2px}@media (max-width:640px){.rs-k{width:100%;height:100%;max-height:100%;margin:0;border:0;box-shadow:none}.rs-k-f{display:none}}@media (prefers-reduced-motion:reduce){.rs-header *,.rs-header *::before,.rs-header *::after{transition:none!important}}@media print{.rs-header,.rs-k{display:none!important}}
+pre{background:var(--surface);border:1px solid var(--rule-soft);border-radius:12px;padding:14px 16px;overflow-x:auto;font:500 13.5px/1.55 var(--font-mono);color:var(--ink);margin:0 0 18px}
+code{font:500 .92em var(--font-mono)}
+.prose pre,.prose table{max-width:none}
+.wrapwide{max-width:1080px}
+h3{font-size:1.15rem;margin:26px 0 8px}
+</style><style id="ledger-css">
+.led{display:grid;gap:14px}
+.led .card h3{margin:6px 0 4px}
+.led .m{color:var(--ink-2);font-size:15.5px;margin:0 0 10px}
+.led h4{font:600 12px/1.4 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:14px 0 6px}
+.led ul{margin:0;padding-left:1.1em}
+.led li{margin-bottom:10px;color:var(--ink-2);font-size:15.5px}
+.led q{display:block;margin-top:2px;color:var(--muted);font-size:14px;quotes:none;overflow-wrap:anywhere}
+.led li a,.led .m a{color:var(--accent);font:600 13px/1.4 var(--font-mono);overflow-wrap:anywhere}
+.led .toc{display:flex;flex-wrap:wrap;gap:6px 18px;margin:0 0 20px}
+.led .toc a{color:var(--accent);font:600 13px/1.4 var(--font-mono);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+</style></head>
+<body>
+<a class="skip" href="#main">Skip to content</a><header class="rs-header" id="rs-header"><div class="rs-bar"><div class="rs-row"><a class="rs-brand" href="https://priyatham9.github.io/grounded/" aria-label="Grounded home"><span class="rs-mark" aria-hidden="true"></span>Grounded</a><nav class="rs-nav" aria-label="Research site"><a class="rs-item" href="https://priyatham9.github.io/grounded/#projects">All projects</a><a class="rs-item" href="https://priyatham9.github.io/grounded/#papers">Papers</a></nav><span class="rs-sep" aria-hidden="true"></span><button class="rs-btn rs-find" id="rs-find" type="button" aria-haspopup="dialog" aria-keyshortcuts="Control+K Meta+K /" aria-label="Search the research" title="Search (/ or Ctrl+K)"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></svg><span>Search</span></button><button class="rs-btn" id="rs-theme" type="button" aria-label="Dark theme" aria-pressed="false" title="Switch colour theme"><svg class="rs-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg><svg class="rs-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button><button class="rs-btn rs-burger" id="rs-menu-btn" type="button" aria-expanded="false" aria-controls="rs-sheet" aria-label="Open menu"><i></i></button></div></div><div class="rs-sheet" id="rs-sheet" hidden><a href="https://priyatham9.github.io/grounded/" aria-current="page">Grounded home</a><span class="rs-group">All projects</span><a class="rs-opt" href="https://priyatham9.github.io/ehs-osha-analysis/"><span class="rs-t">OSHA data quality</span><span class="rs-n">2.8M real filings</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-ai-grounding-eval/"><span class="rs-t">Grounding benchmark</span><span class="rs-n">first baselines</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-human-factors-ontology/"><span class="rs-t">Human factors ontology</span><span class="rs-n">derivation traces</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-risk-sem/"><span class="rs-t">SEM for safety risk</span><span class="rs-n">simulation studies</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-capitals-calculator/"><span class="rs-t">Cost-benefit calculator</span><span class="rs-n">interactive tool</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-benchmarks/"><span class="rs-t">OSHA benchmarks</span><span class="rs-n">TRIR/DART library</span></a><a class="rs-opt" href="https://priyatham9.github.io/ehs-chemical-peers/"><span class="rs-t">Chemical plant peers</span><span class="rs-n">peer explorer</span></a><span class="rs-group">Papers</span><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper.html"><span class="rs-t">Grounded reasoning for safety-critical AI</span><span class="rs-n">bundled draft</span></a><a class="rs-opt" href="https://priyatham9.github.io/grounded/paper-osha.html"><span class="rs-t">The hours denominator</span><span class="rs-n">standalone OSHA paper</span></a><a class="rs-sheet-author" href="https://priyatham9.github.io/">Priyatham Chimmani&nbsp;&#8599;</a></div><span class="rs-progress" aria-hidden="true"></span></header>
+<main id="main">
+ <div class="wrap intro">
+  <span class="label">Grounded &middot; rigour</span>
+  <h1>Methods and limitations ledger.</h1>
+  <p>19 methods across 7 repositories and 111 stated assumptions and limitations. Each line links to the file in the owning repository where it is stated and quotes the sentence. Nothing here is new analysis: the ledger restates what each repository already says about itself, and <code>tools/check_ledger.py</code> fails if a linked file or a quoted sentence is missing from the repository's public GitHub copy.</p>
+  <div class="btns">
+   <a class="btn primary" href="methods-ledger.json">Machine-readable JSON</a>
+   <a class="btn" href="https://github.com/priyatham9/grounded/blob/main/tools/check_ledger.py">Checker</a>
+  </div>
+ </div>
+ <section><div class="wrap led">
+  <nav class="toc" aria-label="Repositories"><a href="#ehs-human-factors-ontology">ehs-human-factors-ontology</a><a href="#ehs-osha-analysis">ehs-osha-analysis</a><a href="#ehs-ai-grounding-eval">ehs-ai-grounding-eval</a><a href="#ehs-benchmarks">ehs-benchmarks</a><a href="#ehs-chemical-peers">ehs-chemical-peers</a><a href="#ehs-capitals-calculator">ehs-capitals-calculator</a><a href="#ehs-risk-sem">ehs-risk-sem</a></nav>
+  <h2 id="ehs-human-factors-ontology">ehs-human-factors-ontology</h2>
+  <div class="card" id="hfo-crosswalk-and-banding">
+   <h3>hfo-crosswalk-and-banding</h3>
+   <p class="m">Expert-coded crosswalk of performance-influencing factors across HFACS, IDHEAS-G, SPAR-H, CREAM and HSE, plus a rule engine that turns analyst-supplied factor levels into an ordinal screening band. Method described in <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/README.md">ehs-human-factors-ontology/README.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Factor levels are supplied by an analyst; the engine cannot check them. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a><q>Factor levels are inputs.** The engine reasons from levels an analyst supplies and cannot check whether those levels are right.</q></li>
+    <li>The screening bands rest on thresholds the author chose. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a><q>The screening bands rest on thresholds the author chose.</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Same-coder limitation: every match strength is one person&#x27;s judgement, with no second coder. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a><q>Every match strength, every asserted absence and every PIF-to-function assignment is one person&#x27;s judgement. No second coder reviewed them.</q></li>
+    <li>No inter-rater reliability statistic exists. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a><q>Because there was one coder, there is no agreement statistic to report.</q></li>
+    <li>The output is an ordinal band, not a probability, and is not calibrated. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/README.md">ehs-human-factors-ontology/README.md</a><q>It is not a human error probability, not a rate, and not calibrated against anything.</q></li>
+    <li>Factor-to-error-mode links are unvalidated propositions from the literature. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/README.md">ehs-human-factors-ontology/README.md</a><q>No effect size is attached to any of them and none has been tested against outcome data.</q></li>
+    <li>Domain transfer from nuclear power and aviation is an extension the sources do not license. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/README.md">ehs-human-factors-ontology/README.md</a><q>Using this vocabulary in chemical manufacturing is an extension, not an application.</q></li>
+    <li>CREAM conditions were transcribed at one remove, from Shirali et al. (2019). <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/README.md">ehs-human-factors-ontology/README.md</a><q>Hollnagel&#x27;s book was not consulted; the nine CPCs come from Shirali et al. (2019).</q></li>
+   </ul>
+  </div>
+  <div class="card" id="hfo-suggester-evaluation">
+   <h3>hfo-suggester-evaluation</h3>
+   <p class="m">Transparent rule-based suggester (97 curated phrase rules, no ML) from incident text to candidate PIFs, scored by precision and recall against PIFs hand-coded for 23 CSB investigations in a development and a held-out cohort. Method described in <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Gold labels are the author&#x27;s own codings; a PIF is coded only when a passage was quoted for it. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a><q>The gold labels are incomplete (a PIF is coded only when a passage was quoted for it), so a false positive may be a real condition nobody coded.</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Same-coder limitation: the same person coded both cohorts and wrote the rules; no second-coder data exists yet. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/second-coder-protocol.md">ehs-human-factors-ontology/docs/second-coder-protocol.md</a><q>**Status: no second coder has contributed yet, so there are no agreement figures.**</q></li>
+    <li>The development-cohort scores are resubstitution and optimistic. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a><q>the curated scores on it are resubstitution and optimistic</q></li>
+    <li>Held-out recall may be inflated by how passages were chosen. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a><q>which inflates recall</q></li>
+    <li>Ten of the 20 PIFs have gold coding in either cohort; the rules for the other ten are untested. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a><q>Ten of the 20 PIFs have gold coding in either cohort, so the rules for the other ten remain untested.</q></li>
+    <li>No confidence interval is claimed for the held-out results. <a href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/docs/methods-note.md">ehs-human-factors-ontology/docs/methods-note.md</a><q>no confidence interval is claimed</q></li>
+   </ul>
+  </div>
+  <h2 id="ehs-osha-analysis">ehs-osha-analysis</h2>
+  <div class="card" id="osha-plausibility-screen">
+   <h3>osha-plausibility-screen</h3>
+   <p class="m">Plausibility screen on Form 300A filings (hours per employee within 120 to 4,500, positive hours, at least one employee, non-negative counts) and the screened versus unscreened aggregate TRIR, DART, LTIR and severity rates (ratio of sums, per 200,000 hours). Method described in <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/METRICS.md">ehs-osha-analysis/docs/METRICS.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Each aggregate rate is a ratio of sums, not a mean of establishment rates. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/METRICS.md">ehs-osha-analysis/docs/METRICS.md</a><q>Each aggregate is a ratio of sums (total numerator over total hours across filings), not a mean of establishment rates.</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>The screen is a threshold rule, not a ground-truth label of error. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PANEL.md">ehs-osha-analysis/docs/PANEL.md</a><q>**The plausibility screen is a threshold rule**, not a ground-truth label for</q></li>
+    <li>The screen does not cover the day-count fields, so the severity rate stays exposed to mistyped day totals. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/METRICS.md">ehs-osha-analysis/docs/METRICS.md</a><q>It does not screen the day-count fields (K, L)</q></li>
+    <li>The flagged share depends on the chosen bounds and should be quoted with its range. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/THRESHOLD_ROBUSTNESS.md">ehs-osha-analysis/docs/THRESHOLD_ROBUSTNESS.md</a><q>is a property of the chosen bounds and should be quoted with the range.</q></li>
+    <li>The planned ITA versus BLS SOII comparison figure was not produced. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/METRICS.md">ehs-osha-analysis/docs/METRICS.md</a><q>was not produced.</q></li>
+    <li>Unscreened aggregates are not usable for an ITA versus SOII comparison in 2019 and 2024. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/INDUSTRY_QUALITY.md">ehs-osha-analysis/docs/INDUSTRY_QUALITY.md</a><q>Unscreened ITA aggregates are not usable for a SOII comparison in 2019 and 2024</q></li>
+    <li>Wilson intervals treat filings as independent, so they are narrower than clustered intervals. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/INDUSTRY_QUALITY.md">ehs-osha-analysis/docs/INDUSTRY_QUALITY.md</a><q>Wilson intervals treat filings as independent.</q></li>
+    <li>Reporting scope: only establishments filing with OSHA are covered. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/DATASHEET.md">ehs-osha-analysis/DATASHEET.md</a><q>The dataset covers only establishments filing with OSHA</q></li>
+   </ul>
+  </div>
+  <div class="card" id="osha-panel-persistence">
+   <h3>osha-panel-persistence</h3>
+   <p class="m">Year-to-year persistence of flagged filings by establishment_id: transition matrix, odds ratio, Cohen&#x27;s kappa and a permutation test (200 permutations) that holds each year&#x27;s flag count fixed. Method described in <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PANEL.md">ehs-osha-analysis/docs/PANEL.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Establishments are keyed on establishment_id throughout. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PANEL.md">ehs-osha-analysis/docs/PANEL.md</a><q>this analysis is keyed on `establishment_id` throughout</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Association, not causation: the permutation test does not identify a mechanism. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PANEL.md">ehs-osha-analysis/docs/PANEL.md</a><q>**Association, not causation.**</q></li>
+    <li>establishment_id tracks a site more than a fixed legal filer: 25.3% of IDs carry more than one EIN. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PANEL.md">ehs-osha-analysis/docs/PANEL.md</a><q>313,527 of 1,238,236 establishment IDs (25.3%) appear with more than one distinct EIN across years</q></li>
+    <li>The screen cannot separate repeated data-entry mistakes from a genuinely unusual, correctly reported hours profile. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PANEL.md">ehs-osha-analysis/docs/PANEL.md</a><q>The panel result cannot distinguish</q></li>
+    <li>Coverage is uneven: only 1.3% of establishments appear in all 9 years. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PANEL.md">ehs-osha-analysis/docs/PANEL.md</a><q>Only 1.3% of establishments appear in all 9 years</q></li>
+    <li>Kappa of 0.28 means most flagged filings are not matched by a flag in the adjacent year; both persistent and one-off causes likely coexist. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PANEL.md">ehs-osha-analysis/docs/PANEL.md</a><q>This is a qualified result, not an absolute one</q></li>
+   </ul>
+  </div>
+  <div class="card" id="osha-preregistration-2025">
+   <h3>osha-preregistration-2025</h3>
+   <p class="m">Preregistered 2025 predictions: point value is the mean of the last three observed years, with a 95% interval from a back-test of the same rule (Student t, 6 degrees of freedom, times the RMS of six one-step errors), on a transformed scale. Method described in <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PREREGISTRATION_2025.md">ehs-osha-analysis/docs/PREREGISTRATION_2025.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>The stated 95% is nominal because it rests on only six back-test errors. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PREREGISTRATION_2025.md">ehs-osha-analysis/docs/PREREGISTRATION_2025.md</a><q>With six errors this is an approximation and the stated 95% is nominal.</q></li>
+    <li>Scoring assumes the repository pipeline and plausibility screen are unchanged for 2025. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PREREGISTRATION_2025.md">ehs-osha-analysis/docs/PREREGISTRATION_2025.md</a><q>The 2025 values will also depend on whether the pipeline&#x27;s inputs and plausibility screen are unchanged</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Q3 (unscreened TRIR) and Q4 (flagged-hours share) have intervals close to uninformative because of extreme hours outliers in 2019 and 2024; Q1, Q2 and Q6.x are the informative tests. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PREREGISTRATION_2025.md">ehs-osha-analysis/docs/PREREGISTRATION_2025.md</a><q>Q3 and Q4 have very wide intervals because the hours column contains extreme outliers in 2019 and 2024</q></li>
+    <li>The miss-count calibration reading assumes independence, which is not true here (size bands move together; Q1 and Q4 share filings). <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/PREREGISTRATION_2025.md">ehs-osha-analysis/docs/PREREGISTRATION_2025.md</a><q>Independence is not true here</q></li>
+   </ul>
+  </div>
+  <div class="card" id="osha-count-models">
+   <h3>osha-count-models</h3>
+   <p class="m">Covariate-adjusted Poisson, negative binomial (NB2), zero-inflated Poisson and zero-inflated NB2 models of 2024 recordable cases with a log-hours offset, size-band and NAICS 4-digit fixed effects, compared by likelihood and AIC. Method described in <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/COUNT_MODELS.md">ehs-osha-analysis/docs/COUNT_MODELS.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>The zero-inflation probability pi is a single constant per fit, a deliberate restriction for identification. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/COUNT_MODELS.md">ehs-osha-analysis/docs/COUNT_MODELS.md</a><q>`pi` is a single constant per fit; the inflation equation carries no covariates.</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>No causal reading of the size-band and sub-industry coefficients. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/COUNT_MODELS.md">ehs-osha-analysis/docs/COUNT_MODELS.md</a><q>No causal reading.</q></li>
+    <li>Fits condition on passing the screen; excess zeros cannot be split between incident-free operation and under-recording. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/COUNT_MODELS.md">ehs-osha-analysis/docs/COUNT_MODELS.md</a><q>Excess zeros in particular cannot be split between genuinely incident-free operation and under-recording</q></li>
+    <li>Only the 30 largest NAICS-3 groups (at least 500 screened establishments) are fitted, so results describe large industries. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/COUNT_MODELS.md">ehs-osha-analysis/docs/COUNT_MODELS.md</a><q>so the 30-of-30 result is a statement about large industries, not about every industry.</q></li>
+    <li>Subsampling of the four largest groups affects absolute log-likelihoods and AIC differences there. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/COUNT_MODELS.md">ehs-osha-analysis/docs/COUNT_MODELS.md</a><q>Subsampling of the four largest groups affects absolute log-likelihoods</q></li>
+   </ul>
+  </div>
+  <div class="card" id="osha-detectability">
+   <h3>osha-detectability</h3>
+   <p class="m">Exact (Garwood) Poisson intervals for a TRIR and an exact conditional test and power calculation for comparing two rates, giving site-years needed per size band. Method described in <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/DETECTABILITY.md">ehs-osha-analysis/docs/DETECTABILITY.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Cases over a fixed exposure are modelled as Poisson. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/DETECTABILITY.md">ehs-osha-analysis/docs/DETECTABILITY.md</a><q>Cases over a fixed exposure are modelled as Poisson</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Poisson is a best case; real establishment counts are overdispersed, so real detectability is worse. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/DETECTABILITY.md">ehs-osha-analysis/docs/DETECTABILITY.md</a><q>Poisson is a best case.</q></li>
+    <li>Band means stand in for establishments and flatter small sites because hours are skewed. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/DETECTABILITY.md">ehs-osha-analysis/docs/DETECTABILITY.md</a><q>the mean-size result flatters small sites.</q></li>
+    <li>This is a planning calculation, not a test applied to any real pair of sites. <a href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/docs/DETECTABILITY.md">ehs-osha-analysis/docs/DETECTABILITY.md</a><q>This is a planning calculation, not a test applied to any real pair of sites.</q></li>
+   </ul>
+  </div>
+  <h2 id="ehs-ai-grounding-eval">ehs-ai-grounding-eval</h2>
+  <div class="card" id="ge-lexical-scorer">
+   <h3>ge-lexical-scorer</h3>
+   <p class="m">Deterministic lexical scorer: substring and prefix concept coverage over alternation lists, numeric-fact matching, and an assertion-versus-mention heuristic (70-character left contrast window) that yields the adjacent-substitution rate. Method described in <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Answer keys use alternation groups with several surface forms, and every reference answer must satisfy its own key. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>answer keys use alternation groups with several surface forms</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Measured accuracy is a lower bound on substantive correctness; paraphrased correct answers are scored as misses. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>Measured accuracy is therefore a **lower bound** on substantive correctness</q></li>
+    <li>The contrast heuristic is the weakest link and misfires in both directions. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>## 2. The contrast heuristic is the weakest link</q></li>
+    <li>Any adjacent-substitution rate must be checked against a human-adjudicated subsample. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>any published adjacent-substitution rate must be checked against a human-adjudicated subsample</q></li>
+    <li>Citation grading is structural: it does not confirm the system retrieved or used the clause. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>It does not confirm that the system retrieved that clause, read it, or used it</q></li>
+    <li>Category-error items are poorly served by the abstention cue list (1 of 5 oracle answers trips it). <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/CORPUS_CARD.md">ehs-ai-grounding-eval/docs/CORPUS_CARD.md</a><q>only 1 of 5 trips the abstention detector</q></li>
+   </ul>
+  </div>
+  <div class="card" id="ge-paired-statistics">
+   <h3>ge-paired-statistics</h3>
+   <p class="m">McNemar&#x27;s exact test on discordant items and percentile cluster bootstrap over item families (with Wilson intervals alongside) for paired, clustered accuracy comparisons. Method described in <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Every arm answers every item; the code refuses to compare arms with different item sets. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a><q>which raises if two arms&#x27; item sets differ</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>With 44 family clusters the intervals are wide; a null result means the corpus cannot resolve a difference of that size, not equivalence. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>A null result should be read as &quot;this corpus cannot resolve a difference of this size,&quot; not as &quot;the arms are equivalent.&quot;</q></li>
+    <li>The corpus is a hand-built construct by one author with no sampling frame, so error rates cannot be generalised. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>there is no sampling frame and no basis for generalising</q></li>
+    <li>Single-author and unreviewed: no external review of the answer keys. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>There has been no external review of the answer keys.</q></li>
+    <li>Contamination of open-web regulation text is unmeasured. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>This has not been probed.</q></li>
+   </ul>
+  </div>
+  <div class="card" id="ge-selective-prediction">
+   <h3>ge-selective-prediction</h3>
+   <p class="m">Selective prediction: tie-aware risk-coverage curves, AURC and E-AURC, and selective accuracy at 25, 50 and 75 percent coverage, with cluster-bootstrap intervals, on the 63 factual items. Method described in <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>A retriever&#x27;s confidence is its top retrieval score, a similarity and not a probability. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a><q>which is a similarity, not a probability</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>AURC intervals (for example TF-IDF) include the uninformative value, so the retrieval score is only a weak abstention signal. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/results.md">ehs-ai-grounding-eval/docs/results.md</a><q>the AURC intervals (for example TF-IDF [0.385, 0.751]) include the uninformative</q></li>
+    <li>Fused-rank scores take few distinct values, so most items tie and carry almost no signal. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/results.md">ehs-ai-grounding-eval/docs/results.md</a><q>Reciprocal rank fusion scores take few distinct values, so most items tie</q></li>
+    <li>No language model was run, so none of these numbers describe any language model. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a><q>The numbers say nothing about any language model: none was run.</q></li>
+   </ul>
+  </div>
+  <div class="card" id="ge-calibration">
+   <h3>ge-calibration</h3>
+   <p class="m">Calibration of a confidence score: Brier score against the base-rate reference, ten-bin equal-width expected calibration error and a reliability table, with cluster-bootstrap intervals. Method described in <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>The metrics treat the confidence as a probability, so values outside [0, 1] are rejected, not rescaled. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a><q>the code rejects values outside [0, 1] instead of rescaling them</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Calibration is computable only for TF-IDF: BM25, BM25+ and RRF scores are not probability-scale, and random_floor and oracle report no confidence. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a><q>Brier and ECE are therefore not computed for BM25, BM25+ or RRF</q></li>
+    <li>ECE is biased upward on small samples and is a coarse summary here (6 of 10 bins occupied). <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a><q>ECE depends on the bin count and is biased upward on small samples</q></li>
+    <li>TF-IDF&#x27;s reliability bins are sparse and the curve is not monotone. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/results.md">ehs-ai-grounding-eval/docs/results.md</a><q>**The bins are sparse.**</q></li>
+   </ul>
+  </div>
+  <div class="card" id="ge-corpus-provenance">
+   <h3>ge-corpus-provenance</h3>
+   <p class="m">Source verification of 68 corpus items against a dated eCFR edition (section resolves, verbatim anchor present, paragraph markers present, anchor inside the cited paragraph), with unverifiable drafts quarantined and excluded from scoring. Method described in <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/methodology.md">ehs-ai-grounding-eval/docs/methodology.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Quarantined drafts are excluded by construction: the loader never reads the quarantine file. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/README.md">ehs-ai-grounding-eval/README.md</a><q>the loader never reads that file</q></li>
+    <li>Federal regulation (29, 40 and 46 CFR) is used as a proxy for copyrighted consensus standards. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>## 3. Federal regulation is a proxy for consensus standards</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Quarantined items: six drafted items (NFPA 70E, API 520, API 754, ISO 4126) could not be verified and are excluded. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/README.md">ehs-ai-grounding-eval/README.md</a><q>holds six drafted items that could not be verified</q></li>
+    <li>Four further regulatory-currency drafts are quarantined until current eCFR text is confirmed. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/CORPUS_CARD.md">ehs-ai-grounding-eval/docs/CORPUS_CARD.md</a><q>A further four regulatory-currency drafts</q></li>
+    <li>Verification checks provenance, not editorial quality; an audit found a defect (fe-002) that 68/68 passing did not expose. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>The verification passing is weaker evidence than it looks</q></li>
+    <li>The verification report is pinned to one eCFR edition and cannot detect later regulatory change. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>it cannot detect that a regulation changed after the report was written.</q></li>
+    <li>Utility weights and risk tiers are stated policy judgements, not measurements. <a href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/docs/limitations.md">ehs-ai-grounding-eval/docs/limitations.md</a><q>are stated judgements, not measured or elicited quantities.</q></li>
+   </ul>
+  </div>
+  <h2 id="ehs-benchmarks">ehs-benchmarks</h2>
+  <div class="card" id="bm-peer-benchmarks">
+   <h3>bm-peer-benchmarks</h3>
+   <p class="m">Peer-group TRIR and DART benchmarks from OSHA Injury Tracking Application establishment records (CY2023-CY2025), compared within industry peer groups. Method described in <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/README.md">ehs-benchmarks/README.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Comparisons are made within a peer group, never against the site-wide total. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/README.md">ehs-benchmarks/README.md</a><q>Compare within a peer group, never against the site-wide total.</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>ITA is not a random sample; its aggregate rate runs above the BLS national figure. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/README.md">ehs-benchmarks/README.md</a><q>**ITA is not a random sample.**</q></li>
+    <li>Everything is self-reported and unaudited; under-recording is a known, unmeasured problem. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/README.md">ehs-benchmarks/README.md</a><q>Under-recording is a known, unmeasured problem.</q></li>
+    <li>The plausibility test catches unit errors, not scope errors. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/README.md">ehs-benchmarks/README.md</a><q>**The plausibility test catches unit errors, not scope errors.**</q></li>
+    <li>Year-over-year is not a fixed panel; trends conflate real change with who reported. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/README.md">ehs-benchmarks/README.md</a><q>Sector trends conflate real change with changes in who reported</q></li>
+    <li>OIICS codes are model-predicted by OSHA, not human-assigned. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/README.md">ehs-benchmarks/README.md</a><q>**OIICS codes are model-predicted by OSHA**</q></li>
+    <li>Single-establishment rates are noisy. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/README.md">ehs-benchmarks/README.md</a><q>**Single-establishment rates are noisy.**</q></li>
+   </ul>
+  </div>
+  <div class="card" id="bm-shrinkage">
+   <h3>bm-shrinkage</h3>
+   <p class="m">Empirical-Bayes Gamma-Poisson shrinkage of small-establishment rates toward a 2-digit NAICS peer rate (method-of-moments prior), alongside exact Garwood intervals. Method described in <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/docs/method-shrinkage.md">ehs-benchmarks/docs/method-shrinkage.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Establishment true rates are Gamma-distributed within a peer group and cases are Poisson. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/docs/method-shrinkage.md">ehs-benchmarks/docs/method-shrinkage.md</a><q>Each establishment has a true rate lambda drawn from a peer-group Gamma</q></li>
+    <li>The credible interval is only as good as the Gamma-Poisson assumption and the peer-group definition. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/docs/method-shrinkage.md">ehs-benchmarks/docs/method-shrinkage.md</a><q>It is only as good as the Gamma-Poisson assumption and the peer-group definition</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>The fitted dispersion absorbs reporting error, so it is an upper-side estimate of true rate heterogeneity. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/docs/method-shrinkage.md">ehs-benchmarks/docs/method-shrinkage.md</a><q>it is an upper-side estimate of true rate heterogeneity</q></li>
+    <li>The method-of-moments estimate treats mu as known, so it is slightly biased in small groups; only sectors with at least 300 establishments are fitted. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/docs/method-shrinkage.md">ehs-benchmarks/docs/method-shrinkage.md</a><q>so it is slightly biased in small groups</q></li>
+    <li>For any single establishment shrinkage can move the estimate away from the truth. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/docs/method-shrinkage.md">ehs-benchmarks/docs/method-shrinkage.md</a><q>for any single establishment it can move the estimate away from the truth</q></li>
+    <li>The committed fit uses single-establishment records for 2024 only. <a href="https://github.com/priyatham9/ehs-benchmarks/blob/master/docs/method-shrinkage.md">ehs-benchmarks/docs/method-shrinkage.md</a><q>The committed fit uses single-establishment records only</q></li>
+   </ul>
+  </div>
+  <h2 id="ehs-chemical-peers">ehs-chemical-peers</h2>
+  <div class="card" id="cp-linked-peer-analysis">
+   <h3>cp-linked-peer-analysis</h3>
+   <p class="m">Address-based linkage of EPA RMP facilities to OSHA Form 300A and Severe Injury Reports, descriptive group comparisons, within-band Spearman rank stability and an exact-Poisson funnel-style peer band. Method described in <a href="https://github.com/priyatham9/ehs-chemical-peers/blob/main/docs/paper.md">ehs-chemical-peers/docs/paper.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>RMP release coverage assumes continuous observation between the first submission (less five years) and the last. <a href="https://github.com/priyatham9/ehs-chemical-peers/blob/main/docs/paper.md">ehs-chemical-peers/docs/paper.md</a><q>our observation window assumes continuous coverage between the first submission</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Join error: no shared identifier; only 48.83% of RMP plants join to an injury filing, and joined plants are not a random sample. <a href="https://github.com/priyatham9/ehs-chemical-peers/blob/main/docs/paper.md">ehs-chemical-peers/docs/paper.md</a><q>Only 48.83% of RMP plants join to an injury filing</q></li>
+    <li>Confounding: one-way breakdowns with no adjustment. <a href="https://github.com/priyatham9/ehs-chemical-peers/blob/main/docs/paper.md">ehs-chemical-peers/docs/paper.md</a><q>No adjustment is made.</q></li>
+    <li>No hypothesis tests or confidence intervals are reported for group comparisons; small cells rest on a few dozen events. <a href="https://github.com/priyatham9/ehs-chemical-peers/blob/main/docs/paper.md">ehs-chemical-peers/docs/paper.md</a><q>We report counts rather than tests</q></li>
+    <li>Release history is partly mechanical and may reflect reporting behaviour. <a href="https://github.com/priyatham9/ehs-chemical-peers/blob/main/docs/paper.md">ehs-chemical-peers/docs/paper.md</a><q>may reflect reporting behaviour rather than underlying hazard</q></li>
+    <li>All three sources are self-reported by employers. <a href="https://github.com/priyatham9/ehs-chemical-peers/blob/main/docs/paper.md">ehs-chemical-peers/docs/paper.md</a><q>All three sources are filed by employers.</q></li>
+    <li>Not suitable for enforcement or for ranking plants for public blame. <a href="https://github.com/priyatham9/ehs-chemical-peers/blob/main/docs/paper.md">ehs-chemical-peers/docs/paper.md</a><q>it is not suitable for enforcement or for ranking plants for public blame</q></li>
+   </ul>
+  </div>
+  <h2 id="ehs-capitals-calculator">ehs-capitals-calculator</h2>
+  <div class="card" id="cc-cost-benefit-model">
+   <h3>cc-cost-benefit-model</h3>
+   <p class="m">Four-line cost-benefit model (annual benefit, residual cost, payback, ROI) with tornado sensitivity, breakeven views and seeded uniform Monte Carlo over assumed input ranges. Method described in <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Input ranges are assumptions: the default 30% half-width is a placeholder, not a finding. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>The 30% is a placeholder, not a finding.</q></li>
+    <li>Uniform sampling treats all values in a range as equally plausible and independent. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>Uniform sampling treats all values in a range as equally plausible and independent</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>ROI is cumulative benefit over investment, not net return. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>**ROI here is cumulative benefit over investment, not net return.**</q></li>
+    <li>Risk reduction is an input the user supplies; it is the largest weakness of the model. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>**Risk reduction is an input you supply, not something the tool knows.**</q></li>
+    <li>Nothing is discounted, so long-horizon ROI is overstated; there is no NPV or IRR. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>**Nothing is discounted.**</q></li>
+    <li>Benefits are assumed flat and permanent over the horizon. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>**Benefits are assumed flat and permanent.**</q></li>
+    <li>Adding cost lines can never weaken the case, by construction. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>**Counting more cost can never weaken the case, by construction.**</q></li>
+    <li>Monte Carlo propagates uncertainty but does not reduce it. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>**Monte Carlo propagates uncertainty; it does not reduce it.**</q></li>
+   </ul>
+  </div>
+  <div class="card" id="cc-heat-index">
+   <h3>cc-heat-index</h3>
+   <p class="m">NWS heat index (Steadman simple formula then Rothfusz regression with low- and high-humidity adjustments) checked against the heat-index triggers of OSHA&#x27;s proposed heat rule. Method described in <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>NWS values assume shade. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>NWS values assume shade;</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>WBGT omitted: the alternative WBGT triggers are not implemented because no numeric WBGT value was verified. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>the alternative WBGT triggers (NIOSH alert and exposure limits) are not, because no numeric WBGT value was verified.</q></li>
+    <li>The triggers come from a proposed rule that is not in force. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>this is a proposed rule, not in force.</q></li>
+    <li>Full sun can add up to 15 F to NWS values; not legal or medical advice. <a href="https://github.com/priyatham9/ehs-capitals-calculator/blob/main/README.md">ehs-capitals-calculator/README.md</a><q>full sun can add up to 15 F.</q></li>
+   </ul>
+  </div>
+  <h2 id="ehs-risk-sem">ehs-risk-sem</h2>
+  <div class="card" id="sem-two-step-estimator">
+   <h3>sem-two-step-estimator</h3>
+   <p class="m">Two-step limited-information structural equation model estimator in numpy (measurement model, then structural model) with analytic and percentile-bootstrap standard errors. Method described in <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/README.md">ehs-risk-sem/README.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Indicators are continuous and multivariate normal. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/docs/methods-note.md">ehs-risk-sem/docs/methods-note.md</a><q>Indicators are continuous and multivariate normal.</q></li>
+    <li>Only recursive models with congeneric measurement blocks are supported. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/README.md">ehs-risk-sem/README.md</a><q>**Only recursive models with congeneric measurement blocks** are supported.</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>The estimator is limited-information, not full-information ML, so chi-square values differ from lavaan or Mplus. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/README.md">ehs-risk-sem/README.md</a><q>**The estimator is limited-information, not ML.**</q></li>
+    <li>Analytic standard errors are too narrow; the bootstrap is the supported path. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/README.md">ehs-risk-sem/README.md</a><q>**Analytic standard errors are known to be too narrow**</q></li>
+    <li>Ordinal indicators are treated as continuous; a polychoric approach is not implemented. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/README.md">ehs-risk-sem/README.md</a><q>**Ordinal indicators are treated as continuous.**</q></li>
+    <li>Missing data are handled by listwise deletion only. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/README.md">ehs-risk-sem/README.md</a><q>no missing-data handling beyond listwise deletion</q></li>
+    <li>No empirical validation: nothing has been fitted to real injury data. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/README.md">ehs-risk-sem/README.md</a><q>**No empirical validation.**</q></li>
+   </ul>
+  </div>
+  <div class="card" id="sem-sample-size-simulation">
+   <h3>sem-sample-size-simulation</h3>
+   <p class="m">Monte Carlo simulation studies of sample-size requirements (fit-test power, path precision, ranking of paths) for a five-latent, three-indicator model, and of standard-error coverage. Method described in <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/docs/methods-note.md">ehs-risk-sem/docs/methods-note.md</a>.</p>
+   <h4>Assumptions</h4>
+   <ul>
+    <li>Results are simulation under the stated model (identical loadings, normal errors). <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/README.md">ehs-risk-sem/README.md</a><q>Limits: simulation under the model you state</q></li>
+   </ul>
+   <h4>Limitations and caveats</h4>
+   <ul>
+    <li>Simulation only: no real injury, incident or survey data were analysed. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/docs/methods-note.md">ehs-risk-sem/docs/methods-note.md</a><q>Simulation only. No real injury, incident or survey data were analysed</q></li>
+    <li>One structural model and one set of measurement conditions in Study 1. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/docs/methods-note.md">ehs-risk-sem/docs/methods-note.md</a><q>One structural model and one set of measurement conditions in Study 1.</q></li>
+    <li>The bootstrap comparison rests on 40 replications. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/docs/methods-note.md">ehs-risk-sem/docs/methods-note.md</a><q>The bootstrap comparison rests on 40 replications.</q></li>
+    <li>Study 1 did not record fit indices per replication. <a href="https://github.com/priyatham9/ehs-risk-sem/blob/main/docs/methods-note.md">ehs-risk-sem/docs/methods-note.md</a><q>Study 1 did not record fit indices per replication</q></li>
+   </ul>
+  </div>
+ </div></section>
+</main>
+<footer>
+ <div class="wrap">
+  By <a href="https://priyatham9.github.io/">Priyatham Chimmani</a>. Drafts, not peer reviewed. <a href="https://github.com/priyatham9">Code on GitHub</a> &middot; <a href="endeavour.html">Proposed endeavour</a> &middot; <a href="reproduce.html" aria-current="page">Reproduce everything</a> &middot; <a href="observatory.html">Data dashboard</a> &middot; <a href="changelog.html">Changelog</a>
+ </div>
+</footer>
+<script id="rs-header-js">
+(()=>{
+var h=document.getElementById('rs-header');if(!h)return;
+var root=document.documentElement,doc=document;h.classList.add('rs-js');
+var mq=window.matchMedia?matchMedia('(prefers-color-scheme: dark)'):{matches:false};
+var tb=doc.getElementById('rs-theme');
+function cur(){var t=root.getAttribute('data-theme');return t==='dark'||t==='light'?t:(mq.matches?'dark':'light');}
+function sync(){var d=cur()==='dark';tb.setAttribute('aria-pressed',d?'true':'false');tb.setAttribute('aria-label','Dark theme');tb.title=d?'Switch to light theme':'Switch to dark theme';}
+if(tb){tb.addEventListener('click',()=>{var n=cur()==='dark'?'light':'dark';root.setAttribute('data-theme',n);
+try{localStorage.setItem('pc-theme',n);localStorage.setItem('ehs-ai-theme',n);}catch(e){}
+sync();try{doc.dispatchEvent(new CustomEvent('rs-themechange',{detail:{theme:n}}));}catch(e){}});
+sync();if(mq.addEventListener)mq.addEventListener('change',sync);
+if(window.MutationObserver)new MutationObserver(sync).observe(root,{attributes:true,attributeFilter:['data-theme']});}
+var menus=[].slice.call(h.querySelectorAll('.rs-menu'));
+function closeMenus(except){menus.forEach((m)=>{if(m!==except&&m.open)m.open=false;});}
+menus.forEach((m)=>{var s=m.querySelector('summary');s.setAttribute('aria-expanded','false');
+s.addEventListener('keydown',(e)=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();m.open=!m.open;}
+else if(e.key==='ArrowDown'){e.preventDefault();m.open=true;m.querySelector('a').focus();}});
+m.addEventListener('keydown',(e)=>{var a=doc.activeElement,k=e.key,n=k==='ArrowDown'?'nextElementSibling':k==='ArrowUp'?'previousElementSibling':0;
+if(n&&a.parentNode.className==='rs-panel'&&a[n]){e.preventDefault();a[n].focus();}});
+m.addEventListener('focusout',(e)=>{if(!m.contains(e.relatedTarget))m.open=false;});
+m.addEventListener('toggle',()=>{s.setAttribute('aria-expanded',m.open?'true':'false');if(m.open)closeMenus(m);});});
+var sa=h.querySelector('a.rs-story');if(sa&&sa.href.split('#')[0]===location.href.split('#')[0])sa.setAttribute('aria-current','page');
+var mb=doc.getElementById('rs-menu-btn'),sheet=doc.getElementById('rs-sheet');
+function focusables(){return [mb].concat([].slice.call(sheet.querySelectorAll('a[href]')));}
+function setSheet(open){if(!sheet)return;sheet.hidden=!open;mb.setAttribute('aria-expanded',open?'true':'false');
+mb.setAttribute('aria-label',open?'Close menu':'Open menu');root.classList.toggle('rs-lock',open);
+if(open){var f=sheet.querySelector('a[href]');if(f)f.focus();}}
+if(mb&&sheet){mb.addEventListener('click',()=>{setSheet(sheet.hidden);});
+sheet.addEventListener('click',(e)=>{if(e.target.closest('a'))setSheet(false);});
+window.addEventListener('resize',()=>{if(!sheet.hidden&&innerWidth>1099)setSheet(false);});}
+var sb=doc.getElementById('rs-subbtn'),sl=doc.getElementById('rs-sublist'),nav=doc.getElementById('rs-sections');
+function setSub(open){if(!sb)return;sl.hidden=!open;sb.setAttribute('aria-expanded',open?'true':'false');}
+if(sb){sb.addEventListener('click',()=>{setSub(sl.hidden);});sl.addEventListener('click',(e)=>{if(e.target.closest('a'))setSub(false);});}
+doc.addEventListener('click',(e)=>{var t=e.target;if(!t.closest)return;
+if(!t.closest('.rs-menu'))closeMenus();if(sb&&!sl.hidden&&!t.closest('.rs-sub'))setSub(false);});
+doc.addEventListener('keydown',(e)=>{
+if(e.key==='Escape'){var o=menus.filter((m)=>{return m.open;})[0];
+if(o){o.open=false;o.querySelector('summary').focus();return;}
+if(sheet&&!sheet.hidden){setSheet(false);mb.focus();return;}
+if(sb&&!sl.hidden){setSub(false);sb.focus();}return;}
+if(e.key==='Tab'&&sheet&&!sheet.hidden){var f=focusables(),i=f.indexOf(doc.activeElement);
+e.preventDefault();var n=f.length;f[i<0?0:(i+(e.shiftKey?n-1:1))%n].focus();}});
+var links=nav?[].slice.call(nav.querySelectorAll('a.rs-sec')):[],items=[];
+links.forEach((a)=>{var el=doc.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));if(el)items.push({a:a,el:el,id:el.id});});
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches,active=null;
+function off(){return h.offsetHeight;}
+function fades(){if(!nav)return;var m=nav.scrollWidth-nav.clientWidth;nav.classList.toggle('rs-fl',nav.scrollLeft>2);nav.classList.toggle('rs-fr',m>2&&nav.scrollLeft<m-2);}
+function spy(){if(!items.length)return;var y=off()+24,pick=null;
+items.forEach((it)=>{if(it.el.getBoundingClientRect().top<=y)pick=it;});
+if(!pick)pick=items[0];if(innerHeight+scrollY>=doc.documentElement.scrollHeight-2)pick=items[items.length-1];
+if(pick===active)return;active=pick;
+[].slice.call(h.querySelectorAll('a.rs-sec')).forEach((a)=>{var on=a.getAttribute('href')==='#'+pick.id;a.classList.toggle('rs-active',on);if(on)a.setAttribute('aria-current','true');else a.removeAttribute('aria-current');});
+var now=doc.getElementById('rs-now');if(now)now.textContent=pick.a.textContent;
+if(nav.scrollWidth>nav.clientWidth){var l=pick.a.offsetLeft-(nav.clientWidth-pick.a.offsetWidth)/2;
+try{nav.scrollTo({left:l,behavior:reduce?'auto':'smooth'});}catch(e){nav.scrollLeft=l;}}}
+var bar=h.querySelector('.rs-progress'),ticking=false;
+function frame(){ticking=false;var max=doc.documentElement.scrollHeight-innerHeight;
+if(bar)bar.style.transform='scaleX('+(max>0?Math.min(1,Math.max(0,scrollY/max)):0)+')';spy();}
+function onScroll(){if(!ticking){ticking=true;requestAnimationFrame(frame);}}
+function pad(){root.style.setProperty('--rs-header-h',off()+'px');root.style.scrollPaddingTop=(off()+12)+'px';fades();}
+if(items.length&&'IntersectionObserver' in window){var io=new IntersectionObserver(onScroll,{rootMargin:'-'+off()+'px 0px -50% 0px'});items.forEach((it)=>{io.observe(it.el);});}
+if(nav)nav.addEventListener('scroll',fades,{passive:true});
+var lastY=scrollY;function headroom(){var y=scrollY,d=y-lastY;if(Math.abs(d)<6)return;
+var busy=menus.some((m)=>{return m.open;})||(sheet&&!sheet.hidden)||h.contains(doc.activeElement)&&doc.activeElement!==doc.body;
+h.classList.toggle('rs-hide',d>0&&y>160&&!busy);lastY=y;}
+addEventListener('scroll',headroom,{passive:true});h.addEventListener('focusin',()=>{h.classList.remove('rs-hide');});
+addEventListener('scroll',onScroll,{passive:true});addEventListener('resize',()=>{pad();onScroll();});
+pad();frame();
+var fb=doc.getElementById('rs-find');if(!fb)return;
+var L=/^\/[^\/]+\/docs\//.test(location.pathname),G=['Pages','Findings','Papers','Tools','Terms'],RK='rs-search-recent',dl,inp,lst,msg,st,data,all,view=[],sel=0,back,moved,
+U=(r,f,a)=>'/'+r+'/'+(L?'docs/':'')+f+(a?'#'+a:''),
+esc=x=>String(x).replace(/[&<>"]/g,c=>'&#'+c.charCodeAt(0)+';'),
+rec=()=>{try{return JSON.parse(localStorage.getItem(RK))||[]}catch(e){return []}},
+load=()=>{data=data||fetch(U('grounded','search-index.json')).then(r=>{if(!r.ok)throw 0;return r.json()}).then(j=>{
+all=j.p.map(p=>({l:p[2],g:p[3],c:p[4],s:p[5],u:U(p[0],p[1])})).concat(j.i.map(i=>{var p=j.p[i[0]];return{l:i[2],g:i[3],c:p[4],s:i[4],u:U(p[0],p[1],i[1])}}));
+all.forEach(t=>{t.k=t.l.toLowerCase();t.x=(t.c+' '+(t.s||'')).toLowerCase()});dl&&dl.open&&render()},()=>{data=0;dl&&dl.open&&render(1)})},
+hl=(x,ws)=>{var l=x.toLowerCase(),m=[],o='',p=0;ws.forEach(w=>{for(var i=l.indexOf(w);i>-1;i=l.indexOf(w,i+w.length))m.push([i,i+w.length])});
+m.sort((a,b)=>a[0]-b[0]).forEach(r=>{if(r[0]>=p){o+=esc(x.slice(p,r[0]))+'<mark>'+esc(x.slice(r[0],r[1]))+'</mark>';p=r[1]}});return o+esc(x.slice(p))},
+mark=()=>{var os=lst.querySelectorAll('[role=option]'),c=os[sel];os.forEach((o,i)=>o.setAttribute('aria-selected',i==sel));
+c?(inp.setAttribute('aria-activedescendant',c.id),c.scrollIntoView({block:'nearest'})):inp.removeAttribute('aria-activedescendant')},
+render=err=>{var raw=inp.value.trim(),q=raw.toLowerCase(),ws=q.split(/\s+/).filter(Boolean),gs=[],h='',r,b;view=[];
+if(!q){r=rec();r.length&&gs.push(['Recent',r]);all&&gs.push(['All pages',all.filter(t=>t.u.indexOf('#')<0)])}
+else if(all){b=G.map(()=>[]);
+all.forEach(t=>{var s=0;for(var w of ws){var j=t.k.indexOf(w);if(j<0){if(t.x.indexOf(w)<0)return;s++}else s+=j&&/[a-z0-9]/.test(t.k[j-1])?3:6}
+t.sc=s+(t.k.indexOf(q)?0:5)-t.l.length/300;b[t.g].push(t)});
+b.forEach((a,g)=>a.length&&gs.push([G[g],a.sort((x,y)=>y.sc-x.sc).slice(0,g==1?8:5)]));gs.sort((x,y)=>y[1][0].sc-x[1][0].sc)}
+gs.forEach((g,n)=>{h+='<div role="group" aria-labelledby="rs-kg'+n+'"><div class="rs-k-g" id="rs-kg'+n+'">'+g[0]+'</div>';
+g[1].forEach(t=>{h+='<a role="option" tabindex="-1" id="rs-ko'+view.length+'" href="'+esc(t.u)+'"><span class="rs-k-t">'+hl(t.l,ws)+'</span><span class="rs-k-c"><b>'+esc(t.c)+'</b>'+hl(t.s||'',ws)+'</span></a>';view.push(t)});h+='</div>'});
+lst.innerHTML=h;sel=0;mark();inp.setAttribute('aria-expanded',!!view.length);
+msg.innerHTML=err?'Search is unavailable. Use the Projects and Papers menus.':all?q&&!view.length?'No match for “'+esc(raw)+'”. Try TRIR, hours, grounding or payback.':'':'Loading…';
+msg.hidden=!msg.innerHTML;st.textContent=q&&all?view.length+' results':''},
+shut=()=>{moved=0;dl.open&&dl.close()},
+go=(t,tab)=>{if(!t)return;var r=rec().filter(x=>x.u!=t.u),a=doc.createElement('a'),e;r.unshift({l:t.l,c:t.c,s:t.s,u:t.u});
+try{localStorage.setItem(RK,JSON.stringify(r.slice(0,6)))}catch(x){}
+if(tab)return open(t.u,'_blank','noopener');
+a.href=t.u;e=a.hash&&doc.getElementById(decodeURIComponent(a.hash.slice(1)));moved=1;dl.close();
+if(e&&a.pathname.replace(/index\.html$/,'')==location.pathname.replace(/index\.html$/,'')){location.hash==a.hash?e.scrollIntoView():location.hash=a.hash;e.hasAttribute('tabindex')||e.setAttribute('tabindex','-1');e.focus({preventScroll:true})}
+else location.href=t.u},
+build=()=>{dl=doc.createElement('dialog');dl.className='rs-k';dl.setAttribute('aria-label','Search the research');
+dl.innerHTML='<div class="rs-k-top">'+fb.querySelector('svg').outerHTML+'<input type="text" role="combobox" aria-label="Search the research" aria-expanded="false" aria-controls="rs-k-list" aria-autocomplete="list" aria-describedby="rs-k-help" placeholder="Search findings, papers, tools, terms" autocomplete="off" spellcheck="false" enterkeyhint="go"><button type="button" class="rs-k-x">Close</button></div><div id="rs-k-list" role="listbox" aria-label="Results"></div><p class="rs-k-e"></p><p class="rs-k-f" id="rs-k-help"><kbd>↑↓</kbd>move <kbd>Enter</kbd>open <kbd>Esc</kbd>close</p><p class="rs-k-sr" role="status"></p>';
+doc.body.append(dl);[inp,lst,msg,st]=['input','#rs-k-list','.rs-k-e','.rs-k-sr'].map(s=>dl.querySelector(s));
+inp.oninput=()=>render();
+inp.onkeydown=e=>{var k=e.key,n=view.length;
+if(k=='ArrowDown'||k=='ArrowUp'){e.preventDefault();if(n){sel=(sel+(k[5]=='D'?1:n-1))%n;mark()}}
+else if(k=='Enter'){e.preventDefault();go(view[sel],e.metaKey||e.ctrlKey)}
+else if(k=='Escape'){e.preventDefault();inp.value?(inp.value='',render()):shut()}};
+lst.onclick=e=>{var o=e.target.closest('[role=option]');if(o){e.preventDefault();go(view[o.id.slice(5)],e.metaKey||e.ctrlKey||e.shiftKey)}};
+dl.onclick=e=>{if(e.target==dl||e.target.className=='rs-k-x')shut()};
+dl.onclose=()=>{moved||back&&back.focus&&back.focus()}},
+show=()=>{dl||build();if(!dl.open){back=doc.activeElement;moved=0;inp.value='';load();render();dl.showModal();inp.focus()}};
+fb.onclick=show;
+doc.addEventListener('keydown',e=>{var t=e.target||{},k=e.key||'';if(root.classList.contains('st-presenting')||e.altKey)return;
+if(k.toLowerCase()=='k'&&(e.metaKey||e.ctrlKey)){e.preventDefault();dl&&dl.open?shut():show()}
+else if(k=='/'&&!e.metaKey&&!e.ctrlKey&&!/^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName)&&!t.isContentEditable&&!doc.querySelector('dialog[open]')){e.preventDefault();show()}});
+})();
+</script></body>
+</html>

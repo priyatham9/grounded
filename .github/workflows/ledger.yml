@@ -1,0 +1,21 @@
+name: ledger
+on:
+  push:
+    branches: [main]
+    paths: ["ledger/**", "docs/methods-ledger.*", "tools/check_ledger.py", "tools/build_ledger.py", ".github/workflows/ledger.yml"]
+  pull_request:
+    paths: ["ledger/**", "docs/methods-ledger.*", "tools/check_ledger.py", "tools/build_ledger.py", ".github/workflows/ledger.yml"]
+  schedule:
+    - cron: "29 6 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Ledger tests (shape, checker logic, page in sync, links on public GitHub)
+        run: python3 -m unittest discover -s ledger
+      - name: Check every linked file and quoted sentence against the public repositories
+        run: python3 tools/check_ledger.py

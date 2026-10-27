@@ -1,0 +1,763 @@
+{
+  "schema": 1,
+  "title": "Methods and limitations ledger",
+  "description": "Per repository, each statistical or machine-learning method used, its assumptions and its known limitations, each tied to the file and verbatim sentence in the owning repository where it is stated. Nothing here is new analysis: it restates what the repositories already say about themselves. Checked by tools/check_ledger.py.",
+  "raw_base": "https://raw.githubusercontent.com/priyatham9/{repo}/{ref}/{path}",
+  "blob_base": "https://github.com/priyatham9/{repo}/blob/{ref}/{path}",
+  "refs": {
+    "ehs-human-factors-ontology": "main",
+    "ehs-osha-analysis": "main",
+    "ehs-ai-grounding-eval": "main",
+    "ehs-chemical-peers": "main",
+    "ehs-capitals-calculator": "main",
+    "ehs-risk-sem": "main",
+    "ehs-benchmarks": "master"
+  },
+  "rows": [
+    {
+      "id": "hfo-crosswalk-and-banding",
+      "repo": "ehs-human-factors-ontology",
+      "method": "Expert-coded crosswalk of performance-influencing factors across HFACS, IDHEAS-G, SPAR-H, CREAM and HSE, plus a rule engine that turns analyst-supplied factor levels into an ordinal screening band.",
+      "method_path": "README.md",
+      "assumptions": [
+        {
+          "text": "Factor levels are supplied by an analyst; the engine cannot check them.",
+          "path": "docs/methods-note.md",
+          "quote": "Factor levels are inputs.** The engine reasons from levels an analyst supplies and cannot check whether those levels are right."
+        },
+        {
+          "text": "The screening bands rest on thresholds the author chose.",
+          "path": "docs/methods-note.md",
+          "quote": "The screening bands rest on thresholds the author chose."
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Same-coder limitation: every match strength is one person's judgement, with no second coder.",
+          "path": "docs/methods-note.md",
+          "quote": "Every match strength, every asserted absence and every PIF-to-function assignment is one person's judgement. No second coder reviewed them."
+        },
+        {
+          "text": "No inter-rater reliability statistic exists.",
+          "path": "docs/methods-note.md",
+          "quote": "Because there was one coder, there is no agreement statistic to report."
+        },
+        {
+          "text": "The output is an ordinal band, not a probability, and is not calibrated.",
+          "path": "README.md",
+          "quote": "It is not a human error probability, not a rate, and not calibrated against anything."
+        },
+        {
+          "text": "Factor-to-error-mode links are unvalidated propositions from the literature.",
+          "path": "README.md",
+          "quote": "No effect size is attached to any of them and none has been tested against outcome data."
+        },
+        {
+          "text": "Domain transfer from nuclear power and aviation is an extension the sources do not license.",
+          "path": "README.md",
+          "quote": "Using this vocabulary in chemical manufacturing is an extension, not an application."
+        },
+        {
+          "text": "CREAM conditions were transcribed at one remove, from Shirali et al. (2019).",
+          "path": "README.md",
+          "quote": "Hollnagel's book was not consulted; the nine CPCs come from Shirali et al. (2019)."
+        }
+      ]
+    },
+    {
+      "id": "hfo-suggester-evaluation",
+      "repo": "ehs-human-factors-ontology",
+      "method": "Transparent rule-based suggester (97 curated phrase rules, no ML) from incident text to candidate PIFs, scored by precision and recall against PIFs hand-coded for 23 CSB investigations in a development and a held-out cohort.",
+      "method_path": "docs/methods-note.md",
+      "assumptions": [
+        {
+          "text": "Gold labels are the author's own codings; a PIF is coded only when a passage was quoted for it.",
+          "path": "docs/methods-note.md",
+          "quote": "The gold labels are incomplete (a PIF is coded only when a passage was quoted for it), so a false positive may be a real condition nobody coded."
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Same-coder limitation: the same person coded both cohorts and wrote the rules; no second-coder data exists yet.",
+          "path": "docs/second-coder-protocol.md",
+          "quote": "**Status: no second coder has contributed yet, so there are no agreement figures.**"
+        },
+        {
+          "text": "The development-cohort scores are resubstitution and optimistic.",
+          "path": "docs/methods-note.md",
+          "quote": "the curated scores on it are resubstitution and optimistic"
+        },
+        {
+          "text": "Held-out recall may be inflated by how passages were chosen.",
+          "path": "docs/methods-note.md",
+          "quote": "which inflates recall"
+        },
+        {
+          "text": "Ten of the 20 PIFs have gold coding in either cohort; the rules for the other ten are untested.",
+          "path": "docs/methods-note.md",
+          "quote": "Ten of the 20 PIFs have gold coding in either cohort, so the rules for the other ten remain untested."
+        },
+        {
+          "text": "No confidence interval is claimed for the held-out results.",
+          "path": "docs/methods-note.md",
+          "quote": "no confidence interval is claimed"
+        }
+      ]
+    },
+    {
+      "id": "osha-plausibility-screen",
+      "repo": "ehs-osha-analysis",
+      "method": "Plausibility screen on Form 300A filings (hours per employee within 120 to 4,500, positive hours, at least one employee, non-negative counts) and the screened versus unscreened aggregate TRIR, DART, LTIR and severity rates (ratio of sums, per 200,000 hours).",
+      "method_path": "docs/METRICS.md",
+      "assumptions": [
+        {
+          "text": "Each aggregate rate is a ratio of sums, not a mean of establishment rates.",
+          "path": "docs/METRICS.md",
+          "quote": "Each aggregate is a ratio of sums (total numerator over total hours across filings), not a mean of establishment rates."
+        }
+      ],
+      "caveats": [
+        {
+          "text": "The screen is a threshold rule, not a ground-truth label of error.",
+          "path": "docs/PANEL.md",
+          "quote": "**The plausibility screen is a threshold rule**, not a ground-truth label for"
+        },
+        {
+          "text": "The screen does not cover the day-count fields, so the severity rate stays exposed to mistyped day totals.",
+          "path": "docs/METRICS.md",
+          "quote": "It does not screen the day-count fields (K, L)"
+        },
+        {
+          "text": "The flagged share depends on the chosen bounds and should be quoted with its range.",
+          "path": "docs/THRESHOLD_ROBUSTNESS.md",
+          "quote": "is a property of the chosen bounds and should be quoted with the range."
+        },
+        {
+          "text": "The planned ITA versus BLS SOII comparison figure was not produced.",
+          "path": "docs/METRICS.md",
+          "quote": "was not produced."
+        },
+        {
+          "text": "Unscreened aggregates are not usable for an ITA versus SOII comparison in 2019 and 2024.",
+          "path": "docs/INDUSTRY_QUALITY.md",
+          "quote": "Unscreened ITA aggregates are not usable for a SOII comparison in 2019 and 2024"
+        },
+        {
+          "text": "Wilson intervals treat filings as independent, so they are narrower than clustered intervals.",
+          "path": "docs/INDUSTRY_QUALITY.md",
+          "quote": "Wilson intervals treat filings as independent."
+        },
+        {
+          "text": "Reporting scope: only establishments filing with OSHA are covered.",
+          "path": "DATASHEET.md",
+          "quote": "The dataset covers only establishments filing with OSHA"
+        }
+      ]
+    },
+    {
+      "id": "osha-panel-persistence",
+      "repo": "ehs-osha-analysis",
+      "method": "Year-to-year persistence of flagged filings by establishment_id: transition matrix, odds ratio, Cohen's kappa and a permutation test (200 permutations) that holds each year's flag count fixed.",
+      "method_path": "docs/PANEL.md",
+      "assumptions": [
+        {
+          "text": "Establishments are keyed on establishment_id throughout.",
+          "path": "docs/PANEL.md",
+          "quote": "this analysis is keyed on `establishment_id` throughout"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Association, not causation: the permutation test does not identify a mechanism.",
+          "path": "docs/PANEL.md",
+          "quote": "**Association, not causation.**"
+        },
+        {
+          "text": "establishment_id tracks a site more than a fixed legal filer: 25.3% of IDs carry more than one EIN.",
+          "path": "docs/PANEL.md",
+          "quote": "313,527 of 1,238,236 establishment IDs (25.3%) appear with more than one distinct EIN across years"
+        },
+        {
+          "text": "The screen cannot separate repeated data-entry mistakes from a genuinely unusual, correctly reported hours profile.",
+          "path": "docs/PANEL.md",
+          "quote": "The panel result cannot distinguish"
+        },
+        {
+          "text": "Coverage is uneven: only 1.3% of establishments appear in all 9 years.",
+          "path": "docs/PANEL.md",
+          "quote": "Only 1.3% of establishments appear in all 9 years"
+        },
+        {
+          "text": "Kappa of 0.28 means most flagged filings are not matched by a flag in the adjacent year; both persistent and one-off causes likely coexist.",
+          "path": "docs/PANEL.md",
+          "quote": "This is a qualified result, not an absolute one"
+        }
+      ]
+    },
+    {
+      "id": "osha-preregistration-2025",
+      "repo": "ehs-osha-analysis",
+      "method": "Preregistered 2025 predictions: point value is the mean of the last three observed years, with a 95% interval from a back-test of the same rule (Student t, 6 degrees of freedom, times the RMS of six one-step errors), on a transformed scale.",
+      "method_path": "docs/PREREGISTRATION_2025.md",
+      "assumptions": [
+        {
+          "text": "The stated 95% is nominal because it rests on only six back-test errors.",
+          "path": "docs/PREREGISTRATION_2025.md",
+          "quote": "With six errors this is an approximation and the stated 95% is nominal."
+        },
+        {
+          "text": "Scoring assumes the repository pipeline and plausibility screen are unchanged for 2025.",
+          "path": "docs/PREREGISTRATION_2025.md",
+          "quote": "The 2025 values will also depend on whether the pipeline's inputs and plausibility screen are unchanged"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Q3 (unscreened TRIR) and Q4 (flagged-hours share) have intervals close to uninformative because of extreme hours outliers in 2019 and 2024; Q1, Q2 and Q6.x are the informative tests.",
+          "path": "docs/PREREGISTRATION_2025.md",
+          "quote": "Q3 and Q4 have very wide intervals because the hours column contains extreme outliers in 2019 and 2024"
+        },
+        {
+          "text": "The miss-count calibration reading assumes independence, which is not true here (size bands move together; Q1 and Q4 share filings).",
+          "path": "docs/PREREGISTRATION_2025.md",
+          "quote": "Independence is not true here"
+        }
+      ]
+    },
+    {
+      "id": "osha-count-models",
+      "repo": "ehs-osha-analysis",
+      "method": "Covariate-adjusted Poisson, negative binomial (NB2), zero-inflated Poisson and zero-inflated NB2 models of 2024 recordable cases with a log-hours offset, size-band and NAICS 4-digit fixed effects, compared by likelihood and AIC.",
+      "method_path": "docs/COUNT_MODELS.md",
+      "assumptions": [
+        {
+          "text": "The zero-inflation probability pi is a single constant per fit, a deliberate restriction for identification.",
+          "path": "docs/COUNT_MODELS.md",
+          "quote": "`pi` is a single constant per fit; the inflation equation carries no covariates."
+        }
+      ],
+      "caveats": [
+        {
+          "text": "No causal reading of the size-band and sub-industry coefficients.",
+          "path": "docs/COUNT_MODELS.md",
+          "quote": "No causal reading."
+        },
+        {
+          "text": "Fits condition on passing the screen; excess zeros cannot be split between incident-free operation and under-recording.",
+          "path": "docs/COUNT_MODELS.md",
+          "quote": "Excess zeros in particular cannot be split between genuinely incident-free operation and under-recording"
+        },
+        {
+          "text": "Only the 30 largest NAICS-3 groups (at least 500 screened establishments) are fitted, so results describe large industries.",
+          "path": "docs/COUNT_MODELS.md",
+          "quote": "so the 30-of-30 result is a statement about large industries, not about every industry."
+        },
+        {
+          "text": "Subsampling of the four largest groups affects absolute log-likelihoods and AIC differences there.",
+          "path": "docs/COUNT_MODELS.md",
+          "quote": "Subsampling of the four largest groups affects absolute log-likelihoods"
+        }
+      ]
+    },
+    {
+      "id": "osha-detectability",
+      "repo": "ehs-osha-analysis",
+      "method": "Exact (Garwood) Poisson intervals for a TRIR and an exact conditional test and power calculation for comparing two rates, giving site-years needed per size band.",
+      "method_path": "docs/DETECTABILITY.md",
+      "assumptions": [
+        {
+          "text": "Cases over a fixed exposure are modelled as Poisson.",
+          "path": "docs/DETECTABILITY.md",
+          "quote": "Cases over a fixed exposure are modelled as Poisson"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Poisson is a best case; real establishment counts are overdispersed, so real detectability is worse.",
+          "path": "docs/DETECTABILITY.md",
+          "quote": "Poisson is a best case."
+        },
+        {
+          "text": "Band means stand in for establishments and flatter small sites because hours are skewed.",
+          "path": "docs/DETECTABILITY.md",
+          "quote": "the mean-size result flatters small sites."
+        },
+        {
+          "text": "This is a planning calculation, not a test applied to any real pair of sites.",
+          "path": "docs/DETECTABILITY.md",
+          "quote": "This is a planning calculation, not a test applied to any real pair of sites."
+        }
+      ]
+    },
+    {
+      "id": "ge-lexical-scorer",
+      "repo": "ehs-ai-grounding-eval",
+      "method": "Deterministic lexical scorer: substring and prefix concept coverage over alternation lists, numeric-fact matching, and an assertion-versus-mention heuristic (70-character left contrast window) that yields the adjacent-substitution rate.",
+      "method_path": "docs/methodology.md",
+      "assumptions": [
+        {
+          "text": "Answer keys use alternation groups with several surface forms, and every reference answer must satisfy its own key.",
+          "path": "docs/limitations.md",
+          "quote": "answer keys use alternation groups with several surface forms"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Measured accuracy is a lower bound on substantive correctness; paraphrased correct answers are scored as misses.",
+          "path": "docs/limitations.md",
+          "quote": "Measured accuracy is therefore a **lower bound** on substantive correctness"
+        },
+        {
+          "text": "The contrast heuristic is the weakest link and misfires in both directions.",
+          "path": "docs/limitations.md",
+          "quote": "## 2. The contrast heuristic is the weakest link"
+        },
+        {
+          "text": "Any adjacent-substitution rate must be checked against a human-adjudicated subsample.",
+          "path": "docs/limitations.md",
+          "quote": "any published adjacent-substitution rate must be checked against a human-adjudicated subsample"
+        },
+        {
+          "text": "Citation grading is structural: it does not confirm the system retrieved or used the clause.",
+          "path": "docs/limitations.md",
+          "quote": "It does not confirm that the system retrieved that clause, read it, or used it"
+        },
+        {
+          "text": "Category-error items are poorly served by the abstention cue list (1 of 5 oracle answers trips it).",
+          "path": "docs/CORPUS_CARD.md",
+          "quote": "only 1 of 5 trips the abstention detector"
+        }
+      ]
+    },
+    {
+      "id": "ge-paired-statistics",
+      "repo": "ehs-ai-grounding-eval",
+      "method": "McNemar's exact test on discordant items and percentile cluster bootstrap over item families (with Wilson intervals alongside) for paired, clustered accuracy comparisons.",
+      "method_path": "docs/methodology.md",
+      "assumptions": [
+        {
+          "text": "Every arm answers every item; the code refuses to compare arms with different item sets.",
+          "path": "docs/methodology.md",
+          "quote": "which raises if two arms' item sets differ"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "With 44 family clusters the intervals are wide; a null result means the corpus cannot resolve a difference of that size, not equivalence.",
+          "path": "docs/limitations.md",
+          "quote": "A null result should be read as \"this corpus cannot resolve a difference of this size,\" not as \"the arms are equivalent.\""
+        },
+        {
+          "text": "The corpus is a hand-built construct by one author with no sampling frame, so error rates cannot be generalised.",
+          "path": "docs/limitations.md",
+          "quote": "there is no sampling frame and no basis for generalising"
+        },
+        {
+          "text": "Single-author and unreviewed: no external review of the answer keys.",
+          "path": "docs/limitations.md",
+          "quote": "There has been no external review of the answer keys."
+        },
+        {
+          "text": "Contamination of open-web regulation text is unmeasured.",
+          "path": "docs/limitations.md",
+          "quote": "This has not been probed."
+        }
+      ]
+    },
+    {
+      "id": "ge-selective-prediction",
+      "repo": "ehs-ai-grounding-eval",
+      "method": "Selective prediction: tie-aware risk-coverage curves, AURC and E-AURC, and selective accuracy at 25, 50 and 75 percent coverage, with cluster-bootstrap intervals, on the 63 factual items.",
+      "method_path": "docs/methodology.md",
+      "assumptions": [
+        {
+          "text": "A retriever's confidence is its top retrieval score, a similarity and not a probability.",
+          "path": "docs/methodology.md",
+          "quote": "which is a similarity, not a probability"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "AURC intervals (for example TF-IDF) include the uninformative value, so the retrieval score is only a weak abstention signal.",
+          "path": "docs/results.md",
+          "quote": "the AURC intervals (for example TF-IDF [0.385, 0.751]) include the uninformative"
+        },
+        {
+          "text": "Fused-rank scores take few distinct values, so most items tie and carry almost no signal.",
+          "path": "docs/results.md",
+          "quote": "Reciprocal rank fusion scores take few distinct values, so most items tie"
+        },
+        {
+          "text": "No language model was run, so none of these numbers describe any language model.",
+          "path": "docs/methodology.md",
+          "quote": "The numbers say nothing about any language model: none was run."
+        }
+      ]
+    },
+    {
+      "id": "ge-calibration",
+      "repo": "ehs-ai-grounding-eval",
+      "method": "Calibration of a confidence score: Brier score against the base-rate reference, ten-bin equal-width expected calibration error and a reliability table, with cluster-bootstrap intervals.",
+      "method_path": "docs/methodology.md",
+      "assumptions": [
+        {
+          "text": "The metrics treat the confidence as a probability, so values outside [0, 1] are rejected, not rescaled.",
+          "path": "docs/methodology.md",
+          "quote": "the code rejects values outside [0, 1] instead of rescaling them"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Calibration is computable only for TF-IDF: BM25, BM25+ and RRF scores are not probability-scale, and random_floor and oracle report no confidence.",
+          "path": "docs/methodology.md",
+          "quote": "Brier and ECE are therefore not computed for BM25, BM25+ or RRF"
+        },
+        {
+          "text": "ECE is biased upward on small samples and is a coarse summary here (6 of 10 bins occupied).",
+          "path": "docs/methodology.md",
+          "quote": "ECE depends on the bin count and is biased upward on small samples"
+        },
+        {
+          "text": "TF-IDF's reliability bins are sparse and the curve is not monotone.",
+          "path": "docs/results.md",
+          "quote": "**The bins are sparse.**"
+        }
+      ]
+    },
+    {
+      "id": "ge-corpus-provenance",
+      "repo": "ehs-ai-grounding-eval",
+      "method": "Source verification of 68 corpus items against a dated eCFR edition (section resolves, verbatim anchor present, paragraph markers present, anchor inside the cited paragraph), with unverifiable drafts quarantined and excluded from scoring.",
+      "method_path": "docs/methodology.md",
+      "assumptions": [
+        {
+          "text": "Quarantined drafts are excluded by construction: the loader never reads the quarantine file.",
+          "path": "README.md",
+          "quote": "the loader never reads that file"
+        },
+        {
+          "text": "Federal regulation (29, 40 and 46 CFR) is used as a proxy for copyrighted consensus standards.",
+          "path": "docs/limitations.md",
+          "quote": "## 3. Federal regulation is a proxy for consensus standards"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Quarantined items: six drafted items (NFPA 70E, API 520, API 754, ISO 4126) could not be verified and are excluded.",
+          "path": "README.md",
+          "quote": "holds six drafted items that could not be verified"
+        },
+        {
+          "text": "Four further regulatory-currency drafts are quarantined until current eCFR text is confirmed.",
+          "path": "docs/CORPUS_CARD.md",
+          "quote": "A further four regulatory-currency drafts"
+        },
+        {
+          "text": "Verification checks provenance, not editorial quality; an audit found a defect (fe-002) that 68/68 passing did not expose.",
+          "path": "docs/limitations.md",
+          "quote": "The verification passing is weaker evidence than it looks"
+        },
+        {
+          "text": "The verification report is pinned to one eCFR edition and cannot detect later regulatory change.",
+          "path": "docs/limitations.md",
+          "quote": "it cannot detect that a regulation changed after the report was written."
+        },
+        {
+          "text": "Utility weights and risk tiers are stated policy judgements, not measurements.",
+          "path": "docs/limitations.md",
+          "quote": "are stated judgements, not measured or elicited quantities."
+        }
+      ]
+    },
+    {
+      "id": "bm-peer-benchmarks",
+      "repo": "ehs-benchmarks",
+      "method": "Peer-group TRIR and DART benchmarks from OSHA Injury Tracking Application establishment records (CY2023-CY2025), compared within industry peer groups.",
+      "method_path": "README.md",
+      "assumptions": [
+        {
+          "text": "Comparisons are made within a peer group, never against the site-wide total.",
+          "path": "README.md",
+          "quote": "Compare within a peer group, never against the site-wide total."
+        }
+      ],
+      "caveats": [
+        {
+          "text": "ITA is not a random sample; its aggregate rate runs above the BLS national figure.",
+          "path": "README.md",
+          "quote": "**ITA is not a random sample.**"
+        },
+        {
+          "text": "Everything is self-reported and unaudited; under-recording is a known, unmeasured problem.",
+          "path": "README.md",
+          "quote": "Under-recording is a known, unmeasured problem."
+        },
+        {
+          "text": "The plausibility test catches unit errors, not scope errors.",
+          "path": "README.md",
+          "quote": "**The plausibility test catches unit errors, not scope errors.**"
+        },
+        {
+          "text": "Year-over-year is not a fixed panel; trends conflate real change with who reported.",
+          "path": "README.md",
+          "quote": "Sector trends conflate real change with changes in who reported"
+        },
+        {
+          "text": "OIICS codes are model-predicted by OSHA, not human-assigned.",
+          "path": "README.md",
+          "quote": "**OIICS codes are model-predicted by OSHA**"
+        },
+        {
+          "text": "Single-establishment rates are noisy.",
+          "path": "README.md",
+          "quote": "**Single-establishment rates are noisy.**"
+        }
+      ]
+    },
+    {
+      "id": "bm-shrinkage",
+      "repo": "ehs-benchmarks",
+      "method": "Empirical-Bayes Gamma-Poisson shrinkage of small-establishment rates toward a 2-digit NAICS peer rate (method-of-moments prior), alongside exact Garwood intervals.",
+      "method_path": "docs/method-shrinkage.md",
+      "assumptions": [
+        {
+          "text": "Establishment true rates are Gamma-distributed within a peer group and cases are Poisson.",
+          "path": "docs/method-shrinkage.md",
+          "quote": "Each establishment has a true rate lambda drawn from a peer-group Gamma"
+        },
+        {
+          "text": "The credible interval is only as good as the Gamma-Poisson assumption and the peer-group definition.",
+          "path": "docs/method-shrinkage.md",
+          "quote": "It is only as good as the Gamma-Poisson assumption and the peer-group definition"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "The fitted dispersion absorbs reporting error, so it is an upper-side estimate of true rate heterogeneity.",
+          "path": "docs/method-shrinkage.md",
+          "quote": "it is an upper-side estimate of true rate heterogeneity"
+        },
+        {
+          "text": "The method-of-moments estimate treats mu as known, so it is slightly biased in small groups; only sectors with at least 300 establishments are fitted.",
+          "path": "docs/method-shrinkage.md",
+          "quote": "so it is slightly biased in small groups"
+        },
+        {
+          "text": "For any single establishment shrinkage can move the estimate away from the truth.",
+          "path": "docs/method-shrinkage.md",
+          "quote": "for any single establishment it can move the estimate away from the truth"
+        },
+        {
+          "text": "The committed fit uses single-establishment records for 2024 only.",
+          "path": "docs/method-shrinkage.md",
+          "quote": "The committed fit uses single-establishment records only"
+        }
+      ]
+    },
+    {
+      "id": "cp-linked-peer-analysis",
+      "repo": "ehs-chemical-peers",
+      "method": "Address-based linkage of EPA RMP facilities to OSHA Form 300A and Severe Injury Reports, descriptive group comparisons, within-band Spearman rank stability and an exact-Poisson funnel-style peer band.",
+      "method_path": "docs/paper.md",
+      "assumptions": [
+        {
+          "text": "RMP release coverage assumes continuous observation between the first submission (less five years) and the last.",
+          "path": "docs/paper.md",
+          "quote": "our observation window assumes continuous coverage between the first submission"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Join error: no shared identifier; only 48.83% of RMP plants join to an injury filing, and joined plants are not a random sample.",
+          "path": "docs/paper.md",
+          "quote": "Only 48.83% of RMP plants join to an injury filing"
+        },
+        {
+          "text": "Confounding: one-way breakdowns with no adjustment.",
+          "path": "docs/paper.md",
+          "quote": "No adjustment is made."
+        },
+        {
+          "text": "No hypothesis tests or confidence intervals are reported for group comparisons; small cells rest on a few dozen events.",
+          "path": "docs/paper.md",
+          "quote": "We report counts rather than tests"
+        },
+        {
+          "text": "Release history is partly mechanical and may reflect reporting behaviour.",
+          "path": "docs/paper.md",
+          "quote": "may reflect reporting behaviour rather than underlying hazard"
+        },
+        {
+          "text": "All three sources are self-reported by employers.",
+          "path": "docs/paper.md",
+          "quote": "All three sources are filed by employers."
+        },
+        {
+          "text": "Not suitable for enforcement or for ranking plants for public blame.",
+          "path": "docs/paper.md",
+          "quote": "it is not suitable for enforcement or for ranking plants for public blame"
+        }
+      ]
+    },
+    {
+      "id": "cc-cost-benefit-model",
+      "repo": "ehs-capitals-calculator",
+      "method": "Four-line cost-benefit model (annual benefit, residual cost, payback, ROI) with tornado sensitivity, breakeven views and seeded uniform Monte Carlo over assumed input ranges.",
+      "method_path": "README.md",
+      "assumptions": [
+        {
+          "text": "Input ranges are assumptions: the default 30% half-width is a placeholder, not a finding.",
+          "path": "README.md",
+          "quote": "The 30% is a placeholder, not a finding."
+        },
+        {
+          "text": "Uniform sampling treats all values in a range as equally plausible and independent.",
+          "path": "README.md",
+          "quote": "Uniform sampling treats all values in a range as equally plausible and independent"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "ROI is cumulative benefit over investment, not net return.",
+          "path": "README.md",
+          "quote": "**ROI here is cumulative benefit over investment, not net return.**"
+        },
+        {
+          "text": "Risk reduction is an input the user supplies; it is the largest weakness of the model.",
+          "path": "README.md",
+          "quote": "**Risk reduction is an input you supply, not something the tool knows.**"
+        },
+        {
+          "text": "Nothing is discounted, so long-horizon ROI is overstated; there is no NPV or IRR.",
+          "path": "README.md",
+          "quote": "**Nothing is discounted.**"
+        },
+        {
+          "text": "Benefits are assumed flat and permanent over the horizon.",
+          "path": "README.md",
+          "quote": "**Benefits are assumed flat and permanent.**"
+        },
+        {
+          "text": "Adding cost lines can never weaken the case, by construction.",
+          "path": "README.md",
+          "quote": "**Counting more cost can never weaken the case, by construction.**"
+        },
+        {
+          "text": "Monte Carlo propagates uncertainty but does not reduce it.",
+          "path": "README.md",
+          "quote": "**Monte Carlo propagates uncertainty; it does not reduce it.**"
+        }
+      ]
+    },
+    {
+      "id": "cc-heat-index",
+      "repo": "ehs-capitals-calculator",
+      "method": "NWS heat index (Steadman simple formula then Rothfusz regression with low- and high-humidity adjustments) checked against the heat-index triggers of OSHA's proposed heat rule.",
+      "method_path": "README.md",
+      "assumptions": [
+        {
+          "text": "NWS values assume shade.",
+          "path": "README.md",
+          "quote": "NWS values assume shade;"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "WBGT omitted: the alternative WBGT triggers are not implemented because no numeric WBGT value was verified.",
+          "path": "README.md",
+          "quote": "the alternative WBGT triggers (NIOSH alert and exposure limits) are not, because no numeric WBGT value was verified."
+        },
+        {
+          "text": "The triggers come from a proposed rule that is not in force.",
+          "path": "README.md",
+          "quote": "this is a proposed rule, not in force."
+        },
+        {
+          "text": "Full sun can add up to 15 F to NWS values; not legal or medical advice.",
+          "path": "README.md",
+          "quote": "full sun can add up to 15 F."
+        }
+      ]
+    },
+    {
+      "id": "sem-two-step-estimator",
+      "repo": "ehs-risk-sem",
+      "method": "Two-step limited-information structural equation model estimator in numpy (measurement model, then structural model) with analytic and percentile-bootstrap standard errors.",
+      "method_path": "README.md",
+      "assumptions": [
+        {
+          "text": "Indicators are continuous and multivariate normal.",
+          "path": "docs/methods-note.md",
+          "quote": "Indicators are continuous and multivariate normal."
+        },
+        {
+          "text": "Only recursive models with congeneric measurement blocks are supported.",
+          "path": "README.md",
+          "quote": "**Only recursive models with congeneric measurement blocks** are supported."
+        }
+      ],
+      "caveats": [
+        {
+          "text": "The estimator is limited-information, not full-information ML, so chi-square values differ from lavaan or Mplus.",
+          "path": "README.md",
+          "quote": "**The estimator is limited-information, not ML.**"
+        },
+        {
+          "text": "Analytic standard errors are too narrow; the bootstrap is the supported path.",
+          "path": "README.md",
+          "quote": "**Analytic standard errors are known to be too narrow**"
+        },
+        {
+          "text": "Ordinal indicators are treated as continuous; a polychoric approach is not implemented.",
+          "path": "README.md",
+          "quote": "**Ordinal indicators are treated as continuous.**"
+        },
+        {
+          "text": "Missing data are handled by listwise deletion only.",
+          "path": "README.md",
+          "quote": "no missing-data handling beyond listwise deletion"
+        },
+        {
+          "text": "No empirical validation: nothing has been fitted to real injury data.",
+          "path": "README.md",
+          "quote": "**No empirical validation.**"
+        }
+      ]
+    },
+    {
+      "id": "sem-sample-size-simulation",
+      "repo": "ehs-risk-sem",
+      "method": "Monte Carlo simulation studies of sample-size requirements (fit-test power, path precision, ranking of paths) for a five-latent, three-indicator model, and of standard-error coverage.",
+      "method_path": "docs/methods-note.md",
+      "assumptions": [
+        {
+          "text": "Results are simulation under the stated model (identical loadings, normal errors).",
+          "path": "README.md",
+          "quote": "Limits: simulation under the model you state"
+        }
+      ],
+      "caveats": [
+        {
+          "text": "Simulation only: no real injury, incident or survey data were analysed.",
+          "path": "docs/methods-note.md",
+          "quote": "Simulation only. No real injury, incident or survey data were analysed"
+        },
+        {
+          "text": "One structural model and one set of measurement conditions in Study 1.",
+          "path": "docs/methods-note.md",
+          "quote": "One structural model and one set of measurement conditions in Study 1."
+        },
+        {
+          "text": "The bootstrap comparison rests on 40 replications.",
+          "path": "docs/methods-note.md",
+          "quote": "The bootstrap comparison rests on 40 replications."
+        },
+        {
+          "text": "Study 1 did not record fit indices per replication.",
+          "path": "docs/methods-note.md",
+          "quote": "Study 1 did not record fit indices per replication"
+        }
+      ]
+    }
+  ]
+}

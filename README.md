@@ -14,6 +14,8 @@ The [proposed endeavour page](docs/endeavour.html) sets out a three-year plan bu
 
 [REPRODUCE.md](REPRODUCE.md) (page: [docs/reproduce.html](docs/reproduce.html)) gives, for each of the eight research repositories, the commands to run its tests and regenerate its committed outputs from a clean clone, with runtimes, versions and the steps that need raw-data downloads. The weekly [`reproduce` workflow](.github/workflows/reproduce.yml) reruns the test commands and reports a status table; it never runs on pull requests.
 
+The [methods and limitations ledger](docs/methods-ledger.html) ([JSON](docs/methods-ledger.json)) lists, per repository, each statistical or machine-learning method, its assumptions and its stated limitations, each linked to the file and quoting the sentence where the repository says it. `tools/check_ledger.py` and the `ledger` workflow fail if a linked file or quote is missing from the repositories' public GitHub copies.
+
 ## At a glance
 
 - Status: draft
