@@ -5,6 +5,12 @@ Keep a Changelog and this project uses semantic versioning.
 
 ## [Unreleased]
 
+### Changed
+- `docs/status.json` refreshed from the public repositories (was a 2026-09-26 snapshot). Counts are now a static count of test functions (`tools/refresh_status.py`, ast over `test_*.py` in a depth-1 clone), not a test run: they include tests that skip at run time, so OSHA reads 249 against 178 "Ran" before. The grounded entry now counts its own 14 claims-checker tests. The observatory tile is relabelled "Test functions" (it no longer claims "all passing"), and the story, OSHA paper and `claims/claims.json` quote the new counts.
+
+### Added
+- `tools/refresh_status.py` and `.github/workflows/status.yml`: weekly check (no PR is opened) that fails when the committed snapshot is over 14 days old or its counts, tags or headline figures differ from a fresh recount.
+
 ### Fixed
 - `docs/story.html`: OSHA test count 175 corrected to 178 (docs/status.json) and "31 of 80 mappings" reworded to "31 of 80 cells" (20 factors x four frameworks, `docs/crosswalk-data.json` in the ontology repo; the 96-row CSV is a different unit). Both are now asserted claims in `claims/claims.json`, which gains a `json_count` source kind; the known-discrepancies list is empty.
 

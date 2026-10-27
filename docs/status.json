@@ -1,6 +1,10 @@
 {
-  "generated_utc": "2026-09-26T16:04:10Z",
-  "last_commit_date": "2026-09-26",
+  "carried_forward": [
+    "benchmark",
+    "ontology"
+  ],
+  "generated_utc": "2026-10-27T03:35:39Z",
+  "last_commit_date": "2026-10-26",
   "repos": {
     "ehs-ai-grounding-eval": {
       "benchmark": {
@@ -23,37 +27,34 @@
         ],
         "item_count": 68
       },
-      "last_commit_date": "2026-09-26",
-      "last_commit_sha": "a5bfe9e",
+      "last_commit_date": "2026-10-26",
+      "last_commit_sha": "18e98e5",
       "release_tag": "v0.1.0",
       "tests": {
-        "count": 165,
-        "ok": true,
-        "path": "python3 -m unittest discover -s tests -t ."
+        "count": 182,
+        "method": "static"
       }
     },
     "ehs-capitals-calculator": {
-      "last_commit_date": "2026-09-26",
-      "last_commit_sha": "c15bd76",
+      "last_commit_date": "2026-10-26",
+      "last_commit_sha": "e7cfed2",
       "release_tag": "v0.1.0",
       "tests": {
-        "count": 177,
-        "ok": true,
-        "path": "python3 -m unittest discover -s tests"
+        "count": 191,
+        "method": "static"
       }
     },
     "ehs-human-factors-ontology": {
-      "last_commit_date": "2026-09-26",
-      "last_commit_sha": "fe7d96f",
+      "last_commit_date": "2026-10-26",
+      "last_commit_sha": "f8b039a",
       "ontology": {
         "alignment_count": 90,
         "factor_count": 20
       },
       "release_tag": "v0.1.0",
       "tests": {
-        "count": 189,
-        "ok": true,
-        "path": "python3 -m unittest discover -s tests -t ."
+        "count": 215,
+        "method": "static"
       }
     },
     "ehs-osha-analysis": {
@@ -64,35 +65,31 @@
         "n_filings": 2801064,
         "trir_screened": 3.983078949653959
       },
-      "last_commit_date": "2026-09-26",
-      "last_commit_sha": "0091549",
+      "last_commit_date": "2026-10-26",
+      "last_commit_sha": "4e6320c",
       "release_tag": "v0.1.0",
       "tests": {
-        "count": 178,
-        "ok": true,
-        "path": "make test (data/raw populated, real-data tests ran)"
+        "count": 249,
+        "method": "static"
       }
     },
     "ehs-risk-sem": {
-      "last_commit_date": "2026-09-26",
-      "last_commit_sha": "8a85ca0",
+      "last_commit_date": "2026-10-26",
+      "last_commit_sha": "0997b87",
       "release_tag": "v0.1.0",
       "tests": {
-        "count": 114,
-        "ok": true,
-        "path": "python3 -m unittest discover -s tests"
+        "count": 126,
+        "method": "static"
       }
     },
     "grounded": {
-      "last_commit_date": "2026-09-26",
-      "last_commit_sha": "9751201",
       "release_tag": "v0.1.0",
       "tests": {
-        "count": 0,
-        "ok": true,
-        "path": "no tests in this repo"
+        "count": 14,
+        "method": "static"
       }
     }
   },
-  "total_tests": 823
+  "test_count_method": "static count of test*/async test* functions in test_*.py and *_test.py files (ast); includes tests that skip at run time; not a test run",
+  "total_tests": 977
 }
