@@ -1,4 +1,5 @@
 """Offline tests for the claims registry and checker (no network)."""
+
 import io
 import json
 import sys
@@ -7,7 +8,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-import check_claims as cc  # noqa: E402
+import check_claims as cc
 
 REG = json.loads((Path(cc.HERE) / "claims.json").read_text(encoding="utf-8"))
 KINDS = {"json_path", "csv_cell", "csv_rows", "regex_count"}
@@ -20,7 +21,14 @@ class TestRegistryShape(unittest.TestCase):
 
     def test_every_claim_is_fully_specified(self):
         for c in REG["claims"]:
-            for k in ("statement", "appears_in", "source", "expected", "tolerance", "verifying_test"):
+            for k in (
+                "statement",
+                "appears_in",
+                "source",
+                "expected",
+                "tolerance",
+                "verifying_test",
+            ):
                 self.assertIn(k, c, c["id"])
             self.assertTrue(c["appears_in"], c["id"])
             self.assertIn(c["source"]["kind"], KINDS, c["id"])
@@ -46,7 +54,9 @@ class TestChecker(unittest.TestCase):
         root = Path(self.tmp.name)
         (root / "r").mkdir()
         (root / "r" / "t.csv").write_text("label,v\npooled,2.5\n", encoding="utf-8")
-        (root / "r" / "t.py").write_text("def test_x():\n    assert 2.5\n", encoding="utf-8")
+        (root / "r" / "t.py").write_text(
+            "def test_x():\n    assert 2.5\n", encoding="utf-8"
+        )
         self.root = root
 
     def tearDown(self):
@@ -54,15 +64,30 @@ class TestChecker(unittest.TestCase):
 
     def _reg(self, expected):
         claim = {
-            "id": "x", "statement": "x",
+            "id": "x",
+            "statement": "x",
             "appears_in": [{"path": "README.md", "contains": "grounded"}],
-            "source": {"repo": "r", "path": "t.csv", "kind": "csv_cell",
-                       "where": {"label": "pooled"}, "column": "v"},
-            "expected": expected, "tolerance": 0.01,
-            "verifying_test": {"repo": "r", "path": "t.py", "symbol": "test_x", "contains": "2.5"},
+            "source": {
+                "repo": "r",
+                "path": "t.csv",
+                "kind": "csv_cell",
+                "where": {"label": "pooled"},
+                "column": "v",
+            },
+            "expected": expected,
+            "tolerance": 0.01,
+            "verifying_test": {
+                "repo": "r",
+                "path": "t.py",
+                "symbol": "test_x",
+                "contains": "2.5",
+            },
         }
         p = self.root / "reg.json"
-        p.write_text(json.dumps({"raw_base": "", "ref": "main", "claims": [claim]}), encoding="utf-8")
+        p.write_text(
+            json.dumps({"raw_base": "", "ref": "main", "claims": [claim]}),
+            encoding="utf-8",
+        )
         return p
 
     def test_passes_when_source_matches(self):

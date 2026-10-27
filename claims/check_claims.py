@@ -15,6 +15,7 @@ Standard library only.
   python3 claims/check_claims.py                  # fetch from GitHub
   python3 claims/check_claims.py --local-root DIR # read DIR/<repo>/<path>
 """
+
 import argparse
 import csv
 import io
@@ -85,17 +86,31 @@ def check_claim(c, fetcher):
     try:
         got = float(extract(c["source"], fetcher))
         if abs(got - c["expected"]) > c["tolerance"]:
-            errs.append(f"source value {got} differs from expected {c['expected']} "
-                        f"(tolerance {c['tolerance']})")
-    except (OSError, ValueError, KeyError, IndexError, TypeError) as e:  # network, missing key, bad shape
-        errs.append(f"could not read source {c['source']['repo']}/{c['source']['path']}: {e!r}")
+            errs.append(
+                f"source value {got} differs from expected {c['expected']} "
+                f"(tolerance {c['tolerance']})"
+            )
+    except (
+        OSError,
+        ValueError,
+        KeyError,
+        IndexError,
+        TypeError,
+    ) as e:  # network, missing key, bad shape
+        errs.append(
+            f"could not read source {c['source']['repo']}/{c['source']['path']}: {e!r}"
+        )
     vt = c["verifying_test"]
     try:
         body = fetcher.get(vt["repo"], vt["path"])
         if vt["symbol"] not in body:
-            errs.append(f"verifying test symbol {vt['symbol']!r} not found in {vt['repo']}/{vt['path']}")
+            errs.append(
+                f"verifying test symbol {vt['symbol']!r} not found in {vt['repo']}/{vt['path']}"
+            )
         if vt.get("contains") and vt["contains"] not in body:
-            errs.append(f"{vt['repo']}/{vt['path']} no longer contains {vt['contains']!r}")
+            errs.append(
+                f"{vt['repo']}/{vt['path']} no longer contains {vt['contains']!r}"
+            )
     except (OSError, ValueError) as e:
         errs.append(f"could not read verifying test {vt['repo']}/{vt['path']}: {e!r}")
     return errs
@@ -112,8 +127,13 @@ def run(registry_path, local_root=None, out=sys.stdout):
         for e in errs:
             print(f"       - {e}", file=out)
     for d in reg.get("known_discrepancies", []):
-        print(f"note {d['id']}: {d['where']} says {d['text']!r}; committed: {d['committed_value']}", file=out)
-    print(f"{len(reg['claims']) - failed}/{len(reg['claims'])} claims verified", file=out)
+        print(
+            f"note {d['id']}: {d['where']} says {d['text']!r}; committed: {d['committed_value']}",
+            file=out,
+        )
+    print(
+        f"{len(reg['claims']) - failed}/{len(reg['claims'])} claims verified", file=out
+    )
     return 1 if failed else 0
 
 
