@@ -207,9 +207,11 @@ def main():
     out.append("")
     out.append(
         "Every key cited in the body appears below, and every entry below is cited in "
-        "the body. Each reference was checked against a primary or publisher-of-record "
-        "source; the evidence URL used for each check is recorded in "
-        "`paper/citations_verified.json` alongside the entry. %d of the %d entries "
+        "the body. Each reference was checked against a source in an earlier pass, and "
+        "the evidence URL used is recorded in `paper/citations_verified.json` "
+        "alongside the entry. The re-check of 2026-10-28 is recorded per reference in "
+        "[the reference ledger](references-paper.csv); references it did not reach "
+        "have only the earlier-pass note. %d of the %d entries "
         "carry a verification note recording what the check found - a correction to the "
         "reference as first drafted, a detail that still needs confirming against print "
         "pagination, or an explicit statement that the reference is correct as it "
@@ -221,8 +223,9 @@ def main():
     out.append(
         "One caveat that belongs in plain sight: page ranges for several conference "
         "papers are marked in their notes as needing confirmation against the printed "
-        "proceedings. Venue, authorship and DOI are confirmed independently of "
-        "pagination in every such case."
+        "proceedings, and the earlier pass's claim that venue, authorship and DOI "
+        "were confirmed independently of pagination has been re-checked only for the "
+        "references in the ledger."
     )
     out.append("")
 

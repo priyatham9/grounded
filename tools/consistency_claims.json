@@ -6,23 +6,97 @@
       "value": "197",
       "source": {"file": "docs/paper.html", "regex": "<span class=\"ms-k\">References</span><span class=\"ms-v accent\">(\\d+)</span>"},
       "appears_in": [
-        {"file": "README.md", "regex": "All (\\d+) references in the bundled paper"},
-        {"file": "README.md", "regex": "The paper's (\\d+) references are checked"},
+        {"file": "README.md", "regex": "The bundled paper has (\\d+) references"},
         {"file": "docs/paper.html", "regex": "All (\\d+) citation keys"},
         {"file": "docs/endeavour.html", "regex": "bundled paper's (\\d+) references"},
         {"file": "docs/story.html", "regex": "(\\d+) citation keys cited"},
-        {"file": "docs/story.html", "regex": "pn-n\">(\\d+) <small>references checked"}
+        {"file": "docs/story.html", "regex": "pn-n\">(\\d+) <small>references,"}
       ]
     },
     {
-      "id": "bundled-paper-page-range-caveat",
-      "value": "page range",
-      "source": {"file": "docs/paper.html", "regex": "(page range)s? still needs"},
+      "id": "paper-ledger-rechecked",
+      "value": "97",
+      "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "not_equals": "unchecked"}},
       "appears_in": [
-        {"file": "README.md", "regex": "(page range)s still need confirming"},
-        {"file": "README.md", "regex": "(page range)s still to confirm"},
-        {"file": "docs/endeavour.html", "regex": "a few (page range)s still to confirm"},
-        {"file": "docs/story.html", "regex": "a few (page range)s still to confirm"}
+        {"file": "README.md", "regex": "(\\d+) of the 197 were re-checked"},
+        {"file": "docs/paper.html", "regex": "(\\d+) of the 197 were re-checked"},
+        {"file": "docs/story.html", "regex": "; (\\d+) re-checked against their sources"},
+        {"file": "docs/story.html", "regex": "<small>references, (\\d+) re-checked"},
+        {"file": "docs/endeavour.html", "regex": "197 references: (\\d+) were re-checked"}
+      ]
+    },
+    {
+      "id": "paper-ledger-verified",
+      "value": "49",
+      "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "verified"}},
+      "appears_in": [
+        {"file": "README.md", "regex": "re-checked on 2026-10-28: (\\d+) verified"},
+        {"file": "docs/paper.html", "regex": "re-checked on 2026-10-28: (\\d+) verified"},
+        {"file": "docs/story.html", "regex": "\\((\\d+) verified, "},
+        {"file": "docs/endeavour.html", "regex": "\\((\\d+) verified, "}
+      ]
+    },
+    {
+      "id": "paper-ledger-corrected",
+      "value": "16",
+      "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "corrected"}},
+      "appears_in": [
+        {"file": "README.md", "regex": "verified, (\\d+) corrected,"},
+        {"file": "docs/paper.html", "regex": "verified, (\\d+) corrected,"},
+        {"file": "docs/story.html", "regex": "verified, (\\d+) corrected,"},
+        {"file": "docs/endeavour.html", "regex": "verified, (\\d+) corrected,"}
+      ]
+    },
+    {
+      "id": "paper-ledger-unsupported",
+      "value": "4",
+      "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "unsupported-claim"}},
+      "appears_in": [
+        {"file": "README.md", "regex": "corrected, (\\d+) with a reworded sentence"},
+        {"file": "docs/paper.html", "regex": "corrected, (\\d+) with a reworded sentence"},
+        {"file": "docs/story.html", "regex": "corrected, (\\d+) with a reworded sentence"},
+        {"file": "docs/endeavour.html", "regex": "corrected, (\\d+) with a reworded sentence"}
+      ]
+    },
+    {
+      "id": "paper-ledger-metadata-only",
+      "value": "17",
+      "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "metadata-only"}},
+      "appears_in": [
+        {"file": "README.md", "regex": "sentence, (\\d+) with metadata matched"},
+        {"file": "docs/paper.html", "regex": "sentence, (\\d+) with metadata matched"},
+        {"file": "docs/story.html", "regex": "sentence, (\\d+) with metadata matched"},
+        {"file": "docs/endeavour.html", "regex": "sentence, (\\d+) metadata only"}
+      ]
+    },
+    {
+      "id": "paper-ledger-unreachable",
+      "value": "11",
+      "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "unreachable"}},
+      "appears_in": [
+        {"file": "README.md", "regex": "and (\\d+) unreachable from the sandbox"},
+        {"file": "docs/paper.html", "regex": "and (\\d+) unreachable from the sandbox"},
+        {"file": "docs/story.html", "regex": ", (\\d+) unreachable from the sandbox\\)"},
+        {"file": "docs/endeavour.html", "regex": ", (\\d+) unreachable from the sandbox\\)"}
+      ]
+    },
+    {
+      "id": "paper-ledger-unchecked",
+      "value": "100",
+      "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "unchecked"}},
+      "appears_in": [
+        {"file": "README.md", "regex": "The other (\\d+) have not been re-checked"},
+        {"file": "docs/paper.html", "regex": "The other (\\d+) have not been re-checked"},
+        {"file": "docs/story.html", "regex": "(\\d+) not yet re-checked"},
+        {"file": "docs/endeavour.html", "regex": "and (\\d+) are not yet re-checked"}
+      ]
+    },
+    {
+      "id": "paper-ledger-rows",
+      "value": "197",
+      "source": {"file": "docs/references-paper.csv", "csv_rows": true},
+      "appears_in": [
+        {"file": "docs/paper.html", "regex": "All (\\d+) citation keys"}
       ]
     },
     {
@@ -40,12 +114,12 @@
       "id": "grounding-eval-baseline-count",
       "value": "six",
       "source": {"file": "REPRODUCE.md", "regex": "# (six) non-LLM baselines"},
+      "case_insensitive": true,
       "appears_in": [
         {"file": "tools/build_sites.py", "regex": "plus (six) non-LLM baselines"},
         {"file": "tools/build_sites.py", "regex": "scoring harness, and (six) non-LLM"},
         {"file": "docs/story.html", "regex": "(Six) non-LLM baselines exist \\(random"}
       ],
-      "case_insensitive": true,
       "forbidden": [
         {"files": ["docs/*.html", "docs/search-index.json", "tools/build_sites.py"], "regex": "(?i)\\b(three|four|five) non-LLM baselines"}
       ]
