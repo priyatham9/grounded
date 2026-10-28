@@ -37,7 +37,15 @@ def check(registry, root=ROOT):
         src = c["source"]
         try:
             text = _read(root, src["file"])
-            if src.get("csv_rows"):
+            if src.get("csv_rows") and src.get("where"):
+                w = src["where"]
+                rows = list(csv.DictReader(io.StringIO(text)))
+                if "equals" in w:
+                    n = sum(1 for r in rows if r[w["column"]] == w["equals"])
+                else:
+                    n = sum(1 for r in rows if r[w["column"]] != w["not_equals"])
+                got = [str(n)]
+            elif src.get("csv_rows"):
                 got = [str(max(0, len(list(csv.reader(io.StringIO(text)))) - 1))]
             else:
                 got = [m.group(1) for m in re.finditer(src["regex"], text)]
