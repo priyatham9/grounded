@@ -1287,7 +1287,7 @@ def _ledger_summary(n_refs):
     with io.open(path, encoding="utf-8", newline="") as f:
         st = [r["status"] for r in csv.DictReader(f)]
     n = lambda s: st.count(s)
-    return ("%d of the %d were re-checked on 2026-10-28: %d verified, %d corrected, %d with a "
+    return ("%d of the %d were re-checked on 2026-10-28 and 2026-10-29: %d verified, %d corrected, %d with a "
             "reworded sentence, %d with metadata matched but the citing sentence not yet read "
             "against the source, and %d unreachable from the sandbox. The other %d have not been "
             "re-checked" % (len(st) - n("unchecked"), n_refs, n("verified"), n("corrected"),
