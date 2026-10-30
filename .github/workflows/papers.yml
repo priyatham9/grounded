@@ -1,0 +1,22 @@
+name: papers
+on:
+  push:
+    branches: [main]
+    paths: ["docs/paper*.html", "tools/build_papers.sh", "tools/check_paper_html.py", ".github/workflows/papers.yml"]
+  pull_request:
+    paths: ["docs/paper*.html", "tools/build_papers.sh", "tools/check_paper_html.py", ".github/workflows/papers.yml"]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build PDFs (fails on dangling citations, links or files)
+        run: tools/build_papers.sh build/papers
+      - uses: actions/upload-artifact@v4
+        with:
+          name: papers-pdf
+          path: build/papers/*.pdf
+          if-no-files-found: error
