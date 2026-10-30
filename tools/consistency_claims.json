@@ -15,7 +15,7 @@
     },
     {
       "id": "paper-ledger-rechecked",
-      "value": "170",
+      "value": "197",
       "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "not_equals": "unchecked"}},
       "appears_in": [
         {"file": "README.md", "regex": "(\\d+) of the 197 were re-checked"},
@@ -27,18 +27,18 @@
     },
     {
       "id": "paper-ledger-verified",
-      "value": "97",
+      "value": "103",
       "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "verified"}},
       "appears_in": [
-        {"file": "README.md", "regex": "re-checked on 2026-10-28 and 2026-10-29: (\\d+) verified"},
-        {"file": "docs/paper.html", "regex": "re-checked on 2026-10-28 and 2026-10-29: (\\d+) verified"},
+        {"file": "README.md", "regex": "re-checked on 2026-10-28, 2026-10-29 and 2026-10-30: (\\d+) verified"},
+        {"file": "docs/paper.html", "regex": "re-checked on 2026-10-28, 2026-10-29 and 2026-10-30: (\\d+) verified"},
         {"file": "docs/story.html", "regex": "\\((\\d+) verified, "},
         {"file": "docs/endeavour.html", "regex": "\\((\\d+) verified, "}
       ]
     },
     {
       "id": "paper-ledger-corrected",
-      "value": "18",
+      "value": "21",
       "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "corrected"}},
       "appears_in": [
         {"file": "README.md", "regex": "verified, (\\d+) corrected,"},
@@ -60,7 +60,7 @@
     },
     {
       "id": "paper-ledger-metadata-only",
-      "value": "40",
+      "value": "58",
       "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "metadata-only"}},
       "appears_in": [
         {"file": "README.md", "regex": "sentence, (\\d+) with metadata matched"},
@@ -78,17 +78,6 @@
         {"file": "docs/paper.html", "regex": "and (\\d+) unreachable from the sandbox"},
         {"file": "docs/story.html", "regex": ", (\\d+) unreachable from the sandbox\\)"},
         {"file": "docs/endeavour.html", "regex": ", (\\d+) unreachable from the sandbox\\)"}
-      ]
-    },
-    {
-      "id": "paper-ledger-unchecked",
-      "value": "27",
-      "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "unchecked"}},
-      "appears_in": [
-        {"file": "README.md", "regex": "The other (\\d+) have not been re-checked"},
-        {"file": "docs/paper.html", "regex": "The other (\\d+) have not been re-checked"},
-        {"file": "docs/story.html", "regex": "(\\d+) not yet re-checked"},
-        {"file": "docs/endeavour.html", "regex": "and (\\d+) are not yet re-checked"}
       ]
     },
     {
