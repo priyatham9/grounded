@@ -27,7 +27,7 @@
     },
     {
       "id": "paper-ledger-verified",
-      "value": "103",
+      "value": "105",
       "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "verified"}},
       "appears_in": [
         {"file": "README.md", "regex": "re-checked on 2026-10-28, 2026-10-29 and 2026-10-30: (\\d+) verified"},
@@ -60,7 +60,7 @@
     },
     {
       "id": "paper-ledger-metadata-only",
-      "value": "58",
+      "value": "56",
       "source": {"file": "docs/references-paper.csv", "csv_rows": true, "where": {"column": "status", "equals": "metadata-only"}},
       "appears_in": [
         {"file": "README.md", "regex": "sentence, (\\d+) with metadata matched"},
