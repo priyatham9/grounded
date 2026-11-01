@@ -1,0 +1,41 @@
+{
+  "repository": "priyatham9/ehs-osha-analysis",
+  "commit": "3ac278e19a1076fe50936a83484fed7be99855d2",
+  "files": {
+    "count_model_covariates.csv": {
+      "source_path": "outputs/tables/count_model_covariates.csv",
+      "git_blob_sha": "ecce0fecf6077dd91d87d29cf9e3eb59e8eb0df6",
+      "last_changed_in_commit": "e5d25f1871a04167e291fb6b6fa6f1d78d555164"
+    },
+    "count_model_covariates_fit_detail.csv": {
+      "source_path": "outputs/tables/count_model_covariates_fit_detail.csv",
+      "git_blob_sha": "ecaaba203227ab71d9f8b3fbca7c52a75f1a4e39",
+      "last_changed_in_commit": "e5d25f1871a04167e291fb6b6fa6f1d78d555164"
+    },
+    "count_model_selection_summary.csv": {
+      "source_path": "outputs/tables/count_model_selection_summary.csv",
+      "git_blob_sha": "eb6f90c99b098ce999ab224698b3172e22f2f765",
+      "last_changed_in_commit": "e5d25f1871a04167e291fb6b6fa6f1d78d555164"
+    },
+    "panel_permutation.csv": {
+      "source_path": "outputs/tables/panel_permutation.csv",
+      "git_blob_sha": "1ee3264657580d2139c41a1f21789767a595a82b",
+      "last_changed_in_commit": "00c0884a0f31f4ec7349aae12bd5f7cf43e3c780"
+    },
+    "panel_transitions.csv": {
+      "source_path": "outputs/tables/panel_transitions.csv",
+      "git_blob_sha": "5a32963e2b151b1d0e96f230b05ee489939d319a",
+      "last_changed_in_commit": "00c0884a0f31f4ec7349aae12bd5f7cf43e3c780"
+    },
+    "peer_percentiles_by_year.csv": {
+      "source_path": "outputs/tables/peer_percentiles_by_year.csv",
+      "git_blob_sha": "8c6bc3ba19bdaf1a798acc89f7916834701e2912",
+      "last_changed_in_commit": "e5d25f1871a04167e291fb6b6fa6f1d78d555164"
+    },
+    "size_band_effects.csv": {
+      "source_path": "outputs/tables/size_band_effects.csv",
+      "git_blob_sha": "69363ba03842c864a08de05768029f51ec2ccfac",
+      "last_changed_in_commit": "e5d25f1871a04167e291fb6b6fa6f1d78d555164"
+    }
+  }
+}
