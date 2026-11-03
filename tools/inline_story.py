@@ -10,6 +10,11 @@ current engine source:
 Usage:
     python3 tools/inline_story.py page.html [more.html ...]
     python3 tools/inline_story.py --check page.html     # report only, no write
+    python3 tools/inline_story.py --add-tokens page.html  # also insert the tokens marker
+                                                          # pair at the start of the first <style>
+
+The tokens block (/*TOKENS_CSS_START*/ /*TOKENS_CSS_END*/) holds tools/tokens.css.
+Page-level :root values that come later in the same page still win.
 
 Idempotent: running it twice makes no second change.
 """
@@ -20,6 +25,8 @@ import sys
 
 HERE = pathlib.Path(__file__).resolve().parent
 PAIRS = [
+    # the one design-token layer (palette, scales, a11y rules); goes first in the page's CSS
+    ("tokens", "/*TOKENS_CSS_START*/", "/*TOKENS_CSS_END*/", HERE / "tokens.css"),
     # optional: pages that want the base tokens inlined too
     ("shared", "/*SHARED_CSS_START*/", "/*SHARED_CSS_END*/", HERE / "shared.css"),
     ("css", "/*STORY_CSS_START*/", "/*STORY_CSS_END*/", HERE / "story.css"),
@@ -77,7 +84,21 @@ def splice(text: str, start: str, end: str, payload: str) -> tuple[str, str]:
     return text[: i + len(start)] + body + text[j:], "updated"
 
 
-def run(paths, check=False) -> int:
+TOKENS_EMPTY = "/*TOKENS_CSS_START*/\n/*TOKENS_CSS_END*/\n"
+
+
+def ensure_tokens_marker(text: str) -> tuple[str, str]:
+    """Insert an empty tokens marker pair at the start of the first <style> element."""
+    import re
+    if "/*TOKENS_CSS_START*/" in text:
+        return text, "marker present"
+    m = re.search(r"<style\b[^>]*>", text)
+    if not m:
+        return text, "no <style>"
+    return text[: m.end()] + "\n" + TOKENS_EMPTY + text[m.end():], "marker added"
+
+
+def run(paths, check=False, add_tokens=False) -> int:
     sources = {}
     for kind, _s, _e, path in PAIRS:
         if not path.exists():
@@ -94,6 +115,9 @@ def run(paths, check=False) -> int:
             continue
         text = original = page.read_text(encoding="utf-8")
         notes = []
+        if add_tokens:
+            text, tm = ensure_tokens_marker(text)
+            notes.append(tm)
         for kind, start, end, _path in PAIRS:
             text, status = splice(text, start, end, sources[kind])
             notes.append(f"{kind} {status}")
@@ -113,8 +137,10 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Inline story.css / story.js into HTML pages.")
     ap.add_argument("pages", nargs="+", help="HTML files to update")
     ap.add_argument("--check", action="store_true", help="report what would change, write nothing")
+    ap.add_argument("--add-tokens", action="store_true",
+                    help="insert the tokens marker pair at the start of the first <style> if missing")
     args = ap.parse_args()
-    return run(args.pages, check=args.check)
+    return run(args.pages, check=args.check, add_tokens=args.add_tokens)
 
 
 if __name__ == "__main__":
