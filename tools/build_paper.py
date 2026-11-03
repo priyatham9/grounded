@@ -1361,8 +1361,10 @@ PROFILES = {
         "ld_about": "OSHA injury-rate data quality and the exposure-hours denominator",
         "meta3": ("Filings analysed", "2,801,064"),
         "status": "osha",
-        "refs_note": ('Every reference below was checked against a primary or publisher-of-record source, '
-                      'and the evidence URL for each check lives in <code>paper/citations_verified.json</code>.'),
+        "refs_note": ('44 of the 45 references below were checked against a primary or publisher-of-record source '
+                      'and one against a secondary copy; the result for each is in '
+                      '<a href="references-osha.csv">the reference ledger</a> and the evidence URL for each check '
+                      'lives in <code>paper/citations_verified.json</code>.'),
         "next": ("https://priyatham9.github.io/ehs-osha-analysis/", "OSHA data quality project &#x2197;"),
     },
 }
