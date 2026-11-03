@@ -21,7 +21,7 @@ jobs:
         run: python3 claims/check_claims.py
       - name: Headline numbers agree across README, site and papers
         run: |
-          python3 -m unittest tools.test_check_consistency tools.test_references_ledger tools.test_figures
+          python3 -m unittest tools.test_check_consistency tools.test_references_ledger tools.test_figures tools.test_tokens
           python3 tools/check_consistency.py
       - name: Figures and numeric tables regenerate from committed data
         run: python3 tools/regenerate_figures.py
