@@ -1,7 +1,7 @@
 # grounded
 
 [![docs](https://github.com/priyatham9/grounded/actions/workflows/links.yml/badge.svg)](https://github.com/priyatham9/grounded/actions/workflows/links.yml)
-[![site](https://img.shields.io/badge/site-priyatham9.github.io%2Fgrounded-1E40AF)](https://priyatham9.github.io/grounded/)
+[![site](https://img.shields.io/badge/site-priyatham-personal-site.vercel.app%2Fgrounded-1E40AF)](https://grounded-chi-five.vercel.app/)
 
 Landing site for a research programme on grounded reasoning for safety-critical AI in EHS and process industries. It presents the programme's findings and links seven repositories. The programme is in draft status. The bundled paper has 197 references; 197 of the 197 were re-checked on 2026-10-28, 2026-10-29 and 2026-10-30: 105 verified, 21 corrected, 4 with a reworded sentence, 56 with metadata matched but the citing sentence not yet read against the source, and 11 unreachable from the sandbox; see the [reference ledger](docs/references-paper.csv). All 45 references in the standalone OSHA paper were verified on 2026-10-27 (each resolves, its metadata matches the publisher record, and the citing sentence matches the source); see the [reference ledger](docs/references-osha.csv). No external peer review has been conducted on either paper.
 
@@ -32,7 +32,7 @@ has been reviewed.
 
 ## Design
 
-Matches the design system of priyatham9.github.io: Archivo variable at
+Matches the design system of priyatham-personal-site.vercel.app: Archivo variable at
 `font-stretch: 125%` for display type, IBM Plex Mono for labels and navigation,
 2px hard rules with no border radius, radial dot-grid on the hero. The accent
 differs - cobalt `#1E40AF` light, `#7C9EFF` dark - so the two read as siblings

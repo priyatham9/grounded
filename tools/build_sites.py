@@ -39,8 +39,8 @@ ROOT = Path(__file__).resolve().parent.parent
 REPOS = ROOT / "repos"
 CSS = (ROOT / "tools" / "shared.css").read_text(encoding="utf-8")
 
-HUB = "https://priyatham9.github.io/grounded/"
-PERSONAL = "https://priyatham9.github.io"
+HUB = "https://grounded-chi-five.vercel.app/"
+PERSONAL = "https://priyatham-personal-site.vercel.app"
 GH = "https://github.com/priyatham9"
 
 # The six sibling projects, in reading order. The hub is linked separately.
@@ -284,7 +284,7 @@ SHELL = """<!doctype html>
     <span class="label">Priyatham Chimmani &middot; EHS data infrastructure, analytics and applied AI</span>
     <div class="footer-links">
       <a href="{hub}">Research hub</a>
-      <a href="{personal}">priyatham9.github.io</a>
+      <a href="{personal}">priyatham-personal-site.vercel.app</a>
       <a href="{gh}/{repo}">This repository</a>
       <a href="{gh}">GitHub</a>
       <a href="https://linkedin.com/in/priyatham9">LinkedIn</a>
@@ -2845,13 +2845,13 @@ def font_floor(css, floor=0.75):
 
 
 PROGRAMME = [
-    ("grounded", "Grounded", "https://priyatham9.github.io/grounded/"),
-    ("ehs-osha-analysis", "OSHA data quality", "https://priyatham9.github.io/ehs-osha-analysis/"),
-    ("ehs-ai-grounding-eval", "Grounding benchmark", "https://priyatham9.github.io/ehs-ai-grounding-eval/"),
-    ("ehs-human-factors-ontology", "Human factors ontology", "https://priyatham9.github.io/ehs-human-factors-ontology/"),
-    ("ehs-risk-sem", "SEM for safety risk", "https://priyatham9.github.io/ehs-risk-sem/"),
-    ("ehs-capitals-calculator", "Cost-benefit calculator", "https://priyatham9.github.io/ehs-capitals-calculator/"),
-    ("ehs-benchmarks", "OSHA benchmarks", "https://priyatham9.github.io/ehs-benchmarks/"),
+    ("grounded", "Grounded", "https://grounded-chi-five.vercel.app/"),
+    ("ehs-osha-analysis", "OSHA data quality", "https://ehs-osha-analysis.vercel.app/"),
+    ("ehs-ai-grounding-eval", "Grounding benchmark", "https://ehs-ai-grounding-eval.vercel.app/"),
+    ("ehs-human-factors-ontology", "Human factors ontology", "https://ehs-human-factors-ontology.vercel.app/"),
+    ("ehs-risk-sem", "SEM for safety risk", "https://ehs-risk-sem.vercel.app/"),
+    ("ehs-capitals-calculator", "Cost-benefit calculator", "https://priyatham-projects.vercel.app/ehs-capitals-calculator/"),
+    ("ehs-benchmarks", "OSHA benchmarks", "https://priyatham-projects.vercel.app/ehs-benchmarks/"),
 ]
 
 BUILDERS = [build_osha, build_sem, build_grounding, build_ontology]
@@ -2882,7 +2882,7 @@ if __name__ == "__main__":
             continue
         out = (Path(_args.out) if _args.out else REPOS) / spec["repo"] / "docs"
         out.mkdir(parents=True, exist_ok=True)
-        pageurl = f"https://priyatham9.github.io/{spec['repo']}/"
+        pageurl = f"https://priyatham-personal-site.vercel.app/{spec['repo']}/"
         ld = {
             "@context": "https://schema.org",
             "@type": "SoftwareSourceCode",
@@ -2894,7 +2894,7 @@ if __name__ == "__main__":
             "author": {
                 "@type": "Person",
                 "name": "Priyatham Chimmani",
-                "url": "https://priyatham9.github.io/",
+                "url": "https://priyatham-personal-site.vercel.app/",
                 "sameAs": ["https://github.com/priyatham9", "https://linkedin.com/in/priyatham9"],
             },
         }

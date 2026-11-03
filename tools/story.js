@@ -2280,7 +2280,7 @@
   /* ---------------------------------------------------------
      8b. wayfinder  -  one navigation model, site map lives here
      --------------------------------------------------------- */
-  var BASE = "https://priyatham9.github.io/";
+  var BASE = "https://priyatham-personal-site.vercel.app/";
   function U(p) { return /^https?:/.test(p) ? p : BASE + p; }
 
   var WAY = {

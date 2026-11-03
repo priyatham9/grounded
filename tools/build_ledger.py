@@ -22,7 +22,7 @@ LEDGER = ROOT / "docs" / "methods-ledger.json"
 PAGE = ROOT / "docs" / "methods-ledger.html"
 SHELL_FALLBACK = ROOT / "docs" / "reproduce.html"
 
-URL = "https://priyatham9.github.io/grounded/methods-ledger.html"
+URL = "https://grounded-chi-five.vercel.app/methods-ledger.html"
 TITLE = "Methods and limitations ledger - Grounded"
 DESC = (
     "Per repository, each statistical or machine-learning method used, its assumptions "

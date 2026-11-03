@@ -50,8 +50,8 @@ import html as _html
 import re
 import sys
 
-PERSONAL = "https://priyatham9.github.io/"
-HUB = "https://priyatham9.github.io/grounded/"
+PERSONAL = "https://priyatham-personal-site.vercel.app/"
+HUB = "https://grounded-chi-five.vercel.app/"
 PROJECTS = [
     ("ehs-osha-analysis", "OSHA data quality", "2.8M real filings"),
     ("ehs-ai-grounding-eval", "Grounding benchmark", "first baselines"),
@@ -421,7 +421,7 @@ def build_header(current=None, sections=None, story_href=None, page=None):
     aria = lambda on: ' aria-current="page"' if on else ""
     crumb, tabs, sheet_here = "", "", ""
     if is_proj:
-        base = "https://priyatham9.github.io/%s/" % current
+        base = "https://priyatham-personal-site.vercel.app/%s/" % current
         href = lambda f: base + ("" if f == "index.html" else f)
         items = PROJECT_PAGES.get(current, [("index.html", "Overview")])
         crumb = ('<span class="rs-crumb"><span class="rs-slash" aria-hidden="true">/</span>'
@@ -441,7 +441,7 @@ def build_header(current=None, sections=None, story_href=None, page=None):
     nav = ('<nav class="rs-nav" aria-label="Research site">'
            '<a class="rs-item" href="%s#projects">All projects</a><a class="rs-item" href="%s#papers">Papers</a></nav>'
            % (HUB, HUB))
-    projs = "".join('<a class="rs-opt" href="https://priyatham9.github.io/%s/"%s><span class="rs-t">%s</span><span class="rs-n">%s</span></a>'
+    projs = "".join('<a class="rs-opt" href="https://priyatham-personal-site.vercel.app/%s/"%s><span class="rs-t">%s</span><span class="rs-n">%s</span></a>'
                     % (k, aria(k == current and page == "index.html"), _E(t), _E(n)) for k, t, n in PROJECTS)
     paps = "".join('<a class="rs-opt" href="%s%s"%s><span class="rs-t">%s</span><span class="rs-n">%s</span></a>'
                    % (HUB, f, aria(f == current), _E(t), _E(n)) for f, t, n in PAPERS)

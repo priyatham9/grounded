@@ -28,7 +28,7 @@ from banner import PROJECTS  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 
 # Pages that are local-only or not research pages.
-SKIP_REPOS = {"ehs-osha-benchmark-api", "priyatham9.github.io", "priyatham9", "brag"}
+SKIP_REPOS = {"ehs-osha-benchmark-api", "priyatham-personal-site.vercel.app", "priyatham9", "brag"}
 TOOLS = {("ehs-capitals-calculator", "index.html"), ("ehs-osha-analysis", "explore.html"),
          ("ehs-ai-grounding-eval", "try.html"), ("ehs-human-factors-ontology", "crosswalk.html"),
          ("ehs-human-factors-ontology", "walkthrough.html"), ("ehs-benchmarks", "index.html"),

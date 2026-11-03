@@ -2,77 +2,77 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
 <title>Grounded - Programme Changelog</title>
-<link>https://priyatham9.github.io/grounded/changelog.html</link>
-<atom:link href="https://priyatham9.github.io/grounded/feed.xml" rel="self" type="application/rss+xml"/>
+<link>https://grounded-chi-five.vercel.app/changelog.html</link>
+<atom:link href="https://grounded-chi-five.vercel.app/feed.xml" rel="self" type="application/rss+xml"/>
 <description>Dated changes across the seven repositories in the Grounded research programme.</description>
 <language>en-us</language>
 <lastBuildDate>Wed, 23 Sep 2026 01:06:13 +0000</lastBuildDate>
 <item>
 <title>2026-09-20 (62 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-20</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-20</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-20</guid>
 <pubDate>Sun, 20 Sep 2026 12:00:00 +0000</pubDate>
 <description>grounded: Speaker notes, print handout, glossary, refreshed surfaces and floating navigation dock; grounded: Findings stated in every heading, phone figure variants, reduced-motion states, project page doors, cleanup; grounded: Presenter mode: pinned figure, one step per screen, reliable arrow keys; phone layout fixes; grounded: Start page redesign, single navigation bar on hub, figure label fixes; grounded: Story fixes: readable figure numbers, orb placement, figures fit the stage, no hero orb on project pages; grounded: Calmer story pages: findings list, one orb per view, single navigation bar; grounded: Hub: full-stage figures, reader paths, chapter cards, orb constellation; grounded: Story engine 1.1: navigation bar, site map, companion orbs; grounded: Rebuild hub as scroll story; add story engine and tools; and more</description>
 </item>
 <item>
 <title>2026-09-14 (7 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-14</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-14</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-14</guid>
 <pubDate>Mon, 14 Sep 2026 12:00:00 +0000</pubDate>
 <description>grounded: Site redesign: story-led hub, Observatory metrics page, unified header; ehs-osha-analysis: Site redesign: interactive findings, unified research header, README header; ehs-risk-sem: Site redesign: interactive findings, unified research header, README header; ehs-ai-grounding-eval: Site redesign: interactive findings, unified research header, README header; ehs-human-factors-ontology: Site redesign: interactive findings, unified research header, README header; ehs-capitals-calculator: Site redesign: interactive findings, unified research header, README header; ehs-benchmarks: README: consistent programme header</description>
 </item>
 <item>
 <title>2026-09-11 (3 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-11</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-11</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-11</guid>
 <pubDate>Fri, 11 Sep 2026 12:00:00 +0000</pubDate>
 <description>ehs-osha-analysis: Lint: unused imports and a dead variable; ehs-risk-sem: Lint: unused imports, empty f-strings, dead variables; ehs-capitals-calculator: Lint: unused imports</description>
 </item>
 <item>
 <title>2026-09-10 (63 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-10</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-10</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-10</guid>
 <pubDate>Thu, 10 Sep 2026 12:00:00 +0000</pubDate>
 <description>grounded: Generator: crosswalk hero link; grounded: Hub hero around one journey; Start here page; grounded: README: three-sentence opening; grounded: Design QA fixes; grounded: Status feed: release tags now recorded; grounded: Generator: banner nav contrast; grounded: Generator: tap-target fixes in banner and footer CSS; grounded: Add programme status feed and changelog page; grounded: Generator: companion-page hero links for four repos; grounded: Lint, CI, coverage and community files; grounded: Reading paths by audience and why-it-matters lines; grounded: Update generator to include API reference link for ehs-risk-sem; ehs-osha-analysis: Figures: one visual system with direct labels and 2019/2024 callouts (fig04 unchanged pending covariate refit); ehs-osha-analysis: README: three-sentence opening; ehs-osha-analysis: ruff.toml: valid top-level form with a [lint] table; and more</description>
 </item>
 <item>
 <title>2026-09-09 (23 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-09</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-09</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-09</guid>
 <pubDate>Wed, 09 Sep 2026 12:00:00 +0000</pubDate>
 <description>grounded: Sync build_sites.py: grounding-eval copy reflects baselines and the real adapter; grounded: Say where the benchmark stands now that a real adapter exists; grounded: Build the OSHA paper five-minute path from its own headings; grounded: Share metadata, JSON-LD, sitemap, og image, accessibility basics; grounded: Align figures across surfaces with generated outputs; grounded: Establishment persistence panel analysis, CI, pipeline wiring, project docs; ehs-osha-analysis: Commit generated outputs so clones can read tables and rebuild the site; ehs-osha-analysis: Share metadata, JSON-LD, sitemap, og image, accessibility basics; ehs-osha-analysis: Use RandomState for the committed fixture so generation reproduces across NumPy versions; ehs-osha-analysis: Make NAICS prefix missing value and fixture comparison version-independent; and more</description>
 </item>
 <item>
 <title>2026-09-08 (6 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-08</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-08</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-08</guid>
 <pubDate>Tue, 08 Sep 2026 12:00:00 +0000</pubDate>
 <description>grounded: Skip Jekyll for the docs site; ehs-osha-analysis: Skip Jekyll for the docs site; ehs-risk-sem: Skip Jekyll for the docs site; ehs-ai-grounding-eval: Skip Jekyll for the docs site; ehs-human-factors-ontology: Skip Jekyll for the docs site; ehs-capitals-calculator: Skip Jekyll for the docs site</description>
 </item>
 <item>
 <title>2026-09-07 (14 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-07</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-07</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-07</guid>
 <pubDate>Mon, 07 Sep 2026 12:00:00 +0000</pubDate>
 <description>grounded: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; grounded: Site switcher on paper pages; grounded: Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher; ehs-osha-analysis: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; ehs-osha-analysis: Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher; ehs-risk-sem: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; ehs-risk-sem: Analysis, metrics, baselines and ontology contributions; interactive charts and site switcher; ehs-ai-grounding-eval: One sticky banner everywhere: Overview, Projects and Papers menus, personal-site link in the bar; and more</description>
 </item>
 <item>
 <title>2026-09-06 (36 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-06</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-06</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-06</guid>
 <pubDate>Sun, 06 Sep 2026 12:00:00 +0000</pubDate>
 <description>grounded: Render standalone OSHA data-quality paper; grounded: Publish standalone OSHA data-quality paper; link from hub; grounded: Unified banner navigation across the programme; engagement improvements; grounded: QA fixes: link targets, navigation consistency, mobile collapse; grounded: Allow search indexing; grounded: Add programme navigation: project switcher and previous/next links; grounded: Add navigation link to personal site; grounded: Rename research site to Grounded; remove unverified citation; grounded: Refine site storytelling and UI, add cross-repo navigation; ehs-osha-analysis: Unified banner navigation across the programme; engagement improvements; ehs-osha-analysis: Allow search indexing; ehs-osha-analysis: Add programme navigation: previous/next links; ehs-osha-analysis: Rename research site to Grounded; remove unverified citation; and more</description>
 </item>
 <item>
 <title>2026-09-05 (6 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-05</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-05</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-05</guid>
 <pubDate>Sat, 05 Sep 2026 12:00:00 +0000</pubDate>
 <description>grounded: Add site generator used to build the per-repo docs sites; grounded: Correct superseded and untraceable figures; cite current pipeline outputs; ehs-osha-analysis: Add static site under docs/ generated from committed outputs; ehs-risk-sem: Add static site under docs/ generated from committed outputs; ehs-ai-grounding-eval: Add static site under docs/ generated from committed outputs; ehs-human-factors-ontology: Add static site under docs/ generated from committed outputs</description>
 </item>
 <item>
 <title>2026-09-04 (7 changes)</title>
-<link>https://priyatham9.github.io/grounded/changelog.html#d-2026-09-04</link>
+<link>https://grounded-chi-five.vercel.app/changelog.html#d-2026-09-04</link>
 <guid isPermaLink="false">grounded-changelog-2026-09-04</guid>
 <pubDate>Fri, 04 Sep 2026 12:00:00 +0000</pubDate>
 <description>grounded: Replace em dashes with hyphens; grounded: Landing site for the grounded EHS AI research programme; ehs-osha-analysis: ehs-osha-analysis: initial commit; ehs-risk-sem: ehs-risk-sem: initial commit; ehs-ai-grounding-eval: ehs-ai-grounding-eval: initial commit; ehs-human-factors-ontology: ehs-human-factors-ontology: initial commit; ehs-capitals-calculator: ehs-capitals-calculator: initial commit</description>

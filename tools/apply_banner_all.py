@@ -25,7 +25,7 @@ ROOT = Path(__file__).resolve().parent.parent
 PROJECT_SLUGS = {s for s, _, _ in banner.PROJECTS}
 HUB_PAGES = {"index.html": "hub", "story.html": "story.html", "start.html": "start", "observatory.html": "observatory",
              "changelog.html": "changelog", "paper.html": "paper.html", "paper-osha.html": "paper-osha.html"}
-SKIP_REPOS = {"ehs-osha-benchmark-api", "priyathamchimmani", "priyatham9.github.io", "priyatham9", "brag"}
+SKIP_REPOS = {"ehs-osha-benchmark-api", "priyathamchimmani", "priyatham-personal-site.vercel.app", "priyatham9", "brag"}
 
 
 def settings(repo, path, page):

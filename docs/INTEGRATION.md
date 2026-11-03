@@ -1,9 +1,9 @@
 # INTEGRATION.md
 
-Wiring the research site (`grounded`) to the personal site (`priyatham9.github.io`)
+Wiring the research site (`grounded`) to the personal site (`priyatham-personal-site.vercel.app`)
 so the two read as siblings without merging.
 
-Fetched and inspected: `https://priyatham9.github.io/` on 2026-09-06, raw markup and inline
+Fetched and inspected: `https://priyatham-personal-site.vercel.app/` on 2026-09-06, raw markup and inline
 stylesheet, 63,165 bytes, single file, no external CSS. Everything quoted below is copied
 from that document or from `repos/grounded/docs/index.html` as committed.
 
@@ -13,7 +13,7 @@ from that document or from `repos/grounded/docs/index.html` as committed.
 
 Verified against the GitHub API and by HTTP request on 2026-09-06:
 
-| Repository | Visibility | Pages enabled | `https://priyatham9.github.io/<repo>/` |
+| Repository | Visibility | Pages enabled | `https://priyatham-personal-site.vercel.app/<repo>/` |
 |---|---|---|---|
 | `grounded` | private | no | 404 |
 | `ehs-osha-analysis` | private | no | 404 |
@@ -142,7 +142,7 @@ unused. It exists for exactly the case in section 2.4.
 `.report-row` hover fills the row with `var(--accent-wash)` and turns `.report-t` accent.
 The existing `#reports` section links `RPT-005` with `href="/ehs-benchmarks/"`, a
 root-relative path. That is the precedent this patch follows: the research sites live on
-the same `priyatham9.github.io` origin, so root-relative paths are correct and survive a
+the same `priyatham-personal-site.vercel.app` origin, so root-relative paths are correct and survive a
 custom-domain change.
 
 **Chosen component: report rows.** The research portfolio is a list of named artifacts with
@@ -189,7 +189,7 @@ cost of burying it below Education.
 
 ### 2.2 Renumber first, then insert
 
-Run these inside the `priyatham9.github.io` working copy, **before** pasting, in this exact
+Run these inside the `priyatham-personal-site.vercel.app` working copy, **before** pasting, in this exact
 order. macOS `sed` needs the empty `-i ''` argument.
 
 ```bash
@@ -364,13 +364,13 @@ Exactly one link, in `repos/grounded/docs/index.html`, in the footer:
 
 ```html
     <div class="footer-links">
-      <a href="https://priyatham9.github.io">Personal site</a>
+      <a href="https://priyatham-personal-site.vercel.app">Personal site</a>
       <a href="https://github.com/priyatham9">GitHub</a>
       <a href="https://linkedin.com/in/priyatham9">LinkedIn</a>
     </div>
 ```
 
-The hub also links out to `https://priyatham9.github.io/ehs-benchmarks` from the
+The hub also links out to `https://priyatham-projects.vercel.app/ehs-benchmarks` from the
 `ehs-benchmarks` project card's `.p-links` div. That is the whole of it.
 
 ### 4.2 What is missing
@@ -394,7 +394,7 @@ are proposals, not applied changes.
    `tools/build_sites.py`, ahead of the Repository link, then regenerate all five sites:
 
    ```html
-         <a href="https://priyatham9.github.io/grounded/">Research hub</a>
+         <a href="https://grounded-chi-five.vercel.app/">Research hub</a>
    ```
 
    Add `Personal site` on the same line if you want full symmetry with the hub footer.
@@ -420,7 +420,7 @@ are proposals, not applied changes.
          <a href="#work">Work</a>
          <a href="#paper">Paper</a>
          <a href="#status">Status</a>
-         <a href="https://priyatham9.github.io">Personal site</a>
+         <a href="https://priyatham-personal-site.vercel.app">Personal site</a>
        </nav>
    ```
 
@@ -439,15 +439,15 @@ are proposals, not applied changes.
 
 | Page | robots meta | canonical | Indexable |
 |---|---|---|---|
-| `priyatham9.github.io/` | `noindex, nofollow` | none | no |
+| `priyatham-personal-site.vercel.app/` | `noindex, nofollow` | none | no |
 | research hub `docs/index.html` | `noindex, nofollow` | none | no |
 | four generated repo sites | `noindex, nofollow` | none | no |
 | `ehs-capitals-calculator/docs` | **none** | none | yes, once Pages is on |
-| `priyatham9.github.io/ehs-benchmarks/` | **none** | none | **yes, and live now** |
-| `priyatham9.github.io/robots.txt` | 404, no file | n/a | n/a |
+| `priyatham-projects.vercel.app/ehs-benchmarks/` | **none** | none | **yes, and live now** |
+| `priyatham-personal-site.vercel.app/robots.txt` | 404, no file | n/a | n/a |
 
 No page in either site carries a `rel="canonical"`. The personal site sets
-`og:url` to `https://priyatham9.github.io/`, which is an Open Graph hint for social cards
+`og:url` to `https://priyatham-personal-site.vercel.app/`, which is an Open Graph hint for social cards
 and is not read as a canonical signal by search engines.
 
 Two of those rows are almost certainly unintentional. `ehs-capitals-calculator` is the only
@@ -491,7 +491,7 @@ to do about `ehs-benchmarks`, which is currently indexable.
 
 **Option B. Lift it on the hub only.** Remove `noindex, nofollow` from
 `grounded/docs/index.html`, add
-`<link rel="canonical" href="https://priyatham9.github.io/grounded/" />` to its head,
+`<link rel="canonical" href="https://grounded-chi-five.vercel.app/" />` to its head,
 and leave the per-repo sites and the personal site as they are. One citable, stable entry
 point exists; the draft detail underneath stays out of the index. The hub's own status
 section already states the limits honestly, so the page that gets found is also the page
@@ -514,7 +514,7 @@ audiences, and nothing requires them to match.
 
 ### 5.4 Canonical mechanics, whichever way you go
 
-- Canonicalise on the trailing-slash form, `https://priyatham9.github.io/grounded/`.
+- Canonicalise on the trailing-slash form, `https://grounded-chi-five.vercel.app/`.
   GitHub Pages serves both with and without the slash; picking one and stating it prevents
   the pair being treated as two URLs.
 - Each page's canonical should point at itself, not at the hub. Pointing a per-repo site at
@@ -531,7 +531,7 @@ audiences, and nothing requires them to match.
 
 ## 6. Verification checklist
 
-Run after applying sections 2 and 3 to the `priyatham9.github.io` working copy.
+Run after applying sections 2 and 3 to the `priyatham-personal-site.vercel.app` working copy.
 
 **Markup and numbering**
 
@@ -593,14 +593,14 @@ Run after applying sections 2 and 3 to the `priyatham9.github.io` working copy.
                ehs-human-factors-ontology ehs-risk-sem ehs-capitals-calculator \
                ehs-benchmarks; do
         printf '%-30s %s\n' "$p" \
-          "$(curl -s -o /dev/null -w '%{http_code}' https://priyatham9.github.io/$p/)"
+          "$(curl -s -o /dev/null -w '%{http_code}' https://priyatham-personal-site.vercel.app/$p/)"
       done
       ```
 
       All seven must return 200. Any 404 means Pages is not enabled on that repo, and that
       row should revert to the ghost form in section 2.4 until it is.
 - [ ] From the research hub, the footer `Personal site` link returns to
-      `https://priyatham9.github.io/` and the new Research section is visible from there.
+      `https://priyatham-personal-site.vercel.app/` and the new Research section is visible from there.
       The round trip should work in both directions with no dead end.
 - [ ] If any reciprocal link from section 4.3 was added, its destination returns 200 too.
 
