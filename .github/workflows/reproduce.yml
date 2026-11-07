@@ -112,7 +112,7 @@ jobs:
           check_cell="$CHECK"; [ "$CHECK" != "skipped" ] || check_cell="none"
           echo "| $REPO | $SHA | $TEST | $check_cell | $verdict |" > "status/$REPO.md"
           cat "status/$REPO.md" >> "$GITHUB_STEP_SUMMARY"
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@v7
         if: always()
         with:
           name: status-${{ matrix.repo }}
