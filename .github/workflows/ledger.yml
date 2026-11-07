@@ -12,7 +12,7 @@ permissions:
   contents: read
 jobs:
   verify:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Ledger tests (shape, checker logic, page in sync, links on public GitHub)
