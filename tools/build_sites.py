@@ -38,6 +38,22 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 REPOS = ROOT / "repos"
 CSS = (ROOT / "tools" / "shared.css").read_text(encoding="utf-8")
+PORTFOLIO_CSS = ROOT / "tools" / "portfolio.css"
+
+
+def install_portfolio_skin(page: str, out: Path) -> str:
+    """Publish the shared editorial skin last, including for --out previews.
+
+    Keep the source in this repository so rebuilding does not depend on a
+    previously generated sibling site. The hub landing page is authored separately.
+    """
+    (out / "portfolio.css").write_text(
+        PORTFOLIO_CSS.read_text(encoding="utf-8"), encoding="utf-8")
+    link = '<link rel="stylesheet" href="portfolio.css" />'
+    if link not in page:
+        page = page.replace("</head>", link + "\n</head>", 1)
+    return page
+
 
 HUB = "https://grounded-chi-five.vercel.app/"
 PERSONAL = "https://priyatham-personal-site.vercel.app"
@@ -2924,5 +2940,6 @@ if __name__ == "__main__":
         for bad in DASHES:
             if bad in page:
                 raise SystemExit(f'em dash survived in {spec["repo"]}: {bad!r}')
+        page = install_portfolio_skin(page, out)
         (out / "index.html").write_text(page, encoding="utf-8")
         print(f'{spec["repo"]:<32} {len(page):>8,} bytes -> docs/index.html')

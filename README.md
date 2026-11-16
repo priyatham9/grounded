@@ -6,7 +6,7 @@
 Landing site for a research programme on grounded reasoning for safety-critical AI in EHS and process industries. It presents the programme's findings and links seven repositories. The programme is in draft status. The bundled paper has 197 references; 197 of the 197 were re-checked on 2026-10-28, 2026-10-29 and 2026-10-30: 106 verified, 21 corrected, 4 with a reworded sentence, 55 with metadata matched but the citing sentence not yet read against the source, and 11 unreachable from the sandbox; see the [reference ledger](docs/references-paper.csv). All 45 references in the standalone OSHA paper were verified on 2026-10-27 (each resolves, its metadata matches the publisher record, and the citing sentence matches the source); see the [reference ledger](docs/references-osha.csv). No external peer review has been conducted on either paper.
 
 The site at `docs/index.html` is a static page with no build step and no runtime
-dependencies beyond two webfonts. It presents the programme's findings, links the
+dependencies. It presents the programme's findings, links the
 seven repositories that make it up, and states plainly what has and has not been
 established.
 
@@ -32,11 +32,12 @@ has been reviewed.
 
 ## Design
 
-Matches the design system of priyatham-personal-site.vercel.app: Archivo variable at
-`font-stretch: 125%` for display type, IBM Plex Mono for labels and navigation,
-2px hard rules with no border radius, radial dot-grid on the hero. The accent
-differs - cobalt `#1E40AF` light, `#7C9EFF` dark - so the two read as siblings
-rather than copies. Full light/dark support with a persisted manual override.
+The landing page uses an editorial research layout: offwhite `#f7f7f2`, ink
+`#172824`, emerald `#136c50`, serif display typography and system sans-serif text.
+Question-based entry points lead to the seven projects, working papers and an
+explicit evidence and limitations section. The responsive layout includes keyboard
+focus indicators, a skip link, semantic navigation and reduced-motion support.
+No build step, JavaScript or external font downloads are required for the landing page.
 
 ## Status
 
