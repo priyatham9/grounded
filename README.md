@@ -1,7 +1,7 @@
 # grounded
 
 [![docs](https://github.com/priyatham9/grounded/actions/workflows/links.yml/badge.svg)](https://github.com/priyatham9/grounded/actions/workflows/links.yml)
-[![site](https://img.shields.io/badge/site-priyatham-personal-site.vercel.app%2Fgrounded-1E40AF)](https://grounded-chi-five.vercel.app/)
+[![site](https://img.shields.io/badge/site-research%20programme-1E40AF)](https://grounded-chi-five.vercel.app/)
 
 Landing site for a research programme on grounded reasoning for safety-critical AI in EHS and process industries. It presents the programme's findings and links seven repositories. The programme is in draft status. The bundled paper has 197 references; 197 of the 197 were re-checked on 2026-10-28, 2026-10-29 and 2026-10-30: 106 verified, 21 corrected, 4 with a reworded sentence, 55 with metadata matched but the citing sentence not yet read against the source, and 11 unreachable from the sandbox; see the [reference ledger](docs/references-paper.csv). All 45 references in the standalone OSHA paper were verified on 2026-10-27 (each resolves, its metadata matches the publisher record, and the citing sentence matches the source); see the [reference ledger](docs/references-osha.csv). No external peer review has been conducted on either paper.
 
@@ -9,6 +9,24 @@ The site at `docs/index.html` is a static page with no build step and no runtime
 dependencies. It presents the programme's findings, links the
 seven repositories that make it up, and states plainly what has and has not been
 established.
+
+The [investigations page](docs/investigations.html) connects four new audits of
+decision-relevant evidence: OSHA record influence, a finite excerpt/scorer
+ceiling, simulated contrast-test calibration, and representation loss. These are
+different forms of evidence, not a pooled result. With the project repositories
+in sibling directories, `python3 tools/build_investigations.py` regenerates its
+HTML and SHA-256 source manifest; `--check` verifies them. Page structure lives in
+`tools/investigations.template.html`, with static CSS and JavaScript in `docs/`.
+
+The four-page [research brief (PDF)](docs/research-brief.pdf), also available as
+[HTML](docs/research-brief.html), presents the findings, practical review steps
+and limits in a shareable format. Its [content and build manifest](docs/research-brief-manifest.json)
+binds each source artifact by SHA-256 and records the generation time. Rebuild
+with `python3 tools/build_research_brief.py`; verify with `--check`. This uses
+installed Node/Playwright Chromium, `pdfinfo` and `pdftotext`, with no network or
+model calls. `--generated-at` accepts the recorded UTC timestamp to reproduce
+the content; PDF metadata may change, so byte-identical PDF regeneration is not
+claimed. These are independent working findings, not peer-reviewed results.
 
 The [proposed endeavour page](docs/endeavour.html) sets out a three-year plan built only from the work that exists, with plans labelled as plans and no results claimed.
 
@@ -56,3 +74,7 @@ See [SECURITY.md](SECURITY.md) for security policy and how to report vulnerabili
 ## Licence
 
 MIT
+
+## Project interface research
+
+[Current interface references and build specification](docs/PROJECT_DESIGN_RESEARCH.md) compares 14 official product/design-system references, identifies five live-tested interactions, and specifies three different analytical workflows. This is an interface review, not a user study.

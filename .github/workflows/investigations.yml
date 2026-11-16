@@ -1,0 +1,46 @@
+name: research artifacts
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: grounded
+      - uses: actions/checkout@v4
+        with:
+          repository: priyatham9/ehs-osha-analysis
+          ref: f96d96275ba34a0a8225900aa89fa4b463927814
+          path: ehs-osha-analysis
+      - uses: actions/checkout@v4
+        with:
+          repository: priyatham9/ehs-ai-grounding-eval
+          ref: 42238056652c3c860368d3f9964558dd2b3bead9
+          path: ehs-ai-grounding-eval
+      - uses: actions/checkout@v4
+        with:
+          repository: priyatham9/ehs-risk-sem
+          ref: f7b2b42d78ed539f18953b6d9067e95bc051c93f
+          path: ehs-risk-sem
+      - uses: actions/checkout@v4
+        with:
+          repository: priyatham9/ehs-human-factors-ontology
+          ref: ae043a80802abe20fadefe1b354b1c202045ed26
+          path: ehs-human-factors-ontology
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install PDF inspection tools
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y poppler-utils
+      - name: Verify curated source bindings and static investigation
+        run: python grounded/tools/build_investigations.py --check
+      - name: Verify brief content, hashes, text layout and links
+        run: python grounded/tools/build_research_brief.py --check
