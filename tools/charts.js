@@ -473,7 +473,7 @@
       // phones get their own geometry so labels stay 12px or more and every row is a 44px target
       var nar = box.clientWidth > 0 && box.clientWidth < 560; box.__nar = nar; clear(box);
       var fs = nar ? 15 : 12, W = nar ? 360 : 640, L = nar ? 124 : 150, R = 16, lo = -0.75, hi = 1.0, rowH = nar ? 60 : 46, H = D.preds.length * rowH + (nar ? 40 : 30);
-      var svg = s('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'img', 'aria-label': 'Estimate spread for four coefficients at n = ' + n });
+      var svg = s('svg', { viewBox: '0 0 ' + W + ' ' + H, role: 'group', 'aria-label': 'Estimate spread for four coefficients at n = ' + n });
       axis(svg, W, L, R, lo, hi, H - (nar ? 28 : 22), fs, nar ? 0.5 : 0.25);
       function X(v) { return L + (v - lo) / (hi - lo) * (W - L - R); }
       D.preds.forEach(function (p, i) {
