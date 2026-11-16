@@ -41,6 +41,23 @@ CSS = (ROOT / "tools" / "shared.css").read_text(encoding="utf-8")
 PORTFOLIO_CSS = ROOT / "tools" / "portfolio.css"
 
 
+def accessible_table_regions(page: str) -> str:
+    """Give overflow tables keyboard access and a name from their visible caption."""
+    def decorate(match):
+        caption = re.match(r'\s*</div>\s*<figcaption[^>]*>([^<]+)', page[match.end():])
+        if caption:
+            label = html.unescape(caption.group(1)).strip()
+        else:
+            headings = re.findall(r'<th[^>]*>(.*?)</th>', match.group('table'), re.S)
+            label = "Data table: " + ", ".join(re.sub(r'<[^>]+>', '', heading) for heading in headings)
+        label = re.sub(r'\s+', ' ', label)
+        if len(label) > 180:
+            label = label[:177].rsplit(' ', 1)[0] + '...'
+        return ('<div class="tbl-wrap" tabindex="0" role="region" aria-label="'
+                + html.escape(label, quote=True) + '">' + match.group('table'))
+    return re.sub(r'<div class="tbl-wrap">(?P<table>.*?</table>)', decorate, page, flags=re.S)
+
+
 def install_portfolio_skin(page: str, out: Path) -> str:
     """Publish the shared editorial skin last, including for --out previews.
 
@@ -261,7 +278,7 @@ SHELL = """<!doctype html>
   <div class="wrap hero-grid">
     <div class="hero-fig">
       <div class="hero-eyebrow" data-m-hero-part="text"><span class="pulse"></span><span class="label">{kicker}</span></div>
-      <p class="hero-big" data-m-hero-part="visual" style="--k:{num_k}" aria-label="{num}{unit_plain}"><span class="hero-num" data-to="{num_to}" data-dec="{num_dec}" data-group="{num_group}" aria-hidden="true">{num}</span><span class="hero-unit" aria-hidden="true">{unit}</span></p>
+      <p class="hero-big" role="img" data-m-hero-part="visual" style="--k:{num_k}" aria-label="{num}{unit_plain}"><span class="hero-num" data-to="{num_to}" data-dec="{num_dec}" data-group="{num_group}" aria-hidden="true">{num}</span><span class="hero-unit" aria-hidden="true">{unit}</span></p>
       <p class="hero-means" data-m-hero-part="text"><span class="hm-k">What this means</span>{means}</p>
       <span class="src">Source artifact: {num_src}</span>
     </div>
@@ -2940,6 +2957,7 @@ if __name__ == "__main__":
         for bad in DASHES:
             if bad in page:
                 raise SystemExit(f'em dash survived in {spec["repo"]}: {bad!r}')
+        page = accessible_table_regions(page)
         page = install_portfolio_skin(page, out)
         (out / "index.html").write_text(page, encoding="utf-8")
         print(f'{spec["repo"]:<32} {len(page):>8,} bytes -> docs/index.html')
