@@ -1,0 +1,912 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>
+      When a reassuring metric is not enough · Grounded investigations
+    </title>
+    <meta
+      name="description"
+      content="Four reproducible investigations into what injury rates, benchmark scores, model fit and mapping counts leave out of a decision."
+    />
+    <link
+      rel="canonical"
+      href="https://grounded-chi-five.vercel.app/investigations.html"
+    />
+    <meta name="theme-color" content="#eef0e8" />
+    <link rel="stylesheet" href="investigations.css" />
+    <script src="investigations.js" defer></script>
+    <!-- Investigations social preview -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Grounded" />
+    <meta
+      property="og:title"
+      content="What did the check actually establish? · Grounded investigations"
+    />
+    <meta
+      property="og:description"
+      content="Four working investigations ask what plausible injury ratios, lexical scores, model fit and exported mappings actually establish. Empirical, finite-scorer, simulation and representation audits; distinct evidence and bounded conclusions."
+    />
+    <meta
+      property="og:url"
+      content="https://grounded-chi-five.vercel.app/investigations.html"
+    />
+    <meta
+      property="og:image"
+      content="https://grounded-chi-five.vercel.app/investigations-preview.png"
+    />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta
+      property="og:image:alt"
+      content="Grounded working research: injury data asks whether a few filings can change a trend; answer evaluation questions lexical passes; simulation checks test calibration; knowledge translation checks whether explicit absences survive export."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="What did the check actually establish? · Grounded investigations"
+    />
+    <meta
+      name="twitter:description"
+      content="Four working investigations ask what plausible injury ratios, lexical scores, model fit and exported mappings actually establish. Empirical, finite-scorer, simulation and representation audits; distinct evidence and bounded conclusions."
+    />
+    <meta
+      name="twitter:image"
+      content="https://grounded-chi-five.vercel.app/investigations-preview.png"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="Grounded working research: injury data asks whether a few filings can change a trend; answer evaluation questions lexical passes; simulation checks test calibration; knowledge translation checks whether explicit absences survive export."
+    />
+  </head>
+  <body>
+    <a class="skip" href="#main">Skip to investigations</a>
+    <header>
+      <div class="wrap masthead">
+        <a class="brand" href="./">Grounded<span>Independent research</span></a>
+        <nav aria-label="Main navigation">
+          <a href="#investigations">The investigations</a
+          ><a href="#review">Before a decision</a
+          ><a href="#reproduce">Reproduce</a
+          ><a href="index.html#papers">Working papers ↗︎</a>
+        </nav>
+      </div>
+    </header>
+    <main id="main">
+      <section class="wrap opening" aria-labelledby="question">
+        <div class="issue">
+          <span class="eyebrow">Research programme / Investigations</span
+          ><span>Working evidence · November 2026</span>
+        </div>
+        <h1 id="question">
+          When does a reassuring metric conceal an <em>unreliable decision?</em>
+        </h1>
+        <div class="opening-bottom">
+          <p class="standfirst">
+            A rate passes a screen. An answer passes a rubric. A model fits. A
+            mapping exports. Each is a useful check. Each leaves a different
+            question unanswered.
+          </p>
+          <div class="orientation">
+            <strong>Follow the missing check.</strong>
+            <p>
+              Four investigations move from a summary to the evidence behind
+              it—and to the review a decision still needs.
+            </p>
+            <a href="#investigations"
+              >Read the findings <span aria-hidden="true">↓</span></a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section class="scope-strip">
+        <div class="wrap">
+          <p>
+            <strong
+              >A shared question, four different kinds of evidence.</strong
+            >
+            These results are not pooled, and they do not establish a universal
+            failure rate. One examines administrative records; one exhausts a
+            finite answer space; one simulates known truths; one tests what a
+            representation preserves.
+          </p>
+        </div>
+      </section>
+
+      <section
+        class="wrap map-section"
+        id="investigations"
+        aria-labelledby="map-title"
+      >
+        <div class="section-intro">
+          <span class="eyebrow">The assurance matrix</span>
+          <h2 id="map-title">What did the check actually establish?</h2>
+          <p>
+            Start with the claim you are about to rely on. The audit opens the
+            part its summary cannot test.
+          </p>
+        </div>
+        <p class="scroll-hint">Scroll the comparison sideways →</p>
+        <div
+          class="table-scroll"
+          role="region"
+          aria-label="Research assurance comparison"
+          tabindex="0"
+        >
+          <table class="assurance">
+            <caption class="sr-only">
+              Four research audits, their reassuring checks, and the decisions
+              that remain unestablished
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col">Investigation</th>
+                <th scope="col">The reassuring check</th>
+                <th scope="col">The missing question</th>
+                <th scope="col">Evidence</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">
+                  <a href="#records"><span>01</span> Injury-rate data</a>
+                </th>
+                <td>Hours per employee look plausible</td>
+                <td>Can a few filings determine the trend?</td>
+                <td>Empirical influence audit</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a href="#answers"><span>02</span> Answer evaluation</a>
+                </th>
+                <td>The retrieved response receives a score</td>
+                <td>What can the answer format and rubric distinguish?</td>
+                <td>Exhaustive scorer diagnostic</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a href="#models"><span>03</span> Model inference</a>
+                </th>
+                <td>Fit indices pass their criteria</td>
+                <td>Does the contrast test control false positives?</td>
+                <td>Simulation with known truth</td>
+              </tr>
+              <tr>
+                <th scope="row">
+                  <a href="#meaning"><span>04</span> Knowledge translation</a>
+                </th>
+                <td>Every mapping expression survives</td>
+                <td>Do explicit absences survive too?</td>
+                <td>Representation-loss audit</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section
+        class="investigation"
+        id="records"
+        aria-labelledby="records-title"
+      >
+        <div class="wrap chapter">
+          <div class="chapter-title">
+            <span class="chapter-number">01</span
+            ><span class="eyebrow">Administrative records</span>
+            <h2 id="records-title">
+              A plausible ratio can hide an influential scale.
+            </h2>
+            <p class="evidence-kind">Empirical influence audit</p>
+            <a
+              class="audit-link"
+              href="https://ehs-osha-analysis.vercel.app/decision-audit.html"
+              >Open the decision audit <span aria-hidden="true">↗︎</span></a
+            >
+          </div>
+          <div class="chapter-body">
+            <p class="finding">
+              Two 2023 filings pass all
+              <strong>{{ehs_screens}} tested hours-per-employee screens</strong
+              >, yet account for
+              <strong
+                >{{ehs_hours_share}} of that year’s default-screened
+                hours</strong
+              >. Excluding them reverses the sign of the 2023–24 rate change.
+            </p>
+            <figure class="evidence-figure">
+              <figcaption>
+                <strong>Same 2024 endpoint. Different interpretation.</strong
+                ><span
+                  >Screened OSHA filings · cases per 200,000 reported
+                  hours</span
+                >
+              </figcaption>
+              <svg
+                viewBox="0 0 590 235"
+                role="img"
+                aria-labelledby="rate-title rate-desc"
+              >
+                <title id="rate-title">
+                  Two-filing exclusion changes the direction of the injury-rate
+                  trend
+                </title>
+                <desc id="rate-desc">
+                  Screened rate changes from {{ehs_before}} in 2023 to
+                  {{ehs_after}} in 2024, {{ehs_change}}. Excluding two 2023
+                  filings changes the starting rate to {{ehs_excluded}}, giving
+                  {{ehs_sensitive}}. Exact displayed values are in the table
+                  below.
+                </desc>
+                <g class="grid-lines">
+                  <path d="M80 48V190 M295 48V190 M510 48V190" />
+                </g>
+                <text x="0" y="24" class="plot-label">Screened filings</text>
+                <text x="590" y="24" text-anchor="end" class="plot-value">
+                  {{ehs_change}}
+                </text>
+                <path
+                  d="M{{ehs_before_x}} 66H{{ehs_after_x}}"
+                  class="rate-line base"
+                />
+                <circle cx="{{ehs_before_x}}" cy="66" r="6" class="start-dot" />
+                <circle cx="{{ehs_after_x}}" cy="66" r="6" class="end-dot" />
+                <text x="0" y="122" class="plot-label">
+                  Exclude the two 2023 filings
+                </text>
+                <text x="590" y="122" text-anchor="end" class="plot-value">
+                  {{ehs_sensitive}}
+                </text>
+                <path
+                  d="M{{ehs_after_x}} 164H{{ehs_excluded_x}}"
+                  class="rate-line sensitivity"
+                />
+                <circle
+                  cx="{{ehs_excluded_x}}"
+                  cy="164"
+                  r="6"
+                  class="start-dot"
+                />
+                <circle cx="{{ehs_after_x}}" cy="164" r="6" class="end-dot" />
+                <g class="axis-label">
+                  <text x="80" y="218" text-anchor="middle">3.0</text>
+                  <text x="295" y="218" text-anchor="middle">3.5</text>
+                  <text x="510" y="218" text-anchor="middle">4.0</text>
+                </g>
+              </svg>
+              <div class="plot-key">
+                <span><i class="hollow-dot"></i>2023</span
+                ><span><i class="solid-dot"></i>2024</span>
+              </div>
+            </figure>
+            <details>
+              <summary>Inspect the numerical comparison</summary>
+              <div class="table-scroll">
+                <table>
+                  <caption>
+                    Rates rounded to four decimals; percent changes use
+                    unrounded rates.
+                  </caption>
+                  <thead>
+                    <tr>
+                      <th scope="col">Scenario</th>
+                      <th scope="col">2023</th>
+                      <th scope="col">2024</th>
+                      <th scope="col">Change</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <th scope="row">Screened population</th>
+                      <td>{{ehs_before}}</td>
+                      <td>{{ehs_after}}</td>
+                      <td>{{ehs_change}}</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">Exclude two 2023 filings</th>
+                      <td>{{ehs_excluded}}</td>
+                      <td>{{ehs_after}}</td>
+                      <td>{{ehs_sensitive}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p>
+                A symmetric sensitivity removing the two largest-hour filings in
+                <em>both</em> years gives {{ehs_symmetric}}. The selected pair
+                is an influential example, not a claim that two is the minimum
+                needed to change the sign.
+              </p>
+            </details>
+            <div class="interpretation">
+              <p>
+                <strong>What the audit establishes.</strong> Internal ratio
+                consistency does not establish absolute-scale validity. Scaling
+                both hours and employee counts together preserves their ratio.
+              </p>
+              <p>
+                <strong>What it leaves unknown.</strong> These are descriptive
+                administrative filings, not a national estimate. The exclusion
+                is a sensitivity analysis, not a corrected rate: it does not
+                identify which reported fields, if any, are wrong.
+              </p>
+            </div>
+            <p class="review-question">
+              <span>Before using the trend</span>Review the influential records
+              and show the sensitivity alongside the aggregate.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="investigation"
+        id="answers"
+        aria-labelledby="answers-title"
+      >
+        <div class="wrap chapter">
+          <div class="chapter-title">
+            <span class="chapter-number">02</span
+            ><span class="eyebrow">Finite answer space</span>
+            <h2 id="answers-title">
+              A benchmark score mixes retrieval with the measuring instrument.
+            </h2>
+            <p class="evidence-kind">Exhaustive lexical scorer diagnostic</p>
+            <a
+              class="audit-link"
+              href="https://ehs-ai-grounding-eval.vercel.app/evidence-audit.html"
+              >Open the evidence audit <span aria-hidden="true">↗︎</span></a
+            >
+          </div>
+          <div class="chapter-body">
+            <p class="finding">
+              Across all
+              <strong>{{ai_combinations}} question–excerpt combinations</strong
+              >, only
+              <strong>{{ai_attainable}}/{{ai_n}} factual questions</strong> have
+              any scorer-passing answer in the fixed single-excerpt format. BM25
+              already passes {{ai_passes}}.
+            </p>
+            <figure class="evidence-figure">
+              <figcaption>
+                <strong>Where the {{ai_n}} BM25 outcomes come from</strong
+                ><span
+                  >Unchanged index, response format and lexical rubric</span
+                >
+              </figcaption>
+              <div
+                class="partition"
+                role="img"
+                aria-label="{{ai_passes}} current passes, {{ai_recoverable}} misses recoverable by reranking, {{ai_unreachable}} questions where no indexed excerpt passes"
+              >
+                <span class="part-pass" style="width:{{ai_pass_width}}%"
+                  >{{ai_passes}}</span
+                ><span class="part-recover" style="width:{{ai_recover_width}}%"
+                  >{{ai_recoverable}}</span
+                ><span class="part-unreachable" style="width:{{ai_fail_width}}%"
+                  >{{ai_unreachable}}</span
+                >
+              </div>
+              <div class="partition-labels">
+                <span><i class="key-pass"></i>Current scorer passes</span
+                ><span><i class="key-recover"></i>Recoverable by reranking</span
+                ><span
+                  ><i class="key-unreachable"></i>No indexed excerpt
+                  passes</span
+                >
+              </div>
+            </figure>
+            <details>
+              <summary>
+                Inspect the exhaustive counts and rubric counterexample
+              </summary>
+              <table>
+                <caption>
+                  All {{ai_excerpts}} indexed excerpts were scored against each
+                  of {{ai_n}} factual questions.
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Outcome under fixed rubric</th>
+                    <th scope="col">Questions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">BM25 currently passes</th>
+                    <td>{{ai_passes}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Another indexed excerpt can pass</th>
+                    <td>{{ai_recoverable}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">No indexed excerpt can pass</th>
+                    <td>{{ai_unreachable}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Attainable passes using bare excerpts</th>
+                    <td>{{ai_bare}} / {{ai_n}}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                The
+                <a
+                  href="https://ehs-ai-grounding-eval.vercel.app/evidence-audit.html#question=hc-005&amp;view=own&amp;excerpt=hn-001"
+                  >question asking for eight pictograms</a
+                >
+                also accepts unrelated excerpts about eight-hour noise exposure
+                and fatality-reporting intervals. The lexical key recognizes the
+                number but not what it refers to. A scorer pass is not semantic
+                validation.
+              </p>
+            </details>
+            <div class="interpretation">
+              <p>
+                <strong>What the audit establishes.</strong> {{ai_recoverable}}
+                current misses have a passing indexed excerpt available; the
+                other {{ai_unreachable}} cannot pass without changing the answer
+                space or rubric.
+              </p>
+              <p>
+                <strong>What it leaves unknown.</strong> No language model was
+                evaluated. The bound does not apply to full documents, multiple
+                excerpts or synthesis. Lexical omissions may be missing
+                information or unrecognized wording; this analysis does not
+                adjudicate them.
+              </p>
+            </div>
+            <p class="review-question">
+              <span>Before comparing systems</span>Check what the evidence can
+              answer, then inspect what the scorer calls success.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section class="investigation" id="models" aria-labelledby="models-title">
+        <div class="wrap chapter">
+          <div class="chapter-title">
+            <span class="chapter-number">03</span
+            ><span class="eyebrow">Known simulated truth</span>
+            <h2 id="models-title">
+              Good fit does not calibrate a contrast test.
+            </h2>
+            <p class="evidence-kind">Simulation · no workplace observations</p>
+            <a
+              class="audit-link"
+              href="https://ehs-risk-sem.vercel.app/model-audit.html"
+              >Open the model audit <span aria-hidden="true">↗︎</span></a
+            >
+          </div>
+          <div class="chapter-body">
+            <p class="finding">
+              At N={{sem_n}} and loading 0.75,
+              <strong
+                >{{sem_fit}}/{{sem_reps}} null simulations pass the fit
+                criteria</strong
+              >. The repository’s two-step estimator with a naïve analytic
+              standard error still rejects a true null
+              <strong>{{sem_false}}</strong> of the time, against its nominal 5%
+              level.
+            </p>
+            <figure class="evidence-figure">
+              <figcaption>
+                <strong>Rejection when the simulated contrast is zero</strong
+                ><span
+                  >Two-step estimator · 1,000 held-out null surveys · 0–25%
+                  scale</span
+                >
+              </figcaption>
+              <div
+                class="false-positive-chart"
+                role="img"
+                aria-label="Naïve false-positive rate {{sem_false}}, DGP-specific null-calibrated rate {{sem_cal_false}}, nominal level 5 percent"
+              >
+                <div class="nominal" aria-hidden="true">5% nominal</div>
+                <div class="risk-row">
+                  <span>Naïve test</span>
+                  <div class="track">
+                    <i style="width:{{sem_false_width}}%"></i>
+                  </div>
+                  <strong>{{sem_false}}</strong>
+                </div>
+                <div class="risk-row calibrated">
+                  <span>Null-calibrated diagnostic</span>
+                  <div class="track">
+                    <i style="width:{{sem_cal_width}}%"></i>
+                  </div>
+                  <strong>{{sem_cal_false}}</strong>
+                </div>
+              </div>
+            </figure>
+            <details>
+              <summary>
+                Inspect the simulation design, counts and limits
+              </summary>
+              <table>
+                <caption>
+                  Loading 0.75, three indicators per factor, 1,000 held-out null
+                  surveys per row.
+                </caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Design / N</th>
+                    <th scope="col">Naïve false positives</th>
+                    <th scope="col">Null-calibrated diagnostic</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Positive-pair design / {{sem_n}}</th>
+                    <td>
+                      {{sem_false_count}}/1,000 ({{sem_false}})<br /><small
+                        >95% MC: {{sem_false_low}}–{{sem_false_high}}</small
+                      >
+                    </td>
+                    <td>
+                      {{sem_cal_false_count}}/1,000 ({{sem_cal_false}})<br /><small
+                        >95% MC: {{sem_cal_low}}–{{sem_cal_high}}</small
+                      >
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">
+                      Negative-pair design / {{sem_negative_n}}
+                    </th>
+                    <td>
+                      {{sem_negative_false_count}}/1,000
+                      ({{sem_negative_false}})<br /><small
+                        >95% MC:
+                        {{sem_negative_false_low}}–{{sem_negative_false_high}}</small
+                      >
+                    </td>
+                    <td>
+                      {{sem_negative_cal_count}}/1,000 ({{sem_negative_cal}})<br /><small
+                        >95% MC:
+                        {{sem_negative_cal_low}}–{{sem_negative_cal_high}}</small
+                      >
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <p>
+                The fit criteria are CFI ≥ 0.95, RMSEA ≤ 0.06 and SRMR ≤ 0.08.
+                The two-step estimator treats estimated latent correlations as
+                fixed in its naïve uncertainty calculation. These error rates do
+                not describe all SEM estimators. Naïve-rate intervals are
+                pointwise Wilson intervals; calibrated-rate intervals also
+                include cutoff uncertainty through two-sample resampling. Five
+                normal latent variables; four correlated predictors (ρ=0.35);
+                independent measurement errors. Separate sets of 1,000 surveys
+                estimate the null cutoff, test it under the null, and measure
+                rejection under the alternative for each design cell.
+              </p>
+              <p>
+                For the N={{sem_n}} alternative contrast Δ=0.15, the
+                null-calibrated diagnostic rejects in {{sem_alt}} of simulations
+                (95% two-sample Monte Carlo interval
+                {{sem_alt_low}}–{{sem_alt_high}}). The interval includes
+                uncertainty in the estimated cutoff. It is not a population
+                confidence interval.
+              </p>
+            </details>
+            <div class="interpretation">
+              <p>
+                <strong>What the audit establishes.</strong> In this specified
+                simulation, fit checks do not protect the contrast test from
+                underestimated uncertainty. A high rejection rate under an
+                alternative is not useful power evidence until false positives
+                are checked.
+              </p>
+              <p>
+                <strong>What it leaves unknown.</strong> The null-calibrated
+                cutoff uses the known data-generating process. It is a
+                diagnostic, not a correction available from real workplace data.
+                Missingness, nonnormality and misspecified measurement were not
+                simulated here.
+              </p>
+            </div>
+            <p class="review-question">
+              <span>Before ranking effects</span>Check the inferential procedure
+              under a known null, separately from model fit.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="investigation"
+        id="meaning"
+        aria-labelledby="meaning-title"
+      >
+        <div class="wrap chapter">
+          <div class="chapter-title">
+            <span class="chapter-number">04</span
+            ><span class="eyebrow">Representation contract</span>
+            <h2 id="meaning-title">
+              All mappings can survive while recorded knowledge disappears.
+            </h2>
+            <p class="evidence-kind">Loss audit · author-proposed alignments</p>
+            <a
+              class="audit-link"
+              href="https://ehs-human-factors-ontology.vercel.app/translation-audit.html"
+              >Open the translation audit <span aria-hidden="true">↗︎</span></a
+            >
+          </div>
+          <div class="chapter-body">
+            <p class="finding">
+              The SKOS export preserves
+              <strong
+                >{{ont_mappings}}/{{ont_mappings}} PIF mapping
+                expressions</strong
+              >, but drops all
+              <strong
+                >{{ont_absences}} explicit “no counterpart” assertions</strong
+              >
+              and all
+              <strong>{{ont_gaps}} external coverage-gap records</strong>.
+            </p>
+            <figure class="evidence-figure">
+              <figcaption>
+                <strong>Preserved expressions are not the whole contract</strong
+                ><span
+                  >Counts by feature; denominators describe different,
+                  overlapping records</span
+                >
+              </figcaption>
+              <table class="retention-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Recorded feature</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">SKOS</th>
+                    <th scope="col">With sidecar</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">PIF mapping expressions</th>
+                    <td>{{ont_mappings}}</td>
+                    <td class="retained">{{ont_mappings}}</td>
+                    <td>{{ont_mappings}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Explicit no-counterpart assertions</th>
+                    <td>{{ont_absences}}</td>
+                    <td class="lost">0</td>
+                    <td>{{ont_absences}}</td>
+                  </tr>
+                  <tr>
+                    <th scope="row">External coverage-gap records</th>
+                    <td>{{ont_gaps}}</td>
+                    <td class="lost">0</td>
+                    <td>{{ont_gaps}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </figure>
+            <details>
+              <summary>Inspect what the round-trip test proves</summary>
+              <p>
+                Deleting the source’s
+                <a
+                  href="https://ehs-human-factors-ontology.vercel.app/translation-audit.html?factor=ehs:WorkplaceVisibility&amp;framework=xw:fw-SPARH"
+                  >explicit Workplace Visibility absence</a
+                >
+                changes the source meaning while leaving the standard SKOS
+                export unchanged. The export cannot distinguish those two source
+                states.
+              </p>
+              <p>
+                A sidecar preserves the omitted assertion records.
+                Reconstructing the declared contract recovers
+                {{ont_triples}}/{{ont_triples}} scoped source triples, with zero
+                missing and zero added. This is not full ontology
+                reconstruction, semantic equivalence or validation of the
+                mappings themselves.
+              </p>
+            </details>
+            <div class="interpretation">
+              <p>
+                <strong>What the audit establishes.</strong> A missing edge and
+                an explicit statement of no counterpart are different.
+                Mapping-count completeness alone cannot show that the export
+                preserves that distinction.
+              </p>
+              <p>
+                <strong>What it leaves unknown.</strong> These alignments are
+                author-proposed. Preserving their source statements does not
+                establish their correctness, cross-framework equivalence, or any
+                relationship to injury risk.
+              </p>
+            </div>
+            <p class="review-question">
+              <span>Before sharing a knowledge representation</span>Specify
+              which assertions must survive, and test their round trip—not just
+              edge counts.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        class="review-section"
+        id="review"
+        aria-labelledby="review-title"
+      >
+        <div class="wrap">
+          <span class="eyebrow">From a result to a decision</span>
+          <h2 id="review-title">Make the next review specific.</h2>
+          <p class="review-lead">
+            Choose a decision. The right audit depends on what you are about to
+            infer.
+          </p>
+          <div class="decision-layout">
+            <div
+              class="decision-options"
+              role="group"
+              aria-label="Choose the decision to review"
+            >
+              <button type="button" data-case="records" aria-pressed="true">
+                Use an injury-rate trend
+                <span aria-hidden="true">→</span></button
+              ><button type="button" data-case="answers" aria-pressed="false">
+                Compare answering systems
+                <span aria-hidden="true">→</span></button
+              ><button type="button" data-case="models" aria-pressed="false">
+                Rank modeled effects <span aria-hidden="true">→</span></button
+              ><button type="button" data-case="meaning" aria-pressed="false">
+                Publish a knowledge export <span aria-hidden="true">→</span>
+              </button>
+            </div>
+            <div
+              class="decision-steps"
+              id="decision-steps"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              <ol>
+                <li>
+                  <span>Before the decision</span>
+                  <p id="step-before">
+                    Name the population, period and exposure denominator behind
+                    the rate.
+                  </p>
+                </li>
+                <li>
+                  <span>Run the audit</span>
+                  <p id="step-audit">
+                    Rank record influence, vary the screen, and show the trend
+                    with and without the influential filings.
+                  </p>
+                </li>
+                <li>
+                  <span>Review what remains</span>
+                  <p id="step-review">
+                    Inspect source records before attributing a change to safety
+                    performance. Keep sensitivity separate from corrected truth.
+                  </p>
+                </li>
+              </ol>
+              <a
+                id="decision-link"
+                href="https://ehs-osha-analysis.vercel.app/decision-audit.html"
+                >Investigate this decision ↗︎</a
+              >
+            </div>
+          </div>
+          <noscript
+            ><p>
+              The four investigations above provide all findings without
+              JavaScript. Enable JavaScript to switch this review guide.
+            </p></noscript
+          >
+        </div>
+      </section>
+
+      <section
+        class="wrap closing"
+        id="reproduce"
+        aria-labelledby="reproduce-title"
+      >
+        <div>
+          <span class="eyebrow">Evidence that can be revisited</span>
+          <h2 id="reproduce-title">
+            A common discipline.<br />Distinct claims.
+          </h2>
+          <p>
+            The programme’s proposal is methodological: attach a decision to the
+            quantity it needs, test a failure that the summary cannot reveal,
+            and keep the remaining uncertainty visible. The four investigations
+            supply different evidence for that practice. They do not estimate
+            how often it succeeds across organisations.
+          </p>
+          <p>
+            These are working investigations, not externally peer-reviewed
+            decision rules. Existing
+            <a href="index.html#papers">working papers</a>,
+            <a href="methods-ledger.html">methods ledger</a> and
+            <a href="reproduce.html">reproduction guide</a> remain available.
+          </p>
+        </div>
+        <div class="reproduction">
+          <h3>Take the findings with you</h3>
+          <p>
+            A four-page brief carries the main comparisons, practical review
+            steps and limits, with linked source artifacts.
+          </p>
+          <a href="research-brief.pdf" download
+            >Download the research brief (PDF, 4 pages) ↓</a
+          ><a href="research-brief.html">Read the brief in HTML →</a>
+          <h3>Inspect the source trail</h3>
+          <p>
+            Numbers on this page are generated from the four project artifacts.
+            The manifest records their paths, SHA-256 hashes and full-precision
+            selected values.
+          </p>
+          <a href="investigations-data.json" download
+            >Download the synthesis manifest ↓</a
+          ><a
+            href="https://github.com/priyatham9/grounded/blob/main/tools/build_investigations.py"
+            >Read the synthesis generator ↗︎</a
+          >
+          <details>
+            <summary>Rebuild this page</summary>
+            <p>
+              Place the five repositories in sibling directories, regenerate
+              each project’s audit artifacts, then run in <code>grounded</code>:
+            </p>
+            <pre><code>python3 tools/build_investigations.py
+python3 tools/build_investigations.py --check</code></pre>
+            <p>
+              The deployed page is static; it does not fetch project results at
+              runtime.
+            </p>
+          </details>
+          <ul>
+            <li>
+              <a
+                href="https://github.com/priyatham9/ehs-osha-analysis/blob/main/src/ehs_osha/benchmark_fragility.py"
+                >OSHA influence analysis ↗︎</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/priyatham9/ehs-ai-grounding-eval/blob/main/grounding_eval/answerability.py"
+                >Exhaustive excerpt analysis ↗︎</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/priyatham9/ehs-risk-sem/blob/main/simulations/study_05_inference_audit.py"
+                >Independent inference simulation ↗︎</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://github.com/priyatham9/ehs-human-factors-ontology/blob/main/tools/build_translation_audit.py"
+                >Translation-loss analysis ↗︎</a
+              >
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="wrap footer-inner">
+        <a class="brand" href="./">Grounded</a>
+        <p>
+          Open investigations by
+          <a href="https://priyatham-personal-site.vercel.app/"
+            >Priyatham Chimmani</a
+          ><br />Methods, scope and source evidence travel with each finding.
+        </p>
+        <a href="#main">Back to the question ↑</a>
+      </div>
+    </footer>
+  </body>
+</html>
